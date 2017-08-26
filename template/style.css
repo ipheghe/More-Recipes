@@ -1,0 +1,287 @@
+body {
+  overflow-x: hidden;
+  font-family: "Open Sans", sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: "Open Sans", sans-serif;
+}
+
+label {
+color: #fff;
+font-weight: bold;
+display: block;
+float: left;
+}
+
+.landing-background {
+  background: url("./images/banner.jpeg");
+  -moz-background-position: 50%;
+  -webkit-background-position: 50%;
+  background-position: 50%;
+  min-height: 700px;
+  overflow: hidden;
+}
+
+.banner-background {
+  background: url("./images/banner.jpeg");
+  -moz-background-position: 50%;
+  -webkit-background-position: 50%;
+  background-position: 50%;
+  min-height: 1000px;
+  overflow: hidden;
+}
+
+
+.login-background {
+  background: url("./images/banner.jpeg");
+  -moz-background-position: 50%;
+  -webkit-background-position: 50%;
+  background-position: 50%;
+  min-height: 700px;
+  overflow: hidden;
+  background-size: cover;          
+  background-repeat: no-repeat;
+}
+
+.reg-background {
+  background: url("./images/banner.jpeg");
+  -moz-background-position: 50%;
+  -webkit-background-position: 50%;
+  background-position: 50%;
+  min-height: 900px;
+  overflow: hidden;
+  background-size: cover;          
+  background-repeat: no-repeat;
+}
+
+.recipe-background {
+  -moz-background-position: 50%;
+  background-color: #e6e6e6;
+  -webkit-background-position: 50%;
+  background-position: 50%;
+  overflow: hidden;
+  margin: auto 15%;
+  margin-bottom: 30px;
+
+}
+
+.profile-background {
+  -moz-background-position: 50%;
+  background-color: #e6e6e6;
+  -webkit-background-position: 50%;
+  background-position: 50%;
+  overflow: hidden;
+  margin: auto 15%;
+  padding: auto 0px;
+  margin-bottom: 40px;
+}
+
+.profile-background > .container {
+  width: 100%;
+  padding: auto 0px;
+  margin: auto 0px;
+}
+
+.profile-background > .container > .navbar {
+  background-color: #e6e6e6;
+}
+
+nav#brand-color {
+  background-color: green;
+}
+
+.landing {
+  position: relative;
+  margin-top: 120px;
+}
+
+@media(max-width: 767px) {
+  .landing {
+  text-align: center;
+  }  
+}
+
+.headline {
+  color: #fff;
+}
+
+.headline h1 {
+  font-weight: 700;
+}
+
+.headline a > button {
+  min-width: 60%;
+  margin-bottom: 30px;
+}
+
+.account {
+  background-color: rgba(0,0,0,.70);
+  padding: 40px 30px;
+  border-radius: 3px;
+  z-index: 0;
+}
+
+.account > div {
+  display: block;
+  margin: 30px auto;
+}
+
+.account div > button {
+  min-width: 100%;
+}
+
+.account h3{
+  color:#fff;
+  font-weight: 700;
+}
+
+.brief {
+  display: block;
+  font-size: 12px;
+  margin: 10px auto 0 auto;
+  color: #fff;
+}
+
+#top-recipes {
+  margin-top: 60px;
+}
+
+#top-recipes .heading {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+#login-checkbox {
+  margin-right: 5px;
+}
+
+.account .login-buttons {
+  margin: 20px auto;
+}
+
+.account .modal-footer button {
+  min-width: 0%;
+}
+
+.recipe-top {
+  position: relative;
+  margin-top: 50px;
+  color: #fff
+  display: block;
+  min-height: 240px;
+  box-sizing: border-box;
+}
+
+.title-area p {
+display: inline;
+}
+
+.title-area span {
+margin-left: 5px;
+}
+
+.recipe-background  .recipe-button {
+  text-align: center;
+}
+.recipe-button > button {
+  min-width: 20%;
+}
+.recipe-ingredients ul{
+  float: left;
+  margin: auto 0;
+  padding: 0;
+
+}
+
+.recipe-ingredients li{
+  font-size: 15px;
+  list-style-type:none;
+  margin-bottom: 10px;
+
+}
+
+.recipe-ingredients li span{
+  font-size: 20px;
+}
+
+.recipe-ingredients li i{
+  font-size: 15px;
+  margin-right: 5px;
+}
+
+.recipe-review {
+  margin-bottom: 50px;
+}
+
+.form-rounded {
+border-radius: 1rem;
+min-height: 250px;
+}
+
+.nav-link {
+  color: #000;
+}
+
+a:hover {
+  color: #fff;
+  background-color: #115f11;
+}
+
+.profile-landing {
+  height: 100%;
+}
+
+.profile-background .div-profile {
+  background-color: #F8F8FF;
+  padding:10px 0 10px 10px;
+}
+
+.profile-background .div-section {
+  background-color: #F8F8FF;
+}
+
+.profile-tabs .card {
+  width: 300px;
+}
+.profile-tabs .card-deck span {
+  margin-right: 5px;
+}
+
+.profile-tabs label {
+  color: #000;
+}
+
+.profile-pagination {
+  float: right;
+  margin-bottom: 20px;
+}
+
+.profile-category-button > button {
+  margin-bottom: 5px;
+}
+
+.profile-background .edit-profile-div-section {
+  background-color: #F8F8FF;
+  padding:10px 10px 10px 10px;
+}
+
+.profile-background .add-padding {
+  padding:10px 10px 10px 10px;
+}
+
+.edit-profile-div-section label {
+  color: #000
+}
+
+.edit-profile-button > button {
+  min-width: 20%;
+  text-align: center;
+}
+
+.card-footer .text-muted > button {
+  float:right;
+}
+
+
+

@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+  	<header>
+  		<nav class="navbar navbar-toggleable-md navbar-light bg-faded" id="brand-color">
+		  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+		  <a class="navbar-brand" href="#">
+		    <img src="/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+		    MoreRecipes
+		  </a>
+
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    <ul class="navbar-nav mr-auto">
+		      <li class="nav-item">
+		        <a class="nav-link" href="#">Home</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#">Favorites</a>
+		      </li>
+		     <li class="nav-item">
+		        <a class="nav-link active" href="#">Profile<span class="sr-only">(current)</span></a>
+		      </li>	       
+		    </ul>
+
+		    <ul class="nav justify-content-end" id="profile-nav">
+
+		    <li class="nav-item">
+			    <a class="nav-link" href="#"><span><i class="fa fa-bell" aria-hidden="true"></i></span>Notifications<span class="badge badge-pill badge-danger">2</span></a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="#"><span><i class="fa fa-user" aria-hidden="true"></i></span> Ipheghe Ovie</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="#"><span><i class="fa fa-sign-out" aria-hidden="true"></i></span> Logout</a>
+			  </li>
+			</ul>
+		  </div>
+		</nav>
+  	</header>
+  		<div class="banner-background">
+    	<div class="profile-background"> 
+  		<div class="container">
+  				<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+				  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+				    <span class="navbar-toggler-icon"></span>
+				  </button>
+				  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+				    <a class="navbar-brand" href="#"><h2>Profile Page</h2></a>
+				    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+				      <li class="nav-item">
+				        <a class="nav-link disabled" href="#"></a>
+				      </li>
+				    </ul>
+				   
+				    <ul class="navbar-nav" style="margin-right: 5px;">
+				      <button type="button" class="btn btn-default"><li class="nav-item dropdown">
+				        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				          Browse
+				        </a>
+						  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+						  <p class="dropdown-item"><b>Categories</b></p>
+						  <hr>
+				          <a class="dropdown-item" href="#">Local Dish </a>
+				          <a class="dropdown-item" href="#">Foreign Dish</a>
+				          <br>
+				          <p class="dropdown-item"><b>Ingredients</b></p>
+						  <hr>
+					       <a class="dropdown-item" href="#">Pumpkin Leaf </a>
+					       <a class="dropdown-item" href="#">Assorted Meat</a>
+					       <a class="dropdown-item" href="#">Pepper aqnd Salt</a>
+					       <br>
+				          <p class="dropdown-item"><b>Favorites</b></p>
+						  <hr>
+					       <a class="dropdown-item" href="#">Egusi Soup</a>
+					       <a class="dropdown-item" href="#">Pizza</a>
+					       <a class="dropdown-item" href="#">Pepper Soup</a>
+				        </div>
+				      </li>
+				      </button>
+				    </ul>
+				    
+				    <form class="form-inline my-2 my-lg-0">
+				      <input class="form-control mr-sm-2" type="text" placeholder="Search">
+				      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				    </form>
+				  </div>
+			</nav>
+			<br>
+			<div class="row profile-landing">
+	  			<section class="col-md-3 profile-details">
+	  				<div class="div-profile">
+	  				<h2>Ipheghe Ovie</h2>
+	  				<h4>@andela</h4>
+	  				<h5><span><i class="fa fa-circle-o green" aria-hidden="true" style="color: green;"></i></span>Online</h5>
+	  				<br><br>
+	  				<a href="#"><button class="btn btn-primary">Edit Profile</button></a>
+	  				</div>
+	  				<br>
+	  				<div class="div-profile">
+	  				<h3>Add Category</h3>
+	  				  <div class="form-group" style="margin: 5px 5px;">
+					    <input type="text" class="form-control" id="category-name" placeholder="Enter Name">
+					  </div>
+					  <div>
+					  	<button type="button" class="btn btn-primary">Add</button>
+					  </div>
+					  <br>
+					  <div class="profile-category-button">
+					  	<button type="button" class="btn btn-default btn-sm">Local Dish <span class="badge text-right">7</span></button>
+					  	<button type="button" class="btn btn-default btn-sm">Foreign Dish <span class="badge text-right">9</span></button>
+					  	<button type="button" class="btn btn-default btn-sm">Cakes<span class="badge text-right">9</span></button>
+					  </div>
+	  				</div>
+	  			</section>
+	  			<section class="col-md-9 profile-tabs" >
+	  			  <div class="div-section">
+		  			<ul class="nav nav-tabs nav-fill">
+					  <li class="nav-item">
+					    <a class="nav-link" href="#">Top Recipes</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link" href="#">Favorites</a>
+					  </li>
+					  <li class="nav-item dropdown">
+					    <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">My Recipes</a>
+					    <div class="dropdown-menu">
+					      <a class="dropdown-item" href="#">Manage Recipes</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link " href="#"><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a>
+					  </li>
+					</ul>	
+					<br>
+					<h3><b>My Recipes</b></h3>
+					<br>
+						<div class="card-deck">
+						  <div class="card">
+						    <img class="card-img-top" src="./images/egusi_soup.jpg" alt="Card image cap">
+						    <div class="card-block">
+						      <h4 class="card-title">Egusi Soup</h4>
+						      <p class="card-text">This is an african native soup from Nigeria.It is so delicious and suptuous.</p>
+						    </div>
+						    <div class="card-footer">
+						      <small class="text-muted">
+						      	 <span class="views"><i class="fa fa-eye" aria-hidden="true"></i>420</span>
+	      						<span class="reviews"><i class="fa fa-comment" aria-hidden="true"></i>100</span>
+	      						<span class="upvote"><i class="fa fa-thumbs-up" aria-hidden="true"></i>310</span>
+	      						<span class="downvote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
+	      						<button type="button" class="btn btn-secondary btn-sm">More</button>
+						      </small>
+						    </div>
+						  </div>
+						  <div class="card">
+						    <img class="card-img-top" src="./images/sharwama.jpg" alt="Card image cap">
+						    <div class="card-block">
+						      <h4 class="card-title">Sharwama</h4>
+						      <p class="card-text">This is a nourishing, delightful, and appetizing snack.I so much love it!!!.</p>
+						    </div>
+						    <div class="card-footer">
+						      <small class="text-muted">
+						      	 <span class="views"><i class="fa fa-eye" aria-hidden="true"></i>320</span>
+	      						<span class="reviews"><i class="fa fa-comment" aria-hidden="true"></i>200</span>
+	      						<span class="upvote"><i class="fa fa-thumbs-up" aria-hidden="true"></i>200</span>
+	      						<span class="downvote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
+	      						<button type="button" class="btn btn-secondary btn-sm">More</button>
+						      </small>
+						    </div>
+						  </div>
+						  <div class="card">
+						    <img class="card-img-top" src="./images/friedrice.jpg" alt="Card image cap">
+						    <div class="card-block">
+						      <h4 class="card-title">Fried Rice</h4>
+						      <p class="card-text">This is a very popular meal all over the world. Everyone loves and enjoys it.</p>
+						    </div>
+						    <div class="card-footer">
+						      <small class="text-muted">
+						      	<span class="views"><i class="fa fa-eye" aria-hidden="true"></i>290</span>
+	      						<span class="reviews"><i class="fa fa-comment" aria-hidden="true"></i>100</span>
+	      						<span class="upvote"><i class="fa fa-thumbs-up" aria-hidden="true"></i>190</span>
+	      						<span class="downvote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>20</span>
+	      						<button type="button" class="btn btn-secondary btn-sm">More</button>
+						      </small>
+						    </div>
+						  </div>
+						</div>
+						<br>
+						<div class="card-deck">
+						  <div class="card">
+						    <img class="card-img-top" src="./images/chocolate_cake.jpg" alt="Card image cap">
+						    <div class="card-block">
+						      <h4 class="card-title">Chocolate Cake</h4>
+						      <p class="card-text">Who cares for a lovely slice of crusty chocolate cake? Everyone is the answer..</p>
+						    </div>
+						    <div class="card-footer">
+						      <small class="text-muted">
+						      	 <span class="views"><i class="fa fa-eye" aria-hidden="true"></i>220</span>
+	      						<span class="reviews"><i class="fa fa-comment" aria-hidden="true"></i>50</span>
+	      						<span class="upvote"><i class="fa fa-thumbs-up" aria-hidden="true"></i>100</span>
+	      						<span class="downvote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>40</span>
+	      						<button type="button" class="btn btn-secondary btn-sm">More</button>
+						      </small>
+						    </div>
+						  </div>
+						  <div class="card">
+						    <img class="card-img-top" src="./images/pizza1.jpg" alt="Card image cap">
+						    <div class="card-block">
+						      <h4 class="card-title">Pepperoni Pizza</h4>
+						      <p class="card-text">This recipe is a hearty, zesty main dish with a crisp, golden crust. Feel free to use whatever toppings your family enjoys.</p>
+						    </div>
+						    <div class="card-footer">
+						      <small class="text-muted">
+						      	 <span class="views"><i class="fa fa-eye" aria-hidden="true"></i>200</span>
+	      						<span class="reviews"><i class="fa fa-comment" aria-hidden="true"></i>30</span>
+	      						<span class="upvote"><i class="fa fa-thumbs-up" aria-hidden="true"></i>90</span>
+	      						<span class="downvote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
+	      						<button type="button" class="btn btn-secondary btn-sm">More</button>
+						      </small>
+						    </div>
+						  </div>
+						  <div class="card">
+						    <img class="card-img-top" src="./images/jollofrice.jpg" alt="Card image cap">
+						    <div class="card-block">
+						      <h4 class="card-title">Jollof Rice</h4>
+						      <p class="card-text">The most popular Nigerian dish that has lead to country wars, just kidding!!!.</p>
+						    </div>
+						    <div class="card-footer">
+						      <small class="text-muted">
+						      	<span class="views"><i class="fa fa-eye" aria-hidden="true"></i>220</span>
+	      						<span class="reviews"><i class="fa fa-comment" aria-hidden="true"></i>100</span>
+	      						<span class="upvote"><i class="fa fa-thumbs-up" aria-hidden="true"></i>200</span>
+	      						<span class="downvote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
+	      						<button type="button" class="btn btn-secondary btn-sm">More</button>
+						      </small>
+						    </div>
+						  </div>
+						</div>
+					</div>
+					<br>
+					<div class="profile-pagination">
+						<nav aria-label="pagination-nav">
+						  <ul class="pagination">
+						    <li class="page-item">
+						      <a class="page-link" href="#" tabindex="-1">Previous</a>
+						    </li>
+						    <li class="page-item"><a class="page-link active" href="#">1 <span class="sr-only">(current)</span></a></li>
+						    <li class="page-item">
+						      <a class="page-link" href="#">2</a>
+						    </li>
+						    <li class="page-item">
+						      <a class="page-link" href="#">Next</a>
+						    </li>
+						  </ul>
+						</nav>
+					</div>
+	  			</section>
+  		</div>		
+  	</div>
+  	</div>
+  	</div>
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+    <script src="home.js"></script>
+  </body>
+</html>
