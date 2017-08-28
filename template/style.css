@@ -127,7 +127,7 @@ nav#brand-color {
   margin: 30px auto;
 }
 
-.account div > button {
+.account div > a > button {
   min-width: 100%;
 }
 
