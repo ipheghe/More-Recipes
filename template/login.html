@@ -31,11 +31,11 @@
 		      <li class="nav-item">
 		        <a class="nav-link" href="#">About MoreRecipes</a>
 		      </li>
-		     <li class="nav-item">
-		        <a class="nav-link" href="./login.html">Login</a>
+		     <li class="nav-item active">
+		        <a class="nav-link" href="./login.html">Login<span class="sr-only">(current)</span></a>
 		      </li>
-		      <li class="nav-item active">
-		        <a class="nav-link" href="./signup.html">Register<span class="sr-only">(current)</span></a>
+		      <li class="nav-item">
+		        <a class="nav-link" href="./signup.html">Register</a>
 		      </li>
 		    </ul>
 		    <form class="form-inline my-2 my-lg-0">
@@ -53,49 +53,13 @@
 	  				<h1>Welcome to More recipes</h1>
 	  				<h4>Share your recipe ideas with the world</h4>
 	  				<br><br>
-	  				<h2><em><i>Sign Up and start sharing recipes</i></em></h2>
+	  				<h2><em><i>Login and start sharing recipes</i></em></h2>
 	  			</section>
 	  			<section class="col-md-5 account">
 	  				<div>
-	  					<form action="" class="reg-form">
-            				<h3 class="login-form-boxx">Registration Form</h3>
+	  					<form action="" class="login-form">
+            				<h3 class="login-form-boxx">Login Form</h3>
             				<br>
-                    		<div class="form-group">
-                        		<label for="enterUsername">Username:</label>
-                        		<div class="input-group">
-		                            <span class="input-group-addon">
-		                                <i class="fa fa-user"></i>
-		                            </span>
-		                            <input name="textUsername" type="text" class="form-control" id="enterUsername" placeholder="e.g john112">
-	                       		</div>
-                    		</div>
-                    		<div class="form-group">
-                        		<label for="enterFirstName">First Name:</label>
-                        		<div class="input-group">
-		                            <span class="input-group-addon">
-		                                <i class="fa fa-user-o"></i>
-		                            </span>
-		                            <input name="textFirstName" type="text" class="form-control" id="enterFirstName" placeholder="e.g John">
-	                       		</div>
-                    		</div>
-                    		<div class="form-group">
-                        		<label for="enterLastName">Last Name:</label>
-                        		<div class="input-group">
-		                            <span class="input-group-addon">
-		                                <i class="fa fa-user-o"></i>
-		                            </span>
-		                            <input name="textLastName" type="text" class="form-control" id="enterLastName" placeholder="e.g Ken">
-	                       		</div>
-                    		</div>
-                    		<div class="form-group">
-                        		<label for="enterMobile">Mobile:</label>
-                        		<div class="input-group">
-		                            <span class="input-group-addon">
-		                                <i class="fa fa-mobile"></i>
-		                            </span>
-		                            <input name="textMobile" type="number" class="form-control" id="enterMobile" placeholder="e.g 08034562838">
-	                       		</div>
-                    		</div>
                     		<div class="form-group">
                         		<label for="enterEmail">Email address:</label>
                         		<div class="input-group">
@@ -115,19 +79,51 @@
                         		</div>
                     		</div>
                     		<div class="row">
-	                        	<div class="col-md-6">
-	                            <a href="./login.html">Already have an account?</a>
+	                        	<div class="checkbox-primary col-md-6">
+	                            	<label>
+	                                	<input type="checkbox" id="login-checkbox"><span>Remember me</span>
+	                            	</label>
+	                        	</div>
+	                        	<div class="text-right col-md-6">
+	                            <a href="#" data-toggle="modal" data-target="#myModal">Forgot your password?</a>
 	                        	</div>
 	                        </div>
 
+	                        	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								  <div class="modal-dialog" role="document">
+								    <div class="modal-content">
+								      <div class="modal-header"> 
+								        <h5 class="modal-title col-md-6" id="exampleModalLabel">Forgot Password?</h5>
+								        <button type="button" class="close col-md-6" data-dismiss="modal" aria-label="Close" >
+								          <span aria-hidden="true">&times;</span>
+								        </button>
+								      </div>
+								      <div class="modal-body">		     
+						                    <div class="form-group">
+						                        <label for="enterEmailForgot">Email address:</label>
+						                        <div class="input-group input-group-lg">
+						                            <span class="input-group-addon">
+						                                <i class="fa fa-envelope"></i>
+						                            </span>
+						                            <input name="textEmailAddress1" type="email" class="form-control" id="enterEmailForgot" placeholder="Enter email">
+						                        </div>
+						                    </div>	   
+						            	</div>
+								      <div class="modal-footer">
+								        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								        <button type="button" class="btn btn-success" data-dismiss="modal">Recover Password</button>
+								      </div>
+								    </div>
+								  </div>
+								</div>
                     		<div class="login-buttons">
 				                <div>
-				                    <button type="button" class="btn btn-block btn-success">Sign Up</button>
+				                    <button type="submit" class="btn btn-block btn-success">Login</button>
 				                </div>
 				                <br>
 								<div>
-								<a href="./home.html">
-				                    <button type="button" class="btn btn-block btn-success">Cancel</button>
+				                <a href="./signup.html">
+				                    <button type="button" class="btn btn-block btn-success">Sign Up</button>
 				                </a>
 				                </div>
 			                </div>
