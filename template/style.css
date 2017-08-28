@@ -61,9 +61,22 @@ float: left;
   -webkit-background-position: 50%;
   background-position: 50%;
   overflow: hidden;
-  margin: auto 15%;
-  margin-bottom: 30px;
+  margin: 30px auto;
 
+}
+
+.nav-link i {
+    margin-right: 30px;
+  }
+
+@media(min-width: 480px) {
+  .recipe-background {
+  margin: 30px 15%;
+  }  
+
+  .nav-link i {
+    margin-right: 5px;
+  }
 }
 
 .profile-background {
@@ -196,18 +209,16 @@ margin-left: 5px;
 }
 
 .recipe-ingredients li{
-  font-size: 15px;
   list-style-type:none;
   margin-bottom: 10px;
 
 }
 
 .recipe-ingredients li span{
-  font-size: 20px;
 }
 
 .recipe-ingredients li i{
-  font-size: 15px;
+  font-size: 10px;
   margin-right: 5px;
 }
 
@@ -307,6 +318,4 @@ a:hover {
 .landing a {
   text-decoration: none;
 }
-
-
 
