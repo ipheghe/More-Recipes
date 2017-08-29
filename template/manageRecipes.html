@@ -98,7 +98,7 @@
 	  				<h6>@andela</h6>
 	  				<p><span><i class="fa fa-circle-o green" aria-hidden="true" style="color: green;"></i></span>Online</p>
 	  				<br><br>
-	  				<a href="./editProfile.html"><button class="btn btn-success">Edit Profile</button></a>
+	  				<a href="#"><button class="btn btn-success">Edit Profile</button></a>
 	  				</div>
 	  				<br>
 	  				<div class="div-profile">
@@ -121,13 +121,13 @@
 	  			  <div class="div-section">
 		  			<ul class="nav nav-tabs nav-fill">
 					  <li class="nav-item">
-					    <a class="nav-link active" href="./profile.html">Top Recipes</a>
+					    <a class="nav-link" href="./profile.html">Top Recipes</a>
 					  </li>
 					  <li class="nav-item">
 					    <a class="nav-link" href="./favorites.html">Favorites</a>
 					  </li>
 					  <li class="nav-item dropdown">
-					    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">My Recipes</a>
+					    <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">My Recipes</a>
 					    <div class="dropdown-menu">
 					      <a class="dropdown-item" href="./myRecipes.html">Personal Recipes</a>
 					      <a class="dropdown-item" href="./manageRecipes.html">Manage Recipes</a>
@@ -138,133 +138,47 @@
 					</ul>	
 					<br>
 					<div class="add-padding">
-					<h3><b>Top Recipes</b></h3>
+					<h3><b>Manage Recipe</b></h3>
 					<br>
-						<div class="card-deck">
-						  <div class="card">
-						    <img class="card-img-top" src="./images/egusi_soup.jpg" alt="Card image cap">
-						    <div class="card-block">
-						      <h4 class="card-title">Egusi Soup</h4>
-						      <p class="card-text">This is an african native soup from Nigeria.It is so delicious and suptuous.</p>
-						    </div>
-						    <div class="card-footer">
-						      <small class="text-muted">
-						      	 <span class="views"><i class="fa fa-eye" aria-hidden="true"></i>420</span>
-	      						<span class="reviews"><i class="fa fa-comment" aria-hidden="true"></i>100</span>
-	      						<span class="upvote"><i class="fa fa-thumbs-up" aria-hidden="true"></i>310</span>
-	      						<span class="downvote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
-	      						<button type="button" class="btn btn-secondary btn-sm">More</button>
-						      </small>
-						    </div>
+					<form>
+						  <div class="form-group">
+						    <label for="recipe-name-list">Select recipe</label>
+						    <select class="form-control" id="recipe-name-list">
+						      <option>Egusi Soup</option>
+						      <option>Pizza</option>
+						      <option>Oha Soup</option>
+						      <option>Fried Rice</option>
+						    </select>
+						    <button type="button" class="btn btn-success">Load Recipe Details</button>
 						  </div>
-						  <div class="card">
-						    <img class="card-img-top" src="./images/sharwama.jpg" alt="Card image cap">
-						    <div class="card-block">
-						      <h4 class="card-title">Sharwama</h4>
-						      <p class="card-text">This is a nourishing, delightful, and appetizing snack.I so much love it!!!.</p>
-						    </div>
-						    <div class="card-footer">
-						      <small class="text-muted">
-						      	 <span class="views"><i class="fa fa-eye" aria-hidden="true"></i>320</span>
-	      						<span class="reviews"><i class="fa fa-comment" aria-hidden="true"></i>200</span>
-	      						<span class="upvote"><i class="fa fa-thumbs-up" aria-hidden="true"></i>200</span>
-	      						<span class="downvote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
-	      						<button type="button" class="btn btn-secondary btn-sm">More</button>
-						      </small>
-						    </div>
+						  <div class="form-group">
+						    <label for="recipe-detail">Recipe Detail</label>
+						    <input type="text" class="form-control" id="recipe-detail" placeholder="Enter Recipe Detail">
 						  </div>
-						  <div class="card">
-						    <img class="card-img-top" src="./images/friedrice.jpg" alt="Card image cap">
-						    <div class="card-block">
-						      <h4 class="card-title">Fried Rice</h4>
-						      <p class="card-text">This is a very popular meal all over the world. Everyone loves and enjoys it.</p>
-						    </div>
-						    <div class="card-footer">
-						      <small class="text-muted">
-						      	<span class="views"><i class="fa fa-eye" aria-hidden="true"></i>290</span>
-	      						<span class="reviews"><i class="fa fa-comment" aria-hidden="true"></i>100</span>
-	      						<span class="upvote"><i class="fa fa-thumbs-up" aria-hidden="true"></i>190</span>
-	      						<span class="downvote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>20</span>
-	      						<button type="button" class="btn btn-secondary btn-sm">More</button>
-						      </small>
-						    </div>
+						  <div class="form-group">
+						    <label for="ingredients">Ingredients</label>
+						    <textarea class="form-control" id="ingredients" rows="5"></textarea>
 						  </div>
+						  <div class="form-group">
+						    <label for="directions">Directions</label>
+						    <textarea class="form-control" id="directions" rows="10"></textarea>
+						  </div>
+						  <div class="form-group">
+						    <label for="recipe-image">Add Image</label>
+						    <input type="file" class="form-control-file" id="recipe-image" aria-describedby="fileHelp">
+						    <small id="fileHelp" class="form-text text-muted">Please attach an image file.</small>
+						  </div>
+						  <div class="edit-profile-button">
+						  <button type="submit" class="btn btn-success">Add Recipe</button>
+						  <button type="submit" class="btn btn-success">Delete Recipe</button>
+						  </div class="edit-profile-button">
+						</form>
 						</div>
-						<br>
-						<div class="card-deck">
-						  <div class="card">
-						    <img class="card-img-top" src="./images/chocolate_cake.jpg" alt="Card image cap">
-						    <div class="card-block">
-						      <h4 class="card-title">Chocolate Cake</h4>
-						      <p class="card-text">Who cares for a lovely slice of crusty chocolate cake? Everyone is the answer..</p>
-						    </div>
-						    <div class="card-footer">
-						      <small class="text-muted">
-						      	 <span class="views"><i class="fa fa-eye" aria-hidden="true"></i>220</span>
-	      						<span class="reviews"><i class="fa fa-comment" aria-hidden="true"></i>50</span>
-	      						<span class="upvote"><i class="fa fa-thumbs-up" aria-hidden="true"></i>100</span>
-	      						<span class="downvote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>40</span>
-	      						<button type="button" class="btn btn-secondary btn-sm">More</button>
-						      </small>
-						    </div>
-						  </div>
-						  <div class="card">
-						    <img class="card-img-top" src="./images/pizza1.jpg" alt="Card image cap">
-						    <div class="card-block">
-						      <h4 class="card-title">Pepperoni Pizza</h4>
-						      <p class="card-text">This recipe is a hearty, zesty main dish with a crisp, golden crust. Feel free to use whatever toppings your family enjoys.</p>
-						    </div>
-						    <div class="card-footer">
-						      <small class="text-muted">
-						      	 <span class="views"><i class="fa fa-eye" aria-hidden="true"></i>200</span>
-	      						<span class="reviews"><i class="fa fa-comment" aria-hidden="true"></i>30</span>
-	      						<span class="upvote"><i class="fa fa-thumbs-up" aria-hidden="true"></i>90</span>
-	      						<span class="downvote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
-	      						<button type="button" class="btn btn-secondary btn-sm">More</button>
-						      </small>
-						    </div>
-						  </div>
-						  <div class="card">
-						    <img class="card-img-top" src="./images/jollofrice.jpg" alt="Card image cap">
-						    <div class="card-block">
-						      <h4 class="card-title">Jollof Rice</h4>
-						      <p class="card-text">The most popular Nigerian dish that has lead to country wars, just kidding!!!.</p>
-						    </div>
-						    <div class="card-footer">
-						      <small class="text-muted">
-						      	<span class="views"><i class="fa fa-eye" aria-hidden="true"></i>220</span>
-	      						<span class="reviews"><i class="fa fa-comment" aria-hidden="true"></i>100</span>
-	      						<span class="upvote"><i class="fa fa-thumbs-up" aria-hidden="true"></i>200</span>
-	      						<span class="downvote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
-	      						<button type="button" class="btn btn-secondary btn-sm">More</button>
-						      </small>
-						    </div>
-						  </div>
-						</div>
-					</div>
-					</div>
-					<br>
-					<div class="profile-pagination">
-						<nav aria-label="pagination-nav">
-						  <ul class="pagination">
-						    <li class="page-item">
-						      <a class="page-link" href="#" tabindex="-1">Previous</a>
-						    </li>
-						    <li class="page-item"><a class="page-link" href="#">1</a></li>
-						    <li class="page-item active">
-						      <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-						    </li>
-						    <li class="page-item"><a class="page-link" href="#">3</a></li>
-						    <li class="page-item">
-						      <a class="page-link" href="#">Next</a>
-						    </li>
-						  </ul>
-						</nav>
-					</div>
+					<br>				
 	  			</section>
   			</div>		
   		</div>
-  	</div>
+  	  </div>
   	</div>
 
     <!-- jQuery first, then Tether, then Bootstrap JS. -->

@@ -88,7 +88,8 @@ float: left;
 }
 
 .profile-background > .container > .navbar {
-  background-color: #e6e6e6;;
+  background-color: #e6e6e6;
+  margin-top: 30px;
 }
 
 nav#brand-color {
@@ -243,10 +244,6 @@ a:hover {
   background-color: #F8F8FF;
 }
 
-.profile-tabs .card {
-  width: 300px;
-}
-
 .profile-tabs .card-image-top {
   height: 250px;
 }
@@ -277,7 +274,7 @@ a:hover {
 }
 
 .profile-background .add-padding {
-  padding:10px 25px;
+  padding:10px 15px;
 }
 
 .edit-profile-div-section label {
