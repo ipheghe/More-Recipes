@@ -69,15 +69,6 @@ float: left;
     margin-right: 30px;
   }
 
-@media(min-width: 480px) {
-  .recipe-background {
-  margin: 30px 15%;
-  }  
-
-  .nav-link i {
-    margin-right: 5px;
-  }
-}
 
 .profile-background {
   -moz-background-position: 50%;
@@ -85,9 +76,9 @@ float: left;
   -webkit-background-position: 50%;
   background-position: 50%;
   overflow: hidden;
-  margin: auto 15%;
+  margin: 40px auto;
   padding: auto 0px;
-  margin-bottom: 40px;
+  margin-top: 50px;
 }
 
 .profile-background > .container {
@@ -97,7 +88,7 @@ float: left;
 }
 
 .profile-background > .container > .navbar {
-/*  background-color: transparent;*/
+  background-color: #e6e6e6;;
 }
 
 nav#brand-color {
@@ -255,6 +246,14 @@ a:hover {
 .profile-tabs .card {
   width: 300px;
 }
+
+.profile-tabs .card-image-top {
+  height: 250px;
+}
+
+.profile-tabs .card-deck {
+  margin: auto 10px;
+}
 .profile-tabs .card-deck span {
   margin-right: 5px;
 }
@@ -278,7 +277,7 @@ a:hover {
 }
 
 .profile-background .add-padding {
-  padding:10px 10px 10px 10px;
+  padding:10px 25px;
 }
 
 .edit-profile-div-section label {
@@ -317,5 +316,25 @@ a:hover {
 
 .landing a {
   text-decoration: none;
+}
+
+@media(min-width: 480px) {
+  .recipe-background {
+  margin: 30px 15%;
+  }  
+  .profile-background {
+  margin: 30px 15%;
+  }  
+  .nav-link i {
+    margin-right: 5px;
+  }
+  .profile-background .add-padding {
+    margin: 10px 10px;
+  
+  }
+
+  .profile-tabs .card {
+    width: 250px;
+  }
 }
 
