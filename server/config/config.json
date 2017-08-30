@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "liiov_000",
+    "password": "ovie",
+    "database": "more_recipes_db",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "liiov_000",
+    "password": "ovie",
+    "database": "more_recipes_db",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "liiov_000",
+    "password": "ovie",
+    "database": "more_recipes_db",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}
