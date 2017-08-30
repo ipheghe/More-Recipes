@@ -1,4 +1,6 @@
 const usersController = require('../controllers').users;
+const recipesController = require('../controllers').recipes;
+
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
@@ -10,4 +12,7 @@ module.exports = (app) => {
   
   //API routes for users to login to the application
   app.post('/api/users/signin', usersController.signin);
+
+    //API routes for users to add recipe
+  app.post('/api/recipes/', recipesController.create);
 };
