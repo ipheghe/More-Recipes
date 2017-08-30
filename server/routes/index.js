@@ -1,5 +1,6 @@
 const usersController = require('../controllers').users;
 const recipesController = require('../controllers').recipes;
+const commentsController = require('../controllers').comments;
 
 
 module.exports = (app) => {
@@ -7,20 +8,24 @@ module.exports = (app) => {
     message: 'Welcome to the More Recipes!',
   }));
 
-  //API routes for users to create accounts
+  //API route for users to create accounts
   app.post('/api/users/signup', usersController.signup);
   
-  //API routes for users to login to the application
+  //API route for users to login to the application
   app.post('/api/users/signin', usersController.signin);
 
-  //API routes for users to add recipe
+  //API route for users to add recipe
   app.post('/api/recipes/', recipesController.create);
 
-  //API routes for users to update recipe
+  //API route for users to update recipe
   app.put('/api/recipes/:recipeId', recipesController.update);
 
-  //API routes for users to delete recipe
+  //API route for users to delete recipe
   app.delete('/api/recipes/:recipeId', recipesController.destroy);
 
+  //API route for users to retrieve all recipes
   app.get('/api/recipes', recipesController.list);
+
+  //API route for users to post review for a recipe
+  app.post('/api/recipes/:recipeId/reviews', commentsController.create);
 };
