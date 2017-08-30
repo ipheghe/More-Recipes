@@ -82,6 +82,14 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 
+  list(req, res) {
+    //get all recipes from table
+    return Recipe
+      .all()
+      .then(recipe => res.status(200).send(recipe))
+      .catch(error => res.status(400).send(error));
+  },
+
 
 };
 

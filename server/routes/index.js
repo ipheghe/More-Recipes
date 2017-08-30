@@ -21,4 +21,6 @@ module.exports = (app) => {
 
   //API routes for users to delete recipe
   app.delete('/api/recipes/:recipeId', recipesController.destroy);
+
+  app.get('/api/recipes', recipesController.list);
 };
