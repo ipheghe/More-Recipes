@@ -3,3 +3,5 @@ More-Recipes provides a platform for users to share the awesome and exciting  re
 
 # Requirements
 Clone or Download the project. Open the command line and cd into the folder. Install dependencies npm install. You can install nodemon and run the nodemon command to run it or just type in node server.js. Run test npm test.
+
+[![Build Status](https://travis-ci.org/ipheghe/More-Recipes.svg?branch=master)](https://travis-ci.org/ipheghe/More-Recipes)
