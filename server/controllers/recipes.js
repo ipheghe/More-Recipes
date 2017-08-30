@@ -58,6 +58,29 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 
+  destroy(req, res) {
+    return Recipe
+    //find if recipe exits
+      .find({
+          where: {
+            recipeId: req.params.recipeId,
+          },
+        })
+      .then(recipe => {
+        //if recipe does not exist
+        if (!recipe) {
+          return res.status(404).send({
+            message: 'Recipe Not Found',
+          });
+        }
+        //if recipe exits, delete the recipe
+        return recipe
+          .destroy()
+          .then((deleted) => res.status(204).send('Recipe Deleted'))
+          .catch(error => res.status(400).send(error));
+      })
+      .catch(error => res.status(400).send(error));
+  },
 
 
 };

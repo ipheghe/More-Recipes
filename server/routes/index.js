@@ -18,4 +18,7 @@ module.exports = (app) => {
 
   //API routes for users to update recipe
   app.put('/api/recipes/:recipeId', recipesController.update);
+
+  //API routes for users to delete recipe
+  app.delete('/api/recipes/:recipeId', recipesController.destroy);
 };
