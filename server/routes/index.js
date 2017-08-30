@@ -13,6 +13,9 @@ module.exports = (app) => {
   //API routes for users to login to the application
   app.post('/api/users/signin', usersController.signin);
 
-    //API routes for users to add recipe
+  //API routes for users to add recipe
   app.post('/api/recipes/', recipesController.create);
+
+  //API routes for users to update recipe
+  app.put('/api/recipes/:recipeId', recipesController.update);
 };
