@@ -28,4 +28,7 @@ module.exports = (app) => {
 
   //API route for users to post review for a recipe
   app.post('/api/recipes/:recipeId/reviews', commentsController.create);
+
+  //API route for users to retrieve favorite recipes
+  app.get('/api/users/:userId/recipes', recipesController.findAll);
 };

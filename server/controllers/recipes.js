@@ -1,4 +1,5 @@
 const Recipe = require('../models').Recipe;
+const User = require('../models').User;
 
 module.exports = {
   create(req, res) {
@@ -92,4 +93,25 @@ module.exports = {
 
 
 };
+
+// Get user favorites controller
+module.exports.findAll = (req, res) => {
+
+  //find all recipes that have the requested username 
+  Recipe.findAll({ where: { postedBy: "kento"} })
+
+      //retrieve all recipes for that particular user
+    .then((recipe) => {
+      if (recipe) {
+        res.send(recipe);
+      } else {
+        res.send('There are no favourite recipe for this user')
+          .catch((error) => {
+            res.status(400).send(error);
+          });
+      }
+    })
+    .catch(error => res.status(400).send(error));
+};
+
 
