@@ -8,14 +8,8 @@ module.exports.signup = (req, res) => {
       // Check if the username exists already
       if (!user) {
         // Create user it does not exist
-        User.create(req.body
-          // username: req.body.username,
-          // password: req.body.password,
-          // firstName: req.body.firstName,
-          // lastName: req.body.lastName,
-          // mobile: req.body.mobile,
-          // email: req.body.email,
-        )
+        User.create(req.body)
+        
           .then((users) => {
 
             res.status(200).send(users);

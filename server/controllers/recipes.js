@@ -112,7 +112,7 @@ module.exports = {
 module.exports.findAll = (req, res) => {
 
   //find all recipes that have the requested username 
-  Recipe.findAll({ where: { postedBy: req.params.postedBy} })
+  Recipe.findAll({ where: { postedBy: req.params.userId} })
 
       //retrieve all recipes for that particular user
     .then((recipe) => {
