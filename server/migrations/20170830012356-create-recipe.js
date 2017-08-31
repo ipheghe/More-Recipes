@@ -38,10 +38,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       postedBy: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Users',
-          key: 'username',
+          key: 'id',
           as: 'postedBy',
         },
       },

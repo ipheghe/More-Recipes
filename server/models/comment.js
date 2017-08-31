@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     commentby: {
-      type: DataTypes.STRING
+      type: DataTypes.INTEGER
     },
   },
   {
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'recipeId',
       });
       Comment.belongsTo(models.User, {
-        foreignKey: 'username',
+        foreignKey: 'id',
         as: 'commentby',
         onDelete: 'CASCADE',
       });

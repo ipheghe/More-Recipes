@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
     },
     postedBy: {
-      type: DataTypes.STRING
+      type: DataTypes.INTEGER
     },
   }, 
 
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     associate: (models) => {
       // associations can be defined here
       Recipe.belongsTo(models.User, {
-        foreignKey: 'username',
+        foreignKey: 'id',
         as: 'postedBy',
       });
     }
