@@ -19,10 +19,10 @@ module.exports = {
         },
       },
       commentBy: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Users',
-          key: 'username',
+          key: 'id',
           as: 'commentBy',
         },
       },

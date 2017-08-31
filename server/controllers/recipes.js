@@ -18,7 +18,7 @@ module.exports = {
           upvotes: parseInt(req.body.upvotes),
           downvotes: parseInt(req.body.downvotes),
           notification: parseInt(req.body.notification),
-          postedBy: req.body.postedBy,
+          postedBy: parseInt(req.body.postedBy),
       })
       .then(recipe => res.status(201).send('Recipe Added'))
       .catch(error => res.status(400).send(error));
@@ -92,13 +92,27 @@ module.exports = {
   },
 
 
+  retrive(req, res) {
+    //get all recipes by upvotes
+    return Recipe
+      .findAll({
+        order: [
+          [sequelize.fn('max', sequelize.col(rew.query.upvotes)), 'ASC'],
+        ]
+      })
+      .then(recipe => res.status(200).send(recipe))
+      .catch(error => res.status(400).send(error));
+  },
+
+
+
 };
 
 // Get user favorites controller
 module.exports.findAll = (req, res) => {
 
   //find all recipes that have the requested username 
-  Recipe.findAll({ where: { postedBy: "kento"} })
+  Recipe.findAll({ where: { postedBy: req.params.userId} })
 
       //retrieve all recipes for that particular user
     .then((recipe) => {

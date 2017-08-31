@@ -1,5 +1,6 @@
 const User = require('../models').User;
 
+//signup controller
 module.exports.signup = (req, res) => {
   // find username
   User.findOne({ where: { username: req.body.username } })
@@ -7,14 +8,8 @@ module.exports.signup = (req, res) => {
       // Check if the username exists already
       if (!user) {
         // Create user it does not exist
-        User.create({
-          username: req.body.username,
-          password: req.body.password,
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-          mobile: req.body.mobile,
-          email: req.body.email,
-        })
+        User.create(req.body)
+        
           .then((users) => {
 
             res.status(200).send(users);
@@ -27,6 +22,7 @@ module.exports.signup = (req, res) => {
     .catch(err => res.status(400).send('Registration Failed, Please reconfirm details'));
 };
 
+//signin Controller
 module.exports.signin = (req, res) => {
   // Find the user
   User.findOne({ where: { username: req.body.username, $and: { password: req.body.password } } })
