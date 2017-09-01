@@ -4,9 +4,11 @@ const User = require('../models').User;
 module.exports = {
   create(req, res) {
 
-      //Give any image name here.
-    //let imageData = fs.readFileSync('./egusi_soup.jpg');
+    //validate recipe fields
+    validateRecipe(req,res);
+
     return Recipe
+
     // logged-in user can add recipe
       .create({
           recipeName: req.body.recipeName,
@@ -20,8 +22,8 @@ module.exports = {
           notification: parseInt(req.body.notification),
           postedBy: parseInt(req.body.postedBy),
       })
-      .then(recipe => res.status(201).send('Recipe Added'))
-      .catch(error => res.status(400).send(error));
+      .then(recipe => res.status(201).send({message: 'Recipe Added SuccessFullly!', userData: recipe}))
+      .catch(error => res.status(400).send({error: error.message}));
   },
 
   update(req, res) {
@@ -36,12 +38,16 @@ module.exports = {
         //if recipe does not exist
         if (!recipe) {
           return res.status(404).send({
-            message: 'Recipe Not Found',
+            error: {message: 'Recipe Not Found'}
           });
         }
 
+        //validate recipe fields
+        validateRecipe(req,res);
+
         //if recipe exits, update the fields
         return recipe
+
           .update({
           recipeName: req.body.recipeName || recipe.recipeName,
           recipeDesc: req.body.recipeDesc || recipe.recipeDesc,
@@ -54,9 +60,9 @@ module.exports = {
           notification: parseInt(req.body.notification) || recipe.notification,
           })
           .then(updatedRecipe => res.status(200).send('Recipe Updated'))
-          .catch(error => res.status(400).send(error));
+          .catch(error => res.status(400).send({error: error.message}));
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).send({error: error.message}));
   },
 
   destroy(req, res) {
@@ -88,21 +94,21 @@ module.exports = {
     return Recipe
       .all()
       .then(recipe => res.status(200).send(recipe))
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).send({error: error.message}));
   },
 
 
-  retrive(req, res) {
-    //get all recipes by upvotes
-    return Recipe
-      .findAll({
-        order: [
-          [sequelize.fn('max', sequelize.col(rew.query.upvotes)), 'ASC'],
-        ]
-      })
-      .then(recipe => res.status(200).send(recipe))
-      .catch(error => res.status(400).send(error));
-  },
+  // retrive(req, res) {
+  //   //get all recipes by upvotes
+  //   return Recipe
+  //     .findAll({
+  //       order: [
+  //         [sequelize.fn('max', sequelize.col(rew.query.upvotes)), 'ASC'],
+  //       ]
+  //     })
+  //     .then(recipe => res.status(200).send(recipe))
+  //     .catch(error => res.status(400).send(error));
+  // },
 
 
 
@@ -128,4 +134,76 @@ module.exports.findAll = (req, res) => {
     .catch(error => res.status(400).send(error));
 };
 
+let validateRecipe = (req, res) => {
+
+      //check if recipe name field is empty
+          if (!req.body.recipeName) {
+            return res.status(400)
+            .send({
+              error: { message: 'recipe name field cannot be empty' },
+              userData: req.body
+            });
+          }
+          //check if ingredients field is empty
+          if (!req.body.ingredients) {
+            return res.status(400)
+            .send({
+              error: { message: 'ingredients field cannot be empty' },
+              userData: req.body
+            });
+          }
+          //check if directions field is empty
+         if (!req.body.directions) {
+            return res.status(400)
+            .send({
+              error: { message: 'directions field cannot be empty' },
+              userData: req.body
+            });
+          }
+
+          //check if views contains a negative value
+         if (parseInt(req.body.views) < 0) {
+            return res.status(400)
+            .send({
+              error: { message: 'views cannot be a negative number' },
+              userData: req.body
+            });
+          }
+
+          //check if reviews contains a negative value
+         if (parseInt(req.body.reviews) < 0) {
+            return res.status(400)
+            .send({
+              error: { message: 'reviews cannot be a negative number' },
+              userData: req.body
+            });
+          }
+
+          //check if upvotes contains a negative value
+         if (parseInt(req.body.upvotes) < 0) {
+            return res.status(400)
+            .send({
+              error: { message: 'upvotes cannot be a negative number' },
+              userData: req.body
+            });
+          }
+
+          //check if upvotes contains a negative value
+         if (parseInt(req.body.downvotes) < 0) {
+            return res.status(400)
+            .send({
+              error: { message: 'downvotes cannot be a negative number' },
+              userData: req.body
+            });
+          }
+
+          //check if notification contains a negative value
+         if (parseInt(req.body.notification) < 0) {
+            return res.status(400)
+            .send({
+              error: { message: 'notification cannot be a negative number' },
+              userData: req.body
+            });
+          }
+} ;
 
