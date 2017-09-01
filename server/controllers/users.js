@@ -17,7 +17,11 @@ module.exports.signup = (req, res) => {
         email: req.body.email
    })
         
-    .then((user) => {res.status(201).send({ message: 'User account successfully created.', userData: user })})
+    .then((user) => {
+       // create a token for authentication
+       const signupToken = jwt.sign({ user: user.id }, 'secretPassword',
+         { expiresIn: '24hrs'}); // expires in 24hrs
+      res.status(201).send({ message: 'User account successfully created.', authToken: signupToken, userData: user })})
     .catch(error => res.send({error: error.message}));
 
 
@@ -56,8 +60,13 @@ module.exports.signin = (req, res) => {
             error: { message: 'Authentication failed. Incorrect password' }});
           } else {
             // User is found and password is correct
+            // create a token for authentication
+            const token = jwt.sign({ user: user.id }, 'secretPassword', {
+              expiresIn: '6hrs' // expires in 6 hours
+            });
+            // return success message including token in JSON format
             res.status(200).send({
-              message: 'Authentication & Login successful', userData: user
+              message: 'Authentication & Login successful', authToken: token, userData: user
             });
           }
         }
