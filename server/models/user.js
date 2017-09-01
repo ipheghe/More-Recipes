@@ -1,6 +1,3 @@
-const Sequelize = require('sequelize');
-require('sequelize-isunique-validator')(Sequelize);
-
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     username: {
@@ -16,21 +13,47 @@ module.exports = (sequelize, DataTypes) => {
     firstName: {
       type: DataTypes.STRING,
       allowNull:false,
+      validate: {
+          isAlpha: true
+        }
     },
     lastName: {
       type: DataTypes.STRING,
       allowNull:false,
+      validate: {
+          isAlpha: true
+        }
     },
     mobile: {
       type: DataTypes.BIGINT,
+      validate: {
+        len: {
+          args: [11,13],
+          msg: 'Invalid number digits'
+        }
+      }
+
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        isEmail: true
+      }
 
-    },
-  }); 
+    }
+ },
+  {
+    associate: (models) => {
+      // associations can be defined here
+      User.hasMany(models.Recipe, {
+        foreignKey: 'recipeId',
+        as: 'recipesAdded',
+      });
+    }
+
+  });
 
   return User;
 };
