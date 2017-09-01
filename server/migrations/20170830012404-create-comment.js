@@ -8,7 +8,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       comment: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       recipeId: {
         type: Sequelize.INTEGER,

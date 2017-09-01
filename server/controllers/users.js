@@ -1,9 +1,73 @@
 const User = require('../models').User;
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const salt = bcrypt.genSaltSync(10);
 
 //signup controller
 module.exports.signup = (req, res) => {
+  //validate user fields
+  validateUser(req,res);
+    //create user record
+   User.create({
+        username: req.body.username,
+        password: bcrypt.hashSync(req.body.password, salt, null),
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        mobile: req.body.mobile,
+        email: req.body.email
+   })
+        
+    .then((user) => {res.status(201).send({ message: 'User account successfully created.', userData: user })})
+    .catch(error => res.send({error: error.message}));
+
+
+};
+
+//signin Controller
+module.exports.signin = (req, res) => {
 
     //check if username field is empty
+    if (!req.body.username) {
+      return res.status(400)
+      .send({
+        error: { message: 'username field cannot be empty' },
+        userData: req.body
+      });
+    }
+    //check if password field is empty
+    if (!req.body.password) {
+      return res.status(400)
+      .send({
+        error: { message: 'password field cannot be empty' },
+        userData: req.body
+      });
+    }
+
+  // Find the user
+  User.findOne({ where: { username: req.body.username } })
+      .then((user) => {
+        if (!user) {
+          res.status(404).send({
+            error: { message: 'Authentication failed. Username is incorrect or does not exist'}});
+        } else if (user) {
+          // check if password matches
+          if (!(bcrypt.compareSync(req.body.password, user.password))) {
+            res.status(404).send({
+            error: { message: 'Authentication failed. Incorrect password' }});
+          } else {
+            // User is found and password is correct
+            res.status(200).send({
+              message: 'Authentication & Login successful', userData: user
+            });
+          }
+        }
+      })
+    .catch(err => res.status(400).send('Login Failed, Please re-confirm details'));
+};
+
+let validateUser = (req,res) => {
+
+      //check if username field is empty
     if (!req.body.username) {
       return res.status(400)
       .send({
@@ -60,46 +124,5 @@ module.exports.signup = (req, res) => {
         userData: req.body
       });
     }
-    //create user record
-   User.create(req.body)
-        
-    .then(user => res.status(201).send({ message: 'User account successfully created.', userData: user }))
-    .catch(error => res.send({error: error.message}));
 
-
-};
-
-//signin Controller
-module.exports.signin = (req, res) => {
-
-    //check if username field is empty
-    if (!req.body.username) {
-      return res.status(400)
-      .send({
-        error: { message: 'username field cannot be empty' },
-        userData: req.body
-      });
-    }
-    //check if password field is empty
-    if (!req.body.password) {
-      return res.status(400)
-      .send({
-        error: { message: 'password field cannot be empty' },
-        userData: req.body
-      });
-    }
-
-  // Find the user
-  User.findOne({ where: { username: req.body.username, $and: { password: req.body.password } } })
-    .then((user) => {
-
-      if (user) {
-        // Allow user to login if the credentials are correct
-        res.send({ message: 'Login Successful!.', userData: user } );
-      } else {
-        // Fail if the credentials are wrong
-        res.send('username and password mismatch, Please retry with the correct details');
-      }
-    })
-    .catch(err => res.status(400).send('Login Failed, Please re-confirm details'));
 };

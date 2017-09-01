@@ -43,15 +43,15 @@ module.exports = (sequelize, DataTypes) => {
       }
 
     }
- },
-  {
-    associate: (models) => {
-      // associations can be defined here
-      User.hasMany(models.Recipe, {
-        foreignKey: 'recipeId',
-        as: 'recipesAdded',
-      });
-    }
+ // },
+ //  {
+ //    associate: (models) => {
+ //      // associations can be defined here
+ //      User.hasMany(models.Recipe, {
+ //        foreignKey: 'id',
+ //        as: 'recipesAdded',
+ //      });
+ //    }
 
   });
 

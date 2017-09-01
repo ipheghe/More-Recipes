@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
     },
     comment: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull:false,
     },
     recipeId: {
       type: DataTypes.INTEGER

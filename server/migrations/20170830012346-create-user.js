@@ -19,11 +19,17 @@ module.exports = {
       },
       firstName: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        validate: {
+          isAlpha: true
+        }
       },
       lastName: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        validate: {
+          isAlpha: true
+        }
       },
       mobile: {
         type: Sequelize.BIGINT
