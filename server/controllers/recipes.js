@@ -59,7 +59,7 @@ module.exports = {
           downvotes: parseInt(req.body.downvotes) || recipe.downvotes,
           notification: parseInt(req.body.notification) || recipe.notification,
           })
-          .then(updatedRecipe => res.status(200).send('Recipe Updated'))
+          .then(updatedRecipe => res.status(200).send({message: 'Recipe Upated SuccessFullly!', recipeData: recipe}))
           .catch(error => res.status(400).send({error: error.message}));
       })
       .catch(error => res.status(400).send({error: error.message}));
@@ -83,17 +83,17 @@ module.exports = {
         //if recipe exits, delete the recipe
         return recipe
           .destroy()
-          .then((deleted) => res.status(204).send('Recipe Deleted'))
-          .catch(error => res.status(400).send(error));
+          .then((deleted) => res.status(204).send({message: 'Recipe Deleted SuccessFullly!', recipeData: recipe}))
+          .catch(error => res.status(400).send({error: error.message}));
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).send({error: error.message}));
   },
 
   list(req, res) {
     //get all recipes from table
     return Recipe
       .all()
-      .then(recipe => res.status(200).send(recipe))
+      .then(recipe => res.status(200).send({message: 'All Recipes Retrieved SuccessFullly!', recipeData: recipe}))
       .catch(error => res.status(400).send({error: error.message}));
   },
 
@@ -125,13 +125,13 @@ module.exports.findAll = (req, res) => {
       if (recipe) {
         res.send(recipe);
       } else {
-        res.send('There are no favourite recipe for this user')
+        res.send({message: 'There are no favourite recipe for this user'})
           .catch((error) => {
-            res.status(400).send(error);
+            res.status(400).send({error: error.message});
           });
       }
     })
-    .catch(error => res.status(400).send(error));
+    .catch(error => res.status(400).send({error: error.message}));
 };
 
 let validateRecipe = (req, res) => {
@@ -141,7 +141,7 @@ let validateRecipe = (req, res) => {
             return res.status(400)
             .send({
               error: { message: 'recipe name field cannot be empty' },
-              userData: req.body
+              recipeData: req.body
             });
           }
           //check if ingredients field is empty
@@ -149,7 +149,7 @@ let validateRecipe = (req, res) => {
             return res.status(400)
             .send({
               error: { message: 'ingredients field cannot be empty' },
-              userData: req.body
+              recipeData: req.body
             });
           }
           //check if directions field is empty
@@ -157,7 +157,7 @@ let validateRecipe = (req, res) => {
             return res.status(400)
             .send({
               error: { message: 'directions field cannot be empty' },
-              userData: req.body
+              recipeData: req.body
             });
           }
 
@@ -166,7 +166,7 @@ let validateRecipe = (req, res) => {
             return res.status(400)
             .send({
               error: { message: 'views cannot be a negative number' },
-              userData: req.body
+              recipeData: req.body
             });
           }
 
@@ -175,7 +175,7 @@ let validateRecipe = (req, res) => {
             return res.status(400)
             .send({
               error: { message: 'reviews cannot be a negative number' },
-              userData: req.body
+              recipeData: req.body
             });
           }
 
@@ -184,7 +184,7 @@ let validateRecipe = (req, res) => {
             return res.status(400)
             .send({
               error: { message: 'upvotes cannot be a negative number' },
-              userData: req.body
+              recipeData: req.body
             });
           }
 
@@ -193,7 +193,7 @@ let validateRecipe = (req, res) => {
             return res.status(400)
             .send({
               error: { message: 'downvotes cannot be a negative number' },
-              userData: req.body
+              recipeData: req.body
             });
           }
 
@@ -202,7 +202,7 @@ let validateRecipe = (req, res) => {
             return res.status(400)
             .send({
               error: { message: 'notification cannot be a negative number' },
-              userData: req.body
+              recipeData: req.body
             });
           }
 } ;
