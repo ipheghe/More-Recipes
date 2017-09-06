@@ -10,7 +10,7 @@
   "test": {
     "username": "liiov_000",
     "password": "ovie",
-    "database": "more_recipes_db",
+    "database": "more_recipes_test_db",
     "host": "127.0.0.1",
     "port": 5432,
     "dialect": "postgres"
