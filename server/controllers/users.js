@@ -49,13 +49,12 @@ module.exports.signin = (req, res) => {
   User.findOne({ where: { username: req.body.username } })
       .then((user) => {
         if (!user) {
-          res.status(404).send({
-            error: { message: 'Authentication failed. Username is incorrect or does not exist'}});
+          res.status(404).send({'message': 'Authentication failed. Username is incorrect or does not exist'});
         } else if (user) {
           // check if password matches
           if (!(bcrypt.compareSync(req.body.password, user.password))) {
             res.status(404).send({
-            error: { message: 'Authentication failed. Incorrect password' }});
+            'error': true, 'message': 'Authentication failed. Incorrect password' });
           } else {
             // User is found and password is correct
             // create a token for authentication
@@ -99,16 +98,16 @@ let validateUser = (req,res) => {
       }
 
     //check if password field contains more than 3 characters
-      if (req.body.password < 4) {
+      if (req.body.password.trim() < 4) {
           return res.status(400).send({'error': false, 'message': 'password must have more than 3 characters', 'userData': req.body});
       }
     //check if firstName field contains more than 3 characters
      if (req.body.firstName.length > 50) {
-          return res.status(400).send({'error': false, 'message': 'firstName must have less than 51 characterss', 'userData': req.body});
+          return res.status(400).send({'error': false, 'message': 'firstName must have less than 51 characters', 'userData': req.body});
       }
     //check if lastName field contains more than 3 characters
      if (req.body.lastName.length > 50) {
-          return res.status(400).send({'error': false, 'message': 'lastName must have less than 51 characterss', 'userData': req.body});
+          return res.status(400).send({'error': false, 'message': 'lastName must have less than 51 characters', 'userData': req.body});
       }
 
 };

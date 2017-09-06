@@ -1,6 +1,10 @@
 import chaiHttp from 'chai-http';
 import chai from 'chai';
 import app from '../app';
+import bcrypt from 'bcryptjs';
+import models from '../server/models';
+
+process.env.NODE_ENV = 'test';
 
 const assert = require('chai').assert;
 const expect = require('chai').expect;
@@ -14,6 +18,37 @@ const supertest = require("supertest");
 
 const server = supertest.agent("http://localhost:8000");
 chai.use(chaiHttp);
+
+models.User.destroy({
+  where: {},
+  cascade: true,
+  truncate: true
+});
+
+models.Recipe.destroy({
+  where: {},
+  cascade: true,
+  truncate: true
+});
+
+models.Category.destroy({
+  where: {},
+  cascade: true,
+  truncate: true
+});
+
+models.Review.destroy({
+  where: {},
+  cascade: true,
+  truncate: true
+});
+
+models.Favorite.destroy({
+  where: {},
+  cascade: true,
+  truncate: true
+});
+
 
 
 let testData;
@@ -163,6 +198,115 @@ describe('API Integration Tests', () => {
           done();
         });
     });
+
+    // it('return a message for invalid password length', (done) => {
+    //   testData = Object.assign({},data);
+    //   testData.password = String.prototype.substring(1, 3);
+    //     server
+    //     .post('/api/users/signup/')
+    //     .send(testData)
+    //     .expect("Content-type",/json/)
+    //     .expect(400)
+    //     .end(function(err,res){
+    //       res.status.should.equal(400);
+    //       //res.body.Validation error.should.equal(false);
+    //       res.body.message.should.equal('password must have more than 3 characters');
+    //       done();
+    //     });
+    // });
+
+   it('return a message for invalid first name length', (done) => {
+      testData = Object.assign({},data);
+      testData.firstName = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'+
+      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' +
+      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+        server
+        .post('/api/users/signup/')
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          res.body.error.should.equal(false);
+          res.body.message.should.equal('firstName must have less than 51 characters');
+          done();
+        });
+    });
+
+    it('return a message for invalid last name length', (done) => {
+      testData = Object.assign({},data);
+      testData.lastName = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'+
+      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' +
+      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+        server
+        .post('/api/users/signup/')
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          res.body.error.should.equal(false);
+          res.body.message.should.equal('lastName must have less than 51 characters');
+          done();
+        });
+    });
+
+    it('return a message for last name field containing numbers', (done) => {
+      testData = Object.assign({},data);
+      testData.lastName = '112'+12;
+        server
+        .post('/api/users/signup/')
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          res.body.error[0].should.equal('V');
+          done();
+        });
+    });
+
+  });
+
+  describe('User signin',() => {
+
+        beforeEach(() => {
+          data = {
+            username: 'mikee',
+            password: '1231bcd',
+          };
+
+        });
+
+    it('return a message invalid username', (done) => {
+      testData = Object.assign({},data);
+      testData.username =  'enny';
+        server
+        .post('/api/users/signin/')
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(404)
+        .end(function(err,res){
+          res.status.should.equal(404);
+          res.body.message.should.equal('Authentication failed. Username is incorrect or does not exist');
+          done();
+        });
+    });
+
+    // it('return a message for invalid password', (done) => {
+    //   testData = Object.assign({},data);
+    //     server
+    //     .post('/api/users/signin/')
+    //     .send(bcrypt.compareSync('eny', testData.password))
+    //     .expect("Content-type",/json/)
+    //     .expect(404)
+    //     .end(function(err,res){
+    //       res.status.should.equal(404);
+    //       res.body.error.should.equal(true);
+    //       res.body.message.should.equal('Authentication failed. Incorrect password');
+    //       done();
+    //     });
+    // });
 
   });
 });
