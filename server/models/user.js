@@ -3,28 +3,32 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull:false,
-
+      allowNull: false,
     },
     password: {
       type: DataTypes.STRING,
       allowNull:false,
+      validate: {
+        min: 4     
+      },
     },
     firstName: {
       type: DataTypes.STRING,
       allowNull:false,
       validate: {
-          isAlpha: true
+          isAlpha: true,
+          max: 50
         }
     },
     lastName: {
       type: DataTypes.STRING,
       allowNull:false,
       validate: {
-          isAlpha: true
+          isAlpha: true,
+          max: 50
         }
     },
-    mobile: {
+    mobileNumber: {
       type: DataTypes.BIGINT,
       validate: {
         len: {
@@ -42,18 +46,33 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: true
       }
 
-    }
- // },
- //  {
- //    associate: (models) => {
- //      // associations can be defined here
- //      User.hasMany(models.Recipe, {
- //        foreignKey: 'id',
- //        as: 'recipesAdded',
- //      });
- //    }
+    },
 
   });
+
+  User.associate = (models) => {
+    User.hasMany(models.Recipe, {
+      foreignKey: 'userId',
+      as: 'recipes',
+    });
+
+    User.hasMany(models.Favorite, {
+      foreignKey: 'userId',
+      as: 'favorites',
+    });
+
+    User.hasMany(models.Category, {
+      foreignKey: 'userId',
+      as: 'categories',
+    });
+
+    User.hasMany(models.Review, {
+      foreignKey: 'userId',
+      as: 'reviews',
+    });
+
+  };
+
 
   return User;
 };
