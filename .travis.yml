@@ -1,12 +1,15 @@
 language: node_js
 node_js:
   - "stable"
-script: npm run tests
+cache:
+  directories:
+    - node_modules
+script: npm test
 before_script:
-  - npm run start
+  - npm install
   - psql -c "create database test" -U postgres
 after_script:
   - psql -c "drop database test" -U postgres
 services:
   - postgresql
-after_success: 'npm run coveralls'
+after_success: npm run coverage

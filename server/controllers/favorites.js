@@ -1,5 +1,7 @@
  const Favorite = require('../models').Favorite;
  const User = require('../models').User;
+ const Category = require('../models').Category;
+ const Recipe = require('../models').Recipe;
 
 module.exports.create = (req, res) => {
 
@@ -8,13 +10,12 @@ module.exports.create = (req, res) => {
     .then((user) => {
       //if user is not found
       if (!user) {
-        res.send({error: { message: 'User does not exist' }});
+        res.send({'message': 'User does not exist' });
       } else {
         //user is found then recipe can be added to favorites
-
         Favorite.create({
               recipeId: req.body.recipeId,
-              categoryId: req.body.categoryId,
+              categoryId: req.body.categoryId ,
               userId: req.params.userId,
         })
           .then((category) => res.status(201).send({ 'message': 'Recipe added to favorites Successfully', 'favoriteData': category }))
@@ -27,16 +28,18 @@ module.exports.create = (req, res) => {
 
 // Get user favorites controller
 module.exports.findAll = (req, res) => {
-
-
-
+  
   //find all recipes that have the requested username 
-  Favorite.findAll({ where: { userId: req.params.userId} })
+  Favorite.findAll({ 
+    attributes: [],
+    where: { userId: req.params.userId}, 
+    include: [{model: User, attributes: ['username']},
+    {model: Recipe, attributes: ['recipeName','recipeDescription','ingredients','directions']}] })
 
       //retrieve all recipes for that particular user
     .then((favorite) => {
       if (favorite) {
-        res.status(200).send({ 'message': 'User Favorite recipes retrieved Successfully', 'favoriteData': favorite });
+        res.status(200).send({ 'message': 'User Favorite recipes retrieved Successfully', 'userFavorites': favorite });
       } else {
         res.send({message: 'There are no favourite recipe for this user'})
           .catch((error) => {

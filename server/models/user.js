@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
@@ -69,6 +69,11 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Review, {
       foreignKey: 'userId',
       as: 'reviews',
+    });
+
+    User.hasMany(models.Vote, {
+      foreignKey: 'userId',
+      as: 'votes',
     });
 
   };

@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Recipe = sequelize.define('Recipe', {
     recipeName: {
       type: DataTypes.STRING,
@@ -20,15 +20,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     views: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
+      defaultValue:0,
     },
     upvotes: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
+      defaultValue:0,
     },
     downvotes: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
+      defaultValue:0,
     },
     notification: {
       type: DataTypes.INTEGER,
@@ -52,6 +52,10 @@ module.exports = (sequelize, DataTypes) => {
       Recipe.hasMany(models.Favorite, {
       foreignKey: 'recipeId',
       as: 'favorites',
+    });
+      Recipe.hasMany(models.Vote, {
+      foreignKey: 'recipeId',
+      as: 'votes',
     });
 
 

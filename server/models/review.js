@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Review = sequelize.define('Review', {
     message: {
       type: DataTypes.STRING,

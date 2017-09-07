@@ -17,18 +17,17 @@ module.exports.create = (req, res) => {
     .then((user) => {
       //if recipe is not found
       if (!user) {
-        res.send({error: { message: 'User does not exist' }});
+        res.status(400).send({'message': 'User does not exist' });
       } else {
         //recipe is found then review can be posted for it
-
         Category.create({
               name: req.body.name,
               userId: req.params.userId,
         })
           .then((category) => res.status(201).send({ 'message': 'Category created Successfully', 'categoryData': category }))
-          .catch((error) => {
-            res.status(400).send({error: error.message});
-          });
+          // .catch((error) => {
+          //   res.status(400).send({error: error.message});
+          // });
       }
     });
 };

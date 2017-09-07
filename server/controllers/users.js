@@ -1,35 +1,32 @@
-const User = require('../models').User;
-const bcrypt = require('bcryptjs');
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+
+const User = require('../models').User ;
 const salt = bcrypt.genSaltSync(10);
 
 //signup controller
 module.exports.signup = (req, res) => {
 
-//validate user fields
+  //validate user fields
+    let valid = validateUser(req,res);
 
-console.log(req.body);
-  let valid = validateUser(req,res);
+   if(!valid){
 
- if(!valid){
+        User.create({
+          username: req.body.username,
+          password: bcrypt.hashSync(req.body.password, salt, null), //hash password
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          mobileNumber: req.body.mobileNumber,
+          email: req.body.email
+     }) 
+      .then((user) => {
 
-      User.create({
-        username: req.body.username,
-        password: bcrypt.hashSync(req.body.password, salt, null), //hash password
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        mobileNumber: req.body.mobileNumber,
-        email: req.body.email
-   })
-// 
-    .then((user) => {
-
-      return res.status(200).send({"message": 'User account successfully created.','userData': user });
-      //console.log(res.status);
-    })
-  
-    .catch(error => res.status(400).send({'error': error.message}));
- }
+        return res.status(200).send({"message": 'User account successfully created.','userData': user });
+        //console.log(res.status);
+      })   
+      .catch(error => res.status(400).send({'error': error.message}));
+   }
 
 };
 
@@ -45,11 +42,11 @@ module.exports.signin = (req, res) => {
           return res.status(400).send({'error': false, 'message': 'password field cannot be empty', 'userData': req.body});
     }
 
-  // Find the user
+  // check if the username exists
   User.findOne({ where: { username: req.body.username } })
       .then((user) => {
         if (!user) {
-          res.status(404).send({'message': 'Authentication failed. Username is incorrect or does not exist'});
+          res.status(404).send({'message': 'Authentication failed. Username is incorrect or does not exist'});//username doesnt exist
         } else if (user) {
           // check if password matches
           if (!(bcrypt.compareSync(req.body.password, user.password))) {
@@ -63,7 +60,7 @@ module.exports.signin = (req, res) => {
             });
             // return success message including token in JSON format
             res.status(200).send({
-              message: 'Authentication & Login successful', authToken: token, userData: user
+              'message': 'Authentication & Login successful', 'authToken': token, 'userData': user
             });
           }
         }

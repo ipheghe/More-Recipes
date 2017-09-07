@@ -1,36 +1,35 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('Favorites', {
+    queryInterface.createTable('Votes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      recipeId: {
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        references: {
-          model: 'Recipes',
-          key: 'id',
-          as: 'recipeId',
-        },
+      views: {
+        type: Sequelize.INTEGER
       },
-      categoryId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Categories',
-          key: 'id',
-          as: 'categoryId',
-        },
+      upvotes: {
+        type: Sequelize.INTEGER
+      },
+      downvotes: {
+        type: Sequelize.INTEGER
       },
       userId: {
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
         references: {
           model: 'Users',
           key: 'id',
           as: 'userId',
+        },
+      },
+      recipeId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Recipes',
+          key: 'id',
+          as: 'recipeId',
         },
       },
       createdAt: {
@@ -43,5 +42,5 @@ module.exports = {
       }
     }),
     down: queryInterface /* Sequelize */ =>
-    queryInterface.dropTable('Favorites'),
+    queryInterface.dropTable('Votes'),
 };

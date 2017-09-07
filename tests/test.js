@@ -1,23 +1,17 @@
-import chaiHttp from 'chai-http';
-import chai from 'chai';
 import app from '../app';
 import bcrypt from 'bcryptjs';
 import models from '../server/models';
+import jwt from 'jsonwebtoken';
 
 process.env.NODE_ENV = 'test';
 
-const assert = require('chai').assert;
 const expect = require('chai').expect;
 const should = require('chai').should();
-
 const myApp = require('../app.js');
-
 const supertest = require("supertest");
 
 // This agent refers to PORT where program is runninng.
-
-const server = supertest.agent("http://localhost:8000");
-chai.use(chaiHttp);
+const server = supertest.agent(myApp);
 
 models.User.destroy({
   where: {},
@@ -51,8 +45,16 @@ models.Favorite.destroy({
 
 
 
+
 let testData;
 let data = {};
+let recipeData = {};
+let reviewData = {};
+let favoriteData = {};
+let voteData = {};
+let categoryData = {};
+let userToken,token;
+let userId, recipeId;
 
 describe('API Integration Tests', () => {
 
@@ -199,21 +201,21 @@ describe('API Integration Tests', () => {
         });
     });
 
-    // it('return a message for invalid password length', (done) => {
-    //   testData = Object.assign({},data);
-    //   testData.password = String.prototype.substring(1, 3);
-    //     server
-    //     .post('/api/users/signup/')
-    //     .send(testData)
-    //     .expect("Content-type",/json/)
-    //     .expect(400)
-    //     .end(function(err,res){
-    //       res.status.should.equal(400);
-    //       //res.body.Validation error.should.equal(false);
-    //       res.body.message.should.equal('password must have more than 3 characters');
-    //       done();
-    //     });
-    // });
+    it('return a message for invalid password length', (done) => {
+      testData = Object.assign({},data);
+      testData.password = 'as';
+        server
+        .post('/api/users/signup/')
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          //res.body.Validation error.should.equal(false);
+          //res.body.message.should.equal('password must have more than 3 characters');
+          done();
+        });
+    });
 
    it('return a message for invalid first name length', (done) => {
       testData = Object.assign({},data);
@@ -293,21 +295,436 @@ describe('API Integration Tests', () => {
         });
     });
 
-    // it('return a message for invalid password', (done) => {
-    //   testData = Object.assign({},data);
-    //     server
-    //     .post('/api/users/signin/')
-    //     .send(bcrypt.compareSync('eny', testData.password))
-    //     .expect("Content-type",/json/)
-    //     .expect(404)
-    //     .end(function(err,res){
-    //       res.status.should.equal(404);
-    //       res.body.error.should.equal(true);
-    //       res.body.message.should.equal('Authentication failed. Incorrect password');
-    //       done();
-    //     });
-    // });
+    it('return 200 status for sccessfully login', (done) => {
+        server
+        .post('/api/users/signin/')
+        .send(data)
+        .expect("Content-type",/json/)
+        .expect(200)
+        .end(function(err,res){
+          res.status.should.equal(200);
+          userToken = res.body.authToken;
+          console.log(userToken);
+          res.body.message.should.equal('Authentication & Login successful');
+          done();
+        });
+    });
+  });
 
+   describe('Create Recipe',() => {
+
+        beforeEach(() => {
+          recipeData = {
+            recipeName: 'egusi soup',
+            recipeDescription: 'A nice native dish',
+            ingredients: 'bitter leaf, maggi, pepper, stock fish',
+            directions: 'put palm oil in pot, leave for some minutes',
+            imageUrl: 'no image',
+            views: 0,
+            upvotes: 0,
+            downvotes: 0,
+            notification: 0,
+            userId: 1,
+          };
+
+        });
+
+
+    it('return a invalid token message', (done) => {
+        server
+        .post('/api/recipes/')
+        .send(recipeData)
+        .expect("Content-type",/json/)
+        .expect(403)
+        .end(function(err,res){
+          res.status.should.equal(403);
+          res.body.message.should.equal('No token provided');
+          done();
+        });
+    });
+
+    it('return 201 for adding recipe successfully', (done) => {
+        server
+        .post('/api/recipes/')
+        .set({'x-access-token':userToken})
+        .send(recipeData)
+        .expect("Content-type",/json/)
+        .expect(201)
+        .end(function(err,res){
+          res.status.should.equal(201);
+          res.body.message.should.equal('Recipe Added SuccessFullly!');
+          recipeId = res.body.recipeData.id;
+          console.log(recipeId);
+          done();
+        });
+    });
+
+    it('return 400 status for null recipeName field', (done) => {
+      testData = Object.assign({},recipeData);
+      delete testData.recipeName;
+        server
+        .post('/api/recipes/')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          res.body.message.should.equal('recipe name field cannot be empty');
+          done();
+        });
+    });
+
+    it('return 400 status for an empty ingredients field', (done) => {
+      testData = Object.assign({},recipeData);
+      testData.ingredients = '';
+        server
+        .post('/api/recipes/')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          res.body.message.should.equal('ingredients field cannot be empty');
+          done();
+        });
+    });
+
+    it('return 400 status for an empty directions field', (done) => {
+      testData = Object.assign({},recipeData);
+      testData.directions = '';
+        server
+        .post('/api/recipes/')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          res.body.message.should.equal('directions field cannot be empty');
+          done();
+        });
+    });
+
+    it('return 400 status for a negative views number', (done) => {
+      testData = Object.assign({},recipeData);
+      testData.views = -1;
+        server
+        .post('/api/recipes/')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          res.body.message.should.equal('views cannot be a negative number');
+          done();
+        });
+    });
+
+    it('return 400 status for a negative upvote number', (done) => {
+      testData = Object.assign({},recipeData);
+      testData.upvotes = -3;
+        server
+        .post('/api/recipes/')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          res.body.message.should.equal('upvotes cannot be a negative number');
+          done();
+        });
+    });
+
+    it('return 400 status for a negative downvote number', (done) => {
+      testData = Object.assign({},recipeData);
+      testData.downvotes = -3;
+        server
+        .post('/api/recipes/')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          res.body.message.should.equal('downvotes cannot be a negative number');
+          done();
+        });
+    });
+
+    it('return 400 status for a non existing user Id', (done) => {
+      testData = Object.assign({},recipeData);
+      testData.userId = 50;
+        server
+        .post('/api/recipes/')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          //res.body.error.should.equal('downvotes cannot be a negative number');
+          done();
+        });
+    });
+  });
+   describe('Update Recipe',() => {
+
+        beforeEach(() => {
+          recipeData = {
+            recipeName: 'egusi soup',
+            recipeDescription: 'A nice native dish',
+            ingredients: 'bitter leaf, maggi, pepper, stock fish',
+            directions: 'put palm oil in pot, leave for some minutes',
+            imageUrl: 'no image',
+            views: 0,
+            upvotes: 0,
+            downvotes: 0,
+            notification: 0,
+            userId: 1,
+          };
+
+        });
+
+    it('return 400 status for a non existing user Id', (done) => {
+      testData = Object.assign({},recipeData);
+        server
+        .put('/api/recipes/50')
+        .set({'x-access-token':userToken})
+        .expect("Content-type",/json/)
+        .expect(404)
+        .end(function(err,res){
+          res.status.should.equal(404);
+          res.body.message.should.equal('Recipe Not Found!');
+          done();
+        });
+    });
+
+    it('return 200 status for SuccessFullly updating a recipe', (done) => {
+      testData = Object.assign({},recipeData);
+      testData.recipeName = 'banga soup';
+      testData.recipeDescription = 'A very popular dish from the southern part of Nigeria'
+        server
+        .put('/api/recipes/1')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(200)
+        .end(function(err,res){
+          res.status.should.equal(200);
+          res.body.message.should.equal('Recipe Upated SuccessFullly!');
+          done();
+        });
+    });
+    //Deleting a recipe
+    it('return 204 status for SuccessFullly deleting a recipe', (done) => {
+      testData = Object.assign({},recipeData);
+        server
+        .delete('/api/recipes/1')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(204)
+        .end(function(err,res){
+          res.status.should.equal(204);
+          done();
+        });
+    });
+
+    it('return 200 status for SuccessFullly retrieving all recipes', (done) => {
+      testData = Object.assign({},recipeData);
+        server
+        .get('/api/recipes/')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(200)
+        .end(function(err,res){
+          res.status.should.equal(200);
+          res.body.message.should.equal('All Recipes Retrieved SuccessFullly!');
+          done();
+        });
+    });
+  });
+  describe('Post Review',() => {
+
+        beforeEach(() => {
+          reviewData = {
+            message: 'looks delicious',
+            userId: 1,
+            recipeId: 1,
+          };
+
+        });
+
+    it('return 400 status for null message field', (done) => {
+      testData = Object.assign({},reviewData);
+      testData.message = '';
+        server
+        .post('/api/recipes/1/reviews')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          res.body.message.should.equal('review field cannot be empty');
+          done();
+        });
+    });
+
+    it('return 201 status for posting review successfully', (done) => {
+        testData = Object.assign({},reviewData);
+        server
+        .post('/api/recipes/1/reviews/')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(200)
+        .end(function(err,res){
+          res.status.should.equal(200);
+          console.log(JSON.stringify(res.body));
+          done();
+        });
+
+
+    });
+
+    it('return 400 status for invalid Recipe Id', (done) => {
+      testData = Object.assign({},reviewData);
+        server
+        .post('/api/recipes/'+48+'/reviews')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .end(function(err,res){
+          res.body.message.should.equal('Recipe does not exist');
+          done();
+        });
+    });
+
+    it('return 200 status for retrieving all reviews successfully', (done) => {
+        server
+        .get('/api/reviews/list')
+        .set({'x-access-token':userToken})
+        .expect("Content-type",/json/)
+        .expect(200)
+        .end(function(err,res){
+          res.status.should.equal(200);
+          res.body.message.should.equal('All Reviews Retrieved SuccessFullly!');
+          done();
+        });
+    });
+  });
+
+  describe('Add Category',() => {
+
+        beforeEach(() => {
+          categoryData = {
+            name: 'Local Dish',
+          };
+        });
+
+    it('return 400 status for null category name field', (done) => {
+      testData = Object.assign({},categoryData);
+      testData.name = '';
+        server
+        .post('/api/users/45/categories')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          res.body.message.should.equal('category name field cannot be empty');
+          done();
+        });
+    });
+
+    it('return 400 status for invalid User Id', (done) => {
+      testData = Object.assign({},categoryData);
+        server
+        .post('/api/users/34/categories')
+        .set({'x-access-token':userToken})
+        .send(testData)
+        .expect("Content-type",/json/)
+        .expect(400)
+        .end(function(err,res){
+          res.status.should.equal(400);
+          res.body.message.should.equal('User does not exist');
+          done();
+        });
+    });
+
+    it('return 201 status for adding a category successfully', (done) => {
+        server
+        .post('/api/users/1/categories')
+        .set({'x-access-token':userToken})
+        .send(categoryData)
+        .expect("Content-type",/json/)
+        .expect(201)
+        .end(function(err,res){
+          res.status.should.equal(201);
+          console.log(reviewData);
+          console.log(userToken);
+          res.body.message.should.equal('Category created Successfully');
+          done();
+        });
+    });
+
+  });
+
+  describe('Add Favorites',() => {
+
+        beforeEach(() => {
+          favoriteData = {
+            recipeId: 1,
+            categoryId: 1,
+          };
+        });
+
+    it('return error message for invalid User Id', (done) => {
+        testData = Object.assign({},favoriteData);
+          server
+          .post('/api/users/3/favorites')
+          .set({'x-access-token':userToken})
+          .send(testData)
+          .expect("Content-type",/json/)
+          .end(function(err,res){
+            res.body.message.should.equal('User does not exist');
+            done();
+          });
+      });
+
+    it('return 200 status for favoriting a user recipe', (done) => {
+        testData = Object.assign({},favoriteData);
+          server
+          .post('/api/users/'+1+'/favorites')
+          .set({'x-access-token':userToken})
+          .send(favoriteData)
+          .expect("Content-type",/json/)
+          .end(function(err,res){
+            done();
+          });
+      });
+
+    it('return 200 status for retrieving all users favorite recipes successfully', (done) => {
+      testData = Object.assign({},favoriteData);
+        server
+        .get('/api/users/1/favorites')
+        .set({'x-access-token':userToken})
+        .send(favoriteData)
+        .expect("Content-type",/json/)
+        .expect(200)
+        .end(function(err,res){
+          res.status.should.equal(200);
+          res.body.message.should.equal('User Favorite recipes retrieved Successfully');
+          done();
+        });
+    });
   });
 });
 
