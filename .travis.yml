@@ -1,8 +1,12 @@
 language: node_js
 node_js:
-  - "6"
-  - "5"
-  - "4"
-  - "0.12"
-script: npm run coverage
+  - "stable"
+script: npm run tests
+before_script:
+  - npm run start
+  - psql -c "create database test" -U postgres
+after_script:
+  - psql -c "drop database test" -U postgres
+services:
+  - postgresql
 after_success: 'npm run coveralls'

@@ -11,6 +11,7 @@
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "start:dev": "nodemon --exec babel-node ./bin/www.js",
     "test": "cross-env NODE_ENV=test& npm run unmigrate:test& npm run migrate:test& mocha tests/test.js --compilers js:babel-core/register",
+    "tests": " cross-env NODE_ENV=test&& mocha --compilers js:babel-core/register tests/test.js",
     "migrate:test": "cross-env NODE_ENV=test NODE_ENV=test sequelize db:migrate",
     "unmigrate:test": "cross-env NODE_ENV=test sequelize db:migrate:undo:all",
     "test-coverage": "cross-env NODE_ENV=test istanbul cover _mocha —- -R spec"
