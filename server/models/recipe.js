@@ -39,7 +39,7 @@ export default (sequelize, DataTypes) => {
 
     Recipe.associate = (models) =>  {
 
-            // associations can be defined here
+      // associations can be defined here
       Recipe.belongsTo(models.User, {
         foreignKey: 'userId',
         onDelete: 'CASCADE',

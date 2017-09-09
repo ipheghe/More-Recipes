@@ -114,7 +114,7 @@ const recipesController = {
       //retrieve all recipes for that particular user
     .then((recipe) => {
       if (recipe) {
-        res.send(recipe);
+        res.send({UserRecipeList: recipe});
       } else {
         res.send({message: 'There are no favourite recipe for this user'})
           .catch((error) => {
@@ -123,7 +123,26 @@ const recipesController = {
       }
     })
     .catch(error => res.status(400).send({error: error.message}));
-  } 
+  },
 
+  // Get recipes by recipeId
+  recipeList(req, res) {
+
+  //find all recipes that have the requested username 
+  Recipe.findAll({ where: { id: req.params.recipeId} })
+
+      //retrieve all recipes for that particular user
+    .then((recipe) => {
+      if (recipe) {
+        res.send({recipeList: recipe});
+      } else {
+        res.send({message: 'Recipe does not exist!'})
+          .catch((error) => {
+            res.status(400).send({error: error.message});
+          });
+      }
+    })
+    .catch(error => res.status(400).send({error: error.message}));
+  }
 };
 export default recipesController;

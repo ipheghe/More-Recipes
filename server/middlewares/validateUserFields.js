@@ -24,8 +24,12 @@ export let validateUser = (req,res) => {
           return res.status(400).send({'error': false, 'message': 'email field cannot be empty', 'userDate': req.body});
       }
 
+    //check if username field contains more than 3 characters
+      if (req.body.username.length < 4) {
+          return res.status(400).send({'error': false, 'message': 'username must have more than 3 characters', 'userData': req.body});
+      }
     //check if password field contains more than 3 characters
-      if (req.body.password.trim() < 4) {
+      if (req.body.password.length < 4) {
           return res.status(400).send({'error': false, 'message': 'password must have more than 3 characters', 'userData': req.body});
       }
     //check if firstName field contains more than 3 characters

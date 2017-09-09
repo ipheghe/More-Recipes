@@ -2,14 +2,34 @@ export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
-      unique: true,
       allowNull: false,
+      unique: {
+        args: true,
+        msg: 'Username already exists',
+      },
+      validate: {
+        min: {
+          args: [4],
+          msg: `Username must have at least 4 characters.`
+        },
+        max: {
+          args: [30],
+          msg: `Username characters cannot be more than 30`
+        },
+        is: {
+          args: /^[A-Za-z][A-Za-z0-9-]+$/i,
+          msg: `Username must start with a letter and have no spaces.`
+        }
+      },
     },
     password: {
       type: DataTypes.STRING,
       allowNull:false,
       validate: {
-        min: 4     
+        min: {
+          args: [4],
+          msg: 'Password must have at least 4 characters'
+        },
       },
     },
     firstName: {
@@ -41,9 +61,19 @@ export default (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: {
+        args: true,
+        msg: `Email Already exists!`,
+      },
       validate: {
-        isEmail: true
+        isEmail: {
+          args: true,
+          msg: 'Invalid Email',
+        },
+        max: {
+          args: 200,
+          msg: 'The email you entered is invalid or longer than 250 characters.'
+        }
       }
 
     },
