@@ -1,4 +1,3 @@
-import app from '../app';
 import bcrypt from 'bcryptjs';
 import models from '../server/models';
 import jwt from 'jsonwebtoken';
@@ -89,7 +88,6 @@ describe('API Integration Tests', () => {
           };
 
         });
-
 
     it('return 200 for a successful account creation', (done) => {
         server
@@ -211,8 +209,6 @@ describe('API Integration Tests', () => {
         .expect(400)
         .end(function(err,res){
           res.status.should.equal(400);
-          //res.body.Validation error.should.equal(false);
-          //res.body.message.should.equal('password must have more than 3 characters');
           done();
         });
     });
@@ -722,6 +718,34 @@ describe('API Integration Tests', () => {
         .end(function(err,res){
           res.status.should.equal(200);
           res.body.message.should.equal('User Favorite recipes retrieved Successfully');
+          done();
+        });
+    });
+
+    it('return 200 status for viewing a recipe', (done) => {
+      voteData = {views: 1, upvotes: 0, downvotes: 0};
+        server
+        .post('/api/users/1/1/votes')
+        .set({'x-access-token':userToken})
+        .send(voteData)
+        .expect("Content-type",/json/)
+        .expect(200)
+        .end(function(err,res){
+          res.status.should.equal(200);
+          done();
+        });
+    });
+
+    it('return 400 status for an invalid user', (done) => {
+      voteData = {views: 1, upvotes: 0, downvotes: 0};
+        server
+        .post('/api/users//1/votes')
+        .set({'x-access-token':userToken})
+        .send(voteData)
+        .expect("Content-type",/json/)
+        .expect(404)
+        .end(function(err,res){
+          res.status.should.equal(404);
           done();
         });
     });
