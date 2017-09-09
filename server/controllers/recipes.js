@@ -1,14 +1,15 @@
+import * as validate from '../middlewares/validateRecipeFields';
 const Recipe = require('../models').Recipe;
 const User = require('../models').User;
 const Vote = require('../models').Vote;
 
-module.exports = {
+const recipesController = {
+
   create(req, res) {
-
     //validate recipe fields
-    let valid = validateRecipe(req,res);
+    let isRecipeValid = validate.validateRecipe(req,res);
 
-    if (!valid) {
+    if (!isRecipeValid) {
 
        return Recipe
     // logged-in user can add recipe
@@ -41,9 +42,9 @@ module.exports = {
         }
 
         //validate fields
-      let valid = validateRecipe(req,res);
+      let isRecipeValid = validate.validateRecipe(req,res);
 
-      if (!valid) {
+      if (!isRecipeValid) {
 
         //if recipe exits, update the fields
         return recipe
@@ -102,14 +103,10 @@ module.exports = {
         .all({include:[{model:User,attributes:['username']}]})
           .then(recipe => res.status(200).send({message: 'All Recipes Retrieved SuccessFullly!', recipeData: recipe}))
           .catch(error => res.status(400).send({error: error.message}));
-     }
-        
-  }
-
-};
-
-// Get user personal recipes controller
-module.exports.findAll = (req, res) => {
+     }    
+  },
+  // Get user personal recipes 
+  userList(req, res) {
 
   //find all recipes that have the requested username 
   Recipe.findAll({ where: { postedBy: req.params.userId} })
@@ -126,79 +123,7 @@ module.exports.findAll = (req, res) => {
       }
     })
     .catch(error => res.status(400).send({error: error.message}));
+  } 
+
 };
-
-
-module.exports.upvotes = (req, res) => {
-
-
-            if (req.query.sort || req.query.order){
-
-             let order = req.query.order;
-            let sort = req.query.sort;
-
-          console.log(sort,order);
-            
-            Recipe.findAll({order:[['upvotes' ,'desc']]})
-                  .then(recipe => res.status(200).send({message: 'All Recipes Retrieved SuccessFullly!', recipeData: recipe}))
-                  .catch(error => res.status(400).send({error: error.message}));
-         }
-};
-
-let validateRecipe = (req, res) => {
-
-      //check if recipe name field is empty
-          if (!req.body.recipeName || req.body.recipeName === '') {
-            return res.status(400)
-            .send({'message': 'recipe name field cannot be empty',
-              'recipeData': req.body
-            });
-          }
-          //check if ingredients field is empty
-          if (!req.body.ingredients || req.body.ingredients === '') {
-            return res.status(400)
-            .send({'message': 'ingredients field cannot be empty',
-              'recipeData': req.body
-            });
-          }
-          //check if directions field is empty
-         if (!req.body.directions || req.body.ingredients === '' ) {
-            return res.status(400)
-            .send({'message': 'directions field cannot be empty',
-              'recipeData': req.body
-            });
-          }
-
-          //check if views contains a negative value
-         if (parseInt(req.body.views) < 0) {
-            return res.status(400)
-            .send({'message': 'views cannot be a negative number',
-              'recipeData': req.body
-            });
-          }
-
-          //check if upvotes contains a negative value
-         if (parseInt(req.body.upvotes) < 0) {
-            return res.status(400)
-            .send({'message': 'upvotes cannot be a negative number',
-              'recipeData': req.body
-            });
-          }
-
-          //check if upvotes contains a negative value
-         if (parseInt(req.body.downvotes) < 0) {
-            return res.status(400)
-            .send({ 'message': 'downvotes cannot be a negative number',
-              'recipeData': req.body
-            });
-          }
-
-          //check if notification contains a negative value
-         if (parseInt(req.body.notification) < 0) {
-            return res.status(400)
-            .send({'message': 'notification cannot be a negative number',
-              'recipeData': req.body
-            });
-          }
-} ;
-
+export default recipesController;

@@ -2,7 +2,10 @@ const Category = require('../models').Category;
 const User = require('../models').User;
 
 
-module.exports.create = (req, res) => {
+const categoriesController = {
+
+  create(req, res){
+
     //check if password field is empty
     if (!req.body.name || req.body.name.trim() === '') {
       return res.status(400)
@@ -28,4 +31,8 @@ module.exports.create = (req, res) => {
             });
         }
       });
+
+  }
 };
+
+export default categoriesController;

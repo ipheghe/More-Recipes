@@ -14,7 +14,7 @@ app.use(bodyParser.json({ type: 'application/json'}));
 require('./server/routes')(app);
 
 app.get('*', (req, res) => res.status(200).send({
-  message: 'Welcome to the beginning of nothingness.',
+  message: 'Welcome to More Recipes.',
 }));
 
 module.exports = app;

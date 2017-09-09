@@ -1,14 +1,10 @@
 import authorize from '../../jsontoken.js';
+import usersController from '../controllers/users';
+import recipesController from '../controllers/recipes';
+import reviewsController from '../controllers/reviews';
+import categoriesController from '../controllers/categories';
+import favoritesController from '../controllers/favorites';
 import votesController from '../controllers/votes';
-
-const usersController = require('../controllers').users;
-const recipesController = require('../controllers').recipes;
-const reviewsController = require('../controllers').reviews;
-const favoritesController = require('../controllers').favorites;
-const categoriesController = require('../controllers').categories;
-// const votesController = require('../controllers').votes;
-
-//console.log(authorize.verifyUser)
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
@@ -35,6 +31,9 @@ module.exports = (app) => {
   //API route for users to retrieve all recipes
   app.get('/api/recipes', authorize.verifyUser, recipesController.list);
 
+  //API route for users to retrieve only personal recipes
+  app.get('/api/recipes/:userId', authorize.verifyUser, recipesController.userList);
+
   //API route for users to post review for a recipe
   app.post('/api/recipes/:recipeId/reviews', authorize.verifyUser, reviewsController.create);
 
@@ -42,14 +41,12 @@ module.exports = (app) => {
   app.post('/api/users/:userId/favorites', authorize.verifyUser, favoritesController.create);
 
   //API route for users to retrieve favorite recipes
-  app.get('/api/users/:userId/favorites', authorize.verifyUser, favoritesController.findAll);
+  app.get('/api/users/:userId/favorites', authorize.verifyUser, favoritesController.list);
 
    //API route for registered users to add categories
   app.post('/api/users/:userId/categories', authorize.verifyUser, categoriesController.create);
 
-  app.get('/api/recipes/upvotes', recipesController.upvotes);
-
   app.post('/api/users/:userId/:recipeId/votes', votesController.create);
 
- app.put('/api/votes/:userId/:recipeId', votesController.update);
+  app.put('/api/votes/:userId/:recipeId', votesController.update);
 }

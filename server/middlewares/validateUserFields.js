@@ -1,6 +1,5 @@
-const validateUser = {
-  verifyUser(req, res) {
-  //check if username field is empty
+export let validateUser = (req,res) => {
+      //check if username field is empty
       if (!req.body.username || req.body.username.trim() === '' ) {
           return res.status(400).send({'error': false, 'message': 'username field cannot be empty', 'userData': req.body});
       }
@@ -37,8 +36,4 @@ const validateUser = {
      if (req.body.lastName.length > 50) {
           return res.status(400).send({'error': false, 'message': 'lastName must have less than 51 characters', 'userData': req.body});
       }
-
-    }
-};
-
-export default validateUser;
+}
