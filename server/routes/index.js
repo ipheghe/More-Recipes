@@ -49,10 +49,7 @@ module.exports = (app) => {
 
   app.get('/api/recipes/upvotes', recipesController.upvotes);
 
-  //API route add user votes
   app.post('/api/users/:userId/:recipeId/votes', votesController.create);
 
  app.put('/api/votes/:userId/:recipeId', votesController.update);
-
-
 }
