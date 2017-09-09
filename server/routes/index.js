@@ -39,19 +39,17 @@ module.exports = (app) => {
   app.post('/api/recipes/:recipeId/reviews', authorize.verifyUser, reviewsController.create);
 
   //API route for registered users to favorite recipes
-  app.post('/api/users/:userId/favorites', authorize.verifyUser, favoritesController.create);//
+  app.post('/api/users/:userId/favorites', authorize.verifyUser, favoritesController.create);
 
   //API route for users to retrieve favorite recipes
-  app.get('/api/users/:userId/favorites', authorize.verifyUser, favoritesController.findAll);//
+  app.get('/api/users/:userId/favorites', authorize.verifyUser, favoritesController.findAll);
 
    //API route for registered users to add categories
-  app.post('/api/users/:userId/categories', authorize.verifyUser, categoriesController.create);//
-
-   //app.get('/api/recipes/', recipesController.findAll);//
+  app.post('/api/users/:userId/categories', authorize.verifyUser, categoriesController.create);
 
   app.get('/api/recipes/upvotes', recipesController.upvotes);
 
-
+  //API route add user votes
   app.post('/api/users/:userId/:recipeId/votes', votesController.create);
 
  app.put('/api/votes/:userId/:recipeId', votesController.update);

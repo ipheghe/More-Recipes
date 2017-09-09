@@ -1,9 +1,15 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID: "48324b7ea4eae0b62d711db31093f793ddfa5d4e4a424bc17a66d94fb771b35f"
 language: node_js
 node_js:
   - "stable"
 cache:
   directories:
     - node_modules
+addons:
+  code_climate:
+    repo_token: "48324b7ea4eae0b62d711db31093f793ddfa5d4e4a424bc17a66d94fb771b35f"
 script: npm test
 before_script:
   - npm install
