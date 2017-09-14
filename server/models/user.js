@@ -8,13 +8,9 @@ export default (sequelize, DataTypes) => {
         msg: 'Username already exists',
       },
       validate: {
-        min: {
-          args: [4],
-          msg: `Username must have at least 4 characters.`
-        },
-        max: {
-          args: [30],
-          msg: `Username characters cannot be more than 30`
+        len: {
+          args: [4, 30],
+          msg: 'Username characters must be minimum 4 and maximum 30'
         },
         is: {
           args: /^[A-Za-z][A-Za-z0-9-]+$/i,

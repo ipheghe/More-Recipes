@@ -7,14 +7,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      views: {
-        type: Sequelize.INTEGER
-      },
-      upvotes: {
-        type: Sequelize.INTEGER
-      },
-      downvotes: {
-        type: Sequelize.INTEGER
+      option: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
       },
       userId: {
         type: Sequelize.INTEGER,

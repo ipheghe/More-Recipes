@@ -1,123 +1,132 @@
-const Vote = require('../models').Vote;
-const User = require('../models').User;
-const Recipe = require('../models').Recipe;
-const Sequelize = require('sequelize');
+import db from '../models/index';
 
+// Reference database models
+const Recipe = db.Recipe;
+const Vote = db.Vote;
 
 const votesController = {
-
-  create(req, res){
-
-    return User
-   .findOne({ where: { id: req.params.userId } })
-    .then((user) => {
-      //if user is not found
-      if (!user) {
-        res.send({error: { message: 'User does not exist' }});
-      } else {
-
-        //find if recipe is availabe 
-        return Recipe
-        .findOne({ where: { id: req.params.recipeId } })
-           .then((recipe) => {
-          //if recipe is not found
-            if (!recipe) {
-              res.send({error: { message: 'Recipe does not exist' }});
-            } else {
-              return Vote
-                 .findOne({ where: { userId: req.params.userId, $and: { recipeId: req.params.recipeId } } })
-                 .then((vote) => {
-                    if(!vote){
-                      //recipe is found then review can be posted for it
-                      return Vote
-                        .create({
-                          views: 1,
-                          upvotes: 0,
-                          downvotes: 0,
-                          userId: req.params.userId,
-                          recipeId: req.params.recipeId,
-                        })
-                        .then((category) => res.status(201).send({ 'message': 'Vote created Successfully', 'categoryData': category }))
-                        .catch((error) => {
-                        res.status(400).send({error: error.message});
-                        });
-                    }
-
-                 })
-                .catch((error) => {res.status(400).send({error: error.message})});
-              }
-          })
-       }
-
+  upvote(req, res, next){
+    //check if user selected downvotes
+    if (req.query.sort === 'downvotes') return next();
+    // find if user have voted, if user have note voted, create a vote record for user
+    Vote.findOrCreate({
+    where: {
+      userId: req.decoded.user.id,
+      recipeId: req.params.id },
+    defaults: { option: true }
     })
+    .spread((voter, created) => {
+      // If created perform upvote action
+      // If not created and user has information resolving
+      // to a downvote, allow user to upvote and remove user downvote
+      if (created) {
+        return Recipe
+          .findOne({ where: { id: req.params.id } })
+          .then((recipe) => {
+            recipe.increment('upvotes').then(() => {
+              recipe.reload().then(() => res.status(200).send({
+                status: 'success',
+                message: 'Your vote has been recorded',
+                upvotes: recipe.upvotes,
+                downvotes: recipe.downvotes
+              }));
+            });
+          });
+      } else if (!created && voter.option === false) {
+        voter.update({ option: true });
+        return Recipe
+          .findOne({ where: { id: req.params.id } })
+          .then((recipe) => {
+            recipe.increment('upvotes').then(() => {
+              recipe.decrement('downvotes').then(() => {
+                recipe.reload();
+              }).then(() => res.status(200).send({
+                status: 'success',
+                message: 'Your vote has been recorded',
+                upvote: recipe.upvotes,
+                downvote: recipe.downvotes
+              }));
+            });
+          });
+      } else if (!created && voter.option === true) {
+        voter.destroy();
+        return Recipe
+          .findOne({ where: { id: req.params.id } })
+          .then((recipe) => {
+            recipe.decrement('upvotes').then(() => {
+              recipe.reload();
+            }).then(() => res.status(200).send({
+              status: 'success',
+              message: 'Your vote has been removed',
+              upvote: recipe.upvotes,
+              downvote: recipe.downvotes
+            }));
+          });
+      }
+    })
+    .catch(error => res.status(400).send(error));
   },
-
-  update(req,res){
-
-          let sort = req.query.sort;
-
-          let valid = checkUpvotes(sort);
-          let valid2 = checkDownvotes(sort);
-          console.log(valid,valid2);
-          return Vote
-            .findOne({ where: { userId: req.params.userId, $and: { recipeId: req.params.recipeId } } })
-            .then((vote) => {
-
-              if (!vote) {
-                  res.send({error: { message: 'No Vote Records exist' }});
-
-              }
-              else if(vote){
-                //recipe is found then review can be posted for it
-                return vote
-                 .update({
-                    upvotes: valid ,
-                    downvotes: valid2 ,
-                  })
-                    .then((recipeVote) => { 
-                      if(recipeVote){
-
-                        Vote.findAll({ where: { recipeId: req.params.recipeId} })
-                          .then((votes) => { 
-                            Vote.sum('upvotes').then(sum => {
-                              Recipe.find({where: {id: req.params.recipeId,}})
-                              .then(recipe => {
-                                Recipe.update({ upvotes: sum})
-                                .then(voteSuccess => res.status(201).send({ 'message': 'Votes updated Successfully', 'recipeVote': voteSuccess }))
-                                .catch(error => res.status(400).send({error: error.message}));})})})
-                            .catch((error) => {res.status(400).send({error: error.message}); })
-                      }else{
-                        return res.status(400).send({ 'message': 'No action performed'});
-                      }
-            })
-           .catch((error) => {res.status(400).send({error: error.message}); })
-         }
-       })    
-    },
+  downvote(req, res) {
+  // if user selected downvote action
+    if (req.query.sort === 'downvotes') {
+   // find if user have voted, if user have note voted, create a vote record for user
+      Vote.findOrCreate({
+        where: {
+          userId: req.decoded.user.id,
+          recipeId: req.params.id },
+        defaults: { option: false }
+      })
+      .spread((voter, created) => {
+        // If created perform downvote action
+        // If not created and user has information resolving
+        // to an upvote, allow user to downvote and remove user's upvote
+        if (created) {
+          return Recipe
+            .findOne({ where: { id: req.params.id } })
+            .then((recipe) => {
+              recipe.increment('downvotes').then(() => {
+                recipe.reload().then(() => res.status(200).send({
+                  status: 'success',
+                  message: 'Your vote has been recorded',
+                  upvote: recipe.upvotes,
+                  downvote: recipe.downvotes
+                }));
+              });
+            });
+        } else if (!created && voter.option === true) {
+          voter.update({ option: false });
+          return Recipe
+            .findOne({ where: { id: req.params.id } })
+            .then((recipe) => {
+              recipe.increment('downvotes').then(() => {
+                recipe.decrement('upvotes').then(() => {
+                  recipe.reload();
+                }).then(() => res.status(200).send({
+                  status: 'success',
+                  message: 'Your vote has been recorded',
+                  upvote: recipe.upvotes,
+                  downvote: recipe.downvotes
+                }));
+              });
+            });
+        } else if (!created && voter.option === false) {
+          voter.destroy();
+          return Recipe
+            .findOne({ where: { id: req.params.id } })
+            .then((recipe) => {
+              recipe.decrement('downvotes').then(() => {
+                recipe.reload();
+              }).then(() => res.status(200).send({
+                status: 'success',
+                message: 'Your vote has been removed',
+                upvote: recipe.upvotes,
+                downvote: recipe.downvotes
+              }));
+            });
+        }
+      })
+      .catch(error => res.status(400).send(error));
+    }
+  }
 };
-  export default votesController;
-
-
-let checkUpvotes = (n) => {
-
-    if (n === 'upvotes'){
-
-        return 1;
-    }
-    else {
-
-        return 0;
-    }
-};
-
-let checkDownvotes = (n) => {
-
-    if(n==='downvotes') {
-
-        return 1;
-    }
-    else {
-
-        return 0;
-    }
-};
+export default votesController;

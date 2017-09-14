@@ -1,17 +1,9 @@
 export default (sequelize, DataTypes) => {
   const Vote = sequelize.define('Vote', {
-    views: {
-      type: DataTypes.INTEGER,
-      defaultValue:0,
-    },
-    upvotes: {
-      type: DataTypes.INTEGER,
-      defaultValue:0,
-    },
-    downvotes: {
-      type: DataTypes.INTEGER,
-      defaultValue:0,
-    },
+    option: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    }
   });
 
   Vote.associate = (models) => {

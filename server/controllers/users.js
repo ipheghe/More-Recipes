@@ -1,34 +1,27 @@
+import db from '../models/index';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import * as validate from '../middlewares/validateUserFields';
 
-const User = require('../models').User ;
+const User = db.User;
 const salt = bcrypt.genSaltSync(10);
 
 //user signup & signin controller
 const usersController = {
 
   signup(req, res){
- //validate user fields
-    let isUserValid = validate.validateUser(req,res);
 
-   if(!isUserValid){
-
-        User.create({
-          username: req.body.username,
-          password: bcrypt.hashSync(req.body.password, salt, null), //hash password
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-          mobileNumber: req.body.mobileNumber,
-          email: req.body.email
-     }) 
-      .then((user) => {
-
-        return res.status(200).send({"message": 'User account successfully created.','userData': user });
-        //console.log(res.status);
-      })   
-      .catch(error => res.status(400).send({'error': error.message}));
-   }
+    User.create({
+      username: req.body.username,
+      password: bcrypt.hashSync(req.body.password, salt, null), //hash password
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      mobileNumber: req.body.mobileNumber,
+      email: req.body.email
+    }) 
+    .then((user) => {
+      return res.status(200).send({"message": 'User account successfully created.','userData': user });
+    })   
+    .catch(error => res.status(400).send({'error': error.message}));
   },
 
   signin(req, res){
@@ -54,7 +47,7 @@ const usersController = {
           } else {
             // User is found and password is correct
             // create a token for authentication
-            const token = jwt.sign({ user: user.id }, 'secretPassword', {
+            const token = jwt.sign({ user: {id: user.id}}, 'secretPassword', {
               expiresIn: '6h' // expires in 6 hours
             });
             // return success message including token in JSON format

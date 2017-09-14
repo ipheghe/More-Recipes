@@ -1,37 +1,34 @@
-const Category = require('../models').Category;
-const User = require('../models').User;
+import db from '../models/index';
 
+//Assign variable to the database model
+const Category = db.Category;
+const User = db.User;
 
 const categoriesController = {
 
-  create(req, res){
-
-    //check if password field is empty
-    if (!req.body.name || req.body.name.trim() === '') {
-      return res.status(400)
-      .send({'message': 'category name field cannot be empty',
-        'categoryData': req.body
-      });
-    }
-    //find if recipe is availabe before review can be posted on it
-    User.findOne({ where: { id: req.params.userId } })
-      .then((user) => {
-        //if recipe is not found
-        if (!user) {
-          res.status(400).send({'message': 'User does not exist' });
-        } else {
-          //recipe is found then review can be posted for it
+  addUncategorized(req, res, next){
+    Category.findOne({where: {
+        userId: req.decoded.user.id, name: 'uncategorized' }})
+      .then((category) => {
+        if(!category) {
           Category.create({
-                name: req.body.name,
-                userId: req.params.userId,
-          })
-            .then((category) => res.status(201).send({ 'message': 'Category created Successfully', 'categoryData': category }))
-            .catch((error) => {
-              res.status(400).send({error: error.message});
-            });
+          name: 'uncategorized',
+          userId: req.decoded.user.id,
+         })
         }
-      });
-
+         next();
+      })
+      .catch((error) => {res.status(400).send({error: error.message});});
+  },
+  addCategory(req, res){
+    Category.create({
+      name: req.body.name,
+      userId: req.decoded.user.id,
+    })
+    .then((category) => res.status(201).send({ 'message': 'Category created Successfully', 'categoryData': category }))
+    .catch((error) => {
+      res.status(400).send({error: error.message});
+    });
   }
 };
 
