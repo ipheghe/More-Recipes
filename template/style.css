@@ -191,7 +191,7 @@ margin-left: 5px;
   text-align: center;
 }
 .recipe-button > button {
-  min-width: 20%;
+  min-width: 150px;
 }
 .recipe-ingredients ul{
   float: left;
@@ -228,7 +228,7 @@ min-height: 250px;
 }
 
 a:hover {
-  color: #fff;
+  color: #020202;
 }
 
 .profile-landing {
@@ -245,7 +245,7 @@ a:hover {
 }
 
 .profile-tabs .card-image-top {
-  height: 250px;
+  height: 1500px;
 }
 
 .profile-tabs .card-deck {
@@ -289,6 +289,9 @@ a:hover {
 .card-footer .text-muted > button {
   float:right;
 }
+.card-footer .text-muted > a {
+  float:right;
+}
 
 .profile-menu {
   margin-right: 5px;
@@ -327,11 +330,69 @@ a:hover {
   }
   .profile-background .add-padding {
     margin: 10px 10px;
-  
-  }
-
-  .profile-tabs .card {
-    width: 250px;
   }
 }
+.card-blocks {
 
+  display: inline-block;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+.card-blocks .card {
+  display: inline-block;
+  width: 200px;
+  margin-bottom: 15px;
+}
+.card-blocks .card img{
+  width: 200px;
+  height: 200px;
+}
+.card-blocks .card-title{
+  text-align: left;
+  height: 60px;
+}
+.card-blocks .card-text{
+  height: 200px;
+  text-align: left;
+}
+.card-blocks .card-footer{
+  text-align: left;
+  padding: 0px;
+  font-size: 15px;
+  font-weight: 50%;
+}
+.card-blocks-home {
+
+  display: inline-block;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+.card-blocks-home .card {
+  display: inline-block;
+  width: 300px;
+  margin-bottom: 15px;
+  margin-right: 10px;
+}
+.card-blocks-home .card img{
+  width: 300px;
+  height: 300px;
+}
+.card-blocks-home .card-title{
+  text-align: left;
+  height: 60px;
+}
+.card-blocks-home .card-text{
+  height: 200px;
+  text-align: left;
+}
+.card-blocks-home .card-footer{
+  text-align: left;
+  padding: 0px;
+  font-size: 18px;
+  font-weight: 50%;
+}
+.arrow-key {
+  font-size: 100px;
+}
