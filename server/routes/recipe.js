@@ -21,7 +21,7 @@ router.get('/api/recipes', authorize.verifyUser, recipesController.getRecipes, r
 //API route for users to retrieve only personal recipes
 router.get('/api/recipes/users', authorize.verifyUser, validUser, recipesController.getUserRecipes);
 
-//API route to retrieve recipes by recipeId
+//API route to retrieve recipes by recipeId and it increments the views column each time recipe is viewed 
 router.get('/api/recipes/:id', authorize.verifyUser, validUser, recipeExists, recipesController.viewRecipe);
 
 export default router;

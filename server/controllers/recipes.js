@@ -80,7 +80,7 @@ const recipesController = {
     })
     .catch(error => res.status(400).send({error: error.message}));
   },
-  // Get recipes by recipeId and also increment views
+  // Get recipes by recipeId and also increment views anytime recipe is viewed
   viewRecipe(req, res) {
     // Query database for recipe matching id in params
     return Recipe
