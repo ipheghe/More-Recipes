@@ -2,6 +2,13 @@
 # More-Recipes
 More-Recipes provides a platform for users to share the awesome and exciting  recipe ideas they have invented or learnt.  Suppose a user comes up with a recipe,  he/she can post it on More-Recipes and  get feedback in form of reviews and votes from other users who explore that recipe. Users can also keep a list of their favorite recipes on the application.
 
+## Table of Contents
+- [Requirements](#requirements)
+- [Application Features](#application-features)
+- [Technology Stack](#technology-stack)
+- [Getting Started](#getting-started)
+- [Endpoints](#endpoints)
+
 # Requirements
 Clone or Download the project. Open the command line and cd into the folder. Install dependencies npm install. You can install nodemon and run the nodemon command to run it or just type in node server.js. Run test npm test.
 
@@ -21,3 +28,47 @@ Clone or Download the project. Open the command line and cd into the folder. Ins
 * Sequelize ORM
 * Postgresql Relational Database
 * HTML/CSS & Bootstrap4
+
+## Getting Started
+Get the app running locally in the following way:
+```
+# Clone the Repo
+git clone https://github.com/ipheghe/More-Recipes.git
+
+# Install dependencies
+npm install
+
+# Create database models
+sequelize model:create --name User --attributes username:string,password:boolean
+sequelize model:create --name Recipe --attributes recipeName:string,recipeDescription:boolean
+
+# Migrate all database models
+sequelize db:migrate
+
+# Run the application
+> npm start
+> babel-node ./bin/www
+> Server listening on port 8000
+```
+The server will now be running at `http://localhost:8000`
+
+## Endpoints
+- **<code>Post:</code>/api/users/signup**
+  - Creates user account
+- **<code>Post:</code>/api/users/signin**
+  - Creates user login session
+- **<code>Post:</code>/api/recipes**
+  - Creates recipe record
+- **<code>Put:</code>/api/recipes/<recipeId>**
+  - Updates an existing recipe record
+- **<code>Delete:</code>/api/recipes/<recipeId>**
+  - Deletes an existing recipe record
+- **<code>Put:</code>/api/recipes/<recipeId>**
+  - Updates a recipe record
+- **<code>GET:</code>/api/recipes**
+  - Retrieves list of all existing recipes
+- **<code>Post:</code>/api/recipes/<recipeId>/reviews**
+  - Adds a post review for an existing recipe
+
+  
+
