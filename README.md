@@ -53,21 +53,19 @@ sequelize db:migrate
 The server will now be running at `http://localhost:8000`
 
 ## Endpoints
-- **<code>Post:</code>/api/users/signup**
+- **<code>POST:</code>/api/users/signup**
   - Creates user account
-- **<code>Post:</code>/api/users/signin**
+- **<code>POST:</code>/api/users/signin**
   - Creates user login session
-- **<code>Post:</code>/api/recipes**
+- **<code>POST:</code>/api/recipes**
   - Creates recipe record
-- **<code>Put:</code>/api/recipes/<recipeId>**
+- **<code>PUT:</code>/api/recipes/<recipeId>**
   - Updates an existing recipe record
-- **<code>Delete:</code>/api/recipes/<recipeId>**
+- **<code>DELETE:</code>/api/recipes/<recipeId>**
   - Deletes an existing recipe record
-- **<code>Put:</code>/api/recipes/<recipeId>**
-  - Updates a recipe record
 - **<code>GET:</code>/api/recipes**
   - Retrieves list of all existing recipes
-- **<code>Post:</code>/api/recipes/<recipeId>/reviews**
+- **<code>POST:</code>/api/recipes/<recipeId>/reviews**
   - Adds a post review for an existing recipe
 
   
