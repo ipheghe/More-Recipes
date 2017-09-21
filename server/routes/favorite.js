@@ -9,9 +9,9 @@ import favoriteExists from '../middlewares/favoriteValidation';
 const router = express.Router();
 
 //API route for registered users to favorite recipes
-router.post('/api/recipes/:recipeId/:categoryId/favorites', authorize.verifyUser, validUser, recipeExists, categoryExists, favoriteExists, favoritesController.addFavorites);
+router.post('/api/v1/recipes/:id/:categoryId/favorites', authorize.verifyUser, validUser, recipeExists, categoryExists, favoriteExists, favoritesController.addFavorites);
 
 //API route for users to retrieve favorite recipes
-router.get('/api/users/favorites', authorize.verifyUser, validUser, favoritesController.retrieveFavorites);
+router.get('/api/v1/users/favorites', authorize.verifyUser, validUser, favoritesController.retrieveFavorites);
 
 export default router;

@@ -5,7 +5,7 @@ const authorize = {
     const token = req.headers['x-access-token'] || req.headers.authorization || req.params.token;
     if(!token) {
       return res.status(403).send({
-        message: 'No token provided'
+        message: 'No token provided!'
       })
     } else if (token) {
       jwt.verify(token, 'secretPassword', (err, decoded) => {

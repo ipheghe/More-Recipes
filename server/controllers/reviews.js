@@ -51,12 +51,11 @@ const reviewsController = {
     //retrieve all recipes for that particular user
     .then((review) => {
       if (review) {
-        return res.status(200).send({message: 'Recipe reviews Retrieved SuccessFullly!',reviewList: review});
-      } else {
-        res.send({message: 'No review for this recipe!'})
-          .catch((error) => {
-            res.status(400).send({error: error.message});
-          });
+        if(review.length === 0) {
+          res.send({message: 'No review for this recipe!'})
+        }else{
+             return res.status(200).send({message: 'Recipe reviews Retrieved SuccessFullly!',reviewList: review});
+        }
       }
     })
     .catch(error => res.status(400).send({error: error.message}));
