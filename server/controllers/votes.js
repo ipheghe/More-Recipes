@@ -27,8 +27,8 @@ const votesController = {
               recipe.reload().then(() => res.status(200).send({
                 status: 'success',
                 message: 'Your vote has been recorded',
-                upvotes: recipe.upvotes,
-                downvotes: recipe.downvotes
+                upvote: recipe.upvotes,
+                downvote: recipe.downvotes
               }));
             });
           });

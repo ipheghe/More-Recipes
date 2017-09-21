@@ -1,0 +1,1163 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "More-Recipes provides a platform for users to share the awesome and exciting recipe ideas they have invented or learnt.Suppose a user comes up with a recipe, he/she can post it on More-Recipes and get feedback in form of reviews and votes from other users who explore that recipe. Users can also keep a list of their favorite recipes on application.",
+    "version": "1.0.0",
+    "title": "More Recipes",
+    "contact": {
+      "email": "iphegheovie@gmail.com"
+    }
+  },
+  "host": "localhost:8000",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "User",
+      "description": "Everything about your Users"
+    },
+    {
+      "name": "Recipe",
+      "description": "Access to Recipes"
+    },
+    {
+      "name": "Review",
+      "description": "Operations about Review"
+    },
+    {
+      "name": "Category",
+      "description": "Operations about Review"
+    },
+    {
+      "name": "Favorite",
+      "description": "Operations about Review"
+    },
+    {
+      "name": "Vote",
+      "description": "Operations about Review"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/users/signup": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Creates a user account",
+        "description": "This endpoint uses a post request to create a user account",
+        "operationId": "createUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User account successfully created.",
+            "schema": {
+              "$ref": "#/definitions/SignupUser"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          }
+        }
+      }
+    },
+    "/users/signin": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Login user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserSignin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User account successfully created.",
+            "schema": {
+              "$ref": "#/definitions/SigninUser"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "404": {
+            "description": "Authentication failed",
+            "schema": {
+              "$ref": "#/definitions/UserNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "tags": [
+          "Recipe"
+        ],
+        "summary": "Get all recipes",
+        "description": "",
+        "operationId": "getAllRecipes",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All Recipes Retrieved SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/RetrieveRecipe"
+            }
+          },
+          "400": {
+            "description": "Invalid recipeId supplied"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Recipe"
+        ],
+        "summary": "Add recipe",
+        "description": "Add recipe record.",
+        "operationId": "addRecipe",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created recipe object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Recipe Added SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/AddRecipe"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "Recipe Not Found!",
+            "schema": {
+              "$ref": "#/definitions/RecipeNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{recipeId}": {
+      "get": {
+        "tags": [
+          "Recipe"
+        ],
+        "summary": "Get recipe by recipdId",
+        "description": "",
+        "operationId": "getRecipeByRecipeId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "The recipe that needs to be fetched.",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe Retrieved SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/GetRecipeById"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "Recipe Not Found!",
+            "schema": {
+              "$ref": "#/definitions/RecipeNotFound"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Recipe"
+        ],
+        "summary": "Update recipe",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateRecipe",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "recipe that needs to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated recipe object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe Upated SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/UpdateRecipe"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "Recipe Not Found!",
+            "schema": {
+              "$ref": "#/definitions/RecipeNotFound"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Recipe"
+        ],
+        "summary": "Delete recipe",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteRecipe",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "The recipe that needs to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe Upated SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/DeleteRecipe"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "Recipe Not Found!",
+            "schema": {
+              "$ref": "#/definitions/RecipeNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/recipes/users": {
+      "get": {
+        "tags": [
+          "Recipe"
+        ],
+        "summary": "Get user recipe",
+        "description": "",
+        "operationId": "getRecipeByUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All User Recipes Retrieved SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/GetUserRecipe"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "No recipe found for user",
+            "schema": {
+              "$ref": "#/definitions/UserRecipeNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{recipeId}/reviews": {
+      "post": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "Post recipe review",
+        "description": "Add review record for recipe.",
+        "operationId": "postReview",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "recipe to post review on",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created review object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Review"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Review Posted Successfully",
+            "schema": {
+              "$ref": "#/definitions/PostRecipeReview"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "Recipe Not Found!",
+            "schema": {
+              "$ref": "#/definitions/RecipeNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/reviews": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "Get all reviews",
+        "description": "This endpoint fetches all recipe reviews",
+        "operationId": "getAllReviews",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All Reviews Retrieved SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/RetrieveRecipeReviews"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          }
+        }
+      }
+    },
+    "/reviews/{recipeId}": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "Get all reviews by recipeId",
+        "description": "Get all reviews for a particular recipe",
+        "operationId": "getReviewByRecipeId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "The id of the recipe that needs to be fetched ",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe reviews Retrieved SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/RetrieveReviewsByRecipe"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "Recipe Not Found!",
+            "schema": {
+              "$ref": "#/definitions/RecipeNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/users/categories": {
+      "post": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Create category",
+        "description": "This endpoint uses a post request to create category for user favorite recipes",
+        "operationId": "createCategory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created category object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Category created Successfully",
+            "schema": {
+              "$ref": "#/definitions/CreateUserCategory"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "user account not available!",
+            "schema": {
+              "$ref": "#/definitions/UserNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{recipeId}/{categoryId}/favorites": {
+      "post": {
+        "tags": [
+          "Favorite"
+        ],
+        "summary": "Favorite a recipe",
+        "description": "Favorite a recipe.",
+        "operationId": "favoriteRecipe",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "recipe to favorite",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "category for favorte recipe",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created favorite object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Favorite"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Recipe added to favorites Successfully",
+            "schema": {
+              "$ref": "#/definitions/FavoriteRecipe"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "Recipe Not Found!",
+            "schema": {
+              "$ref": "#/definitions/RecipeNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/users/favorites": {
+      "get": {
+        "tags": [
+          "Favorite"
+        ],
+        "summary": "Get user favorite",
+        "description": "",
+        "operationId": "getUserFavoriteRecipes",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User Favorite recipes retrieved Successfully",
+            "schema": {
+              "$ref": "#/definitions/RetrieveFavoriteRecipe"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "Recipe Not Found!",
+            "schema": {
+              "$ref": "#/definitions/RecipeNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{recipeId}/votes": {
+      "post": {
+        "tags": [
+          "Vote"
+        ],
+        "summary": "Upvote or downvote a recipe",
+        "description": "This endpoint uses post request to upvote or downvote a recipe",
+        "operationId": "voteRecipe",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "recipe to favorite",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Make vote option",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Vote"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Your vote has been recorded",
+            "schema": {
+              "$ref": "#/definitions/VoteRecipe"
+            }
+          },
+          "400": {
+            "description": "Invalid Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "Recipe Not Found!",
+            "schema": {
+              "$ref": "#/definitions/RecipeNotFound"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "vixen2"
+        },
+        "password": {
+          "type": "string",
+          "example": "abcde"
+        },
+        "firstName": {
+          "type": "string",
+          "example": "Jane"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Kent"
+        },
+        "mobileNumber": {
+          "type": "integer",
+          "format": "int64",
+          "example": "08036474733"
+        },
+        "email": {
+          "type": "string",
+          "example": "vixen@yahoo.com"
+        }
+      }
+    },
+    "UserSignin": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "okon"
+        },
+        "password": {
+          "type": "string",
+          "example": "abcde"
+        }
+      }
+    },
+    "Recipe": {
+      "type": "object",
+      "properties": {
+        "recipeName": {
+          "type": "string"
+        },
+        "recipeDescription": {
+          "type": "string"
+        },
+        "ingredients": {
+          "type": "string"
+        },
+        "directions": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "views": {
+          "type": "integer"
+        },
+        "upvotes": {
+          "type": "integer"
+        },
+        "downvotes": {
+          "type": "integer"
+        },
+        "notification": {
+          "type": "integer"
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Review"
+          }
+        }
+      }
+    },
+    "Review": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Review"
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Favorite": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "Vote": {
+      "type": "object",
+      "properties": {
+        "option": {
+          "type": "boolean",
+          "example": true
+        }
+      }
+    },
+    "UserNotFound": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "user account not available!"
+        }
+      }
+    },
+    "SignupUser": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User account successfully created."
+        }
+      }
+    },
+    "SigninUser": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Authentication & Login successful"
+        }
+      }
+    },
+    "RecipeNotFound": {
+      "type": "object",
+      "required": [
+        "status",
+        "message"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "fail"
+        },
+        "message": {
+          "type": "string",
+          "example": "Recipe Not Found!"
+        }
+      }
+    },
+    "AddRecipe": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Recipe Added SuccessFullly!"
+        }
+      }
+    },
+    "UpdateRecipe": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Recipe Upated SuccessFullly!"
+        }
+      }
+    },
+    "DeleteRecipe": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Recipe Deleted SuccessFullly!"
+        }
+      }
+    },
+    "GetRecipeById": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Recipe Retrieved SuccessFullly!"
+        }
+      }
+    },
+    "GetUserRecipe": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "All User Recipes Retrieved SuccessFullly!"
+        }
+      }
+    },
+    "UserRecipeNotFound": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "No recipe found for user"
+        }
+      }
+    },
+    "RetrieveRecipe": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "All Recipes Retrieved SuccessFullly!"
+        }
+      }
+    },
+    "PostRecipeReview": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Review Posted Successfully"
+        }
+      }
+    },
+    "RetrieveRecipeReviews": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "All Reviews Retrieved SuccessFullly!"
+        }
+      }
+    },
+    "RetrieveReviewsByRecipe": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Recipe reviews Retrieved SuccessFullly!"
+        }
+      }
+    },
+    "CreateUserCategory": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Category created Successfully"
+        }
+      }
+    },
+    "FavoriteRecipe": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Recipe added to favorites Successfully"
+        }
+      }
+    },
+    "RetrieveFavoriteRecipe": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User Favorite recipes retrieved Successfully"
+        }
+      }
+    },
+    "VoteRecipe": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Your vote has been recorded"
+        }
+      }
+    },
+    "NoTokenProvided": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "No token provided!"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about More Recipes",
+    "url": "http://swagger.io"
+  }
+}

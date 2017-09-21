@@ -36,9 +36,7 @@ export default (sequelize, DataTypes) => {
     },
 
   });
-
     Recipe.associate = (models) =>  {
-
       // associations can be defined here
       Recipe.belongsTo(models.User, {
         foreignKey: 'userId',
@@ -57,8 +55,6 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'recipeId',
       as: 'votes',
     });
-
-
-    };
+  };
   return Recipe;
 };

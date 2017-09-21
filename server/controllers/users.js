@@ -19,7 +19,7 @@ const usersController = {
       email: req.body.email
     }) 
     .then((user) => {
-      return res.status(200).send({"message": 'User account successfully created.','userData': user });
+      return res.status(201).send({"message": 'User account successfully created.','userData': user });
     })   
     .catch(error => res.status(400).send({'error': error.message}));
   },

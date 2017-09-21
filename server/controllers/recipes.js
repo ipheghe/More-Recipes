@@ -2,6 +2,8 @@ import db from '../models/index';
 
 // Reference database models
 const Recipe = db.Recipe;
+const Review = db.Review;
+const User = db.User;
 const keys = [
     'id', 'recipeName', 'recipeDescription', 'ingredients',
     'directions', 'imageUrl', 'views', 'upvotes', 'downvotes', 'notification'
@@ -42,7 +44,7 @@ const recipesController = {
           imageUrl: "no image" || recipe.imageUrl,
           notification: parseInt(req.body.notification) || recipe.notification,
           })
-          .then(updatedRecipe => res.status(200).send({message: 'Recipe Upated SuccessFullly!', recipeData: recipe}))
+          .then(updatedRecipe => res.status(200).send({message: 'Recipe Updated SuccessFullly!', recipeData: recipe}))
       })
       .catch(error => res.status(400).send({error: error.message}));
   },
@@ -72,7 +74,7 @@ const recipesController = {
       if (recipe) {
         return res.status(200).send({message: 'All User Recipes Retrieved SuccessFullly!',UserRecipeList: recipe});
       } else {
-        res.status(404).send({message: 'No recipes found for user'})
+        res.status(404).send({message: 'No recipe found for user'})
           .catch((error) => {
             res.status(400).send({error: error.message});
           });
@@ -99,7 +101,6 @@ const recipesController = {
   // If url path contains any of the query keys call the next function
   if (req.query.ingredients ||
       req.query.sort ) return next();
-
   // Find all recipes and do an eagerload to include the reviews associated
   // with each recipe and also to include the user whomposted the review
   return Recipe
@@ -123,7 +124,6 @@ const recipesController = {
   getTopRecipes (req, res, next) {
     // If query key does not match sort, call next on the next handler
     if (!req.query.sort) return next();
-
     // Take the query key and slice order string to get desc
     // which is used to order by descending
     const sort = req.query.sort,
@@ -159,7 +159,7 @@ const recipesController = {
         attributes: keys
       })
       .then((recipe) => {
-        if (!recipes.length) {
+        if (!recipe.length) {
           return res.status(200).send({
             message: 'No recipe matches your search'
           });
