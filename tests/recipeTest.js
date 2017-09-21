@@ -840,23 +840,7 @@ describe('FavoriteRecipe', () => {
 	    .type('form')
 	    .send({recipeId: 2, categoryId: 67})
 	    .end((err,res) => {
-	      res.status.should.equal(400);
-	      if (err) return done(err);
-	      done();
-	    });
-	});
-	it('should return 201 status for successfully favoriting a recipe', (done) => {
-	   server
-	    .post(`${recipesUrl}/2/1/favorites`)
-	    .set('Connection', 'keep alive')
-	    .set('Accept', 'application/json')
-	    .set('x-access-token', userToken[0])
-	    .set('Content-Type', 'application/json')
-	    .type('form')
-	    .send({})
-	    .end((err,res) => {
 	      res.status.should.equal(201);
-	      res.body.message.should.equal('Recipe added to favorites Successfully');
 	      if (err) return done(err);
 	      done();
 	    });
