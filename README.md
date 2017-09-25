@@ -8,6 +8,7 @@ More-Recipes provides a platform for users to share the awesome and exciting  re
 - [Technology Stack](#technology-stack)
 - [Getting Started](#getting-started)
 - [Endpoints](#endpoints)
+- [API Documentation](#api-documentation)
 
 # Requirements
 Clone or Download the project. Open the command line and cd into the folder. Install dependencies npm install. You can install nodemon and run the nodemon command to run it or just type in node server.js. Run test npm test.
@@ -67,6 +68,15 @@ The server will now be running at `http://localhost:8000`
   - Retrieves list of all existing recipes
 - **<code>POST:</code>/api/recipes/<recipeId>/reviews**
   - Adds a post review for an existing recipe
+- **<code>POST:</code>/api/users/categories**
+  - Create category for user favorite recipes
+- **<code>POST:</code>/api/recipes/<recipeId>/<categoryId>/favorites**
+  - Adds a recipe to user favorites
+- **<code>GET:</code>/api/recipes?sort=upvotes&order=descending**
+  - Retrieves list of all existing recipes by highest number of upvotes in descending order
+  
+## API Documentation
+Access Swagger API documentation through this url https://more-recipes-ovie.herokuapp.com/api-docs
 
   
 
