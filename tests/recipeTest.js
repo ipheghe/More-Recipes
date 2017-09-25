@@ -428,6 +428,21 @@ describe('Get Recipe',() => {
 	      done();
 	    });
 	});
+	it('should return 200 status for retrieving user recipe', (done) => {
+	  server
+	    .get(`${recipesUrl}/users`)
+        .set('Connection', 'keep alive')
+        .set('Accept', 'application/json')
+        .set('x-access-token', userToken[2])
+        .set('Content-Type', 'application/json')
+        .type('form')
+	    .end((err,res) => {
+	      res.status.should.equal(404);
+	      res.body.message.should.equal('No recipe found for user');
+	      if (err) return done(err);
+	      done();
+	    });
+	});
 	it('should return 200 status for retrieving a recipe by its id', (done) => {
 	  server
 	    .get(`${recipesUrl}/2`)

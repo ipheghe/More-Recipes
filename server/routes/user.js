@@ -12,4 +12,7 @@ router.post('/api/v1/users/signup', validateUserFields, usersController.signup);
 //API route for users to login to the application
 router.post('/api/v1/users/signin', usersController.signin);
 
+//API route to check if user exists
+router.get('/api/v1/users', usersController.userExists);
+
 export default router;

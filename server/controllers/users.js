@@ -58,6 +58,18 @@ const usersController = {
         }
       })
     .catch(err => res.status(400).send('Login Failed, Please re-confirm details'));  
+  },
+  // get user details
+  userExists(req, res) {
+  return User
+    .findOne({ where: { username: req.body.username } })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send({message: 'User doesnt exist'})
+      }
+      return res.status(200).send({message: 'User Exists!', userData: user})
+    })
+    .catch(error => res.status(400).send({error: error.message}));
   }
 };
 export default usersController;
