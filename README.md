@@ -60,17 +60,17 @@ The server will now be running at `http://localhost:8000`
   - Creates user login session
 - **<code>POST:</code>/api/recipes**
   - Creates recipe record
-- **<code>PUT:</code>/api/recipes/<recipeId>**
+- **<code>PUT:</code>/api/recipes/{recipeId}**
   - Updates an existing recipe record
-- **<code>DELETE:</code>/api/recipes/<recipeId>**
+- **<code>DELETE:</code>/api/recipes/{recipeId}**
   - Deletes an existing recipe record
 - **<code>GET:</code>/api/recipes**
   - Retrieves list of all existing recipes
-- **<code>POST:</code>/api/recipes/<recipeId>/reviews**
+- **<code>POST:</code>/api/recipes/{recipeId}/reviews**
   - Adds a post review for an existing recipe
 - **<code>POST:</code>/api/users/categories**
   - Create category for user favorite recipes
-- **<code>POST:</code>/api/recipes/<recipeId>/<categoryId>/favorites**
+- **<code>POST:</code>/api/recipes/{recipeId}/{categoryId}/favorites**
   - Adds a recipe to user favorites
 - **<code>GET:</code>/api/recipes?sort=upvotes&order=descending**
   - Retrieves list of all existing recipes by highest number of upvotes in descending order
