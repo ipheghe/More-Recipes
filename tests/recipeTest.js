@@ -855,7 +855,7 @@ describe('FavoriteRecipe', () => {
 	    .type('form')
 	    .send({recipeId: 2, categoryId: 67})
 	    .end((err,res) => {
-	      res.status.should.equal(201);
+	      res.status.should.equal(400);
 	      if (err) return done(err);
 	      done();
 	    });
