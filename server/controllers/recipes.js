@@ -72,13 +72,12 @@ const recipesController = {
     //retrieve all recipes for that particular user
     .then((recipe) => {
       if (recipe) {
-        return res.status(200).send({message: 'All User Recipes Retrieved SuccessFullly!',UserRecipeList: recipe});
-      } else {
-        res.status(404).send({message: 'No recipe found for user'})
-          .catch((error) => {
-            res.status(400).send({error: error.message});
-          });
-      }
+        if (recipe.length === 0) {
+          res.status(404).send({message: 'No recipe found for user'})
+        }else{
+          return res.status(200).send({message: 'All User Recipes Retrieved SuccessFullly!',UserRecipeList: recipe});
+        }
+      } 
     })
     .catch(error => res.status(400).send({error: error.message}));
   },

@@ -10,6 +10,7 @@ const should = require('chai').should();
 // This agent refers to PORT where program is runninng.
 const server = supertest.agent(app);
 const rootURL = '/api/v1';
+const usersUrl = `${rootURL}/users`;
 const signupUrl = `${rootURL}/users/signup`;
 const signinUrl = `${rootURL}/users/signin`;
 const testValidUsers = users.testValidUsers,
@@ -37,7 +38,6 @@ describe('Test Server Connection', () => {
       });
   });
 });
-
 describe('Response Object', () => {
   it('should respond with a json object', (done) => {
     server
@@ -53,7 +53,6 @@ describe('Response Object', () => {
       });
   });
 });
-
 describe('Catch invalid routes', () => {
     it('return a 404 if route not found', (done) => {
       server
@@ -68,7 +67,6 @@ describe('Catch invalid routes', () => {
         });
     });
 });
-
 describe('User signup',() => {
 	it('should return message for successful account creation', (done) => {
 	 testData = Object.assign({},testValidUsers[0]);
@@ -417,4 +415,32 @@ describe('User signin',() => {
 	      done();
 	    });
  	});
+});
+describe('Check If User Exists', () => {
+    it('return a 404 if user not found', (done) => {
+      server
+        .get(usersUrl)
+        .set('Connection', 'keep alive')
+        .set('Content-Type', 'application/json')
+        .send({username: 'ashanti'})
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(404);
+          expect(res.body.message).to.equal('User doesnt exist');
+          if (err) return done(err);
+          done();
+        });
+    });
+    it('return a 200 if user exists', (done) => {
+      server
+        .get(usersUrl)
+        .set('Connection', 'keep alive')
+        .set('Content-Type', 'application/json')
+        .send({username: 'okon'})
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body.message).to.equal('User Exists!');
+          if (err) return done(err);
+          done();
+        });
+    });
 });

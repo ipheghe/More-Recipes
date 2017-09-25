@@ -5,7 +5,7 @@ const testValidUsers = [
     firstName: 'Emeka',
     lastName: 'Amadi',
     mobileNumber: 2348023451234,
-    email: 'emeka@yahoo.com',
+    email: 'iphegheovie@yahoo.com',
   },
   {
     username: 'okon',
@@ -13,7 +13,7 @@ const testValidUsers = [
     firstName: 'Akpan',
     lastName: 'Okon',
     mobileNumber: 2348032121234,
-    email: 'okon@yahoo.com',
+    email: 'liiov2004@yahoo.com',
   },
   {
     username: 'okon',
