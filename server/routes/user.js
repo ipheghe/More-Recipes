@@ -6,6 +6,12 @@ import { validateUserFields, validUser } from '../middlewares/userValidation';
 
 const router = express.Router();
 
+router.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 //API route for users to create accounts
 router.post('/api/v1/users/signup', validateUserFields, usersController.signup);
 

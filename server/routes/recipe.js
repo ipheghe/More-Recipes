@@ -6,6 +6,12 @@ import { validUser } from '../middlewares/userValidation';
 
 const router = express.Router();
 
+router.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 //API route for users to add recipe
 router.post('/api/v1/recipes/', authorize.verifyUser, validUser, validateRecipeFields, recipesController.create);
 

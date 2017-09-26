@@ -13,11 +13,12 @@ const userRoute = router.user,
       categoryRoute = router.category,
       favoriteRoute = router.favorite,
       voteRoute = router.vote;
-      
-//Enable All CORS Requests
-app.use(cors());
+
 //set up the express app
 const app = express();
+
+//Enable All CORS Requests
+app.use(cors());
 
 //log requests to console
 app.use(logger('dev'));
@@ -27,13 +28,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());                                    
 app.use(bodyParser.json({ type: 'application/json'}));  
 app.use(express.static('template'));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 // Require our routes into the application.
