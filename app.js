@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import router from './server/routes/index';
@@ -12,7 +13,9 @@ const userRoute = router.user,
       categoryRoute = router.category,
       favoriteRoute = router.favorite,
       voteRoute = router.vote;
-
+      
+//Enable All CORS Requests
+app.use(cors());
 //set up the express app
 const app = express();
 
@@ -26,6 +29,12 @@ app.use(bodyParser.json({ type: 'application/json'}));
 app.use(express.static('template'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 
 // Require our routes into the application.
 app.use(userRoute);
@@ -34,16 +43,6 @@ app.use(reviewRoute);
 app.use(categoryRoute);
 app.use(favoriteRoute);
 app.use(voteRoute);
-
-// app.get('*', (req, res) => res.status(200).send({
-//   message: 'Welcome to  More Recipes.',
-// }));
-
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
 
 app.get('/api', (req, res) => res.status(200).send({
     status: 'success',
