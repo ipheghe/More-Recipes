@@ -3,6 +3,7 @@ import cors from 'cors';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import router from './server/routes/index';
+import path from 'path';
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
@@ -45,6 +46,15 @@ app.use(reviewRoute);
 app.use(categoryRoute);
 app.use(favoriteRoute);
 app.use(voteRoute);
+
+// Default catch-all route that sends a message on all PostIt hit.
+const indexPath = path.join(__dirname, '/client/public/index.html');
+const publicPath =
+express.static(path.join(__dirname, '/client/public/dist'));
+
+app.use('/dist', publicPath);
+app.get('/', (req, res) => { res.sendFile(indexPath); });
+
 
 app.get('/api', (req, res) => res.status(200).send({
     status: 'success',
