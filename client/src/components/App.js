@@ -1,5 +1,10 @@
 import React, {PropTypes} from 'react';
+import ReactDOM from 'react-dom';
 
+class Landing extends React.Component {
+
+}
+export default 
 const App = (props) => {
 	return (<div className='app'>
 		{props.children}
