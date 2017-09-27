@@ -76,7 +76,7 @@ The server will now be running at `http://localhost:8000`
   - Retrieves list of all existing recipes by highest number of upvotes in descending order
   
 ## API Documentation
-Access Swagger API documentation through this url https://more-recipes-ovie.herokuapp.com/api-docs
+Access Swagger API documentation through this link [Here](#https://more-recipes-ovie.herokuapp.com/api-docs)
 
   
 
