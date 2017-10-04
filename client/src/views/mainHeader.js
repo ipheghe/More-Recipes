@@ -19,10 +19,10 @@ class MainHeader extends React.Component {
 								<a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
 							</li>
 							<li className="nav-item">
-								<a className="nav-link" href="./login.html">Login</a>
+								<a className="nav-link" href="#login">Login</a>
 							</li>
 							<li className="nav-item">
-								<a className="nav-link" href="./signup.html">Register</a>
+								<a className="nav-link" href="#register">Register</a>
 							</li>
 						</ul>
 						<form className="form-inline my-2 my-lg-0">

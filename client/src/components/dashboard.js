@@ -3,9 +3,32 @@ import { UserNavHeader, ProfileHeader, UserSection } from "../views/index";
 import Egusi from './images/egusi_soup.jpg';
 import '../../public/style.css';
 import '../../../node_modules/font-awesome/css/font-awesome.min.css'; 
+import { connect } from 'react-redux';  
+import * as sessionActions from '../actions/sessionActions';
 
 
-class MyRecipe extends React.Component {
+class Dashboard extends React.Component {
+
+  constructor(props, context) {
+      super(props,context);
+
+      this.props.actions.protectedTest();
+
+      // this.updateUserState = this.updateUserState.bind(this);
+      // this.onClickSave = this.onClickSave.bind(this);
+  }
+
+  // updateUserState(event) {
+  //     const field = event.target.name;
+  //     let user=this.state.user;
+  //     user[field]= event.target.value;
+  //     return this.setState({user: user });
+  // }
+  
+  // onClickSave(event) {
+  //     this.props.actions.loginAction(this.state.user);
+  //     event.preventDefault();
+  // }
 /**
  * SearchWiki layout component that enables a user search wikipedia right from the dashboard.
  * 
@@ -15,6 +38,7 @@ class MyRecipe extends React.Component {
   render() {
     return (
       <div>
+      {this.renderContent()}
         <UserNavHeader />
           <div className="banner-background">
             <div className="profile-background"> 
@@ -29,13 +53,13 @@ class MyRecipe extends React.Component {
                       <div className="div-section">
                       <ul className="nav nav-tabs nav-fill">
                       <li className="nav-item">
-                        <a className="nav-link" href="#dashboard">Top Recipes</a>
+                        <a className="nav-link active" href="#dashboard">Top Recipes</a>
                       </li>
                       <li className="nav-item">
                         <a className="nav-link" href="#favorite">Favorites</a>
                       </li>
                       <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">My Recipes</a>
+                        <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">My Recipes</a>
                         <div className="dropdown-menu">
                           <a className="dropdown-item" href="#myRecipe">Personal Recipes</a>
                           <a className="dropdown-item" href="#manageRecipe">Manage Recipes</a>
@@ -47,7 +71,7 @@ class MyRecipe extends React.Component {
                     </ul> 
                     <br></br>
                     <div className="add-padding">
-                    <h3><b>My Recipes</b></h3>
+                    <h3><b>Top Recipes</b></h3>
                     <br></br>
                       <div className="card-blocks" >
                         <div className="card">
@@ -162,6 +186,7 @@ class MyRecipe extends React.Component {
                         <li className="page-item active">
                           <a className="page-link" href="#">2 <span className="sr-only">(current)</span></a>
                         </li>
+                        <li className="page-item"><a className="page-link" href="#">3</a></li>
                         <li className="page-item">
                           <a className="page-link" href="#">Next</a>
                         </li>
@@ -175,5 +200,15 @@ class MyRecipe extends React.Component {
     );
   }
 }
-export default MyRecipe;
+function mapStateToProps(state) {
+  return { content: state.auth.content };
+}
 
+
+function mapDispatchToProps(dispatch) {  
+  return {
+    actions: bindActionCreators(sessionActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

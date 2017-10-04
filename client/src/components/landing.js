@@ -35,13 +35,13 @@ class Landing extends React.Component {
               </section>
               <section className="col-md-5 account">
                 <div>
-                <a href="./login.html">
+                <a href="#login">
                 <button type="button" className="btn btn-success" id="login" data-toggle="modal" data-target="#myModal">Login</button>
                   <p className="brief">Login to your account and start sharing</p>
                 </a>
                 </div>
                 <div>
-                <a href="./signup.html">
+                <a href="#register">
                   <button className="btn btn-success" id="signup">Signup</button>
                   <p className="brief">Register now to enjoy all of More recipes</p>
                 </a>

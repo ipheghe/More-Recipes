@@ -1,37 +1,39 @@
-import React from "react";
+class BasicForm extends React.Component {
+  
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      username: 'jasonmalfatto@moduscreate.com',
+      password: '',
+      passwordConfirm: ''
+    };
+    
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  
+  handleChange(e) {
+    e.target.classList.add('active');
+    
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+    
+    this.showInputError(e.target.name);
+  }
+  import React from "react";
 import { MainHeader } from "../views/index";
+import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import onLoginUser from '../actions/index';
+import api from './helpers/api';
 import '../../public/style.css';
 import '../../../node_modules/font-awesome/css/font-awesome.min.css'; 
-
 import { Field, reduxForm } from 'redux-form';  
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux';
+import { registerUser } from '../actions';
 import * as sessionActions from '../actions/sessionActions';
-import { loginUser } from '../actions/auth';
-
-const form = reduxForm({
-  form: 'login',
-  validate
-});
-
-const renderField = field => (  
-    <div>
-      <input className="form-control" {...field.input}/>
-      {field.touched && field.error && <div className="error">{field.error}</div>}
-    </div>
-);
-function validate(formProps) {
-  const errors = {};
-
-  if (!formProps.username) {
-    errors.username = 'Please enter a first name';
-  }
-  if (!formProps.password) {
-    errors.password = 'Please enter a password';
-  }
-
-  return errors;
-}
 
 class Login extends React.Component {
 
@@ -45,11 +47,6 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
-  }
-
-
-  handleFormSubmit(formProps) {
-    this.props.loginUser(formProps);
   }
 
   handleChange(e) {
@@ -75,8 +72,7 @@ class Login extends React.Component {
         errorMessage: 'password cannot be empty' });
     }
     else if (username !== '' || password !== '') {
-
-      this.props.loginUser({username,password});
+      this.props.actions.logInUser(this.state.username, this.state.password);
     } 
     else {
       this.setState({
@@ -85,13 +81,9 @@ class Login extends React.Component {
     }
   }
 
-/**
- * @param {component} <MainHeader/> - The landing page main header navigation.
- * @param {component} <Register/> - The signup page of the app.
- */
   render() {
     return (
-          <div>
+      <div>
         <MainHeader />
         <div className="login-background">
           <div className="container">
@@ -105,7 +97,7 @@ class Login extends React.Component {
               </section>
               <section className="col-md-5 account">
               <div>
-                <form  className="login-form">
+                <form  className="login-form" id="auth-form" onSubmit={ this.handleSubmit }>
                   <h3 className="login-form-boxx">Login Form</h3>
                   <br></br>
                       <div className="form-group">
@@ -116,13 +108,12 @@ class Login extends React.Component {
                               </span>
                               <input
                                 type="text"
-                                className="form-control" 
+                                class="form-control" 
                                 name="username"
                                 placeholder="Enter your username or email"
                                 ref="username"
                                 value={ this.state.username }
                                 onChange={ this.handleChange }
-                                required
                               />
                           </div>
                       </div>
@@ -134,13 +125,12 @@ class Login extends React.Component {
                               </span>
                               <input
                                 type="password"
-                                className="form-control" 
+                                class="form-control" 
                                 name="password"
                                 placeholder="Enter your password"
                                 ref="password"
                                 value={ this.state.password }
                                 onChange={ this.handleChange }
-                                required
                               />  
                           </div>
                       </div>
@@ -209,15 +199,130 @@ class Login extends React.Component {
       </div>
     );
   }
-}
+};
 
-function mapStateToProps(state) {
+function mapDispatchToProps(dispatch) {  
   return {
-    errorMessage: state.auth.error,
-    message: state.auth.message,
-    authenticated: state.auth.authenticated,
+    actions: bindActionCreators(sessionActions, dispatch)
   };
 }
 
-export default connect(mapStateToProps, { loginUser })(form(Login));
+export default connect(null, mapDispatchToProps)(Login);
 
+  handleSubmit(e) {    
+    e.preventDefault();
+    
+    console.log('component state', JSON.stringify(this.state));
+    
+    if (!this.showFormErrors()) {
+      console.log('form is invalid: do not submit');
+    } else {
+      console.log('form is valid: submit');
+    }
+  }
+  
+  showFormErrors() {
+    const inputs = document.querySelectorAll('input');
+    let isFormValid = true;
+    
+    inputs.forEach(input => {
+      input.classList.add('active');
+      
+      const isInputValid = this.showInputError(input.name);
+      
+      if (!isInputValid) {
+        isFormValid = false;
+      }
+    });
+    
+    return isFormValid;
+  }
+  
+  showInputError(refName) {
+    const validity = this.refs[refName].validity;
+    const label = document.getElementById(`${refName}Label`).textContent;
+    const error = document.getElementById(`${refName}Error`);
+    const isPassword = refName.indexOf('password') !== -1;
+    const isPasswordConfirm = refName === 'passwordConfirm';
+    
+    if (isPasswordConfirm) {
+      if (this.refs.password.value !== this.refs.passwordConfirm.value) {
+        this.refs.passwordConfirm.setCustomValidity('Passwords do not match');
+      } else {
+        this.refs.passwordConfirm.setCustomValidity('');
+      }
+    }
+        
+    if (!validity.valid) {
+      if (validity.valueMissing) {
+        error.textContent = `${label} is a required field`; 
+      } else if (validity.typeMismatch) {
+        error.textContent = `${label} should be a valid email address`; 
+      } else if (isPassword && validity.patternMismatch) {
+        error.textContent = `${label} should be longer than 4 chars`; 
+      } else if (isPasswordConfirm && validity.customError) {
+        error.textContent = 'Passwords do not match';
+      }
+      return false;
+    }
+    
+    error.textContent = '';
+    return true;
+  }
+
+  render() {
+    return (
+      <form novalidate>
+        <div className="form-group">
+          <label id="usernameLabel">Username</label>
+          <input className="form-control"
+            type="email"
+            name="username"
+            ref="username"
+            value={ this.state.username } 
+            onChange={ this.handleChange }
+            required />
+          <div className="error" id="usernameError" />
+        </div>
+        <div className="form-group">
+          <label id="passwordLabel">Password</label>
+          <input className="form-control"
+            type="password" 
+            name="password"
+            ref="password"
+            value={ this.state.password } 
+            onChange={ this.handleChange }
+            pattern=".{5,}"
+            required />
+          <div className="error" id="passwordError" />
+        </div>
+        <div className="form-group">
+          <label id="passwordConfirmLabel">Confirm Password</label>
+          <input className="form-control"
+            type="password" 
+            name="passwordConfirm"
+            ref="passwordConfirm"
+            value={ this.state.passwordConfirm } 
+            onChange={ this.handleChange }
+            required />
+          <div className="error" id="passwordConfirmError" />
+        </div>
+        <button className="btn btn-primary"
+          onClick={ this.handleSubmit }>submit</button>
+      </form>
+    );
+  }
+}
+
+class App extends React.Component {
+  render() {
+    return (
+      <div className="container">
+        <BasicForm />
+        <p className="note">Note: see console for submit event logging</p>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<App />, document.getElementById('app'));

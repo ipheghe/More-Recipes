@@ -12,11 +12,15 @@ module.exports = {
     // It will still show compile warnings and errors with this setting.
     clientLogLevel: 'none',
     contentBase: './client/public',
-    port: 8000,
+    port: 3000,
     watchContentBase: true,
     hot: true,
     quiet: true,
   },
+  // devServer: {
+  //   host: 'localhost', 
+  //   port: 3000
+  // }, 
   devtool: 'source-map',
   entry: [require.resolve('react-dev-utils/webpackHotDevClient'),
     './client/src/app/index.js'],
@@ -27,6 +31,9 @@ module.exports = {
     publicPath: '/dist/'
   },
   plugins: [
+       new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',

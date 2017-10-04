@@ -173,9 +173,6 @@ nav#brand-color {
 .recipe-top {
   position: relative;
   margin-top: 50px;
-  color: #fff;
-  display: block;
-  min-height: 240px;
   box-sizing: border-box;
 }
 
@@ -192,6 +189,7 @@ margin-left: 5px;
 }
 .recipe-button > button {
   min-width: 150px;
+  margin-right: 10px;
 }
 .recipe-ingredients ul{
   float: left;
@@ -283,6 +281,7 @@ a:hover {
 
 .edit-profile-button > button {
   min-width: 20%;
+  margin-right: 10px;
   text-align: center;
 }
 
@@ -343,6 +342,7 @@ a:hover {
   display: inline-block;
   width: 200px;
   margin-bottom: 15px;
+  margin-right: 5px;
 }
 .card-blocks .card img{
   width: 200px;
@@ -395,4 +395,18 @@ a:hover {
 }
 .arrow-key {
   font-size: 100px;
+}
+
+input.active:valid {
+  box-shadow: 0 0 5px 1px green;
+}
+
+input.active:invalid {
+  box-shadow: 0 0 5px 1px red;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
 }
