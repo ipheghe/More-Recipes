@@ -50,6 +50,10 @@ app.use(categoryRoute);
 app.use(favoriteRoute);
 app.use(voteRoute);
 
+app.get('/*', function(req, res, next){ 
+  res.setHeader('Last-Modified', (new Date()).toUTCString());
+  next(); 
+});
 
 app.get('/api', (req, res) => res.status(200).send({
     status: 'success',

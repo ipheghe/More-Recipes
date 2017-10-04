@@ -17,10 +17,6 @@ module.exports = {
     hot: true,
     quiet: true,
   },
-  // devServer: {
-  //   host: 'localhost', 
-  //   port: 3000
-  // }, 
   devtool: 'source-map',
   entry: [require.resolve('react-dev-utils/webpackHotDevClient'),
     './client/src/app/index.js'],
@@ -31,7 +27,7 @@ module.exports = {
     publicPath: '/dist/'
   },
   plugins: [
-       new webpack.DefinePlugin({
+    new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
     new webpack.ProvidePlugin({
@@ -68,6 +64,11 @@ module.exports = {
       },
     }),
   ],
+  node: {
+    net: 'empty',
+    tls: 'empty',
+    dns: 'empty'
+  },
   module: {
     loaders: [
       // First, run the linter.
@@ -147,7 +148,8 @@ module.exports = {
         test: /\.scss/,
         loader: 'style-loader!css-loader!sass-loader'
       },
-      { test: /\.css$/,
+      {
+        test: /\.css$/,
         loaders: [
           'style-loader',
           'css-loader?importLoaders=1',

@@ -4,4 +4,3 @@ export const set = (state, props) => {
   props.forEach(p => toSave[p] = state[p]);
   localStorage.setItem('state', JSON.stringify(toSave));
 };
-

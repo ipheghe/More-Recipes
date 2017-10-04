@@ -2,39 +2,18 @@ import axios from 'axios';
 import cookie from 'react-cookie';
 import { logoutUser } from './auth';
 import { STATIC_ERROR, FETCH_USER } from './types';
-export const API_URL = 'http://localhost:8000/api/v1';
+export const API_URL = 'http://localhost:8080/api/v1';
 export const CLIENT_ROOT_URL = 'http://localhost:3000';
 
 //= ===============================
 // Utility actions
 //= ===============================
 
-export function fetchUser(username) {
-  return function (dispatch) {
-    axios.get(`${API_URL}/users/${username}`, {
-      // headers: { Authorization: cookie.load('token') },
-    })
-    .then((response) => {
-      dispatch({
-        type: FETCH_USER,
-        payload: response.data.userData,
-      });
-    })
-    .catch(response => dispatch(errorHandler(response.data.error)));
-  };
-}
-
 export function errorHandler(dispatch, error, type) {
   console.log('Error type: ', type);
   console.log(error);
 
   let errorMessage = error.response ? error.response.data : error;
-
-   // NOT AUTHENTICATED ERROR
-  if (error.status === 401 || error.response.status === 401) {
-    errorMessage = 'You are not authorized to do this.';
-    //return dispatch(logoutUser(errorMessage));
-  }
 
   dispatch({
     type,

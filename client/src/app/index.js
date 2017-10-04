@@ -13,12 +13,9 @@ import { BrowserRouter } from 'react-router-dom';
 import ReduxToastr from 'react-redux-toastr'
 
 
-const store = configureStore();
+const store = configureStore({});
 const app = document.getElementById('app');
 const token = sessionStorage.getItem('token');
-
-// ensures that if the user is logged their
-// user token and data will be in the store even they refresh
 
 if (token) {
   // Update application state. User has token and is probably authenticated

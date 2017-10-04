@@ -2,16 +2,16 @@
 
 // There are three possible states for our login
 // process and we need actions for each of them
-export const LOGIN_REQUEST = 'LOGIN_REQUEST'
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-export const LOGIN_FAILURE = 'LOGIN_FAILURE'
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 // Three possible states for our logout process as well.
 // Since we are using JWTs, we just need to remove the token
 // from localStorage. These actions are more useful if we
 // were calling the API to log the user out
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
-export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILURE = ' LOGOUT_FAILURE ';
 
 function requestLogin(creds) {
   return {
@@ -19,7 +19,7 @@ function requestLogin(creds) {
     isFetching: true,
     isAuthenticated: false,
     creds
-  }
+  };
 }
 
 function receiveLogin(user) {
@@ -28,7 +28,7 @@ function receiveLogin(user) {
     isFetching: false,
     isAuthenticated: true,
     id_token: user.id_token
-  }
+  };
 }
 
 function loginError(message) {
@@ -37,7 +37,7 @@ function loginError(message) {
     isFetching: false,
     isAuthenticated: false,
     message
-  }
+  };
 }
 
 // Calls the API to get a token and
@@ -46,7 +46,7 @@ export function loginUser(creds) {
 
   let config = {
     method: 'POST',
-    headers: { 'Content-Type':'application/x-www-form-urlencoded' },
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: `username=${creds.username}&password=${creds.password}`
   }
 
@@ -57,7 +57,7 @@ export function loginUser(creds) {
     return fetch('http://localhost:3001/sessions/create', config)
       .then(response =>
         response.json().then(user => ({ user, response }))
-            ).then(({ user, response }) =>  {
+      ).then(({ user, response }) => {
         if (!response.ok) {
           // If there was a problem, we want to
           // dispatch the error condition
@@ -94,8 +94,8 @@ function receiveLogout() {
 export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout())
-    localStorage.removeItem('id_token')
-    localStorage.removeItem('access_token')
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('access_token');
     dispatch(receiveLogout())
   }
 }

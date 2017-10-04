@@ -11,7 +11,7 @@ const App = () =>
         <Route exact path='/' component={ Landing }/>
         <Route path='/register' component={ Register }/>
         <Route path='/login' component={ Login }/>
-        <Route path='/dashboard' component={ RequireAuth(Dashboard) } />  
+        <Route path='/dashboard' component={ Dashboard } />  
         <Route path='/ViewRecipe' component={ ViewRecipe }/>
         <Route path='/favorite' component={ Favorite }/>
         <Route path='/myRecipe' component={ MyRecipe }/>

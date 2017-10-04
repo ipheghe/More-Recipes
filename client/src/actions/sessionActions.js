@@ -8,14 +8,14 @@ import {
   HashRouter as Router, Route, IndexRoute, hashHistory
 } from 'react-router-dom';
 import React from "react";
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = 'http://localhost:8080';
 import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FORGOT_PASSWORD_REQUEST, RESET_PASSWORD_REQUEST, PROTECTED_TEST } from './types';
 
 
-export function loginSuccess(token,userData) {
+export function loginSuccess(token, userData) {
   return dispatch => {
-    dispatch({ 
-      type: types.LOG_IN_SUCCESS ,   
+    dispatch({
+      type: types.LOG_IN_SUCCESS,
       isAuthenticated: true,
       token,
       userData,
@@ -68,14 +68,14 @@ export function loginError(error) {
 export function signupSuccess(response) {
   return dispatch => {
     dispatch({ response, type: types.SIGN_UP_SUCCESS });
-    history.push('/#login');
     location.hash = '#login';
     const toastr = bindActionCreators(toastrActions, dispatch);
+    location.hash = '#login';
     toastr.add({
       id: 'USER_LOGGEDIN',
       type: 'success',
       title: 'Success',
-      message: 'Login Successful. Welcome back!',
+      message: 'Registration Successful. Welcome back!',
       timeout: 5000,
     });
     setTimeout(() => { toastr.remove('USER_LOGGEDIN'); }, 3500);
@@ -97,9 +97,9 @@ export function signupFailed() {
 }
 
 
-export function logInUser(username,password) {
+export function logInUser(username, password) {
   const url = `${BASE_URL}/api/v1/users/signin`;
-  return dispatch =>
+  return ((dispatch) => {
     fetch(url, {
       method: 'post',
       headers: {
@@ -115,11 +115,11 @@ export function logInUser(username,password) {
         if (response.status >= 200 && response.status < 300) {
           console.log('response', response.status);
           response.json().then(json => {
-            const userData =  JSON.parse(JSON.stringify(json.userData));
-            const token =  JSON.parse(JSON.stringify(json.authToken));
+            const userData = JSON.parse(JSON.stringify(json.userData));
+            const token = JSON.parse(JSON.stringify(json.authToken));
             localStorage.setItem('token', token);
-            dispatch(loginSuccess(token,userData));
-            });
+            dispatch(loginSuccess(token, userData));
+          });
         } else if (response.status === 400) {
           const error = new Error(response.statusText);
           error.response = response;
@@ -137,10 +137,11 @@ export function logInUser(username,password) {
         }
       })
       .catch(error => { throw error; })
+  })
 }
 
 
-export function signUpUser(username,firstName,lastName,mobile,email,password) {
+export function signUpUser(username, firstName, lastName, mobile, email, password) {
   const url = `${BASE_URL}/api/v1/users/signup`;
   return dispatch =>
     fetch(url, {
@@ -180,29 +181,29 @@ export function signUpUser(username,firstName,lastName,mobile,email,password) {
 function checkStatus(response) {
   return dispatch => {
     if (response.status >= 200 && response.status < 300) {
-          sessionStorage.setItem('jwt', response.usertoken);
-          dispatch(loginSuccess(response));
-        } else if (response.status === 400) {
-          const error = new Error(response.statusText);
-          error.response = response;
-          dispatch(loginFailed(error));
-        } else {
-          const error = new Error(response.statusText);
-          error.response = response;
-          dispatch(loginError(error));
-          throw error;
-        }
-      }
+      sessionStorage.setItem('jwt', response.usertoken);
+      dispatch(loginSuccess(response));
+    } else if (response.status === 400) {
+      const error = new Error(response.statusText);
+      error.response = response;
+      dispatch(loginFailed(error));
+    } else {
+      const error = new Error(response.statusText);
+      error.response = response;
+      dispatch(loginError(error));
+      throw error;
+    }
+  }
 
 }
- 
+
 function parseJSON(response) {
   return response.json()
 }
 
 export function protectedTest() {
   return dispatch => {
-                console.log(sessionStorage.getItem('token'));
+    console.log(sessionStorage.getItem('token'));
     const url = `${BASE_URL}/api/v1/recipes`;
     fetch(url, {
       method: 'post',
@@ -212,15 +213,15 @@ export function protectedTest() {
         'x-access-token': sessionStorage.getItem('token'),
       },
     })
-    .then((response) => {
-      dispatch({
-        type: PROTECTED_TEST,
-        payload: response.data.content,
+      .then((response) => {
+        dispatch({
+          type: PROTECTED_TEST,
+          payload: response.data.content,
+        });
+      })
+      .catch((error) => {
+        errorHandler(dispatch, error.response, AUTH_ERROR);
       });
-    })
-    .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR);
-    });
   };
 }
 
