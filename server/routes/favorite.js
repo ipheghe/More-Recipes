@@ -12,6 +12,6 @@ const router = express.Router();
 router.post('/api/v1/recipes/:id/:categoryId/favorites', authorize.verifyUser, validUser, recipeExists, categoryExists, favoriteExists, favoritesController.addFavorites);
 
 //API route for users to retrieve favorite recipes
-router.get('/api/v1/users/favorites', authorize.verifyUser, validUser, favoritesController.retrieveFavorites);
+router.get('/api/v1/favorites', authorize.verifyUser, validUser, favoritesController.retrieveFavorites);
 
 export default router;

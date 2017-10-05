@@ -47,7 +47,7 @@ const usersController = {
           } else {
             // User is found and password is correct
             // create a token for authentication
-            const token = jwt.sign({ user}, 'secretPassword', {
+            const token = jwt.sign({ user }, 'secretPassword', {
               expiresIn: '6h' // expires in 6 hours
             });
             // return success message including token in JSON format

@@ -2,11 +2,11 @@
   "name": "More-Recipes",
   "version": "1.0.0",
   "description": "More-Recipes provides a platform for users to share the awesome and exciting  recipe ideas they have invented or learnt.  Suppose a user comes up with a recipe,  he/she can post it on More-Recipes and  get feedback in form of reviews and votes from other users who explore that recipe. Users can also keep a list of their favorite recipes on the application.",
-  "main": ".eslintrc.js",
+  "main": ".eslintrc.json",
   "scripts": {
     "wp": "webpack-dev-server --hot --history-api-fallback --open",
     "test:db": "cross-env NODE_ENV=test nyc mocha tests ",
-    "test": "set NODE_ENV=test&&sequelize db:migrate:undo:all&&sequelize db:migrate  && cross-env NODE_ENV=test nyc mocha --timeout 15000 tests",
+    "test": "sequelize db:migrate:undo:all --env=test&&sequelize db:migrate --env=test  && cross-env NODE_ENV=test nyc mocha --timeout 15000 tests",
     "s:test": "set NODE_ENV=test&& mocha --compilers js:babel-core/register --timeout 10000 tests",
     "heroku-postbuild": "sequelize db:migrate",
     "migrate": "sequelize db:migrate:undo:all&&sequelize db:migrate",
