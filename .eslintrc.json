@@ -6,6 +6,13 @@
     "es6": true,
     "mocha": true
   },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+        "jsx": true,
+        "modules": true
+    }
+  },
   "rules": {
     "max-len": [1, 80, 2],
     "one-var": 0,
@@ -14,7 +21,9 @@
     "consistent-return": 0,
     "no-param-reassign": 0,
     "comma-dangle": 0,
-    "linebreak-style": ["error", "windows"],
+    "experimentalDecorators": 0,
+    "react/no-unknown-property": 0,
+    // "linebreak-style": ["error", "unix"],
     "curly": ["error", "multi-line"],
     "import/no-unresolved": [2, { "commonjs": true }],
     "no-shadow": ["error", { "allow": ["req", "res", "err"] }],
@@ -25,11 +34,12 @@
       "requireReturnDescription": true
     }],
     "require-jsdoc": ["error", {
-        "require": {
-            "FunctionDeclaration": true,
-            "MethodDefinition": true,
-            "ClassDeclaration": true
-        }
-    }]
+      "require": {
+          "FunctionDeclaration": false,
+          "MethodDefinition": false,
+          "ClassDeclaration": false,
+          "ArrowFunctionExpression": false
+      }
+  }]
   }
 }

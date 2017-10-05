@@ -14,6 +14,7 @@ const should = require('chai').should();
 const server = supertest.agent(app);
 const rootURL = '/api/v1';
 const usersUrl = `${rootURL}/users`;
+const favoritesUrl = `${rootURL}/favorites`;
 const recipesUrl = `${rootURL}/recipes`;
 const reviewsUrl = `${rootURL}/reviews`;
 const categoriesUrl = `${usersUrl}/categories`;
@@ -878,7 +879,7 @@ describe('FavoriteRecipe', () => {
 	});
 	it('should return 200 status for retrieving user favorite recipes', (done) => {
 	   server
-	    .get(`${usersUrl}/favorites`)
+	    .get(favoritesUrl)
 	    .set('Connection', 'keep alive')
 	    .set('Accept', 'application/json')
 	    .set('x-access-token', userToken[0])
@@ -892,7 +893,7 @@ describe('FavoriteRecipe', () => {
 	});
 	it('should return a message if user doesnt not have any favorite recipe', (done) => {
 	   server
-	    .get(`${usersUrl}/favorites`)
+	    .get(favoritesUrl)
 	    .set('Connection', 'keep alive')
 	    .set('Accept', 'application/json')
 	    .set('x-access-token', userToken[1])

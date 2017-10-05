@@ -3,9 +3,19 @@ import { UserNavHeader, ProfileHeader, UserSection } from "../views/index";
 import Egusi from './images/egusi_soup.jpg';
 import '../../public/style.css';
 import '../../../node_modules/font-awesome/css/font-awesome.min.css';
+import { connect } from 'react-redux';
+import { fetchUsername } from '../actions/auth';
+import jwtDecode from 'jwt-decode';
 
+@connect((state) => {
+  return { state, }
+})
+class Dashboard extends React.Component {
 
-class Favorite extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(fetchUsername());
+  }
+
   /**
    * SearchWiki layout component that enables a user search wikipedia right from the dashboard.
    * 
@@ -23,16 +33,16 @@ class Favorite extends React.Component {
               <br></br>
               <div className="row profile-landing">
                 <section className="col-md-3 profile-details">
-                  <UserSection username="Abu" />
+                  <UserSection username={this.props.userData} />
                 </section>
                 <section className="col-md-9 profile-tabs" >
                   <div className="div-section">
                     <ul className="nav nav-tabs nav-fill">
                       <li className="nav-item">
-                        <a className="nav-link" href="#dashboard">Top Recipes</a>
+                        <a className="nav-link active" href="#dashboard">Top Recipes</a>
                       </li>
                       <li className="nav-item">
-                        <a className="nav-link active" href="#favorite">Favorites</a>
+                        <a className="nav-link" href="#favorite">Favorites</a>
                       </li>
                       <li className="nav-item dropdown">
                         <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">My Recipes</a>
@@ -47,7 +57,7 @@ class Favorite extends React.Component {
                     </ul>
                     <br></br>
                     <div className="add-padding">
-                      <h3><b>Favorites</b></h3>
+                      <h3><b>Top Recipes</b></h3>
                       <br></br>
                       <div className="card-blocks" >
                         <div className="card">
@@ -162,6 +172,7 @@ class Favorite extends React.Component {
                     <li className="page-item active">
                       <a className="page-link" href="#">2 <span className="sr-only">(current)</span></a>
                     </li>
+                    <li className="page-item"><a className="page-link" href="#">3</a></li>
                     <li className="page-item">
                       <a className="page-link" href="#">Next</a>
                     </li>
@@ -175,5 +186,10 @@ class Favorite extends React.Component {
     );
   }
 }
-export default Favorite;
 
+
+function mapStateToProps(state) {
+  return { userData: state.auth.userData };
+}
+
+export default connect(mapStateToProps, { fetchUsername })(Dashboard);

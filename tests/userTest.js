@@ -419,7 +419,7 @@ describe('User signin',() => {
 describe('Check If User Exists', () => {
     it('return a 404 if user not found', (done) => {
       server
-        .get(usersUrl)
+        .get(`${usersUrl}/bimbo`)
         .set('Connection', 'keep alive')
         .set('Content-Type', 'application/json')
         .send({username: 'ashanti'})
@@ -432,7 +432,7 @@ describe('Check If User Exists', () => {
     });
     it('return a 200 if user exists', (done) => {
       server
-        .get(usersUrl)
+        .get(`${usersUrl}/okon`)
         .set('Connection', 'keep alive')
         .set('Content-Type', 'application/json')
         .send({username: 'okon'})

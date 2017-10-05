@@ -47,7 +47,7 @@ const usersController = {
           } else {
             // User is found and password is correct
             // create a token for authentication
-            const token = jwt.sign({ user: {id: user.id}}, 'secretPassword', {
+            const token = jwt.sign({ user }, 'secretPassword', {
               expiresIn: '6h' // expires in 6 hours
             });
             // return success message including token in JSON format
@@ -62,7 +62,7 @@ const usersController = {
   // get user details
   userExists(req, res) {
   return User
-    .findOne({ where: { username: req.body.username } })
+    .findOne({ where: { username: req.params.username } })
     .then((user) => {
       if (!user) {
         return res.status(404).send({message: 'User doesnt exist'})

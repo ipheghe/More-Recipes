@@ -12,7 +12,7 @@ module.exports = {
     // It will still show compile warnings and errors with this setting.
     clientLogLevel: 'none',
     contentBase: './client/public',
-    port: 8000,
+    port: 3000,
     watchContentBase: true,
     hot: true,
     quiet: true,
@@ -27,6 +27,9 @@ module.exports = {
     publicPath: '/dist/'
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
@@ -61,6 +64,11 @@ module.exports = {
       },
     }),
   ],
+  node: {
+    net: 'empty',
+    tls: 'empty',
+    dns: 'empty'
+  },
   module: {
     loaders: [
       // First, run the linter.
@@ -140,7 +148,8 @@ module.exports = {
         test: /\.scss/,
         loader: 'style-loader!css-loader!sass-loader'
       },
-      { test: /\.css$/,
+      {
+        test: /\.css$/,
         loaders: [
           'style-loader',
           'css-loader?importLoaders=1',
