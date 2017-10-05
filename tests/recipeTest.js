@@ -1039,6 +1039,7 @@ describe('Vote a recipe', () => {
           expect(res.body.downvote).to.equal(1);
           expect(res.body.message).to.be.equal('Your vote has been recorded');
           if (err) return done(err);
+	       
           done();
         });
     });
