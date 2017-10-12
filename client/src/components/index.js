@@ -1,13 +1,13 @@
-import Landing from './landing';
-import Login from './login';
-import Register from './register';
-import Dashboard from './dashboard';
-import ViewRecipe from './viewRecipe';
-import Favorite from './favorite';
-import MyRecipe from './myRecipe';
-import AddRecipe from './addRecipe';
-import ManageRecipe from './manageRecipe';
-import EditProfile from './editProfile';
+import Landing from './landing/landing';
+import Login from './login/login';
+import Register from './signup/register';
+import Dashboard from './dashboard/dashboard';
+import ViewRecipe from './viewRecipe/viewRecipe';
+import Favorite from './favorite/favorite';
+import MyRecipe from './myRecipe/myRecipe';
+import AddRecipe from './addRecipe/addRecipe';
+import ManageRecipe from './manageRecipe/manageRecipe';
+import EditProfile from './editProfile/editProfile';
 import NotFoundPage from './notFound';
 
 export { Landing, Login, Register, Dashboard, ViewRecipe, Favorite, MyRecipe, AddRecipe, ManageRecipe, EditProfile, NotFoundPage};

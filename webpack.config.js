@@ -1,9 +1,17 @@
-const webpack = require('webpack');
+
+import webpack from 'webpack';
+// import path from 'path';
+// import HtmlWebpackPlugin from 'html-webpack-plugin';
+// import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+// import ModuleScopePlugin from 'react-dev-utils/ModuleScopePlugin';
+// import eslintFormatter from 'react-dev-utils/eslintFormatter';
+
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
+const BundleEnsureWebpackPlugin = require("bundle-ensure-webpack-plugin");
 
 module.exports = {
   devServer: {
@@ -12,14 +20,17 @@ module.exports = {
     // It will still show compile warnings and errors with this setting.
     clientLogLevel: 'none',
     contentBase: './client/public',
-    port: 3000,
+    port: 8000,
     watchContentBase: true,
     hot: true,
     quiet: true,
   },
-  devtool: 'source-map',
-  entry: [require.resolve('react-dev-utils/webpackHotDevClient'),
-    './client/src/app/index.js'],
+  devtool: 'inline-source-map',
+  entry: [
+    'eventsource-polyfill', // necessary for hot reloading with IE
+    'webpack-hot-middleware/client?reload=true', //note that it reloads the page if hot module reloading fails.
+    path.resolve(__dirname, './client/src/app/index.js')
+  ],
   target: 'web', // bundle the code so that a web browser can understand
   output: {
     path: `${__dirname}/client/public/dist`,
@@ -27,9 +38,6 @@ module.exports = {
     publicPath: '/dist/'
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-    }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
@@ -117,12 +125,33 @@ module.exports = {
       // smaller than specified limit in bytes as data URLs to avoid requests.
       // A missing `test` is equivalent to a match.
       {
-        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-        loader: require.resolve('url-loader'),
-        options: {
-          limit: 10000,
-          name: 'bundle.[ext]',
-        },
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              query: {
+                name: 'assets/[name].[ext]'
+              }
+            }
+          },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              query: {
+                mozjpeg: {
+                  progressive: true,
+                },
+                gifsicle: {
+                  interlaced: true,
+                },
+                optipng: {
+                  optimizationLevel: 7,
+                }
+              }
+            }
+          }
+        ]
       },
       {
         test: /\.js?$/,

@@ -12,12 +12,12 @@ const App = () =>
         <Route path='/register' component={ Register }/>
         <Route path='/login' component={ Login }/>
         <Route path='/dashboard' component={ Dashboard } />  
-        <Route path='/ViewRecipe' component={ ViewRecipe }/>
-        <Route path='/favorite' component={ Favorite }/>
-        <Route path='/myRecipe' component={ MyRecipe }/>
-        <Route path='/addRecipe' component={ AddRecipe }/>
-        <Route path='/manageRecipe' component={ ManageRecipe }/>
-        <Route path='/editProfile' component={ EditProfile }/>
+        <Route path='/recipes/:id' component={ ViewRecipe }/>
+        <Route path='/favorite' component={ RequireAuth(Favorite) }/>
+        <Route path='/myRecipe' component={ RequireAuth(MyRecipe) }/>
+        <Route path='/addRecipe' component={ RequireAuth(AddRecipe) }/>
+        <Route path='/manageRecipe' component={ RequireAuth(ManageRecipe) }/>
+        <Route path='/editProfile' component={ RequireAuth(EditProfile) }/>
       </div>
     </Router>
   );

@@ -4,6 +4,8 @@ import { logoutUser } from './auth';
 import { STATIC_ERROR, FETCH_USER } from './types';
 export const API_URL = 'http://localhost:8000/api/v1';
 export const CLIENT_ROOT_URL = 'http://localhost:3000';
+import { actions as toastrActions } from 'react-redux-toastr';
+import { bindActionCreators } from 'redux';
 
 //= ===============================
 // Utility actions
@@ -29,7 +31,6 @@ export function postData(action, errorType, isAuthReq, url, dispatch, data) {
   if (isAuthReq) {
     headers = { headers: { 'x-access-token': localStorage.getItem('token') } };
   }
-
   axios.post(requestUrl, data, headers)
   .then((response) => {
     dispatch({
@@ -53,6 +54,7 @@ export function getData(action, errorType, isAuthReq, url, dispatch) {
 
   axios.get(requestUrl, headers)
   .then((response) => {
+    console.log(response, 'kndkn')
     dispatch({
       type: action,
       payload: response.data,
@@ -103,22 +105,4 @@ export function deleteData(action, errorType, isAuthReq, url, dispatch) {
   .catch((error) => {
     errorHandler(dispatch, error.response, errorType);
   });
-}
-
-//= ===============================
-// Static Page actions
-//= ===============================
-export function sendContactForm({ name, emailAddress, message }) {
-  return function (dispatch) {
-    axios.post(`${API_URL}/communication/contact`, { name, emailAddress, message })
-    .then((response) => {
-      dispatch({
-        type: SEND_CONTACT_FORM,
-        payload: response.data.message,
-      });
-    })
-    .catch((error) => {
-      errorHandler(dispatch, error.response, STATIC_ERROR);
-    });
-  };
 }

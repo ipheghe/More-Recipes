@@ -4,6 +4,9 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import router from './server/routes/index';
 import path from 'path';
+import webpack from 'webpack';
+import webpackMiddleware from 'webpack-dev-middleware';
+import config from './webpack.config';
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
@@ -17,18 +20,23 @@ const userRoute = router.user,
 
 //set up the express app
 const app = express();
+const compiler = webpack(config);
 
 //Enable All CORS Requests
 app.use(cors());
 
 //log requests to console
 app.use(logger('dev'));
-
+app.use(require('webpack-dev-middleware')(compiler, {
+  noInfo: true,
+  publicPath: config.output.publicPath
+}));
+app.use(require("webpack-hot-middleware")(compiler));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());                                    
 app.use(bodyParser.json({ type: 'application/json'}));  
-app.use(express.static('template'));
+//app.use(express.static('template'));
 
 // Enable CORS from client-side
 app.use((req, res, next) => {
@@ -50,10 +58,22 @@ app.use(categoryRoute);
 app.use(favoriteRoute);
 app.use(voteRoute);
 
-app.get('/*', function(req, res, next){ 
-  res.setHeader('Last-Modified', (new Date()).toUTCString());
-  next(); 
-});
+// app.get('/*', function(req, res, next){ 
+//   res.setHeader('Last-Modified', (new Date()).toUTCString());
+//   next(); 
+// });
+
+// Default catch-all route that sends a message on all PostIt hit.
+const indexPath = path.join(__dirname, '/client/public/index.html');
+const publicPath =
+express.static(path.join(__dirname, '/client/public/dist'));
+
+app.use('/dist', publicPath);
+app.get('/', (req, res) => { res.sendFile(indexPath); });
+
+// app.get('*', function(req, res) {
+//   res.sendFile(path.join( __dirname, './client/public/index.html'));
+// });
 
 app.get('/api', (req, res) => res.status(200).send({
     status: 'success',
@@ -64,5 +84,9 @@ app.all('*', (req, res) => res.status(404).send({
   message: 'Oops! 404. Page not Found',
 }));
 
+const port = parseInt(process.env.PORT, 10) || 8000;
+app.listen(port, () => {
+  console.log('Server listening on port', port);
+});
 export default app;
 

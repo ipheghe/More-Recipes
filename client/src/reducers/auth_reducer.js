@@ -1,6 +1,6 @@
 import { AUTH_USER, UNAUTH_USER, AUTH_ERROR, FORGOT_PASSWORD_REQUEST, RESET_PASSWORD_REQUEST, FETCH_USER, PROTECTED_TEST } from '../actions/types';
 
-const INITIAL_STATE = { error: '', message: '', userData: '', recipeData: [], authenticated: false };
+const INITIAL_STATE = { error: '', message: '', userData: {}, recipeData: [], authenticated: false };
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
