@@ -52,3 +52,9 @@ export const UPVOTE_RECIPE = 'upvote_recipe',
   DOWNVOTE_RECIPE = 'downvote_recipe',
   VOTE_ERROR = 'vote_error';
 
+export const GET_CURRENT_RECIPE_ID = 'GET_CURRENT_RECIPE_ID';
+
+export const IMAGE_FILE_REQUEST = 'IMAGE_FILE_REQUEST'
+export const IMAGE_FILE_SUCCESSFUL='IMAGE_FILE_SUCCESSFUL';
+export const IMAGE_FILE_FAILURE = 'IMAGE_FILE_FAILURE';
+

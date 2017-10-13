@@ -15,7 +15,7 @@ const App = () =>
         <Route path='/recipes/:id' component={ ViewRecipe }/>
         <Route path='/favorite' component={ RequireAuth(Favorite) }/>
         <Route path='/myRecipe' component={ RequireAuth(MyRecipe) }/>
-        <Route path='/addRecipe' component={ RequireAuth(AddRecipe) }/>
+        <Route path='/addRecipe' component={ AddRecipe }/>
         <Route path='/manageRecipe' component={ RequireAuth(ManageRecipe) }/>
         <Route path='/editProfile' component={ RequireAuth(EditProfile) }/>
       </div>

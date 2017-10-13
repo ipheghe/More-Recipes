@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux';
 import { fetchUsername } from '../../actions/auth';
 import { addRecipe } from '../../actions/recipe';
 
+import {uploadImage} from '../../actions/uploadImage';
+
 @connect((state) => {
   return { state, }
 })
@@ -20,12 +22,13 @@ class AddRecipe extends React.Component {
       recipeDetail: '',
       ingredients: '',
       directions: '',
-      recipeImage: '',
+      imageUrl: '',
       hasErrored: false,
       errorMessage: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleAddRecipe = this.handleAddRecipe.bind(this);
+    this.handleImageChange = this.handleImageChange.bind(this);
   }
 
   componentWillMount() {
@@ -38,42 +41,62 @@ class AddRecipe extends React.Component {
       recipeDetail: this.refs.recipeDetail.value,
       ingredients: this.refs.ingredients.value,
       directions: this.refs.directions.value,
-      recipeImage: this.refs.recipeImage.value
     });
+  }
+
+  handleImageChange(e) {
+    let imageUrl = this.state.imageUrl;
+    imageUrl = e.target.files[0];
+    this.setState({
+      imageUrl
+    })
+    console.log(imageUrl)
+    this.props.uploadImage(imageUrl)
+  }
+
+  componentWillReceiveProps(nextprops) {
+
+    console.log(nextprops.imageUrl)
+    if (nextprops.imageUrl) {
+      console.log('***************');
+      this.setState({
+        imageUrl: nextprops.imageUrl
+      })
+    }
   }
 
   handleAddRecipe(e) {
     e.preventDefault();
     console.log('state: ', this.state);
-    let { recipeName, recipeDetail, ingredients, directions, recipeImage } = this.state;
+    let { recipeName, recipeDetail, imageUrl, ingredients, directions } = this.state;
     let isRecipeFieldsvalid;
     if (!isRecipeFieldsvalid) {
       if (recipeName === '') {
-         this.setState({
+        this.setState({
           hasErrored: true,
           errorMessage: 'Recipe name field cannot be empty'
         });
       }
       if (recipeDetail === '') {
-         this.setState({
+        this.setState({
           hasErrored: true,
           errorMessage: 'Recipe Detail field cannot be empty'
         });
       }
       if (ingredients === '') {
-         this.setState({
+        this.setState({
           hasErrored: true,
           errorMessage: 'ingredients field cannot be empty'
         });
       }
       if (directions === '') {
-         this.setState({
+        this.setState({
           hasErrored: true,
           errorMessage: 'directions field cannot be empty'
         });
       }
-      if (recipeImage === '') {
-         this.setState({
+      if (imageUrl === '') {
+        this.setState({
           hasErrored: true,
           errorMessage: 'Recipe image field cannot be empty'
         });
@@ -83,7 +106,8 @@ class AddRecipe extends React.Component {
       hasErrored: false,
       errorMessage: ''
     });
-     this.props.dispatch(addRecipe(recipeName, recipeDetail, ingredients, directions));
+    console.log(recipeName, "recipeName")
+    this.props.addRecipe(recipeName, recipeDetail, imageUrl, ingredients, directions);
   }
 
   render() {
@@ -180,11 +204,11 @@ class AddRecipe extends React.Component {
                           <input
                             type="file"
                             className="form-control-file"
-                            id="recipeImage"
-                            ref="recipeImage"
+                            id="imageUrl"
+                            name="imageUrl"
+                            ref="imageUrl"
                             aria-describedby="fileHelp"
-                            value={this.state.recipeImage}
-                            onChange={this.handleChange}
+                            onChange={this.handleImageChange}
                           />
                           <small id="fileHelp" className="form-text text-muted">Please attach an image file.</small>
                         </div>
@@ -212,8 +236,12 @@ class AddRecipe extends React.Component {
   }
 }
 function mapStateToProps(state) {
-  return { userData: state.auth.userData };
+  return {
+    userData: state.auth.userData,
+    imageFile: state.recipe.imageUrl,
+    imageUrl: state.imageUploadReducer[0].response
+  };
 }
-export default connect(mapStateToProps, { fetchUsername })(AddRecipe);
+export default connect(mapStateToProps, { fetchUsername, addRecipe, uploadImage })(AddRecipe);
 
 

@@ -10,11 +10,15 @@ import axios from 'axios';
 const postReview = ( message, recipeId ) => {
   const data = { message, recipeId };
   const url = `/recipes/${recipeId}/reviews`;
-  return dispatch => postData(REVIEW_RECIPE, REVIEW_ERROR, true, url, dispatch, data);
+  const directTo = '';
+  const toastMessage = 'Review posted Successfully';
+  const constant = 'REVIEW_POSTED';
+  return dispatch => postData(REVIEW_RECIPE, REVIEW_ERROR, true, url, dispatch, data, toastMessage, constant, directTo);
 }
 
 const getReviews = ( recipeId ) => {
   const url = `/reviews/${recipeId}`;
+  console.log(recipeId, '==================>')
   return dispatch => getData(RETRIEVE_RECIPE_REVIEWS, REVIEW_ERROR, true, url, dispatch);
 }
 

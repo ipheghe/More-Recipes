@@ -13,7 +13,6 @@ import { bindActionCreators } from 'redux';
 
 export function errorHandler(dispatch, error, type) {
   console.log('Error type: ', type);
-  console.log(error);
 
   let errorMessage = error.response ? error.response.data : error;
 
@@ -24,23 +23,36 @@ export function errorHandler(dispatch, error, type) {
 }
 
 // Post Request
-export function postData(action, errorType, isAuthReq, url, dispatch, data) {
+export function postData(action, errorType, isAuthReq, url, dispatch, data, message, constant, directTo) {
   const requestUrl = API_URL + url;
   let headers = {};
 
   if (isAuthReq) {
     headers = { headers: { 'x-access-token': localStorage.getItem('token') } };
   }
+  console.log(data);
   axios.post(requestUrl, data, headers)
-  .then((response) => {
-    dispatch({
-      type: action,
-      payload: response.data,
+    .then((response) => {
+      const toastr = bindActionCreators(toastrActions, dispatch);
+      dispatch({
+        type: action,
+        payload: response.data,
+      });
+      if (directTo.length > 3) {
+        location.hash = directTo;
+      }
+      toastr.add({
+        id: constant,
+        type: 'success',
+        title: 'Success',
+        message: message,
+        timeout: 5000,
+      });
+      setTimeout(() => { toastr.remove(constant); }, 3500);
+    })
+    .catch((error) => {
+      errorHandler(dispatch, error.response, errorType);
     });
-  })
-  .catch((error) => {
-    errorHandler(dispatch, error.response, errorType);
-  });
 }
 
 // Get Request
@@ -49,45 +61,57 @@ export function getData(action, errorType, isAuthReq, url, dispatch) {
   let headers = {};
 
   if (isAuthReq) {
-    headers = { headers: { 'x-access-token': localStorage.getItem('token')  } };
+    headers = { headers: { 'x-access-token': localStorage.getItem('token') } };
   }
 
   axios.get(requestUrl, headers)
-  .then((response) => {
-    console.log(response, 'kndkn')
-    dispatch({
-      type: action,
-      payload: response.data,
+    .then((response) => {
+      dispatch({
+        type: action,
+        payload: response.data,
+      });
+    })
+    .catch((error) => {
+      console.log(error, '=============>')
+      errorHandler(dispatch, error.response, errorType);
     });
-  })
-  .catch((error) => {
-    errorHandler(dispatch, error.response, errorType);
-  });
 }
 
 // Put Request
-export function putData(action, errorType, isAuthReq, url, dispatch, data) {
+export function putData(action, errorType, isAuthReq, url, dispatch, data, message, constant, directTo) {
   const requestUrl = API_URL + url;
   let headers = {};
 
   if (isAuthReq) {
-    headers = { headers: { 'x-access-token': localStorage.getItem('token')  } };
+    headers = { headers: { 'x-access-token': localStorage.getItem('token') } };
   }
 
   axios.put(requestUrl, data, headers)
-  .then((response) => {
-    dispatch({
-      type: action,
-      payload: response.data,
+    .then((response) => {
+      console.log(response, 'votesss')
+      dispatch({
+        type: action,
+        payload: response.data,
+      });
+      if (directTo.length > 3) {
+        location.hash = directTo;
+      }
+      toastr.add({
+        id: constant,
+        type: 'success',
+        title: 'Success',
+        message: message,
+        timeout: 5000,
+      });
+      setTimeout(() => { toastr.remove(constant); }, 3500);
+    })
+    .catch((error) => {
+      errorHandler(dispatch, error.response, errorType);
     });
-  })
-  .catch((error) => {
-    errorHandler(dispatch, error.response, errorType);
-  });
 }
 
 // Delete Request
-export function deleteData(action, errorType, isAuthReq, url, dispatch) {
+export function deleteData(action, errorType, isAuthReq, url, dispatch, message, constant, directTo) {
   const requestUrl = API_URL + url;
   let headers = {};
 
@@ -96,13 +120,24 @@ export function deleteData(action, errorType, isAuthReq, url, dispatch) {
   }
 
   axios.delete(requestUrl, headers)
-  .then((response) => {
-    dispatch({
-      type: action,
-      payload: response.data,
+    .then((response) => {
+      dispatch({
+        type: action,
+        payload: response.data,
+      });
+      if (directTo.length > 3) {
+        location.hash = directTo;
+      }
+      toastr.add({
+        id: constant,
+        type: 'success',
+        title: 'Success',
+        message: message,
+        timeout: 5000,
+      });
+      setTimeout(() => { toastr.remove(constant); }, 3500);
+    })
+    .catch((error) => {
+      errorHandler(dispatch, error.response, errorType);
     });
-  })
-  .catch((error) => {
-    errorHandler(dispatch, error.response, errorType);
-  });
 }

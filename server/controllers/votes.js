@@ -28,7 +28,8 @@ const votesController = {
                 status: 'success',
                 message: 'Your vote has been recorded',
                 upvote: recipe.upvotes,
-                downvote: recipe.downvotes
+                downvote: recipe.downvotes,
+                recipe: recipe
               }));
             });
           });
@@ -44,7 +45,8 @@ const votesController = {
                 status: 'success',
                 message: 'Your vote has been recorded',
                 upvote: recipe.upvotes,
-                downvote: recipe.downvotes
+                downvote: recipe.downvotes,
+                recipe: recipe
               }));
             });
           });
@@ -59,7 +61,8 @@ const votesController = {
               status: 'success',
               message: 'Your vote has been removed',
               upvote: recipe.upvotes,
-              downvote: recipe.downvotes
+              downvote: recipe.downvotes,
+              recipe: recipe
             }));
           });
       }
@@ -89,7 +92,8 @@ const votesController = {
                   status: 'success',
                   message: 'Your vote has been recorded',
                   upvote: recipe.upvotes,
-                  downvote: recipe.downvotes
+                  downvote: recipe.downvotes,
+                  recipe: recipe
                 }));
               });
             });
@@ -105,7 +109,8 @@ const votesController = {
                   status: 'success',
                   message: 'Your vote has been recorded',
                   upvote: recipe.upvotes,
-                  downvote: recipe.downvotes
+                  downvote: recipe.downvotes,
+                  recipe: recipe
                 }));
               });
             });
@@ -120,7 +125,8 @@ const votesController = {
                 status: 'success',
                 message: 'Your vote has been removed',
                 upvote: recipe.upvotes,
-                downvote: recipe.downvotes
+                downvote: recipe.downvotes,
+                recipe: recipe
               }));
             });
         }

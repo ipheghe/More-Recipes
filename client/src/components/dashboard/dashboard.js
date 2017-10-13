@@ -3,6 +3,7 @@ import { UserNavHeader, ProfileHeader, UserSection } from "../../views/index";
 import { connect } from 'react-redux';
 import { fetchUsername, logoutUser } from '../../actions/auth';
 import { getTopRecipes } from '../../actions/recipe';
+import { addCategory, getUserCategories } from '../../actions/category';
 import RecipeList from '../recipeList/recipeList';
 
 
@@ -12,7 +13,10 @@ import RecipeList from '../recipeList/recipeList';
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {category: {categoryName:''}}
     this.handleLogout = this.handleLogout.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleAddCategory = this.handleAddCategory.bind(this);
   }
 
   componentWillMount() {
@@ -24,6 +28,22 @@ class Dashboard extends React.Component {
     this.props.dispatch(logoutUser());
   }
 
+  handleChange(e) {
+    // const category = this.state;
+    // [e.target.name]: e.target.value
+    // this.setState({
+    // })
+    const field = e.target.name;
+    const category = this.state.category;
+    category[field] = e.target.value;
+    this.setState({category: category});
+  }
+
+  handleAddCategory(e) {
+    e.preventDefault();
+    this.props.addCategory(this.state.category.categoryName)
+  }
+
   /**
    * SearchWiki layout component that enables a user search wikipedia right from the dashboard.
    * 
@@ -33,7 +53,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div>
-        <UserNavHeader firstName={this.props.userData.firstName} lastName={this.props.userData.lastName} onChange={this.handleLogout}/>
+        <UserNavHeader firstName={this.props.userData.firstName} lastName={this.props.userData.lastName} onChange={this.handleLogout} />
         <div className="banner-background">
           <div className="profile-background">
             <div className="container">
@@ -41,7 +61,13 @@ class Dashboard extends React.Component {
               <br></br>
               <div className="row profile-landing">
                 <section className="col-md-3 profile-details">
-                  <UserSection username={this.props.userData.username} />
+                  <UserSection
+                    username={this.props.userData.username}
+                    categories={this.props.categories}
+                    onChange={this.handleChange}
+                    onClick={this.handleAddCategory}
+                    category={this.state.category}
+                  />
                 </section>
                 <section className="col-md-9 profile-tabs" >
                   <div className="div-section">
@@ -68,7 +94,7 @@ class Dashboard extends React.Component {
                       <h3><b>Top Recipes</b></h3>
                       <br></br>
                       <div className="card-blocks" >
-                        <RecipeList recipes={this.props.recipes} />
+                        <RecipeList recipes={this.props.recipes} onClick={this.handleClick} />
                       </div>
                       <br></br>
                     </div>
@@ -101,7 +127,11 @@ class Dashboard extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { userData: state.auth.userData, recipes: state.recipe.recipeData };
+  return {
+    userData: state.auth.userData,
+    recipes: state.recipe.recipeData,
+    categories: state.auth.categories
+  };
 }
 
-export default connect(mapStateToProps, { fetchUsername })(Dashboard);
+export default connect(mapStateToProps, { fetchUsername, addCategory })(Dashboard);

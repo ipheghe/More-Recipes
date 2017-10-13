@@ -12,26 +12,20 @@ const keys = [
 const recipesController = {
   // add recipe record
   create(req, res) {
-    // console.log(req.body.recipeName);
-    const obj = {
-      recipeName: req.body.recipeName,
-      recipeDescription: req.body.recipeDescription,
-      ingredients: req.body.ingredients,
-      directions: req.body.directions,
-      imageUrl: 'no-image',
-      views: 0,
-      upvotes: 0,
-      downvotes: 0,
-      notification: 0,
-      userId: req.decoded.user.id,
-    };
-
-    // if (req.file) {
-    //   obj.imageUrl = 'no image'
-    // }
     return Recipe
       // logged-in user can add recipe
-      .create(obj)
+      .create({
+        recipeName: req.body.recipeName,
+        recipeDescription: req.body.recipeDescription,
+        ingredients: req.body.ingredients,
+        directions: req.body.directions,
+        imageUrl: req.body.imageUrl,
+        views: 0,
+        upvotes: 0,
+        downvotes: 0,
+        notification: 0,
+        userId: req.decoded.user.id,
+      })
       .then(recipe => res.status(201).send({ 'message': 'Recipe Added SuccessFullly!', 'recipeData': recipe }))
       .catch(error => res.status(400).send({ 'error': error.message }));
   },
@@ -50,7 +44,7 @@ const recipesController = {
           recipeDesc: req.body.recipeDesc || recipe.recipeDesc,
           ingredients: req.body.ingredients || recipe.ingredients,
           directions: req.body.directions || recipe.directions,
-          imageUrl: 'no-image' || recipe.imageUrl,
+          imageUrl: req.body.imageUrl || recipe.imageUrl,
           notification: parseInt(req.body.notification) || recipe.notification,
         })
           .then(updatedRecipe => res.status(200).send({ message: 'Recipe Updated SuccessFullly!', recipeData: recipe }))
@@ -95,7 +89,16 @@ const recipesController = {
   viewRecipe(req, res) {
     // Query database for recipe matching id in params
     return Recipe
-      .findOne({ where: { id: req.params.id } })
+      .findOne({ where: { id: req.params.id }, include: [{
+        model: Review,
+        as: 'reviews',
+        attributes: ['message', 'createdAt'],
+        include: [{
+          model: User,
+          attributes: ['username']
+        }]
+      }],
+     })
       .then((recipe) => {
         // If found, increment the view count and return new data
         recipe.increment('views').then(() => {
@@ -151,7 +154,7 @@ const recipesController = {
       .findAll({
         attributes: keys,
         order: [[sort, order]],
-        limit: 5
+        limit: 10
       })
       .then(recipe => res.status(200).send({ message: 'All Top Recipes Retrieved SuccessFullly!', recipeData: recipe }))
       .catch(error => res.status(400).send({ error: error.message }));

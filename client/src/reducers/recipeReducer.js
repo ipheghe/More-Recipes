@@ -1,6 +1,6 @@
-import { ADD_RECIPE, FETCH_TOP_RECIPES, FETCH_USER_RECIPES, FETCH_RECIPE, UPDATE_RECIPE, DELETE_RECIPE, RECIPE_ERROR } from '../actions/types';
+import { ADD_RECIPE, FETCH_TOP_RECIPES, FETCH_USER_RECIPES, FETCH_RECIPE, UPDATE_RECIPE, DELETE_RECIPE, RECIPE_ERROR, IMAGE_FILE } from '../actions/types';
 
-const INITIAL_STATE = { message: '', error: '', recipeData: [], recipeList: {}, userRecipe: [] };
+const INITIAL_STATE = { message: '', error: '', recipeData: [], recipeList: {}, userRecipe: [], imageUrl: '' };
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -18,7 +18,7 @@ export default function (state = INITIAL_STATE, action) {
       return { ...state, message: action.payload.message };
     case RECIPE_ERROR:
       return { ...state, error: action.payload };
+    default:
+      return state;
   }
-
-  return state;
 }

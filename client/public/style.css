@@ -204,9 +204,6 @@ margin-left: 5px;
 
 }
 
-.recipe-ingredients li span{
-}
-
 .recipe-ingredients li i{
   font-size: 10px;
   margin-right: 5px;
@@ -392,6 +389,9 @@ a:hover {
   padding: 0px;
   font-size: 18px;
   font-weight: 50%;
+}
+.text-muted > span{
+  margin-right: 3px;
 }
 .arrow-key {
   font-size: 100px;
