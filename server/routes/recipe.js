@@ -3,14 +3,9 @@ import authorize from '../../jsontoken';
 import recipesController from '../controllers/recipes';
 import { validateRecipeFields, recipeExists } from '../middlewares/recipeValidation';
 import { validUser } from '../middlewares/userValidation';
+import upload from '../middlewares/uploadRecipeImage';
 
 const router = express.Router();
-
-router.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
 
 //API route for users to add recipe
 router.post('/api/v1/recipes/', authorize.verifyUser, validUser, validateRecipeFields, recipesController.create);
@@ -29,5 +24,8 @@ router.get('/api/v1/recipes/users', authorize.verifyUser, validUser, recipesCont
 
 //API route to retrieve recipes by recipeId and it increments the views column each time recipe is viewed 
 router.get('/api/v1/recipes/:id', authorize.verifyUser, validUser, recipeExists, recipesController.viewRecipe);
+
+//API route to retrieve recipes by recipeId and it increments the views column each time recipe is viewed 
+router.get('/api/v1/recipes/:recipeName', authorize.verifyUser, validUser, recipeExists, recipesController.getRecipe);
 
 export default router;

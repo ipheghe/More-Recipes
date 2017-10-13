@@ -1,20 +1,33 @@
-import React from 'react';
+
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-export default function requireAuthentication(Component) {
-  class AuthenticatedComponent extends React.Component {
-    static propTypes = {
-      isAuthenticated: PropTypes.bool.isRequired,
-      dispatch: PropTypes.func.isRequired
-    };
+export default function (ComposedComponent) {
+  class Authentication extends Component {
 
+    //   componentWillMount() {
+    //     if (!this.props.authenticated) {
+    //       location.hash = '#login';
+    //     }
+    //   }
+
+    //   componentWillUpdate(nextProps) {
+    //     if (!nextProps.authenticated) {
+    //       location.hash = '#login';
+    //     }
+    //   }
+
+    //   render() {
+    //     return <ComposedComponent {...this.props} />;
+    //   }
+    // }
     render() {
       return (
         <div>
-          {this.props.isAuthenticated
-            ? <Component {...this.props} />
+          {this.props.authenticated
+            ? <ComposedComponent {...this.props} />
             :
             <Redirect to={{
               pathname: '/login',
@@ -27,10 +40,9 @@ export default function requireAuthentication(Component) {
     }
   }
 
-  const mapStateToProps = ({ auth }) => ({
-    isAuthenticated: auth.isAuthenticated,
-    token: auth.token
-  });
+  function mapStateToProps(state) {
+    return { authenticated: state.auth.authenticated };
+  }
 
-  return connect(mapStateToProps)(AuthenticatedComponent);
+  return connect(mapStateToProps)(Authentication);
 }

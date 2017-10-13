@@ -14,27 +14,47 @@ export const AUTH_USER = 'auth_user',
 export const FETCH_USER = 'fetch_user';
 
 //= =====================
-// Messaging Actions
+// Recipe Actions
 //= =====================
-export const FETCH_CONVERSATIONS = 'fetch_conversations',
-  FETCH_RECIPIENTS = 'fetch_recipients',
-  START_CONVERSATION = 'start_conversation',
-  FETCH_SINGLE_CONVERSATION = 'fetch_single_conversation',
-  CHAT_ERROR = 'chat_error',
-  SEND_REPLY = 'send_reply';
+export const FETCH_TOP_RECIPES = 'fetch_top_recipes',
+  FETCH_USER_RECIPES = 'fetch_user_recipes',
+  FETCH_RECIPE = 'fetch_recipe',
+  ADD_RECIPE = 'add_recipe',
+  UPDATE_RECIPE = 'update_recipe',
+  DELETE_RECIPE = 'delete_recipe',
+  RECIPE_ERROR = 'recipe_error';
 
 //= =====================
-// Page Actions
+// Review Actions
 //= =====================
-export const SEND_CONTACT_FORM = 'send_contact_form',
-  STATIC_ERROR = 'static_error';
+export const REVIEW_RECIPE = 'review_recipe',
+  RETRIEVE_RECIPE_REVIEWS = 'retrieve_recipe_reviews',
+  REVIEW_ERROR = 'review_error';
 
 //= =====================
-// Customer Actions
+// Category Actions
 //= =====================
-export const CREATE_CUSTOMER = 'create_customer',
-  FETCH_CUSTOMER = 'fetch_customer',
-  CANCEL_SUBSCRIPTION = 'cancel_subscription',
-  UPDATE_BILLING = 'update_billing',
-  BILLING_ERROR = 'billing_error',
-  CHANGE_SUBSCRIPTION = 'change_subscription';
+export const ADD_CATEGORY = 'add_category',
+  FETCH_USER_CATEGORIES = 'fetch_user_categories',
+  CATEGORY_ERROR = 'category_error';
+
+//= =====================
+// Favorite Actions
+//= =====================
+export const FAVORITE_RECIPE = 'favorite_recipe',
+  RETRIEVE_USER_FAVORITE_RECIPES = 'retrieve_user_favorite_recipes',
+  FAVORITE_ERROR = 'favorite_error';
+
+//= =====================
+// Vote Actions
+//= =====================
+export const UPVOTE_RECIPE = 'upvote_recipe',
+  DOWNVOTE_RECIPE = 'downvote_recipe',
+  VOTE_ERROR = 'vote_error';
+
+export const GET_CURRENT_RECIPE_ID = 'GET_CURRENT_RECIPE_ID';
+
+export const IMAGE_FILE_REQUEST = 'IMAGE_FILE_REQUEST'
+export const IMAGE_FILE_SUCCESSFUL='IMAGE_FILE_SUCCESSFUL';
+export const IMAGE_FILE_FAILURE = 'IMAGE_FILE_FAILURE';
+

@@ -5,7 +5,7 @@ const Category = db.Category;
 
 const validateCategoryField = (req, res, next) => {
 	//check if category name field is empty
-	if (!req.body.name || req.body.name.trim() === '') {
+	if (!req.body.name || req.body.name === '') {
 	  return res.status(400)
 	  .send({'message': 'category name field cannot be empty'
 	  });

@@ -8,7 +8,7 @@ import '../../public/style.css';
 import '../../../node_modules/font-awesome/css/font-awesome.min.css'; 
 import * as localStore from '../localStore';
 import cookie from 'react-cookies';  
-import { AUTH_USER } from '../actions/actionTypes';
+import { AUTH_USER } from '../actions/types';
 import { BrowserRouter } from 'react-router-dom';
 import ReduxToastr from 'react-redux-toastr'
 
