@@ -5,6 +5,7 @@ import { fetchUsername } from '../../actions/auth';
 import { getRecipe } from '../../actions/recipe';
 import { postReview, getReviews } from '../../actions/review';
 import { upvoteRecipe, downvoteRecipe } from '../../actions/vote';
+import { favoriteRecipe } from '../../actions/favorite';
 
 @connect((state) => {
   return { state, }
@@ -15,11 +16,13 @@ class ViewRecipe extends React.Component {
     super(props);
     this.state = {
       recipe: {},
+      categoryName: 'foreign dish',
       isLoading: true,
       reviewMessage: ''
     }
     this.handleChange = this.handleChange.bind(this);
     this.handlePostReview = this.handlePostReview.bind(this);
+    this.handleFavoriteRecipe = this.handleFavoriteRecipe.bind(this);
   }
 
   componentDidMount() {
@@ -42,9 +45,6 @@ class ViewRecipe extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     });
-    let categoryName = this.state
-    categoryName[field] = e.target.value;
-    return this.setState({categoryName: user});
   }
 
   handlePostReview(e) {
@@ -65,6 +65,13 @@ class ViewRecipe extends React.Component {
   handleDownvote = (e) => {
     const { id } = this.props.match.params
     this.props.downvoteRecipe(id)
+  }
+
+  handleFavoriteRecipe() {
+    const { id } = this.props.match.params
+    const {categoryId}  = this.refs.categoryName.value
+    this.props.favoriteRecipe(id, this.refs.categoryName.value)
+
   }
 
   /**
@@ -175,13 +182,6 @@ class ViewRecipe extends React.Component {
                 </section>
               </div>
               <div>
-                {this.props.reviewData.userId &&
-                  < ReviewBox
-                    username={this.props.userData.username}
-                    createdAt={this.props.reviewData.createdAt}
-                    message={this.props.reviewData.message}
-                  />
-                }
                 {
                   reviewFields.map((item, i) => {
                     return (
@@ -210,25 +210,22 @@ class ViewRecipe extends React.Component {
                 <div class="form-group">
                   <label for="category-list">Select Category</label>
                   <select
-                  type="text"
-                  className="form-control"
-                  ref="categoryName"
-                  name="categoryName"
-                  value={this.state.categoryName}
-                  onChange={this.handleChange}
-                >
-                  {
-                    (this.props.userRecipe && this.props.userRecipe.length > 0) ?
-                      this.props.userRecipe.map((userRecipe, index) => <option value={userRecipe.recipeName} key={index} >{userRecipe.recipeName}</option>)
-                      : null
-                  }
-                </select>
-                  <button type="button" class="btn btn-success">Load Recipe Details</button>
+                    type="text"
+                    className="form-control"
+                    ref="categoryName"
+                    name="categoryName"
+                  >
+                    {
+                      (this.props.categories && this.props.categories.length > 0) ?
+                        this.props.categories.map((category, index) => <option value={category.id} key={index} >{category.name}</option>)
+                        : null
+                    }
+                  </select>
                 </div>
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" className="btn btn-success" data-dismiss="modal">Recover Password</button>
+                <button type="button" className="btn btn-success" data-dismiss="modal" onClick={this.handleFavoriteRecipe}>Favorite Recipe</button>
               </div>
             </div>
           </div>
@@ -240,6 +237,7 @@ class ViewRecipe extends React.Component {
 function mapStateToProps(state) {
   console.log(state.review, 'uuuuuu')
   return {
+    categories: state.auth.categories,
     userData: state.auth.userData,
     recipe: state.recipe.recipeList,
     review: state.review.reviewList,
@@ -249,5 +247,13 @@ function mapStateToProps(state) {
     downvote: state.vote.downvote,
   };
 }
-export default connect(mapStateToProps, { getRecipe, getReviews, postReview, upvoteRecipe, downvoteRecipe })(ViewRecipe);
+export default connect(mapStateToProps,
+   { 
+     getRecipe, 
+     getReviews, 
+     postReview, 
+     upvoteRecipe, 
+     downvoteRecipe,
+     favoriteRecipe 
+    })(ViewRecipe);
 

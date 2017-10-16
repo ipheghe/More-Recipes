@@ -28,7 +28,6 @@ const favoritesController = {
       where: { userId: req.decoded.user.id },
       include: [{
         model: Recipe,
-        attributes: ['recipeName', 'recipeDescription', 'ingredients', 'directions'],
         include: [{
           model: User,
           attributes: ['username']

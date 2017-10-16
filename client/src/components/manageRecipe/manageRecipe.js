@@ -16,6 +16,7 @@ class ManageRecipe extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      recipe: {},
       recipeName: 'coconut',
       recipeDetail: '',
       ingredients: '',
@@ -37,7 +38,7 @@ class ManageRecipe extends React.Component {
 
   handleChange(e) {
     this.setState({
-      recipeName: this.refs.recipeName.value,
+      // recipeName: this.refs.recipeName.value,
       recipeDetail: this.refs.recipeDetail.value,
       ingredients: this.refs.ingredients.value,
       directions: this.refs.directions.value,
@@ -48,17 +49,18 @@ class ManageRecipe extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps, 'next')
-    this.setState({
-      recipeDetail: nextProps.recipe.recipeDescription,
-      ingredients: nextProps.recipe.ingredients,
-      directions: nextProps.recipe.directions,
-    });
+    if (nextProps.recipe) {
+      this.setState({
+        recipe: nextProps.recipe,
+        recipeDetail: nextProps.recipe.recipeDescription,
+        ingredients: nextProps.recipe.ingredients,
+        directions: nextProps.recipe.directions
+      });
+    }
   }
 
   handleLoadRecipe(e) {
-    console.log('here', this.props.recipe.recipeName)
-    this.props.getRecipe(7);
+    this.props.getRecipe(this.refs.recipeName.value);
   }
 
   handleLogout = (e) => {
@@ -68,39 +70,40 @@ class ManageRecipe extends React.Component {
   handleUpdateRecipe(e) {
     e.preventDefault();
     console.log('state: ', this.state);
-    let { recipeName, recipeDetail, ingredients, directions } = this.state;
+    let {  recipeDetail, ingredients, directions } = this.state;
     let isRecipeFieldsvalid;
     if (!isRecipeFieldsvalid) {
-      if (recipeName === '') {
-         this.setState({
-          hasErrored: true,
-          errorMessage: 'Recipe name field cannot be empty'
-        });
-      }
+      
       if (recipeDetail === '') {
-         this.setState({
+        this.setState({
           hasErrored: true,
           errorMessage: 'Recipe Detail field cannot be empty'
         });
       }
       if (ingredients === '') {
-         this.setState({
+        this.setState({
           hasErrored: true,
           errorMessage: 'ingredients field cannot be empty'
         });
       }
       if (directions === '') {
-         this.setState({
+        this.setState({
           hasErrored: true,
           errorMessage: 'directions field cannot be empty'
         });
       }
     }
-     this.props.updateRecipe(this.props.recipe.id, recipeName, recipeDetail, ingredients, directions);
+    this.props.updateRecipe(this.props.recipe.id, recipeDetail, ingredients, directions);
   }
 
   handleDeleteRecipe(e) {
-     this.props.deleteRecipe(this.props.recipe.id);
+    this.props.deleteRecipe(this.props.recipe.id);
+  }
+
+  handleAddCategory(e) {
+    e.preventDefault();
+    this.props.addCategory(this.state.category.categoryName)
+    this.props.dispatch(fetchUsername());
   }
   /**
    * SearchWiki layout component that enables a user search wikipedia right from the dashboard.
@@ -109,9 +112,6 @@ class ManageRecipe extends React.Component {
    * @param {component} <Footer/> - The landing page footer navigation.
    */
   render() {
-    // console.info('hjnn') 
-    const { recipeDetail = '' } = this.props.recipe;
-    console.log('in render', this.props.recipe.recipeDescription)
     return (
       <div>
         <UserNavHeader firstName={this.props.userData.firstName} lastName={this.props.userData.lastName} onChange={this.handleLogout} />
@@ -122,7 +122,7 @@ class ManageRecipe extends React.Component {
               <br></br>
               <div className="row profile-landing">
                 <section className="col-md-3 profile-details">
-                  <UserSection username={this.props.userData.username} />
+                  <UserSection />
                 </section>
                 <section className="col-md-9 profile-tabs" >
                   <div className="div-section">
@@ -156,12 +156,10 @@ class ManageRecipe extends React.Component {
                             className="form-control"
                             ref="recipeName"
                             name="recipeName"
-                            value={this.state.recipeName}
-                            onChange={this.handleChange}
                           >
                             {
                               (this.props.userRecipe && this.props.userRecipe.length > 0) ?
-                                this.props.userRecipe.map((userRecipe, index) => <option value={userRecipe.recipeName} key={index} >{userRecipe.recipeName}</option>)
+                                this.props.userRecipe.map((userRecipe, index) => <option value={userRecipe.id} key={index} >{userRecipe.recipeName}</option>)
                                 : null
                             }
                           </select>
@@ -197,7 +195,7 @@ class ManageRecipe extends React.Component {
                             id="directions"
                             ref="directions"
                             rows="10"
-                            placeholder={this.props.recipe.directions}
+                            placeholder={this.state.directions}
                             value={this.state.directions}
                             onChange={this.handleChange}
                           />
@@ -210,7 +208,7 @@ class ManageRecipe extends React.Component {
                             name="recipeImage"
                             ref="recipeImage"
                             aria-describedby="fileHelp"
-                            value={this.state.recipeImage}
+                            value={this.recipeImage}
                             onChange={this.handleChange}
                           />
                           <small id="fileHelp" className="form-text text-muted">Please attach an image file.</small>
@@ -242,7 +240,7 @@ function mapStateToProps(state) {
   return {
     userData: state.auth.userData,
     userRecipe: state.recipe.userRecipe,
-    recipe: state.recipe.recipeList,
+    recipe: state.recipe.recipeList
   };
 }
 export default connect(mapStateToProps, { fetchUsername, updateRecipe, deleteRecipe, getUserRecipes, getRecipe })(ManageRecipe);

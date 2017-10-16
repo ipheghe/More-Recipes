@@ -68,7 +68,7 @@ const usersController = {
         where: { username: req.params.username }, include: [{
           model: Category,
           as: 'categories',
-          attributes: ['name']
+          attributes: ['id','name']
         }],
       })
       .then((user) => {

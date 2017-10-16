@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchUsername } from '../../actions/auth';
 import { addRecipe } from '../../actions/recipe';
-
-import {uploadImage} from '../../actions/uploadImage';
+import { uploadImage } from '../../actions/uploadImage';
 
 @connect((state) => {
   return { state, }
@@ -40,7 +39,7 @@ class AddRecipe extends React.Component {
       recipeName: this.refs.recipeName.value,
       recipeDetail: this.refs.recipeDetail.value,
       ingredients: this.refs.ingredients.value,
-      directions: this.refs.directions.value,
+      directions: this.refs.directions.value
     });
   }
 
@@ -121,7 +120,7 @@ class AddRecipe extends React.Component {
               <br></br>
               <div className="row profile-landing">
                 <section className="col-md-3 profile-details">
-                  <UserSection username={this.props.userData.username} />
+                  <UserSection />
                 </section>
                 <section className="col-md-9 profile-tabs" >
                   <div className="div-section">

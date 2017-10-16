@@ -13,14 +13,16 @@ import RecipeList from '../recipeList/recipeList';
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {category: {categoryName:''}}
+    // this.state = {
+    //   category: {categoryName:''},
+    //   categories: []
+    //  }
     this.handleLogout = this.handleLogout.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleAddCategory = this.handleAddCategory.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.handleAddCategory = this.handleAddCategory.bind(this);
   }
 
   componentWillMount() {
-    this.props.dispatch(fetchUsername());
     this.props.dispatch(getTopRecipes());
   }
 
@@ -28,21 +30,34 @@ class Dashboard extends React.Component {
     this.props.dispatch(logoutUser());
   }
 
-  handleChange(e) {
-    // const category = this.state;
-    // [e.target.name]: e.target.value
-    // this.setState({
-    // })
-    const field = e.target.name;
-    const category = this.state.category;
-    category[field] = e.target.value;
-    this.setState({category: category});
-  }
+  // handleChange(e) {
+  //   // const category = this.state;
+  //   // [e.target.name]: e.target.value
+  //   // this.setState({
+  //   // })
+  //   // const field = e.target.name;
+  //   // const category = this.state.category;
+  //   // category[field] = e.target.value;
+  //   // this.setState({category: category});
+  // }
 
-  handleAddCategory(e) {
-    e.preventDefault();
-    this.props.addCategory(this.state.category.categoryName)
-  }
+  // handleAddCategory(e) {
+  //   e.preventDefault();
+  //   this.props.addCategory(this.state.category.categoryName)
+  //   this.props.dispatch(fetchUsername());
+  // }
+
+  // componentWillReceiveProps(nextprops) {
+
+  //       console.log(nextprops.categories)
+  //       if (nextprops.categories) {
+  //         console.log('***************||***************');
+  //         const categories = this.state.categories;
+  //         this.setState({
+  //           categories: nextprops.categories
+  //         })
+  //       }
+  //     }
 
   /**
    * SearchWiki layout component that enables a user search wikipedia right from the dashboard.
@@ -61,13 +76,7 @@ class Dashboard extends React.Component {
               <br></br>
               <div className="row profile-landing">
                 <section className="col-md-3 profile-details">
-                  <UserSection
-                    username={this.props.userData.username}
-                    categories={this.props.categories}
-                    onChange={this.handleChange}
-                    onClick={this.handleAddCategory}
-                    category={this.state.category}
-                  />
+                  < UserSection />
                 </section>
                 <section className="col-md-9 profile-tabs" >
                   <div className="div-section">
@@ -94,7 +103,7 @@ class Dashboard extends React.Component {
                       <h3><b>Top Recipes</b></h3>
                       <br></br>
                       <div className="card-blocks" >
-                        <RecipeList recipes={this.props.recipes} onClick={this.handleClick} />
+                        <RecipeList recipes={this.props.recipes} />
                       </div>
                       <br></br>
                     </div>
@@ -129,9 +138,8 @@ class Dashboard extends React.Component {
 function mapStateToProps(state) {
   return {
     userData: state.auth.userData,
-    recipes: state.recipe.recipeData,
-    categories: state.auth.categories
+    recipes: state.recipe.recipeData
   };
 }
 
-export default connect(mapStateToProps, { fetchUsername, addCategory })(Dashboard);
+export default connect(mapStateToProps, { fetchUsername })(Dashboard);

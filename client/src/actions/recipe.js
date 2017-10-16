@@ -30,7 +30,7 @@ const addRecipe = (recipeName, recipeDescription, imageUrl, ingredients, directi
   return dispatch => postData(ADD_RECIPE, RECIPE_ERROR, true, url, dispatch, data, message, constant, directTo);
 }
 
-const updateRecipe = (recipeId, recipeName, recipeDescription, ingredients, directions) => {
+const updateRecipe = (recipeId, recipeDescription, ingredients, directions) => {
   const data = { recipeName, recipeDescription, ingredients, directions };
   const url = `/recipes/${recipeId}`;
   const directTo = '#myRecipe';

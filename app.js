@@ -69,7 +69,8 @@ const publicPath =
 express.static(path.join(__dirname, '/client/public/dist'));
 
 app.use('/dist', publicPath);
-app.get('/', (req, res) => { res.sendFile(indexPath); });
+//app.get('/', (req, res) => { res.sendFile(indexPath); });
+app.get('*', (req, res) => { res.sendFile(indexPath); });
 
 // app.get('*', function(req, res) {
 //   res.sendFile(path.join( __dirname, './client/public/index.html'));

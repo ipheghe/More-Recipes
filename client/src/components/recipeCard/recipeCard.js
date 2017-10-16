@@ -15,14 +15,7 @@ const RecipeCard = ({ recipe, onClick }) => {
           <span className="views"><i className="fa fa-eye" aria-hidden="true" style={{ color: 'green' }}></i>{recipe.views}</span>
           <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true" style={{ color: 'red' }}></i>{recipe.upvotes}</span>
           <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true" style={{ color: 'orange' }}></i>{recipe.downvotes}</span>
-          {/* <a href="#viewRecipe"><button type="button" className="btn btn-secondary btn-sm" onClick={onClick}>More</button></a> */}
-          <Link to="/recipes/7" className="btn btn-secondary btn-sm" >More</Link>
-          {/* <a 
-            href='#?' 
-            className="btn btn-secondary btn-sm"
-            onClick={() => {onClick(recipe.id)}}
-           >More
-          </a> */}
+          <Link to={"/recipes/"+recipe.id} className="btn btn-secondary btn-sm" >More</Link>
         </small>
       </div>
     </div>
