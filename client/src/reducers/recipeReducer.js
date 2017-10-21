@@ -17,7 +17,7 @@ export default function (state = INITIAL_STATE, action) {
     case DELETE_RECIPE:
       return { ...state, message: action.payload.message };
     case RECIPE_ERROR:
-      return { ...state, error: action.payload };
+      return { ...state, error: action.payload.data.error };
     default:
       return state;
   }

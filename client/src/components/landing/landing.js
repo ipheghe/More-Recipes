@@ -1,10 +1,15 @@
 import React from "react";
+import { connect } from 'react-redux';
 import { MainHeader } from "../../views/index";
+import RecipeList from '../recipeList/recipeList';
+import { getTopRecipes } from '../../actions/recipe';
 
 class Landing extends React.Component {
+
+  componentDidMount() {
+    this.props.getTopRecipes();
+  }
   /**
-   * SearchWiki layout component that enables a user search wikipedia right from the dashboard.
-   * 
    * @param {component} <MainHeader/> - The landing page main header navigation.
    * @param {component} <Footer/> - The landing page footer navigation.
    */
@@ -45,134 +50,7 @@ class Landing extends React.Component {
             <h3>Welcome to the top recipes of the week</h3>
           </div>
           <div className="card-blocks-home" >
-            <div className="card">
-              <img className="card-img-top" src="/dist/egusi_new.jpg" alt="Card image cap" />
-              <div className="card-block">
-                <h4 className="card-title">Egusi Soup</h4>
-                <p className="card-text">This is an african native soup from Nigeria.It is so delicious and suptuous.</p>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">
-                  <span className="views"><i className="fa fa-eye" aria-hidden="true"></i>420</span>
-                  <span className="reviews"><i className="fa fa-comment" aria-hidden="true"></i>100</span>
-                  <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true"></i>310</span>
-                  <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
-                  <button type="button" className="btn btn-secondary btn-sm">More</button>
-                </small>
-              </div>
-            </div>
-            <div className="card">
-              <img className="card-img-top" src="/dist/sharwama.jpg" alt="Card image cap" />
-              <div className="card-block">
-                <h4 className="card-title">Sharwama</h4>
-                <p className="card-text">This is a nourishing, delightful, and appetizing snack.I so much love it!!!.</p>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">
-                  <span className="views"><i className="fa fa-eye" aria-hidden="true"></i>320</span>
-                  <span className="reviews"><i className="fa fa-comment" aria-hidden="true"></i>200</span>
-                  <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true"></i>200</span>
-                  <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
-                  <button type="button" className="btn btn-secondary btn-sm">More</button>
-                </small>
-              </div>
-            </div>
-            <div className="card">
-              <img className="card-img-top" src="/dist/friedrice.jpg" alt="Card image cap" />
-              <div className="card-block">
-                <h4 className="card-title">Fried Rice</h4>
-                <p className="card-text">This is a very popular meal all over the world. Everyone loves and enjoys it.</p>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">
-                  <span className="views"><i className="fa fa-eye" aria-hidden="true"></i>290</span>
-                  <span className="reviews"><i className="fa fa-comment" aria-hidden="true"></i>100</span>
-                  <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true"></i>190</span>
-                  <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true"></i>20</span>
-                  <button type="button" className="btn btn-secondary btn-sm">More</button>
-                </small>
-              </div>
-            </div>
-            <div className="card">
-              <img className="card-img-top" src="/dist/chocolate_cake.jpg" alt="Card image cap" />
-              <div className="card-block">
-                <h4 className="card-title">Chocolate Cake</h4>
-                <p className="card-text">Who cares for a lovely slice of crusty chocolate cake? Everyone is the answer..</p>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">
-                  <span className="views"><i className="fa fa-eye" aria-hidden="true"></i>220</span>
-                  <span className="reviews"><i className="fa fa-comment" aria-hidden="true"></i>50</span>
-                  <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true"></i>100</span>
-                  <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true"></i>40</span>
-                  <button type="button" className="btn btn-secondary btn-sm">More</button>
-                </small>
-              </div>
-            </div>
-            <div className="card">
-              <img className="card-img-top" src="/dist/chickenChips.jpg" alt="Card image cap" />
-              <div className="card-block">
-                <h4 className="card-title">Chicken and Chips</h4>
-                <p className="card-text">Popular food all over the world. Very easy to prepare</p>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">
-                  <span className="views"><i className="fa fa-eye" aria-hidden="true"></i>200</span>
-                  <span className="reviews"><i className="fa fa-comment" aria-hidden="true"></i>30</span>
-                  <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true"></i>90</span>
-                  <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
-                  <button type="button" className="btn btn-secondary btn-sm">More</button>
-                </small>
-              </div>
-            </div>
-            <div className="card">
-              <img className="card-img-top" src="/dist/jollofrice.jpg" alt="Card image cap" />
-              <div className="card-block">
-                <h4 className="card-title">Jollof Rice</h4>
-                <p className="card-text">The most popular Nigerian dish that has lead to country wars, just kidding!!!.</p>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">
-                  <span className="views"><i className="fa fa-eye" aria-hidden="true"></i>220</span>
-                  <span className="reviews"><i className="fa fa-comment" aria-hidden="true"></i>100</span>
-                  <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true"></i>200</span>
-                  <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
-                  <button type="button" className="btn btn-secondary btn-sm">More</button>
-                </small>
-              </div>
-            </div>
-            <div className="card">
-              <img className="card-img-top" src="/dist/pizza1.jpg" alt="Card image cap" />
-              <div className="card-block">
-                <h4 className="card-title">Pepperoni Pizza</h4>
-                <p className="card-text">This recipe is a hearty, zesty main dish with a crisp, golden crust. Feel free to use whatever toppings your family enjoys.</p>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">
-                  <span className="views"><i className="fa fa-eye" aria-hidden="true"></i>200</span>
-                  <span className="reviews"><i className="fa fa-comment" aria-hidden="true"></i>30</span>
-                  <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true"></i>90</span>
-                  <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
-                  <button type="button" className="btn btn-secondary btn-sm">More</button>
-                </small>
-              </div>
-            </div>
-            <div className="card">
-              <img className="card-img-top" src="/dist/peppersoup.jpg" alt="Card image cap" />
-              <div className="card-block">
-                <h4 className="card-title">Peppersoup</h4>
-                <p className="card-text">This recipe is sweet, tasty and delicious. Assorted meat and fish goews well with it</p>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">
-                  <span className="views"><i className="fa fa-eye" aria-hidden="true"></i>200</span>
-                  <span className="reviews"><i className="fa fa-comment" aria-hidden="true"></i>30</span>
-                  <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true"></i>90</span>
-                  <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true"></i>60</span>
-                  <button type="button" className="btn btn-secondary btn-sm">More</button>
-                </small>
-              </div>
-            </div>
+            <RecipeList recipes={this.props.recipes} />
           </div>
         </section>
         <br></br>
@@ -181,4 +59,10 @@ class Landing extends React.Component {
   }
 }
 
-export default Landing;
+function mapStateToProps(state) {
+  return {
+    recipes: state.recipe.recipeData
+  };
+}
+
+export default connect(mapStateToProps, { getTopRecipes })(Landing);

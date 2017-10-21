@@ -15,7 +15,7 @@ import ReduxToastr from 'react-redux-toastr'
 
 const store = configureStore({});
 const app = document.getElementById('app');
-const token = sessionStorage.getItem('token');
+const token = localStorage.getItem('token');
 
 if (token) {
   // Update application state. User has token and is probably authenticated

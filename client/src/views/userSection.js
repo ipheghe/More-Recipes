@@ -2,7 +2,6 @@ import React from 'react';
 import Logo from '../../public/images/recipe_logo.png';
 import { addCategory, getUserCategories } from './../actions/category';
 import { connect } from 'react-redux';
-import { fetchUsername, logoutUser } from './../actions/auth';
 
 @connect((state) => {
 	return { state, }
@@ -20,10 +19,9 @@ class UserSection extends React.Component {
 	}
 
 	componentDidMount() {
-			this.setState({
-				categories: this.props.dispatch(fetchUsername())
-			});
-		//this.props.dispatch(fetchUsername());
+		this.setState({
+			categories: this.props.getUserCategories()
+		});
 	}
 
 	handleChange(e) {
@@ -35,7 +33,6 @@ class UserSection extends React.Component {
 	handleAddCategory(e) {
 		e.preventDefault();
 		this.props.addCategory(this.state.categoryName)
-		this.props.dispatch(fetchUsername());
 	}
 
 	componentWillReceiveProps(nextprops) {
@@ -44,20 +41,12 @@ class UserSection extends React.Component {
 		console.log("here categories", nextprops.state.auth.categories);
 		if (nextprops.state.auth.categories) {
 			console.log(this.state, 'state category')
-      this.setState({
-        categories: nextprops.state.auth.categories,
-        isLoading: false,
-      })
-    }
-  }
-	// 	if (nextprops.categories) {
-	// 		console.log('***************||***************');
-	// 		const categories = this.state.categories;
-	// 		this.setState({
-	// 			categories: nextprops.categories
-	// 		})
-	// 	}
-	// }
+			this.setState({
+				categories: nextprops.state.auth.categories,
+				isLoading: false,
+			})
+		}
+	}
 
   /**
    * SearchWiki layout component that enables a user search wikipedia right from the dashboard.
@@ -66,8 +55,6 @@ class UserSection extends React.Component {
    * @param {component} <Footer/> - The landing page footer navigation.
    */
 	render() {
-
-
 		return (
 			<main>
 				<div className="div-profile">
@@ -121,5 +108,5 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, { fetchUsername, addCategory, getUserCategories })(UserSection);
+export default connect(mapStateToProps, { addCategory, getUserCategories })(UserSection);
 

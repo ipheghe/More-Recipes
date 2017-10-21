@@ -104,8 +104,16 @@ class Register extends React.Component {
       errorMessage: ''
     });
     return this.props.registerUser({ username, password, firstName, lastName, mobileNumber, email });
+  }
 
-
+  renderAlert() {
+    if (this.props.errorMessage) {
+      return (
+        <div style={{color: 'white'}}>
+          <span><strong>Error!</strong> {this.props.errorMessage}</span>
+        </div>
+      );
+    }
   }
 
   /**
@@ -129,6 +137,7 @@ class Register extends React.Component {
               <section className="col-md-5 account">
                 <div>
                   <form className="reg-form">
+                    {this.renderAlert()}
                     <h3 className="login-form-boxx">Registration Form</h3>
                     <br></br>
                     <div className="form-group">

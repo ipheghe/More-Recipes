@@ -1,8 +1,6 @@
 import React from "react";
 import { UserNavHeader, ProfileHeader, UserSection } from "../../views/index";
 import { connect } from 'react-redux';
-import { fetchUsername, logoutUser } from '../../actions/auth';
-import { getTopRecipes } from '../../actions/recipe';
 import { addCategory, getUserCategories } from '../../actions/category';
 import RecipeList from '../recipeList/recipeList';
 
@@ -13,51 +11,7 @@ import RecipeList from '../recipeList/recipeList';
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   category: {categoryName:''},
-    //   categories: []
-    //  }
-    this.handleLogout = this.handleLogout.bind(this);
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleAddCategory = this.handleAddCategory.bind(this);
   }
-
-  componentWillMount() {
-    this.props.dispatch(getTopRecipes());
-  }
-
-  handleLogout(e) {
-    this.props.dispatch(logoutUser());
-  }
-
-  // handleChange(e) {
-  //   // const category = this.state;
-  //   // [e.target.name]: e.target.value
-  //   // this.setState({
-  //   // })
-  //   // const field = e.target.name;
-  //   // const category = this.state.category;
-  //   // category[field] = e.target.value;
-  //   // this.setState({category: category});
-  // }
-
-  // handleAddCategory(e) {
-  //   e.preventDefault();
-  //   this.props.addCategory(this.state.category.categoryName)
-  //   this.props.dispatch(fetchUsername());
-  // }
-
-  // componentWillReceiveProps(nextprops) {
-
-  //       console.log(nextprops.categories)
-  //       if (nextprops.categories) {
-  //         console.log('***************||***************');
-  //         const categories = this.state.categories;
-  //         this.setState({
-  //           categories: nextprops.categories
-  //         })
-  //       }
-  //     }
 
   /**
    * SearchWiki layout component that enables a user search wikipedia right from the dashboard.
@@ -68,7 +22,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div>
-        <UserNavHeader firstName={this.props.userData.firstName} lastName={this.props.userData.lastName} onChange={this.handleLogout} />
+        <UserNavHeader />
         <div className="banner-background">
           <div className="profile-background">
             <div className="container">
@@ -142,4 +96,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { fetchUsername })(Dashboard);
+export default connect(mapStateToProps)(Dashboard);

@@ -103,10 +103,10 @@ export function signupFailed() {
 
 export function logoutUser(error) {
   return function (dispatch) {
-    dispatch({ type: UNAUTH_USER, payload: error || '' });
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.clear();
     location.hash = '#';
+    dispatch({ type: UNAUTH_USER, payload: error || '' });
+    // localStorage.clear();
   };
 }
 

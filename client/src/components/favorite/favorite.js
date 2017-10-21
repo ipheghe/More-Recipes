@@ -19,7 +19,7 @@ class Favorite extends React.Component {
   render() {
     return (
       <div>
-        <UserNavHeader firstName={this.props.userData.firstName} lastName={this.props.userData.lastName}  />
+        <UserNavHeader />
         <div className="banner-background">
           <div className="profile-background">
             <div className="container">

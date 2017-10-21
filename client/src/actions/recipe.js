@@ -48,7 +48,7 @@ const deleteRecipe = (recipeId) => {
 }
 
 const getTopRecipes = () => {
-  const url = '/recipes?sort=upvotes&order=descending';
+  const url = '/topRecipes?sort=upvotes&order=descending';
   return dispatch => getData(FETCH_TOP_RECIPES, RECIPE_ERROR, true, url, dispatch);
 }
 
