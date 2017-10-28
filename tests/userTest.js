@@ -54,7 +54,7 @@ describe('Response Object', () => {
   });
 });
 describe('Catch invalid routes', () => {
-    it('return a 404 if route not found', (done) => {
+    it('should return a 404 if route not found', (done) => {
       server
         .get('/api/ydddfh')
         .set('Connection', 'keep alive')

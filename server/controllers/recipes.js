@@ -189,6 +189,47 @@ const recipesController = {
         return res.status(200).send({ message: 'Recipes Retrieved SuccessFullly!', recipeData: recipe });
       })
       .catch(error => res.status(400).send({ error: error.message }));
-  }
+  },
+    // search recipes by ingredients
+    searchRecipes(req, res, next) {
+      // If query key does not match ingredients, call next on the next handler
+      if (!req.query.search) return next();
+  
+      // if multiple ingredients are present, split by the comma
+      const search = req.query.search.split(',');
+  
+      // If multiple ingredients are present, map each keyword to an object and use
+      // the $or and $iLike for case insensitivity sequelize complex query to perform search
+      const query = search.map(word => ({
+        ingredients: {
+          $iLike: `%${word}%`
+        }
+      }));
+      const query1 = search.map(word => ({
+        recipeName: {
+          $iLike: `%${word}%`
+        }
+      }));
+      const query2= search.map(word => ({
+        recipeDescription: {
+          $iLike: `%${word}%`
+        }
+      }));
+      return Recipe
+        .all({
+          where: { $or: query },
+          limit: 2,
+          attributes: keys
+        })
+        .then((recipe) => {
+          if (!recipe.length) {
+            return res.status(200).send({
+              message: 'No recipe matches your search'
+            });
+          }
+          return res.status(200).send({ message: 'Recipes Retrieved!', recipeData: recipe });
+        })
+        .catch(error => res.status(400).send({ error: error.message }));
+    }
 };
 export default recipesController;

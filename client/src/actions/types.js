@@ -19,6 +19,7 @@ export const FETCH_USER = 'fetch_user';
 export const FETCH_TOP_RECIPES = 'fetch_top_recipes',
   FETCH_USER_RECIPES = 'fetch_user_recipes',
   FETCH_RECIPE = 'fetch_recipe',
+  SEARCH_RECIPES = 'search_recipes',
   ADD_RECIPE = 'add_recipe',
   UPDATE_RECIPE = 'update_recipe',
   DELETE_RECIPE = 'delete_recipe',

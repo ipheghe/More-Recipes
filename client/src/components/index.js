@@ -8,6 +8,7 @@ import MyRecipe from './myRecipe/myRecipe';
 import AddRecipe from './addRecipe/addRecipe';
 import ManageRecipe from './manageRecipe/manageRecipe';
 import EditProfile from './editProfile/editProfile';
+import Search from './search/search.jsx';
 import NotFoundPage from './notFound';
 
-export { Landing, Login, Register, Dashboard, ViewRecipe, Favorite, MyRecipe, AddRecipe, ManageRecipe, EditProfile, NotFoundPage};
+export { Landing, Login, Register, Dashboard, ViewRecipe, Favorite, MyRecipe, AddRecipe, ManageRecipe, EditProfile, Search, NotFoundPage};

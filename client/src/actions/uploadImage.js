@@ -2,35 +2,43 @@ import { IMAGE_FILE_FAILURE, IMAGE_FILE_REQUEST, IMAGE_FILE_SUCCESSFUL } from '.
 import sha1 from 'sha1';
 import superagent from 'superagent';
 
-
-
-export function uploadImageRequest(imageData) {
-
+/**
+* @description upload image request action
+ * @type {function} uploadImageRequest
+ * @export uploadImageRequest
+ * @param {object} imageData
+ * @returns {action} dispatch
+ */
+export const uploadImageRequest = (imageData) => {
   return {
     type: IMAGE_FILE_REQUEST,
-    imageData,
-  }
-}
+    imageData
+  };
+};
 
-export function uploadImageResponse(response) {
-
+/**
+* @description upload image request action
+ * @type {function} uploadImageRequest
+ * @export uploadImageRequest
+ * @param {object} response
+ * @returns {action} dispatch
+ */
+export const uploadImageResponse = (response) => {
   return {
     type: IMAGE_FILE_SUCCESSFUL,
-    response,
-  }
-}
+    response
+  };
+};
 
-export function uploadImageFailed(error) {
-
+export const uploadImageFailed = (error) => {
   return {
     type: IMAGE_FILE_FAILURE,
-    error,
-  }
-}
+    error
+  };
+};
 
 
-export function uploadImage(imageFile) {
-
+export const uploadImage = (imageFile) => {
   console.log(imageFile);
   console.log('+++++++++++++++++++');
   return (dispatch) => {
@@ -43,22 +51,20 @@ export function uploadImage(imageFile) {
     const signature = sha1(paramsStr);
     const params = {
       'api_key': '866441834971784',
-      'timestamp': timestamp,
+      timestamp,
       'upload_preset': uploadPreset,
-      'signature': signature
+      signature
     };
-    let uploadRequest = superagent.post(url);
+    const uploadRequest = superagent.post(url);
     uploadRequest.attach('file', imageFile);
     Object.keys(params).forEach((key) => {
-      uploadRequest.field(key, params[key])
-    })
+      uploadRequest.field(key, params[key]);
+    });
     uploadRequest.end((error, response) => {
       if (error) {
         return dispatch(uploadImageFailed(error));
       }
       return dispatch(uploadImageResponse(response.body.url));
-    })
-
-  }
-
-}
+    });
+  };
+};

@@ -20,7 +20,7 @@ class UserSection extends React.Component {
 
 	componentDidMount() {
 		this.setState({
-			categories: this.props.getUserCategories()
+			categories: this.props.categories
 		});
 	}
 
@@ -90,8 +90,8 @@ class UserSection extends React.Component {
 					<br></br>
 					<div className="profile-category-button">
 						{
-							(this.state.categories && this.state.categories.length > 0) ?
-								this.state.categories.map((category, index) => <button type="button" className="btn btn-default btn-sm" key={index}>{category.name} <span className="badge text-right">7</span></button>)
+							(this.props.categories && this.props.categories.length > 0) ?
+								this.props.categories.map((category, index) => <button type="button" className="btn btn-default btn-sm" key={index}>{category.name} <span className="badge text-right">7</span></button>)
 								: null
 						}
 					</div>

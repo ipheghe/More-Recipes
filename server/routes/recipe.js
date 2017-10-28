@@ -29,6 +29,7 @@ router.get('/api/v1/recipes/:id', authorize.verifyUser, validUser, recipeExists,
 router.get('/api/v1/recipes/:recipeName', authorize.verifyUser, validUser, recipeExists, recipesController.getRecipe);
 
 //API route for users to retrieve all recipes
-router.get('/api/v1/topRecipes', recipesController.getTopRecipes);
+router.get('/api/v1/topRecipes', recipesController.getTopRecipes,recipesController.searchRecipes);
+
 
 export default router;
