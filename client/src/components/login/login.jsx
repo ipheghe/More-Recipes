@@ -63,6 +63,18 @@ class Login extends React.Component {
     }
   }
 
+  renderAlert() {
+    if (this.props.errorMessage) {
+      return (
+        <div>
+          <p className="alert error-alert" style={{ color: 'white' }}>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }}></i>
+            &nbsp;{this.props.errorMessage}</p>
+        </div>
+      );
+    }
+  }
+
   /**
    * @param {component} <MainHeader/> - The landing page main header navigation.
    * @param {component} <Register/> - The signup page of the app.
@@ -84,6 +96,7 @@ class Login extends React.Component {
               <section className="col-md-5 account">
                 <div>
                   <form className="login-form">
+                    {this.renderAlert()}
                     <h3 className="login-form-boxx">Login Form</h3>
                     <br></br>
                     <div className="form-group">

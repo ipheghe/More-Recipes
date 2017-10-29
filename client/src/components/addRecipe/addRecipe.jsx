@@ -30,10 +30,6 @@ class AddRecipe extends React.Component {
     this.handleImageChange = this.handleImageChange.bind(this);
   }
 
-  componentWillMount() {
-    this.props.dispatch(fetchUsername());
-  }
-
   handleChange(e) {
     this.setState({
       recipeName: this.refs.recipeName.value,
@@ -109,6 +105,16 @@ class AddRecipe extends React.Component {
     this.props.addRecipe(recipeName, recipeDetail, imageUrl, ingredients, directions);
   }
 
+  renderAlert() {
+    if (this.props.errorMessage) {
+      return (
+        <div>
+          <span><strong>Error!</strong> {this.props.errorMessage}</span>
+        </div>
+      );
+    }
+  }
+
   render() {
     return (
       <div>
@@ -147,6 +153,7 @@ class AddRecipe extends React.Component {
                       <h3><b> Add Recipe</b></h3>
                       <br></br>
                       <form>
+                        {this.renderAlert()}
                         <div className="form-group">
                           <label for="recipe-name">Recipe Name</label>
                           <input
@@ -236,6 +243,7 @@ class AddRecipe extends React.Component {
 }
 function mapStateToProps(state) {
   return {
+    errorMessage: state.recipe.error,
     userData: state.auth.userData,
     imageFile: state.recipe.imageUrl,
     imageUrl: state.imageUploadReducer[0].response

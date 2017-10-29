@@ -1,74 +1,70 @@
-import React from "react";
-import { UserNavHeader, ProfileHeader, UserSection } from "../../views/index";
+import React from 'react';
+import { UserNavHeader, ProfileHeader, UserSection } from '../../views/index';
+import { getRecipesBySearch } from '../../actions/recipe';
 import { connect } from 'react-redux';
-import { fetchUsername, logoutUser } from '../../actions/auth';
-import { getTopRecipes } from '../../actions/recipe';
-import { addCategory, getUserCategories } from '../../actions/category';
 import RecipeList from '../recipeList/recipeList';
-
 
 @connect((state) => {
   return { state, }
 })
-class Dashboard extends React.Component {
+
+/**
+ * 
+ * 
+ * @class Search
+ * @extends {React.Component}
+ * @param {component} <UserNavHeader/> - The landing page user nav header navigation.
+ * @param {component} <ProfileHeader/> - The landing page profile header navigation.
+ * @param {component} <UserSection/> - The landing page user section navigation.
+ */
+class Search extends React.Component {
+
   constructor(props) {
     super(props);
     // this.state = {
-    //   category: {categoryName:''},
-    //   categories: []
-    //  }
-    this.handleLogout = this.handleLogout.bind(this);
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleAddCategory = this.handleAddCategory.bind(this);
+    //   searchResult: [],
+    //   isLoading: true,
+    //   message: ''
+    // }
   }
 
-  componentWillMount() {
-    this.props.dispatch(getTopRecipes());
+  componentDidMount() {
+    const search = this.props.location.search; // could be '?foo=bar'
+    const paramss = new URLSearchParams(search);
+    const params = paramss.get('sort');
+    console.log(params, 'hgdgcgdhcjjjsjdnkjskyh,');
+    //const { params } = this.props.match.query.sort;
+    this.props.getRecipesBySearch(params);
   }
-
-  handleLogout(e) {
-    this.props.dispatch(logoutUser());
-  }
-
-  // handleChange(e) {
-  //   // const category = this.state;
-  //   // [e.target.name]: e.target.value
-  //   // this.setState({
-  //   // })
-  //   // const field = e.target.name;
-  //   // const category = this.state.category;
-  //   // category[field] = e.target.value;
-  //   // this.setState({category: category});
-  // }
-
-  // handleAddCategory(e) {
-  //   e.preventDefault();
-  //   this.props.addCategory(this.state.category.categoryName)
-  //   this.props.dispatch(fetchUsername());
-  // }
 
   // componentWillReceiveProps(nextprops) {
-
-  //       console.log(nextprops.categories)
-  //       if (nextprops.categories) {
-  //         console.log('***************||***************');
-  //         const categories = this.state.categories;
-  //         this.setState({
-  //           categories: nextprops.categories
-  //         })
-  //       }
-  //     }
+  //   console.log("here", nextprops);
+  //   if (nextprops.state.recipe.searchResult) {
+  //     const { recipeSearch } = nextprops.state.recipe.searchResult;
+  //     this.setState({
+  //       searchResult: Object.assign({}, this.state.searchResult, recipeSearch),
+  //       isLoading: false,
+  //     });
+  //   }
+  //   if (nextprops.state.recipe.message) {
+  //     this.setState({
+  //       isLoading: false,
+  //       message: nextprops.state.recipe.message
+  //     });
+  //   }
+  // }
 
   /**
-   * SearchWiki layout component that enables a user search wikipedia right from the dashboard.
    * 
-   * @param {component} <MainHeader/> - The landing page main header navigation.
-   * @param {component} <Footer/> - The landing page footer navigation.
+   * 
+   * @returns 
+   * 
+   * @memberOf Search
    */
   render() {
     return (
       <div>
-        <UserNavHeader firstName={this.props.userData.firstName} lastName={this.props.userData.lastName} onChange={this.handleLogout} />
+        <UserNavHeader />
         <div className="banner-background">
           <div className="profile-background">
             <div className="container">
@@ -100,10 +96,13 @@ class Dashboard extends React.Component {
                     </ul>
                     <br></br>
                     <div className="add-padding">
-                      <h3><b>Top Recipes</b></h3>
+                      <h3><b>Search Result</b></h3>
                       <br></br>
                       <div className="card-blocks" >
-                        <RecipeList recipes={this.props.recipes} />
+                        {
+                          (!this.props.searchResult) ?
+                          this.props.message : <RecipeList recipes={this.props.searchResult} />
+                        }
                       </div>
                       <br></br>
                     </div>
@@ -135,11 +134,17 @@ class Dashboard extends React.Component {
   }
 }
 
+/**
+ * 
+ * @param {any} state 
+ * @returns 
+ */
 function mapStateToProps(state) {
   return {
-    userData: state.auth.userData,
-    recipes: state.recipe.recipeData
+    searchResult: state.recipe.searchResult,
+    message: state.recipe.message
   };
 }
 
-export default connect(mapStateToProps, { fetchUsername })(Dashboard);
+export default connect(mapStateToProps, { getRecipesBySearch })(Search);
+

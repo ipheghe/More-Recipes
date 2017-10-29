@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-const RecipeCard = ({ recipe, onClick }) => {
+const RecipeCard = ({ recipe }) => {
   return (
     <div className="card">
       <img className="card-img-top" src={(recipe.imageUrl === null || recipe.imageUrl === 'no-image') ? 'dist/pizza1.jpg' : recipe.imageUrl} alt="Card image cap" />

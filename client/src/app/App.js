@@ -13,6 +13,7 @@ import {
   AddRecipe,
   ManageRecipe,
   EditProfile,
+  Search,
   NotFoundPage
 } from "../components/index";
 import RequireAuth from '../auth/requireAuth';
@@ -26,6 +27,7 @@ const App = () =>
         <Route path='/login' component={Login} />
         <Route path='/dashboard' component={Dashboard} />
         <Route path='/recipes/:id' component={ViewRecipe} />
+        <Route path='/search' component={Search} />
         <Route path='/favorite' component={RequireAuth(Favorite)} />
         <Route path='/myRecipe' component={RequireAuth(MyRecipe)} />
         <Route path='/addRecipe' component={AddRecipe} />

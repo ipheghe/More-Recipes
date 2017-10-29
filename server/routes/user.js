@@ -1,21 +1,9 @@
 import express from 'express';
-import cors from 'cors';
 import authorize from '../../jsontoken';
 import usersController from '../controllers/users';
-import votesController from '../controllers/votes';
 import { validateUserFields, validUser } from '../middlewares/userValidation';
 
 const router = express.Router();
-const corsOptions = {
-  origin: 'https://more-recipes-ovie.herokuapp.com',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
-}
-
-router.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
 
 //API route for users to create accounts
 router.post('/api/v1/users/signup', validateUserFields, usersController.signup);
@@ -25,5 +13,8 @@ router.post('/api/v1/users/signin', usersController.signin);
 
 //API route to check if user exists
 router.get('/api/v1/users/:username', usersController.userExists);
+
+//API route to update user record
+router.put('/api/v1/users/:id', authorize.verifyUser, validUser, usersController.updateUserRecord);
 
 export default router;

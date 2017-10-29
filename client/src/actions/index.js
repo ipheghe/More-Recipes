@@ -11,9 +11,16 @@ import { bindActionCreators } from 'redux';
 // Utility actions
 //= ===============================
 
+/**
+ * 
+ * 
+ * @export
+ * @param {any} dispatch 
+ * @param {any} error 
+ * @param {any} type 
+ */
 export function errorHandler(dispatch, error, type) {
   console.log('Error type: ', type);
-
   let errorMessage = error.response ? error.response.data : error;
 
   dispatch({
@@ -23,6 +30,20 @@ export function errorHandler(dispatch, error, type) {
 }
 
 // Post Request
+/**
+ * 
+ * 
+ * @export
+ * @param {any} action 
+ * @param {any} errorType 
+ * @param {any} isAuthReq 
+ * @param {any} url 
+ * @param {any} dispatch 
+ * @param {any} data 
+ * @param {any} message 
+ * @param {any} constant 
+ * @param {any} directTo 
+ */
 export function postData(action, errorType, isAuthReq, url, dispatch, data, message, constant, directTo) {
   const requestUrl = API_URL + url;
   let headers = {};
@@ -56,6 +77,16 @@ export function postData(action, errorType, isAuthReq, url, dispatch, data, mess
 }
 
 // Get Request
+/**
+ * 
+ * 
+ * @export
+ * @param {any} action
+ * @param {any} errorType
+ * @param {any} isAuthReq
+ * @param {any} url
+ * @param {any} dispatch
+ */
 export function getData(action, errorType, isAuthReq, url, dispatch) {
   const requestUrl = API_URL + url;
   let headers = {};
@@ -72,13 +103,37 @@ export function getData(action, errorType, isAuthReq, url, dispatch) {
       });
     })
     .catch((error) => {
-      console.log(error, '=============>')
+      console.log(error, '=============>');
       errorHandler(dispatch, error.response, errorType);
     });
 }
 
 // Put Request
-export function putData(action, errorType, isAuthReq, url, dispatch, data, message, constant, directTo) {
+/**
+ * 
+ * 
+ * @export
+ * @param {any} action
+ * @param {any} errorType
+ * @param {any} isAuthReq
+ * @param {any} url
+ * @param {any} dispatch
+ * @param {any} data
+ * @param {any} message
+ * @param {any} constant
+ * @param {any} directTo
+ */
+export const putData = (
+  action,
+  errorType,
+  isAuthReq,
+  url,
+  dispatch,
+  data,
+  message,
+  constant,
+  directTo
+) => {
   const requestUrl = API_URL + url;
   let headers = {};
 
@@ -88,7 +143,7 @@ export function putData(action, errorType, isAuthReq, url, dispatch, data, messa
 
   axios.put(requestUrl, data, headers)
     .then((response) => {
-      console.log(response, 'votesss')
+      const toastr = bindActionCreators(toastrActions, dispatch);
       dispatch({
         type: action,
         payload: response.data,
@@ -100,7 +155,7 @@ export function putData(action, errorType, isAuthReq, url, dispatch, data, messa
         id: constant,
         type: 'success',
         title: 'Success',
-        message: message,
+        message,
         timeout: 5000,
       });
       setTimeout(() => { toastr.remove(constant); }, 3500);
@@ -111,7 +166,29 @@ export function putData(action, errorType, isAuthReq, url, dispatch, data, messa
 }
 
 // Delete Request
-export function deleteData(action, errorType, isAuthReq, url, dispatch, message, constant, directTo) {
+/**
+ * 
+ * 
+ * @export
+ * @param {any} action
+ * @param {any} errorType
+ * @param {any} isAuthReq
+ * @param {any} url
+ * @param {any} dispatch
+ * @param {any} message
+ * @param {any} constant
+ * @param {any} directTo
+ */
+export function deleteData(
+  action,
+  errorType,
+  isAuthReq,
+  url,
+  dispatch,
+  message,
+  constant,
+  directTo
+) {
   const requestUrl = API_URL + url;
   let headers = {};
 
@@ -121,6 +198,7 @@ export function deleteData(action, errorType, isAuthReq, url, dispatch, message,
 
   axios.delete(requestUrl, headers)
     .then((response) => {
+      const toastr = bindActionCreators(toastrActions, dispatch);
       dispatch({
         type: action,
         payload: response.data,
@@ -132,7 +210,7 @@ export function deleteData(action, errorType, isAuthReq, url, dispatch, message,
         id: constant,
         type: 'success',
         title: 'Success',
-        message: message,
+        message,
         timeout: 5000,
       });
       setTimeout(() => { toastr.remove(constant); }, 3500);

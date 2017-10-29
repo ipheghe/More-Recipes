@@ -68,16 +68,36 @@ const usersController = {
         where: { username: req.params.username }, include: [{
           model: Category,
           as: 'categories',
-          attributes: ['id','name']
+          attributes: ['id', 'name']
         }],
       })
       .then((user) => {
         if (!user) {
-          return res.status(404).send({ message: 'User doesnt exist' })
+          return res.status(404).send({ message: 'User doesnt exist' });
         }
-        return res.status(200).send({ message: 'User Exists!', userData: user })
+        return res.status(200).send({ message: 'User Exists!', userData: user });
       })
       .catch(error => res.status(400).send({ error: error.message }));
+  },
+  // update user details
+  updateUserRecord(req, res) {
+    return User
+      .findOne({
+        where: { id: req.params.id }
+      })
+      .then(user => {
+        //if user exists
+        user.update({
+          username: req.body.username || user.username,
+          firstName: req.body.firstName || user.firstName,
+          lastName: req.body.lastName || user.lastName,
+          mobileNumber: req.body.mobileNumber || user.mobileNumber,
+          email: req.body.email || user.email
+        })
+          .then(updatedUser => res.status(200).send({ message: 'User Record Updated SuccessFullly!', userData: updatedUser }))
+          .catch(error => res.status(400).send({ error: error.message }));
+      })
+      .catch(err => res.status(400).send({ error: err.message }));
   }
 };
 export default usersController;

@@ -1,13 +1,31 @@
-import { ADD_RECIPE, FETCH_TOP_RECIPES, FETCH_USER_RECIPES, FETCH_RECIPE, UPDATE_RECIPE, DELETE_RECIPE, RECIPE_ERROR, IMAGE_FILE } from '../actions/types';
+import {
+  ADD_RECIPE,
+  FETCH_TOP_RECIPES,
+  FETCH_USER_RECIPES,
+  SEARCH_RECIPES,
+  FETCH_RECIPE,
+  UPDATE_RECIPE,
+  DELETE_RECIPE,
+  RECIPE_ERROR
+} from '../actions/types';
 
-const INITIAL_STATE = { message: '', error: '', recipeData: [], recipeList: {}, userRecipe: [], imageUrl: '' };
+const INITIAL_STATE = {
+  message: '',
+  error: '',
+  recipeData: [],
+  recipeList: {},
+  userRecipe: [],
+  searchResult: []
+};
 
-export default function (state = INITIAL_STATE, action) {
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_RECIPE:
       return { ...state, message: action.payload.message };
     case FETCH_TOP_RECIPES:
       return { ...state, recipeData: action.payload.recipeData };
+    case SEARCH_RECIPES:
+      return { ...state, searchResult: action.payload.recipeData, message: action.payload.message };
     case FETCH_USER_RECIPES:
       return { ...state, userRecipe: action.payload.userRecipeList };
     case FETCH_RECIPE:
@@ -17,8 +35,9 @@ export default function (state = INITIAL_STATE, action) {
     case DELETE_RECIPE:
       return { ...state, message: action.payload.message };
     case RECIPE_ERROR:
-      return { ...state, error: action.payload };
+      return { ...state, error: action.payload.data.error };
     default:
       return state;
   }
-}
+};
+

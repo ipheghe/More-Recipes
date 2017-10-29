@@ -11,50 +11,51 @@ export const AUTH_USER = 'auth_user',
 //= =====================
 // User Profile Actions
 //= =====================
-export const FETCH_USER = 'fetch_user';
+export const FETCH_USER = 'FETCH_USER',
+  UPDATE_USER = 'UPDATE_USER',
+  USER_ERROR = 'USER_ERROR';
 
 //= =====================
 // Recipe Actions
 //= =====================
-export const FETCH_TOP_RECIPES = 'fetch_top_recipes',
-  FETCH_USER_RECIPES = 'fetch_user_recipes',
-  FETCH_RECIPE = 'fetch_recipe',
-  ADD_RECIPE = 'add_recipe',
-  UPDATE_RECIPE = 'update_recipe',
-  DELETE_RECIPE = 'delete_recipe',
-  RECIPE_ERROR = 'recipe_error';
+export const FETCH_TOP_RECIPES = 'FETCH_TOP_RECIPES',
+  FETCH_USER_RECIPES = 'FETCH_USER_RECIPES',
+  FETCH_RECIPE = 'FETCH_RECIPE',
+  SEARCH_RECIPES = 'SEARCH_RECIPES',
+  ADD_RECIPE = 'ADD_RECIPE',
+  UPDATE_RECIPE = 'UPDATE_RECIPE',
+  DELETE_RECIPE = 'DELETE_RECIPE',
+  RECIPE_ERROR = 'RECIPE_ERROR';
 
 //= =====================
 // Review Actions
 //= =====================
-export const REVIEW_RECIPE = 'review_recipe',
-  RETRIEVE_RECIPE_REVIEWS = 'retrieve_recipe_reviews',
-  REVIEW_ERROR = 'review_error';
+export const REVIEW_RECIPE = 'REVIEW_RECIPE',
+  RETRIEVE_RECIPE_REVIEWS = 'RETRIEVE_RECIPE_REVIEWS',
+  REVIEW_ERROR = 'REVIEW_ERROR';
 
 //= =====================
 // Category Actions
 //= =====================
-export const ADD_CATEGORY = 'add_category',
-  FETCH_USER_CATEGORIES = 'fetch_user_categories',
-  CATEGORY_ERROR = 'category_error';
+export const ADD_CATEGORY = 'ADD_CATEGORY',
+  FETCH_USER_CATEGORIES = 'FETCH_USER_CATEGORIES',
+  CATEGORY_ERROR = 'CATEGORY_ERROR';
 
 //= =====================
 // Favorite Actions
 //= =====================
-export const FAVORITE_RECIPE = 'favorite_recipe',
-  RETRIEVE_USER_FAVORITE_RECIPES = 'retrieve_user_favorite_recipes',
-  FAVORITE_ERROR = 'favorite_error';
+export const FAVORITE_RECIPE = 'FAVORITE_RECIPE',
+  RETRIEVE_USER_FAVORITE_RECIPES = 'RETRIEVE_USER_FAVORITE_RECIPES',
+  FAVORITE_ERROR = 'FAVORITE_ERROR';
 
 //= =====================
 // Vote Actions
 //= =====================
-export const UPVOTE_RECIPE = 'upvote_recipe',
-  DOWNVOTE_RECIPE = 'downvote_recipe',
-  VOTE_ERROR = 'vote_error';
+export const UPVOTE_RECIPE = 'UPVOTE_RECIPE',
+  DOWNVOTE_RECIPE = 'DOWNVOTE_RECIPE',
+  VOTE_ERROR = 'VOTE_ERROR';
 
-export const GET_CURRENT_RECIPE_ID = 'GET_CURRENT_RECIPE_ID';
-
-export const IMAGE_FILE_REQUEST = 'IMAGE_FILE_REQUEST'
-export const IMAGE_FILE_SUCCESSFUL='IMAGE_FILE_SUCCESSFUL';
-export const IMAGE_FILE_FAILURE = 'IMAGE_FILE_FAILURE';
+export const IMAGE_FILE_REQUEST = 'IMAGE_FILE_REQUEST',
+  IMAGE_FILE_SUCCESSFUL = 'IMAGE_FILE_SUCCESSFUL',
+  IMAGE_FILE_FAILURE = 'IMAGE_FILE_FAILURE';
 

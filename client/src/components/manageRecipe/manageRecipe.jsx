@@ -32,7 +32,6 @@ class ManageRecipe extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchUsername();
     this.props.getUserRecipes();
   }
 
@@ -60,11 +59,8 @@ class ManageRecipe extends React.Component {
   }
 
   handleLoadRecipe(e) {
+    e.preventDefault();
     this.props.getRecipe(this.refs.recipeName.value);
-  }
-
-  handleLogout = (e) => {
-    this.props.logoutUser();
   }
 
   handleUpdateRecipe(e) {
@@ -97,6 +93,7 @@ class ManageRecipe extends React.Component {
   }
 
   handleDeleteRecipe(e) {
+    e.preventDefault();
     this.props.deleteRecipe(this.props.recipe.id);
   }
 
@@ -114,7 +111,7 @@ class ManageRecipe extends React.Component {
   render() {
     return (
       <div>
-        <UserNavHeader firstName={this.props.userData.firstName} lastName={this.props.userData.lastName} onChange={this.handleLogout} />
+        <UserNavHeader />
         <div className="banner-background">
           <div className="profile-background">
             <div className="container">
