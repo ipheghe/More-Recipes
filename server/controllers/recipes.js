@@ -217,7 +217,7 @@ const recipesController = {
       }));
       return Recipe
         .all({
-          where: { $or: query },
+          where: { $or: query1 },
           limit: 2,
           attributes: keys
         })

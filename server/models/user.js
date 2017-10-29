@@ -20,7 +20,7 @@ export default (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull:false,
+      allowNull: false,
       validate: {
         min: {
           args: [4],
@@ -30,25 +30,37 @@ export default (sequelize, DataTypes) => {
     },
     firstName: {
       type: DataTypes.STRING,
-      allowNull:false,
+      allowNull: false,
       validate: {
-          isAlpha: true,
-          max: 50
-        }
+        isAlpha: {
+          args: true,
+          msg: 'first name  must contain only alphabets'
+        },
+        len: {
+          args: [4, 30],
+          msg: 'first name characters must be minimum 4 and maximum 30'
+        },
+      }
     },
     lastName: {
       type: DataTypes.STRING,
-      allowNull:false,
+      allowNull: false,
       validate: {
-          isAlpha: true,
-          max: 50
-        }
+        isAlpha: {
+          args: true,
+          msg: 'last name  must contain only alphabets'
+        },
+        len: {
+          args: [4, 30],
+          msg: 'last name characters must be minimum 4 and maximum 30'
+        },
+      }
     },
     mobileNumber: {
       type: DataTypes.BIGINT,
       validate: {
         len: {
-          args: [11,13],
+          args: [11, 13],
           msg: 'Invalid number digits'
         }
       }

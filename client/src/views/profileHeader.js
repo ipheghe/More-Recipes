@@ -1,32 +1,27 @@
 import React from 'react';
 import Logo from '../../public/images/recipe_logo.png';
-import { getRecipesBySearch } from './../actions/recipe';
 import { getUserCategories } from './../actions/category';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class ProfileHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       keyword: ''
-    }
-    this.handleSearch = this.handleSearch.bind(this);
+    };
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    this.props.getUserCategories()
+    this.props.getUserCategories();
   }
 
   handleChange(e) {
+    console.log(this.state.keyword);
     this.setState({
       [e.target.name]: e.target.value
-    })
-  }
-
-  handleSearch(e) {
-    e.preventDefault()
-    this.getRecipesBySearch(this.state.keyword)
+    });
   }
 
   render() {
@@ -66,7 +61,7 @@ class ProfileHeader extends React.Component {
             </button>
           </ul>
 
-          <form className="form-inline my-2 my-lg-0" onSubmit={this.handleSearch}>
+          <form className="form-inline my-2 my-lg-0">
             <input
               className="form-control mr-sm-2"
               type="text" name="keyword"
@@ -75,7 +70,8 @@ class ProfileHeader extends React.Component {
               placeholder="Search"
               required formNoValidate
             />
-            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            {/* <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> */}
+            <Link to={"/search?sort=" + this.state.keyword} className="btn btn-outline-success my-2 my-sm-0" >Search</Link>
           </form>
         </div>
       </nav>
@@ -88,5 +84,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getRecipesBySearch, getUserCategories })(ProfileHeader);
+export default connect(mapStateToProps, { getUserCategories })(ProfileHeader);
 

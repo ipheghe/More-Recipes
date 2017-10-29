@@ -5,6 +5,7 @@ import authReducer from './auth_reducer';
 import recipeReducer from './recipeReducer';
 import reviewReducer from './reviewReducer';
 import voteReducer from './voteReducer';
+import userReducer from './userReducer';
 import imageUploadReducer from './imageUploadReducer';
 import favoriteReducer from './favoriteReducer';
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   review: reviewReducer,
   vote: voteReducer,
   favorite: favoriteReducer,
+  user: userReducer,
   form: formReducer,
   toastr: toastrReducer,
   imageUploadReducer

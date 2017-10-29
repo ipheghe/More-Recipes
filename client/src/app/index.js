@@ -5,12 +5,12 @@ import { Provider } from 'react-redux';
 import rootReducer from '../reducers';
 import App from './App';
 import '../../public/style.css';
-import '../../../node_modules/font-awesome/css/font-awesome.min.css'; 
+import '../../../node_modules/font-awesome/css/font-awesome.min.css';
 import * as localStore from '../localStore';
 import cookie from 'react-cookies';  
 import { AUTH_USER } from '../actions/types';
 import { BrowserRouter } from 'react-router-dom';
-import ReduxToastr from 'react-redux-toastr'
+import ReduxToastr from 'react-redux-toastr';
 
 
 const store = configureStore({});

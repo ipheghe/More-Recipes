@@ -21,7 +21,6 @@ import { bindActionCreators } from 'redux';
  */
 export function errorHandler(dispatch, error, type) {
   console.log('Error type: ', type);
-
   let errorMessage = error.response ? error.response.data : error;
 
   dispatch({
@@ -104,7 +103,7 @@ export function getData(action, errorType, isAuthReq, url, dispatch) {
       });
     })
     .catch((error) => {
-      console.log(error, '=============>')
+      console.log(error, '=============>');
       errorHandler(dispatch, error.response, errorType);
     });
 }

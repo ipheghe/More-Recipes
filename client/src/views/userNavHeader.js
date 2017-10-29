@@ -53,9 +53,9 @@ class UserNavHeader extends React.Component {
 	}
 }
 function mapStateToProps(state) {
-  return {
-    userData: state.auth.userData,
-  };
+	return {
+		userData: state.auth.userData,
+	};
 }
 export default connect(mapStateToProps, { fetchUsername, logoutUser })(UserNavHeader);
 

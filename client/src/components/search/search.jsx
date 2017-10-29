@@ -1,7 +1,12 @@
 import React from 'react';
 import { UserNavHeader, ProfileHeader, UserSection } from '../../views/index';
+import { getRecipesBySearch } from '../../actions/recipe';
 import { connect } from 'react-redux';
-import { getFavoriteRecipes } from '../../actions/favorite';
+import RecipeList from '../recipeList/recipeList';
+
+@connect((state) => {
+  return { state, }
+})
 
 /**
  * 
@@ -14,15 +19,40 @@ import { getFavoriteRecipes } from '../../actions/favorite';
  */
 class Search extends React.Component {
 
-  /**
-   * 
-   * 
-   * 
-   * @memberOf Search
-   */
-  componentDidMount() {
-    this.props.getFavoriteRecipes();
+  constructor(props) {
+    super(props);
+    // this.state = {
+    //   searchResult: [],
+    //   isLoading: true,
+    //   message: ''
+    // }
   }
+
+  componentDidMount() {
+    const search = this.props.location.search; // could be '?foo=bar'
+    const paramss = new URLSearchParams(search);
+    const params = paramss.get('sort');
+    console.log(params, 'hgdgcgdhcjjjsjdnkjskyh,');
+    //const { params } = this.props.match.query.sort;
+    this.props.getRecipesBySearch(params);
+  }
+
+  // componentWillReceiveProps(nextprops) {
+  //   console.log("here", nextprops);
+  //   if (nextprops.state.recipe.searchResult) {
+  //     const { recipeSearch } = nextprops.state.recipe.searchResult;
+  //     this.setState({
+  //       searchResult: Object.assign({}, this.state.searchResult, recipeSearch),
+  //       isLoading: false,
+  //     });
+  //   }
+  //   if (nextprops.state.recipe.message) {
+  //     this.setState({
+  //       isLoading: false,
+  //       message: nextprops.state.recipe.message
+  //     });
+  //   }
+  // }
 
   /**
    * 
@@ -69,7 +99,10 @@ class Search extends React.Component {
                       <h3><b>Search Result</b></h3>
                       <br></br>
                       <div className="card-blocks" >
-                        <FavoriteRecipeList recipes={this.props.recipes} />
+                        {
+                          (!this.props.searchResult) ?
+                          this.props.message : <RecipeList recipes={this.props.searchResult} />
+                        }
                       </div>
                       <br></br>
                     </div>
@@ -108,10 +141,10 @@ class Search extends React.Component {
  */
 function mapStateToProps(state) {
   return {
-    userData: state.auth.userData,
-    recipes: state.favorite.userFavorites
+    searchResult: state.recipe.searchResult,
+    message: state.recipe.message
   };
 }
 
-export default connect(mapStateToProps, { getFavoriteRecipes })(Search);
+export default connect(mapStateToProps, { getRecipesBySearch })(Search);
 

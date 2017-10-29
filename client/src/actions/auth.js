@@ -1,8 +1,14 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
-import cookie from 'react-cookie';
 import { API_URL, errorHandler } from './index';
-import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FORGOT_PASSWORD_REQUEST, RESET_PASSWORD_REQUEST, PROTECTED_TEST, FETCH_USER } from './types';
+import {
+  AUTH_USER,
+  AUTH_ERROR,
+  UNAUTH_USER,
+  FORGOT_PASSWORD_REQUEST,
+  RESET_PASSWORD_REQUEST,
+  FETCH_USER
+} from './types';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { bindActionCreators } from 'redux';
 import jwtDecode from 'jwt-decode';
@@ -12,39 +18,22 @@ import jwtDecode from 'jwt-decode';
 //= ===============================
 
 /**
- * @description add recipe action
- * @type {function} loginUser
- * @export loginUser
- * @param {object} { username, password }
- * @returns {array} response
- * @callback {object}
+ * @description display toastr message for failed signup
+ * @type {function} signupFailed
+ * @export
+ * @returns
  */
-export function loginUser({ username, password }) {
-  return function (dispatch) {
-    axios.post(`${API_URL}/users/signin`, { username, password })
-      .then((response) => {
-        const toastr = bindActionCreators(toastrActions, dispatch);
-        if (response.status >= 200 && response.status < 300) {
-          localStorage.setItem('token', response.data.authToken);
-          dispatch({ type: AUTH_USER });
-          location.hash = '#dashboard';
-          toastr.add({
-            id: 'USER_SIGNEDIN',
-            type: 'success',
-            title: 'Success',
-            message: 'Welcome Onboard!',
-            timeout: 5000,
-          });
-          setTimeout(() => { toastr.remove('USER_SIGNEDIN'); }, 3500);
-        } else if (response.status === 404) {
-          const error = new Error(response.statusText);
-          error.response = response;
-          dispatch(loginFailed(error));
-        }
-      })
-      .catch((error) => {
-        errorHandler(dispatch, error.response, AUTH_ERROR);
-      });
+export function signupFailed() {
+  return dispatch => {
+    const toastr = bindActionCreators(toastrActions, dispatch);
+    toastr.add({
+      id: 'INCORRECT_DETAILS',
+      type: 'error',
+      title: 'Error',
+      message: 'One or more of your field(s) is invalid, Please retry with the correct details',
+      timeout: 5000,
+    });
+    setTimeout(() => { toastr.remove('INCORRECT_DETAILS'); }, 3500);
   };
 }
 
@@ -104,22 +93,39 @@ export function registerUser({ username, password, firstName, lastName, mobileNu
 }
 
 /**
- * @description display toastr message for failed signup
- * @type {function} signupFailed
- * @export
- * @returns
+ * @description add recipe action
+ * @type {function} loginUser
+ * @export loginUser
+ * @param {object} { username, password }
+ * @returns {array} response
+ * @callback {object}
  */
-export function signupFailed() {
-  return dispatch => {
-    const toastr = bindActionCreators(toastrActions, dispatch);
-    toastr.add({
-      id: 'INCORRECT_DETAILS',
-      type: 'error',
-      title: 'Error',
-      message: 'One or more of your field(s) is invalid, Please retry with the correct details',
-      timeout: 5000,
-    });
-    setTimeout(() => { toastr.remove('INCORRECT_DETAILS'); }, 3500);
+export function loginUser({ username, password }) {
+  return function (dispatch) {
+    axios.post(`${API_URL}/users/signin`, { username, password })
+      .then((response) => {
+        const toastr = bindActionCreators(toastrActions, dispatch);
+        if (response.status >= 200 && response.status < 300) {
+          localStorage.setItem('token', response.data.authToken);
+          dispatch({ type: AUTH_USER });
+          location.hash = '#dashboard';
+          toastr.add({
+            id: 'USER_SIGNEDIN',
+            type: 'success',
+            title: 'Success',
+            message: 'Welcome Onboard!',
+            timeout: 5000,
+          });
+          setTimeout(() => { toastr.remove('USER_SIGNEDIN'); }, 3500);
+        } else if (response.status === 404) {
+          const error = new Error(response.statusText);
+          error.response = response;
+          dispatch(loginFailed(error));
+        }
+      })
+      .catch((error) => {
+        errorHandler(dispatch, error.response, AUTH_ERROR);
+      });
   };
 }
 
@@ -206,7 +212,6 @@ export function fetchUsername() {
   return ((dispatch) => {
     axios.get(`${API_URL}/users/${username}`)
       .then((response) => {
-        console.log(response);
         dispatch(getUsers(response.data.userData));
       })
       .catch((error) => {
