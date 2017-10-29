@@ -5,7 +5,8 @@ import supertest from 'supertest';
 import users from '../server/seeders/userSeeder';
 
 process.env.NODE_ENV = 'test';
-const { expect, should } = require('chai');
+const expect = require('chai').expect;
+const should = require('chai').should();
 // This agent refers to PORT where program is runninng.
 const server = supertest.agent(app);
 const rootURL = '/api/v1';
