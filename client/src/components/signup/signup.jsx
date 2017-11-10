@@ -1,12 +1,19 @@
-import React from "react";
-import { MainHeader } from "../../views/index";
-import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux';
+import React from 'react';
+import { MainHeader } from '../../views/index';
+import { connect } from 'react-redux';
 import { registerUser } from '../../actions/auth';
 
-class Register extends React.Component {
+/**
+ * signUp form commponent
+ * @class SignUp
+ * @extends {React.Component}
+ */
+class SignUp extends React.Component {
 
+  /**
+   * constructor
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -23,8 +30,13 @@ class Register extends React.Component {
     this.handleSignup = this.handleSignup.bind(this);
   }
 
-
+  /**
+   * handle change form event
+   * @param {SytheticEvent} e
+   * @returns {object} state
+   */
   handleChange(e) {
+    e.preventDefault();
     this.setState({
       username: this.refs.username.value,
       firstName: this.refs.firstName.value,
@@ -32,16 +44,20 @@ class Register extends React.Component {
       mobileNumber: this.refs.mobileNumber.value,
       email: this.refs.email.value,
       password: this.refs.password.value,
-    })
+    });
   }
 
+  /**
+   * handle signUp form event
+   * @param {SytheticEvent} e
+   * @returns {*} void
+   */
   handleSignup(e) {
     e.preventDefault();
-    console.log('state: ', this.state);
-    let { username, firstName, lastName, mobileNumber, email, password } = this.state;
-    let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-    let numericExpression = /^[0-9]+$/;
-    let regExpression = /^[A-Za-z][A-Za-z0-9-]+$/i;
+    const { username, firstName, lastName, mobileNumber, email, password } = this.state;
+    const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    const numericExpression = /^[0-9]+$/;
+    const regExpression = /^[A-Za-z][A-Za-z0-9-]+$/i;
     let valid;
     if (!valid) {
       if (!username.match(regExpression)) {
@@ -98,27 +114,51 @@ class Register extends React.Component {
           errorMessage: 'password must contain more than 7 chareacters'
         });
       }
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
     }
-    this.setState({
-      hasErrored: false,
-      errorMessage: ''
+    return this.props.registerUser({
+      username,
+      password,
+      firstName,
+      lastName,
+      mobileNumber,
+      email
     });
-    return this.props.registerUser({ username, password, firstName, lastName, mobileNumber, email });
   }
 
+  /**
+   * handle signUp form event error
+   * @param {SytheticEvent} e
+   * @returns {string} errorMessage
+   */
   renderAlert() {
-    if (this.props.errorMessage) {
+    if (this.state.hasErrored) {
       return (
-        <div style={{color: 'white'}}>
-          <span><strong>Error!</strong> {this.props.errorMessage}</span>
+        <div>
+          <p className="alert error-alert" style={{ color: 'white' }}>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }}></i>
+            &nbsp;{this.state.errorMessage}</p>
+        </div>
+      );
+    } else if (this.props.errorMessage) {
+      return (
+        <div>
+          <p className="alert error-alert" style={{ color: 'white' }}>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }}></i>
+            &nbsp;{this.props.errorMessage}</p>
         </div>
       );
     }
   }
 
   /**
-   * @param {component} <MainHeader/> - The landing page main header navigation.
-   * @param {component} <Register/> - The signup page of the app.
+   * render
+   * @return {ReactElement} markup
    */
   render() {
     return (
@@ -248,12 +288,6 @@ class Register extends React.Component {
                         />
                       </div>
                     </div>
-                    {this.state.hasErrored ?
-                      <p class="alert error-alert" style={{ color: 'white' }}>
-                        <i className="fa fa-exclamation-triangle"></i>
-                        &nbsp;{this.state.errorMessage}
-                      </p> : ''
-                    }
                     <div className="row">
                       <div className="col-md-6">
                         <a href="#login">Already have an account?</a>
@@ -262,13 +296,22 @@ class Register extends React.Component {
                     <div className="login-buttons">
                       <div>
                         <a href="#login">
-                          <button type="submit" className="btn btn-block btn-success" onClick={this.handleSignup}>Sign Up</button>
+                          <button
+                            type="submit"
+                            className="btn btn-block btn-success"
+                            onClick={this.handleSignup}
+                          >Sign Up
+                          </button>
                         </a>
                       </div>
                       <br></br>
                       <div>
                         <a href="#">
-                          <button type="button" className="btn btn-block btn-success">Cancel</button>
+                          <button
+                            type="button"
+                            className="btn btn-block btn-success"
+                          >Cancel
+                          </button>
                         </a>
                       </div>
                     </div>
@@ -284,12 +327,9 @@ class Register extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    errorMessage: state.auth.error,
-    message: state.auth.message,
-    authenticated: state.auth.authenticated,
-  };
-}
+const mapStateToProps = state => ({
+  errorMessage: state.auth.error,
+  message: state.auth.message,
+});
 
-export default connect(mapStateToProps, { registerUser })(Register);
+export default connect(mapStateToProps, { registerUser })(SignUp);

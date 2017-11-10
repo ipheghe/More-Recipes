@@ -9,7 +9,7 @@ import { ADD_CATEGORY, FETCH_USER_CATEGORIES, CATEGORY_ERROR } from './types';
  * @description add category action
  * @type {function} addCategory
  * @param {object} name
- * @returns {array} dispatch
+ * @returns {object} dispatch
  */
 const addCategory = (name) => {
   const data = { name };

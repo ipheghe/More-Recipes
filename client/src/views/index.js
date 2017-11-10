@@ -1,8 +1,17 @@
-import MainHeader from './mainHeader'
-import UserNavHeader from './userNavHeader'
-import ProfileHeader from './profileHeader'
-import UserSection from './userSection'
-import UserNavMenu from './userNavMenu'
-import ReviewBox from './reviewBox'
+import MainHeader from './mainHeader.jsx';
+import UserNavHeader from './userNavHeader.jsx';
+import ResetPasswordHeader from './resetPasswordHeader.jsx';
+import ProfileHeader from './profileHeader.jsx';
+import UserSection from './userSection.jsx';
+import UserNavMenu from './userNavMenu.jsx';
+import ReviewBox from './reviewBox.jsx';
 
-export { MainHeader, UserNavHeader, ProfileHeader, UserSection, UserNavMenu, ReviewBox };
+export {
+  MainHeader,
+  UserNavHeader,
+  ResetPasswordHeader,
+  ProfileHeader,
+  UserSection,
+  UserNavMenu,
+  ReviewBox
+};

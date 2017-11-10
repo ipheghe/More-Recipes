@@ -5,7 +5,7 @@ import {
 import {
   Landing,
   Login,
-  Register,
+  SignUp,
   Dashboard,
   ViewRecipe,
   Favorite,
@@ -14,17 +14,18 @@ import {
   ManageRecipe,
   EditProfile,
   Search,
-  NotFoundPage
-} from "../components/index";
+  ResetPassword
+} from '../components/index';
 import RequireAuth from '../auth/requireAuth';
-const NotFoundRoute = Router.NotFoundPage;
+
 const App = () =>
   (
     <Router history={hashHistory}>
       <div>
         <Route exact name='app' path='/' component={Landing} />
-        <Route path='/register' component={Register} />
+        <Route path='/signup' component={SignUp} />
         <Route path='/login' component={Login} />
+        <Route path='/reset-password/:token' component={ResetPassword} />
         <Route path='/dashboard' component={Dashboard} />
         <Route path='/recipes/:id' component={ViewRecipe} />
         <Route path='/search' component={Search} />
@@ -33,7 +34,6 @@ const App = () =>
         <Route path='/addRecipe' component={AddRecipe} />
         <Route path='/manageRecipe' component={RequireAuth(ManageRecipe)} />
         <Route path='/editProfile' component={RequireAuth(EditProfile)} />
-        {/* <Route path="/*" component={NotFoundPage} /> */}
       </div>
     </Router>
   );

@@ -1,5 +1,12 @@
-import { getData, postData, putData, deleteData } from './index';
-import { FAVORITE_RECIPE, RETRIEVE_USER_FAVORITE_RECIPES, FAVORITE_ERROR } from './types';
+import {
+  getData,
+  postData
+} from './index';
+import {
+  FAVORITE_RECIPE,
+  RETRIEVE_USER_FAVORITE_RECIPES,
+  FAVORITE_ERROR
+} from './types';
 
 //= ===============================
 // Favorite actions
@@ -12,7 +19,10 @@ import { FAVORITE_RECIPE, RETRIEVE_USER_FAVORITE_RECIPES, FAVORITE_ERROR } from 
  * @returns {array} dispatch
  */
 const favoriteRecipe = (recipeId, categoryId) => {
-  const data = { recipeId, categoryId };
+  const data = {
+    recipeId,
+    categoryId
+  };
   const url = `/recipes/${recipeId}/${categoryId}/favorites`;
   const directTo = '';
   const toastMessage = 'Recipe added to favorites Successfully';
@@ -38,4 +48,7 @@ const getFavoriteRecipes = () => {
   return dispatch => getData(RETRIEVE_USER_FAVORITE_RECIPES, FAVORITE_ERROR, true, url, dispatch);
 };
 
-export { favoriteRecipe, getFavoriteRecipes };
+export {
+  favoriteRecipe,
+  getFavoriteRecipes
+};

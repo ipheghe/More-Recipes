@@ -14,7 +14,7 @@ export default (sequelize, DataTypes) => {
         },
         is: {
           args: /^[A-Za-z][A-Za-z0-9-]+$/i,
-          msg: `Username must start with a letter and have no spaces.`
+          msg: 'Username must start with a letter and have no spaces.'
         }
       },
     },
@@ -71,7 +71,7 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
       unique: {
         args: true,
-        msg: `Email Already exists!`,
+        msg: 'Email Already exists!',
       },
       validate: {
         isEmail: {
@@ -83,39 +83,37 @@ export default (sequelize, DataTypes) => {
           msg: 'The email you entered is invalid or longer than 250 characters.'
         }
       }
-
     },
-
+    resetPasswordToken: {
+      type: DataTypes.STRING,
+      defaultValue: ''
+    },
+    resetPasswordExpires: {
+      type: DataTypes.BIGINT,
+      defaultValue: 0
+    },
   });
-
   User.associate = (models) => {
     User.hasMany(models.Recipe, {
       foreignKey: 'userId',
       as: 'recipes',
     });
-
     User.hasMany(models.Favorite, {
       foreignKey: 'userId',
       as: 'favorites',
     });
-
     User.hasMany(models.Category, {
       foreignKey: 'userId',
       as: 'categories',
     });
-
     User.hasMany(models.Review, {
       foreignKey: 'userId',
       as: 'reviews',
     });
-
     User.hasMany(models.Vote, {
       foreignKey: 'userId',
       as: 'votes',
     });
-
   };
-
-
   return User;
 };

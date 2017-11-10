@@ -44,6 +44,14 @@ module.exports = {
         unique: true,
         type: Sequelize.STRING
       },
+      resetPasswordToken: {
+        type: Sequelize.STRING,
+        defaultValue: ''
+      },
+      resetPasswordExpires: {
+        type: Sequelize.BIGINT,
+        defaultValue: 0
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -53,6 +61,6 @@ module.exports = {
         type: Sequelize.DATE
       }
     }),
-    down: queryInterface /* Sequelize */ =>
+  down: queryInterface /* Sequelize */ =>
     queryInterface.dropTable('Users'),
 };

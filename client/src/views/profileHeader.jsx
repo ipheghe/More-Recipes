@@ -1,33 +1,60 @@
 import React from 'react';
-import Logo from '../../public/images/recipe_logo.png';
+import PropTypes from 'prop-types';
 import { getUserCategories } from './../actions/category';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+/**
+ * ProfileHeader component
+ * @class ProfileHeader
+ * @extends {React.Component}
+ */
 class ProfileHeader extends React.Component {
+
+  static propTypes = {
+    children: PropTypes.any,
+    categories: PropTypes.array,
+  };
+
+  /**
+   * constructor
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
     this.state = {
-      keyword: ''
+      keyword: '',
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
-    this.props.getUserCategories();
-  }
-
+  /**
+  * handle change form event
+  * @param {SytheticEvent} e
+  * @returns {object} state
+  */
   handleChange(e) {
-    console.log(this.state.keyword);
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
+  /**
+   * render
+   * @return {ReactElement} markup
+   */
   render() {
     return (
       <nav className="navbar navbar-toggleable-md navbar-light bg-faded">
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarTogglerDemo01"
+          aria-controls="navbarTogglerDemo01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
@@ -41,13 +68,14 @@ class ProfileHeader extends React.Component {
             <button type="button" className="btn btn-default"><li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Browse
-                </a>
+              </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <p className="dropdown-item"><b>Categories</b></p>
                 <hr></hr>
                 {
                   (this.props.categories && this.props.categories.length > 0) ?
-                    this.props.categories.map((category, index) => <a className="dropdown-item" href="#" key={index}>{category.name}</a>)
+                    this.props.categories.map((category, index) =>
+                      <a className="dropdown-item" href="#" key={index}>{category.name}</a>)
                     : null
                 }
                 <br></br>
@@ -70,19 +98,20 @@ class ProfileHeader extends React.Component {
               placeholder="Search"
               required formNoValidate
             />
-            {/* <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> */}
-            <Link to={"/search?sort=" + this.state.keyword} className="btn btn-outline-success my-2 my-sm-0" >Search</Link>
+            <Link
+              to={'/search?sort=' + this.state.keyword}
+              className="btn btn-outline-success my-2 my-sm-0"
+            >Search
+            </Link>
           </form>
         </div>
       </nav>
     );
   }
 }
-function mapStateToProps(state) {
-  return {
-    categories: state.auth.categories
-  };
-}
+const mapStateToProps = state => ({
+  categories: state.category.categoryList
+});
 
 export default connect(mapStateToProps, { getUserCategories })(ProfileHeader);
 

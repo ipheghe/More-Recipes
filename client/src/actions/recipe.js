@@ -44,6 +44,7 @@ const addRecipe = (recipeName, recipeDescription, imageUrl, ingredients, directi
 };
 
 /**
+ * Update Recipe
  * @description update recipe action
  * @type {function} updateRecipe
  * @param {object} recipeId

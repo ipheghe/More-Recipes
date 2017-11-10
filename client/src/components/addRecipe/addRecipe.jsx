@@ -44,19 +44,16 @@ class AddRecipe extends React.Component {
     imageUrl = e.target.files[0];
     this.setState({
       imageUrl
-    })
-    console.log(imageUrl)
-    this.props.uploadImage(imageUrl)
+    });
+    this.props.uploadImage(imageUrl);
   }
 
   componentWillReceiveProps(nextprops) {
 
-    console.log(nextprops.imageUrl)
     if (nextprops.imageUrl) {
-      console.log('***************');
       this.setState({
         imageUrl: nextprops.imageUrl
-      })
+      });
     }
   }
 
@@ -102,6 +99,7 @@ class AddRecipe extends React.Component {
       errorMessage: ''
     });
     console.log(recipeName, "recipeName")
+    this.props.addRecipe(recipeName, recipeDetail, imageUrl, ingredients, directions);
     this.props.addRecipe(recipeName, recipeDetail, imageUrl, ingredients, directions);
   }
 

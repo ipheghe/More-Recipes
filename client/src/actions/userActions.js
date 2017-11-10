@@ -1,17 +1,34 @@
-import { getData, postData, putData, deleteData } from './index';
-import { UPDATE_USER, USER_ERROR } from './types';
+import {
+  postData,
+  putData,
+} from './index';
+import {
+  UPDATE_USER,
+  CHANGE_PASSWORD,
+  RESET_PASSWORD,
+  VERIFY_PASSWORD_TOKEN,
+  USER_ERROR
+} from './types';
 
 /**
  * @description update recipe action
  * @type {function} updateRecipe
- * @param {object} recipeId
- * @param {object} recipeDescription
- * @param {object} ingredients
- * @param {object} directions
- * @returns {array} dispatch
+ * @param {int} userId
+ * @param {str} username
+ * @param {str} firstName
+ * @param {str} lastName
+ * @param {int} mobileNumber
+ * @param {str} email
+ * @returns {object} dispatch
  */
 const updateUserRecord = (userId, username, firstName, lastName, mobileNumber, email) => {
-  const data = { username, firstName, lastName, mobileNumber, email };
+  const data = {
+    username,
+    firstName,
+    lastName,
+    mobileNumber,
+    email
+  };
   const url = `/users/${userId}`;
   const directTo = '#dashboard';
   const message = 'User Profile updated Successfully';
@@ -29,4 +46,95 @@ const updateUserRecord = (userId, username, firstName, lastName, mobileNumber, e
   );
 };
 
-export { updateUserRecord };
+/**
+ * @description action to change password
+ * @type {function} changePassword
+ * @param {int} userId
+ * @param {str} password
+ * @param {str} newPassword
+ * @returns {object} dispatch
+ */
+const changePassword = (userId, password, newPassword) => {
+  const data = {
+    password,
+    newPassword
+  };
+  const url = `/users/changePassword/${userId}`;
+  const directTo = '#login';
+  const message = 'User Password changed Successfully';
+  const constant = 'CHANGE_PASSWORD';
+  return dispatch => putData(
+    CHANGE_PASSWORD,
+    USER_ERROR,
+    true,
+    url,
+    dispatch,
+    data,
+    message,
+    constant,
+    directTo
+  );
+};
+
+/**
+ * @description action to reset password
+ * @type {function} resetPassword
+ * @param {str} email
+ * @returns {object} dispatch
+ */
+const resetPassword = (email) => {
+  const data = {
+    email
+  };
+  const url = '/users/forgotPassword';
+  const directTo = '#';
+  const message =
+    'Password Reset Successfully! Please check your email to and follow link to create a new password';
+  const constant = 'RESET_PASSWORD';
+  return dispatch => postData(
+    RESET_PASSWORD,
+    USER_ERROR,
+    true,
+    url,
+    dispatch,
+    data,
+    message,
+    constant,
+    directTo
+  );
+};
+
+/**
+ * @description action to verify password token for user to put new password
+ * @type {function} verifyTokenPassword
+ * @param {str} password
+ * @param {str} token
+ * @returns {object} dispatch
+ */
+const verifyTokenPassword = (password, token) => {
+  const data = {
+    password
+  };
+  const url = `/users/reset-password/${token}`;
+  const directTo = '#';
+  const message = 'new user password created Successfully';
+  const constant = 'VERIFY_PASSWORD_TOKEN';
+  return dispatch => postData(
+    VERIFY_PASSWORD_TOKEN,
+    USER_ERROR,
+    true,
+    url,
+    dispatch,
+    data,
+    message,
+    constant,
+    directTo
+  );
+};
+
+export {
+  updateUserRecord,
+  changePassword,
+  resetPassword,
+  verifyTokenPassword
+};
