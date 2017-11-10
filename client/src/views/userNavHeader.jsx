@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Logo from '../../public/images/recipe_logo.png';
 import { connect } from 'react-redux';
 import { fetchUsername, logoutUser } from '../actions/auth';
 import { getUserCategories } from './../actions/category';
+import Logo from '../../public/images/recipe_logo.png';
 
 /**
  * UserNavHeader component
@@ -11,13 +11,11 @@ import { getUserCategories } from './../actions/category';
  * @extends {React.Component}
  */
 class UserNavHeader extends React.Component {
-
   static propTypes = {
-    children: PropTypes.any,
-    fetchUsername: PropTypes.func,
-    getUserCategories: PropTypes.func,
-    logoutUser: PropTypes.func,
-    userData: PropTypes.object,
+    fetchUsername: PropTypes.func.isRequired,
+    getUserCategories: PropTypes.func.isRequired,
+    logoutUser: PropTypes.func.isRequired,
+    userData: PropTypes.node.isRequired,
   };
 
 	/**
@@ -69,9 +67,9 @@ class UserNavHeader extends React.Component {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span className="navbar-toggler-icon"></span>
+              <span className="navbar-toggler-icon" />
             </button>
-            <a className="navbar-brand" href="#">
+            <a className="navbar-brand" href="/">
               <img
                 src={Logo}
                 width="30"
@@ -86,29 +84,28 @@ class UserNavHeader extends React.Component {
               id="navbarSupportedContent"
               style={{ float: 'right' }}
             >
-              <ul className="navbar-nav mr-auto">
-              </ul>
+              <ul className="navbar-nav mr-auto" />
               <ul className="nav justify-content-end" id="profile-nav">
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <a className="nav-link" href={undefined}>
                     <span>
-                      <i className="fa fa-bell" aria-hidden="true"></i>
+                      <i className="fa fa-bell" aria-hidden="true" />
                     </span>Notifications<span className="badge badge-pill badge-danger">2</span>
                   </a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="./profile.html">
                     <span>
-                      <i className="fa fa-user" aria-hidden="true"></i>
+                      <i className="fa fa-user" aria-hidden="true" />
                     </span> {this.props.userData.firstName} {this.props.userData.lastName}
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" onClick={this.handleLogout}>
+                  <button className="nav-link" onClick={this.handleLogout}>
                     <span>
-                      <i className="fa fa-sign-out" aria-hidden="true"></i>
+                      <i className="fa fa-sign-out" aria-hidden="true" />
                     </span> Logout
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>

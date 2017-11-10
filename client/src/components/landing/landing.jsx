@@ -10,11 +10,9 @@ import { getTopRecipes } from '../../actions/recipe';
  * @param {function} onComponentDidMount - callback on ComponentDidMount
  */
 class Landing extends React.Component {
-
   static propTypes = {
-    children: PropTypes.any,
-    getTopRecipes: PropTypes.func,
-    recipes: PropTypes.array,
+    getTopRecipes: PropTypes.func.isRequired,
+    recipes: PropTypes.node.isRequired
   };
 
   /**

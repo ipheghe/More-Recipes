@@ -12,8 +12,7 @@ import { Link } from 'react-router-dom';
 class ProfileHeader extends React.Component {
 
   static propTypes = {
-    children: PropTypes.any,
-    categories: PropTypes.array,
+    categories: PropTypes.node.isRequired,
   };
 
   /**
@@ -58,15 +57,22 @@ class ProfileHeader extends React.Component {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <a className="navbar-brand" href="#"><h2>Profile Page</h2></a>
+          <a className="navbar-brand" href={undefined}><h2>Profile Page</h2></a>
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
             <li className="nav-item">
-              <a className="nav-link disabled" href="#"></a>
+              <a className="nav-link disabled" />
             </li>
           </ul>
           <ul className="navbar-nav profile-menu">
             <button type="button" className="btn btn-default"><li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a
+                className="nav-link dropdown-toggle"
+                href="http://example.com"
+                id="navbarDropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
                 Browse
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -74,16 +80,16 @@ class ProfileHeader extends React.Component {
                 <hr></hr>
                 {
                   (this.props.categories && this.props.categories.length > 0) ?
-                    this.props.categories.map((category, index) =>
-                      <a className="dropdown-item" href="#" key={index}>{category.name}</a>)
+                    this.props.categories.map((category) =>
+                      <a className="dropdown-item" key={category.id}>{category.name}</a>)
                     : null
                 }
                 <br></br>
                 <p className="dropdown-item"><b>Favorites</b></p>
                 <hr></hr>
-                <a className="dropdown-item" href="#">Egusi Soup</a>
-                <a className="dropdown-item" href="#">Pizza</a>
-                <a className="dropdown-item" href="#">Pepper Soup</a>
+                <a className="dropdown-item">Egusi Soup</a>
+                <a className="dropdown-item">Pizza</a>
+                <a className="dropdown-item">Pepper Soup</a>
               </div>
             </li>
             </button>
@@ -99,7 +105,7 @@ class ProfileHeader extends React.Component {
               required formNoValidate
             />
             <Link
-              to={'/search?sort=' + this.state.keyword}
+              to={`/search?sort=, ${this.state.keyword}`}
               className="btn btn-outline-success my-2 my-sm-0"
             >Search
             </Link>

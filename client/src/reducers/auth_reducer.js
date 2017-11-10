@@ -17,22 +17,26 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case AUTH_USER:
-      return { ...state,
+      return {
+        ...state,
         error: '',
         message: '',
         authenticated: true
       };
     case UNAUTH_USER:
-      return { ...state,
+      return {
+        ...state,
         authenticated: false,
         error: action.payload
       };
     case AUTH_ERROR:
-      return { ...state,
+      return {
+        ...state,
         error: action.payload.data.message
       };
     case FETCH_USER:
-      return { ...state,
+      return {
+        ...state,
         userData: action.payload,
         categories: action.payload.categories
       };

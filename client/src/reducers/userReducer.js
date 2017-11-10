@@ -14,19 +14,23 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UPDATE_USER:
-      return { ...state,
+      return {
+        ...state,
         userData: action.payload.userData
       };
     case CHANGE_PASSWORD:
-      return { ...state,
+      return {
+        ...state,
         message: action.payload.message
       };
     case USER_ERROR:
-      return { ...state,
+      return {
+        ...state,
         error: action.payload.data.message
       };
     case FETCH_USER:
-      return { ...state,
+      return {
+        ...state,
         userData: action.response
       };
     default:

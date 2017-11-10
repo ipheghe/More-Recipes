@@ -38,13 +38,13 @@ const usersController = {
    */
   signup(req, res) {
     User.create({
-        username: req.body.username,
-        password: bcrypt.hashSync(req.body.password, salt, null), // hash password
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        mobileNumber: req.body.mobileNumber,
-        email: req.body.email
-      })
+      username: req.body.username,
+      password: bcrypt.hashSync(req.body.password, salt, null), // hash password
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      mobileNumber: req.body.mobileNumber,
+      email: req.body.email
+    })
       .then((user) => res.status(201).send({
         message: 'User account successfully created.',
         userData: user
@@ -80,10 +80,10 @@ const usersController = {
 
     // check if the username exists
     User.findOne({
-        where: {
-          username: req.body.username
-        }
-      })
+      where: {
+        username: req.body.username
+      }
+    })
       .then((user) => {
         if (!user) {
           res.status(404).send({
@@ -169,12 +169,12 @@ const usersController = {
       .then(user => {
         // f user exists
         user.update({
-            username: req.body.username || user.username,
-            firstName: req.body.firstName || user.firstName,
-            lastName: req.body.lastName || user.lastName,
-            mobileNumber: req.body.mobileNumber || user.mobileNumber,
-            email: req.body.email || user.email
-          })
+          username: req.body.username || user.username,
+          firstName: req.body.firstName || user.firstName,
+          lastName: req.body.lastName || user.lastName,
+          mobileNumber: req.body.mobileNumber || user.mobileNumber,
+          email: req.body.email || user.email
+        })
           .then(updatedUser => res.status(200).send({
             message: 'User Record Updated SuccessFullly!',
             userData: updatedUser
@@ -213,8 +213,8 @@ const usersController = {
           } else {
             // if password matches, update new password
             user.update({
-                password: bcrypt.hashSync(req.body.password, salt, null) || user.password,
-              })
+              password: bcrypt.hashSync(req.body.password, salt, null) || user.password,
+            })
               .then(() => res.status(200).send({
                 message: 'User Password Changed SuccessFullly!'
               }))
@@ -265,12 +265,12 @@ const usersController = {
           // If user is found, generate and save resetToken
           existingUser.save((err) => {
               // If error in saving token, return it
-              if (err) {
-                return res.status(400).json({
-                  err
-                });
-              }
-            })
+            if (err) {
+              return res.status(400).json({
+                err
+              });
+            }
+          })
             .then(() => {
               const mailOptions = {
                 from: '"MoreRecipes Admin" <iphegheovie@gmail.com>',
@@ -289,9 +289,9 @@ const usersController = {
                     error: err.message
                   });
                 } else {
-                  console.log(info);
                   return res.status(200).json({
-                    message: 'Please check your email for the link to reset your password.'
+                    message: 'Please check your email for the link to reset your password.',
+                    info
                   });
                 }
               });
@@ -322,13 +322,13 @@ const usersController = {
       });
     }
     User.findOne({
-        where: {
-          resetPasswordToken: req.params.token,
-          resetPasswordExpires: {
-            $gt: Date.now()
-          }
+      where: {
+        resetPasswordToken: req.params.token,
+        resetPasswordExpires: {
+          $gt: Date.now()
         }
-      })
+      }
+    })
       .then((existingUser) => {
         if (!existingUser) {
           res.status(422).json({
@@ -342,39 +342,39 @@ const usersController = {
         existingUser.resetPasswordExpires = undefined;
 
         existingUser.save((err) => {
-            if (err) {
-              return next(err);
-            }
-          })
+          if (err) {
+            return next(err);
+          }
+        })
           .then(() => {
             isOnline().then((online) => {
-                if (online) {
-                  const mailOptions = {
-                    from: '"MoreRecipes Admin" <iphegheovie@gmail.com>',
-                    to: 'iphegheovie@yahoo.com',
-                    subject: 'Password Changed',
-                    text: 'You are receiving this email because you changed your password. \n\n' +
-                      'If you did not request this change, please contact us immediately.'
-                  };
-                  // Otherwise, send user email via nodemailer
-                  // transporter.sendMail(mailOptions);
-                  transporter.sendMail(mailOptions, (err) => {
-                    if (err) {
-                      res.status(400).send({
-                        error: err.message
-                      });
-                    } else {
-                      return res.status(200).json({
-                        message: 'Password changed successfully. Please login with your new password.'
-                      });
-                    }
-                  });
-                } else {
-                  return res.status(400).send({
-                    message: 'no internet connectivity'
-                  });
-                }
-              })
+              if (online) {
+                const mailOptions = {
+                  from: '"MoreRecipes Admin" <iphegheovie@gmail.com>',
+                  to: 'iphegheovie@yahoo.com',
+                  subject: 'Password Changed',
+                  text: 'You are receiving this email because you changed your password. \n\n' +
+                    'If you did not request this change, please contact us immediately.'
+                };
+                // Otherwise, send user email via nodemailer
+                // transporter.sendMail(mailOptions);
+                transporter.sendMail(mailOptions, (err) => {
+                  if (err) {
+                    res.status(400).send({
+                      error: err.message
+                    });
+                  } else {
+                    return res.status(200).json({
+                      message: 'Password changed successfully. Please login with your new password.'
+                    });
+                  }
+                });
+              } else {
+                return res.status(400).send({
+                  message: 'no internet connectivity'
+                });
+              }
+            })
               .catch(error => res.status(400).send({
                 error: error.message
               }));

@@ -13,6 +13,7 @@ router.put(
   validUser,
   recipeExists,
   votesController.upvoteRecipe,
-  votesController.downvoteRecipe);
+  votesController.downvoteRecipe
+);
 
 export default router;

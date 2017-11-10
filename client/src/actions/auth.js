@@ -1,8 +1,5 @@
 import axios from 'axios';
 import {
-  browserHistory
-} from 'react-router';
-import {
   API_URL,
   errorHandler
 } from './index';
@@ -27,8 +24,8 @@ import jwtDecode from 'jwt-decode';
 /**
  * @description display toastr message for failed signup
  * @type {function} signupFailed
- * @export
- * @returns
+ * @export signupFailed
+ * @returns {object} toastr
  */
 export function signupFailed() {
   return dispatch => {
@@ -50,7 +47,7 @@ export function signupFailed() {
  * @description display toastr message for failed login
  * @type {function} loginFailed
  * @export loginFailed
- * @returns
+ * @returns {object} toastr
  */
 export function loginFailed() {
   return dispatch => {
@@ -72,7 +69,12 @@ export function loginFailed() {
  * @description signup user action
  * @type {function} registerUser
  * @export registerUser
- * @param {object} { username, password, firstName, lastName, mobileNumber, email }
+ * @param {str} username
+ * @param {str} password
+ * @param {str} firstName
+ * @param {str} lastName
+ * @param {int} mobileNumber
+ * @param {str} email
  * @returns {object} dispatch
  */
 export function registerUser({
@@ -85,13 +87,13 @@ export function registerUser({
 }) {
   return function (dispatch) {
     axios.post(`${API_URL}/users/signup`, {
-        username,
-        password,
-        firstName,
-        lastName,
-        mobileNumber,
-        email
-      })
+      username,
+      password,
+      firstName,
+      lastName,
+      mobileNumber,
+      email
+    })
       .then((response) => {
         const toastr = bindActionCreators(toastrActions, dispatch);
         if (response.status >= 200 && response.status < 300) {
@@ -125,7 +127,8 @@ export function registerUser({
  * @description add recipe action
  * @type {function} loginUser
  * @export loginUser
- * @param {object} { username, password }
+ * @param {str} username
+ * @param {str} password
  * @returns {array} response
  * @callback {object}
  */
@@ -135,9 +138,9 @@ export function loginUser({
 }) {
   return function (dispatch) {
     axios.post(`${API_URL}/users/signin`, {
-        username,
-        password
-      })
+      username,
+      password
+    })
       .then((response) => {
         const toastr = bindActionCreators(toastrActions, dispatch);
         if (response.status >= 200 && response.status < 300) {

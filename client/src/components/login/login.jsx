@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MainHeader } from '../../views/index';
 import { connect } from 'react-redux';
+import { MainHeader } from '../../views/index';
 import { loginUser } from '../../actions/auth';
 import { resetPassword } from '../../actions/userActions';
 
@@ -11,13 +11,11 @@ import { resetPassword } from '../../actions/userActions';
  * @extends {React.Component}
  */
 class Login extends React.Component {
-
   static propTypes = {
-    children: PropTypes.any,
-    loginUser: PropTypes.func,
-    resetPassword: PropTypes.func,
-    message: PropTypes.string,
-    errorMessage: PropTypes.string,
+    loginUser: PropTypes.func.isRequired,
+    resetPassword: PropTypes.func.isRequired,
+    message: PropTypes.string.isRequired,
+    errorMessage: PropTypes.string.isRequired
   };
 
   /**
@@ -125,7 +123,7 @@ class Login extends React.Component {
       return (
         <div>
           <p className="alert error-alert" style={{ color: 'white' }}>
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }}></i>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
             &nbsp;{this.state.errorMessage}</p>
         </div>
       );
@@ -133,7 +131,7 @@ class Login extends React.Component {
       return (
         <div>
           <p className="alert error-alert" style={{ color: 'white' }}>
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }}></i>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
             &nbsp;{this.props.errorMessage}</p>
         </div>
       );
@@ -168,7 +166,7 @@ class Login extends React.Component {
                       <label htmlFor="enterEmail">Username Or Email address:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
-                          <i className="fa fa-envelope"></i>
+                          <i className="fa fa-envelope" />
                         </span>
                         <input
                           type="text"
@@ -186,7 +184,7 @@ class Login extends React.Component {
                       <label htmlFor="enterPassword">Password:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
-                          <i className="fa fa-unlock-alt"></i>
+                          <i className="fa fa-unlock-alt" />
                         </span>
                         <input
                           type="password"
@@ -208,7 +206,6 @@ class Login extends React.Component {
                       </div>
                       <div className="text-right col-md-6">
                         <a
-                          href="#"
                           data-toggle="modal"
                           data-target="#myModal"
                         >Forgot your password?
@@ -275,7 +272,7 @@ class Login extends React.Component {
                   <label htmlFor="enterEmailForgot">Email address:</label>
                   <div className="input-group input-group-lg">
                     <span className="input-group-addon">
-                      <i className="fa fa-envelope"></i>
+                      <i className="fa fa-envelope" />
                     </span>
                     <input
                       name="email"

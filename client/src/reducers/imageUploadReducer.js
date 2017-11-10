@@ -1,42 +1,40 @@
 import { IMAGE_FILE_FAILURE, IMAGE_FILE_REQUEST, IMAGE_FILE_SUCCESSFUL } from '../actions/types';
 
 
-const initialState=[{
+const initialState = [{
   imageData: {},
   response: '',
   error: '',
   isloaded: false,
-}]
+}];
 
-export default function (state = initialState, action) {
+export default (state = initialState, action) => {
   switch (action.type) {
     case IMAGE_FILE_REQUEST:
-      return [{ 
+      return [{
         imageData: action.imageData,
         response: '',
         error: '',
         isloaded: false,
-      }, ...state]
+      }, ...state];
 
-      case IMAGE_FILE_SUCCESSFUL:
-      return [{ 
+    case IMAGE_FILE_SUCCESSFUL:
+      return [{
         imageData: {},
         response: action.response,
         error: '',
         isloaded: true,
       }, ...state];
 
-      case IMAGE_FILE_REQUEST:
-      return [{ 
+    case IMAGE_FILE_FAILURE:
+      return [{
         imageData: {},
         response: '',
         error: action.error,
         isloaded: false,
       }, ...state];
-      
-      default:
-      return state;
-    }
 
-  
+    default:
+      return state;
   }
+};

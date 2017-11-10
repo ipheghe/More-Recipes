@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { MainHeader } from '../../views/index';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/auth';
@@ -9,6 +10,11 @@ import { registerUser } from '../../actions/auth';
  * @extends {React.Component}
  */
 class SignUp extends React.Component {
+  static propTypes = {
+    registerUser: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string.isRequied,
+    message: PropTypes.string.isRequired
+  };
 
   /**
    * constructor
@@ -54,7 +60,14 @@ class SignUp extends React.Component {
    */
   handleSignup(e) {
     e.preventDefault();
-    const { username, firstName, lastName, mobileNumber, email, password } = this.state;
+    const {
+      username,
+      firstName,
+      lastName,
+      mobileNumber,
+      email,
+      password
+    } = this.state;
     const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     const numericExpression = /^[0-9]+$/;
     const regExpression = /^[A-Za-z][A-Za-z0-9-]+$/i;
@@ -141,16 +154,18 @@ class SignUp extends React.Component {
       return (
         <div>
           <p className="alert error-alert" style={{ color: 'white' }}>
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }}></i>
-            &nbsp;{this.state.errorMessage}</p>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
+            &nbsp;{this.state.errorMessage}
+          </p>
         </div>
       );
     } else if (this.props.errorMessage) {
       return (
         <div>
           <p className="alert error-alert" style={{ color: 'white' }}>
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }}></i>
-            &nbsp;{this.props.errorMessage}</p>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
+            &nbsp;{this.props.errorMessage}
+          </p>
         </div>
       );
     }
@@ -181,10 +196,10 @@ class SignUp extends React.Component {
                     <h3 className="login-form-boxx">Registration Form</h3>
                     <br></br>
                     <div className="form-group">
-                      <label for="enterUsername">Username:</label>
+                      <label htmlFor="enterUsername">Username:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
-                          <i className="fa fa-user"></i>
+                          <i className="fa fa-user" />
                         </span>
                         <input
                           name="username"
@@ -199,10 +214,10 @@ class SignUp extends React.Component {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label for="enterFirstName">First Name:</label>
+                      <label htmlFor="enterFirstName">First Name:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
-                          <i className="fa fa-user-o"></i>
+                          <i className="fa fa-user-o" />
                         </span>
                         <input
                           name="firstName"
@@ -217,10 +232,10 @@ class SignUp extends React.Component {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label for="enterLastName">Last Name:</label>
+                      <label htmlFor="enterLastName">Last Name:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
-                          <i className="fa fa-user-o"></i>
+                          <i className="fa fa-user-o" />
                         </span>
                         <input
                           name="lastName"
@@ -235,10 +250,10 @@ class SignUp extends React.Component {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label for="enterMobile">Mobile:</label>
+                      <label htmlFor="enterMobile">Mobile:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
-                          <i className="fa fa-mobile"></i>
+                          <i className="fa fa-mobile" />
                         </span>
                         <input
                           name="mobileNumber"
@@ -253,10 +268,10 @@ class SignUp extends React.Component {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label for="enterEmail">Email address:</label>
+                      <label htmlFor="enterEmail">Email address:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
-                          <i className="fa fa-envelope"></i>
+                          <i className="fa fa-envelope" />
                         </span>
                         <input
                           name="email"
@@ -271,10 +286,10 @@ class SignUp extends React.Component {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label for="enterPassword">Password:</label>
+                      <label htmlFor="enterPassword">Password:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
-                          <i className="fa fa-unlock-alt"></i>
+                          <i className="fa fa-unlock-alt" />
                         </span>
                         <input
                           name="password"
@@ -306,7 +321,7 @@ class SignUp extends React.Component {
                       </div>
                       <br></br>
                       <div>
-                        <a href="#">
+                        <a href="/">
                           <button
                             type="button"
                             className="btn btn-block btn-success"

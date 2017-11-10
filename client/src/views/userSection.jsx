@@ -14,14 +14,13 @@ import { connect } from 'react-redux';
 class UserSection extends React.Component {
 
   static propTypes = {
-    children: PropTypes.any,
-    addCategory: PropTypes.func,
-    changePassword: PropTypes.func,
-    fetchUsername: PropTypes.func,
-    userData: PropTypes.object,
-    errorMessage: PropTypes.string,
-    categoryName: PropTypes.string,
-    categories: PropTypes.array,
+    addCategory: PropTypes.func.isRequired,
+    changePassword: PropTypes.func.isRequired,
+    fetchUsername: PropTypes.func.isRequired,
+    userData: PropTypes.object.isRequired,
+    errorMessage: PropTypes.string.isRequired,
+    categoryName: PropTypes.string.isRequired,
+    categories: PropTypes.node.isRequired,
   };
 
   /**
@@ -125,7 +124,7 @@ class UserSection extends React.Component {
       return (
         <div>
           <p className="alert error-alert">
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }}></i>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
             &nbsp;{this.state.errorMessage}</p>
         </div>
       );
@@ -133,7 +132,7 @@ class UserSection extends React.Component {
       return (
         <div>
           <p className="alert error-alert">
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }}></i>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
             &nbsp;{this.props.errorMessage}</p>
         </div>
       );
@@ -157,8 +156,9 @@ class UserSection extends React.Component {
           </p>
           <br></br>
           <br></br>
-          <a href="#editProfile"><button className="btn btn-success editProfile-btn">Edit Profile</button></a>
-          <a href="" data-toggle="modal" data-target="#myModal">
+          <a href="#editProfile">
+            <button className="btn btn-success editProfile-btn">Edit Profile</button></a>
+          <a data-toggle="modal" data-target="#myModal">
             <button className="btn btn-success">change Password</button>
           </a>
         </div>
@@ -236,7 +236,7 @@ class UserSection extends React.Component {
                     <label htmlFor="oldPassword">Old Password:</label>
                     <div className="input-group input-group-lg">
                       <span className="input-group-addon">
-                        <i className="fa fa-envelope"></i>
+                        <i className="fa fa-envelope" />
                       </span>
                       <input
                         name="oldPassword"
@@ -253,7 +253,7 @@ class UserSection extends React.Component {
                     <label htmlFor="newPassword">New Password:</label>
                     <div className="input-group input-group-lg">
                       <span className="input-group-addon">
-                        <i className="fa fa-envelope"></i>
+                        <i className="fa fa-envelope" />
                       </span>
                       <input
                         name="newPassword"
@@ -270,7 +270,7 @@ class UserSection extends React.Component {
                     <label htmlFor="confirmPassword">Confirm Password:</label>
                     <div className="input-group input-group-lg">
                       <span className="input-group-addon">
-                        <i className="fa fa-envelope"></i>
+                        <i className="fa fa-envelope" />
                       </span>
                       <input
                         name="confirmPassword"

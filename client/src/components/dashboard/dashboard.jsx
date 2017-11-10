@@ -1,23 +1,31 @@
-import React from "react";
-import { UserNavHeader, ProfileHeader, UserSection } from "../../views/index";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { UserNavHeader, ProfileHeader, UserSection } from '../../views/index';
 import { connect } from 'react-redux';
-import { addCategory, getUserCategories } from '../../actions/category';
 import RecipeList from '../recipeList/recipeList';
 
 
-@connect((state) => {
-  return { state, }
-})
+/**
+ * Dashboard component
+ * @class Dashboard
+ * @extends {React.Component}
+ */
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+
+  static propTypes = {
+    addCategory: PropTypes.func,
+    changePassword: PropTypes.func,
+    fetchUsername: PropTypes.func,
+    recipes: PropTypes.array,
+    errorMessage: PropTypes.string,
+    categoryName: PropTypes.string,
+    categories: PropTypes.array,
+  };
 
   /**
-   * SearchWiki layout component that enables a user search wikipedia right from the dashboard.
-   * 
-   * @param {component} <MainHeader/> - The landing page main header navigation.
-   * @param {component} <Footer/> - The landing page footer navigation.
+   * handle login form event error
+   * @param {SytheticEvent} e
+   * @returns {string} errorMessage
    */
   render() {
     return (
@@ -42,7 +50,15 @@ class Dashboard extends React.Component {
                         <a className="nav-link" href="#favorite">Favorites</a>
                       </li>
                       <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">My Recipes</a>
+                        <a
+                          className="nav-link dropdown-toggle"
+                          data-toggle="dropdown"
+                          href="#"
+                          role="button"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >My Recipes
+                        </a>
                         <div className="dropdown-menu">
                           <a className="dropdown-item" href="#myRecipe">Personal Recipes</a>
                           <a className="dropdown-item" href="#manageRecipe">Manage Recipes</a>
@@ -72,7 +88,9 @@ class Dashboard extends React.Component {
                     </li>
                     <li className="page-item"><a className="page-link" href="#">1</a></li>
                     <li className="page-item active">
-                      <a className="page-link" href="#">2 <span className="sr-only">(current)</span></a>
+                      <a className="page-link" href="#">2
+                        <span className="sr-only">(current)</span>
+                      </a>
                     </li>
                     <li className="page-item"><a className="page-link" href="#">3</a></li>
                     <li className="page-item">
@@ -89,11 +107,9 @@ class Dashboard extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    userData: state.auth.userData,
-    recipes: state.recipe.recipeData
-  };
-}
+const mapStateToProps = (state) => ({
+  userData: state.auth.userData,
+  recipes: state.recipe.recipeData
+});
 
 export default connect(mapStateToProps)(Dashboard);

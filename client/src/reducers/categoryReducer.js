@@ -14,16 +14,19 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_CATEGORY:
-      return { ...state,
+      return {
+        ...state,
         message: action.payload.message,
         categoryName: action.payload.categoryData.name
       };
     case FETCH_USER_CATEGORIES:
-      return { ...state,
+      return {
+        ...state,
         categoryList: action.payload.userCategoryList
       };
     case CATEGORY_ERROR:
-      return { ...state,
+      return {
+        ...state,
         error: action.payload.data.message
       };
     default:

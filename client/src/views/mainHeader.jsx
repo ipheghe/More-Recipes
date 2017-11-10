@@ -1,6 +1,6 @@
 import React from 'react';
-import Logo from '../../public/images/recipe_logo.png';
 import { NavLink } from 'react-router-dom';
+import Logo from '../../public/images/recipe_logo.png';
 
 /**
  * MainHeader commponent
@@ -22,9 +22,9 @@ const MainHeader = () => (
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon" />
         </button>
-        <a href="#/" className="navbar-brand">
+        <a href="/" className="navbar-brand">
           <img
             src={Logo}
             width="30"

@@ -12,6 +12,7 @@
     "jest": true
   },
   "parserOptions": {
+    "ecmaVersion": 6,
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
       "jsx": true,
@@ -21,17 +22,25 @@
   "rules": {
     "one-var": 0,
     "one-var-declaration-per-line": 0,
+    "linebreak-style": 0,
     "new-cap": 0,
+    "no-useless-escape": 0,
+    "jsx-a11y/anchor-has-content": "off",
     "consistent-return": 0,
     "no-param-reassign": 0,
     "comma-dangle": 0,
+    "import/no-unresolved": 0,
     "import/extensions": [2, {
       "js": "never"
     }],
-    "curly": ["error", "multi-line"],
-    "import/no-unresolved": [2, {
-      "commonjs": true
+    "jsx-a11y/label-has-for": [2, {
+      "components": ["Label"],
+      "required": {
+        "some": ["nesting", "id"]
+      },
+      "allowChildren": false
     }],
+    "curly": ["error", "multi-line"],
     "no-shadow": ["error", {
       "allow": ["req", "res", "err"]
     }],

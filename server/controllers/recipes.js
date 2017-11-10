@@ -38,7 +38,9 @@ const recipesController = {
         message: 'Recipe Added SuccessFullly!',
         recipeData: recipe
       }))
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
 
   /**
@@ -53,7 +55,8 @@ const recipesController = {
     // find if recipe exits
     Recipe.find({
       where: {
-        userId: req.decoded.user.id, id: req.params.id
+        userId: req.decoded.user.id,
+        id: req.params.id
       }
     })
       .then(recipe => {
@@ -71,7 +74,9 @@ const recipesController = {
             recipeData: updatedRecipe
           }));
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
 
   /**
@@ -85,18 +90,27 @@ const recipesController = {
   deleteRecipe(req, res) {
     return Recipe
       // find if recipe exits
-      .find({ where: { userId: req.decoded.user.id, id: req.params.id } })
+      .find({
+        where: {
+          userId: req.decoded.user.id,
+          id: req.params.id
+        }
+      })
       .then(recipe => {
         // if recipe exits, delete the recipe
-        return recipe
+        recipe
           .destroy()
           .then((deletedRecipe) => res.status(200).send({
             message: 'Recipe Deleted SuccessFullly!',
             recipeData: deletedRecipe
           }))
-          .catch(error => res.status(400).send({ error: error.message }));
+          .catch(error => res.status(400).send({
+            error: error.message
+          }));
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
 
   /**
@@ -111,14 +125,18 @@ const recipesController = {
     // find all recipes that have the requested userId
     return Recipe
       .findAll({
-        where: { userId: req.decoded.user.id },
+        where: {
+          userId: req.decoded.user.id
+        },
         attributes: keys
       })
       // retrieve all recipes for that particular user
       .then((recipe) => {
         if (recipe) {
           if (recipe.length === 0) {
-            res.status(404).send({ message: 'No recipe found for user' });
+            res.status(404).send({
+              message: 'No recipe found for user'
+            });
           } else {
             return res.status(200).send({
               message: 'All User Recipes Retrieved SuccessFullly!',
@@ -127,7 +145,9 @@ const recipesController = {
           }
         }
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
 
   /**
@@ -142,7 +162,10 @@ const recipesController = {
     // Query database for recipe matching id in params
     return Recipe
       .findOne({
-        where: { id: req.params.id }, include: [{
+        where: {
+          id: req.params.id
+        },
+        include: [{
           model: Review,
           as: 'reviews',
           attributes: ['message', 'createdAt'],
@@ -162,7 +185,9 @@ const recipesController = {
             }));
         });
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
 
   /**
@@ -176,14 +201,20 @@ const recipesController = {
   getRecipe(req, res) {
     // Query database for recipe matching id in params
     return Recipe
-      .findOne({ where: { recipeName: req.params.recipeName } })
+      .findOne({
+        where: {
+          recipeName: req.params.recipeName
+        }
+      })
       .then((recipe) => {
         res.status(200).send({
           message: 'Recipe Retrieved SuccessFullly!',
           recipe
         });
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
 
   /**
@@ -219,7 +250,9 @@ const recipesController = {
         message: 'All Recipes Retrieved SuccessFullly!',
         recipeData: recipe
       }))
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
 
   /**
@@ -241,14 +274,18 @@ const recipesController = {
     return Recipe
       .findAll({
         attributes: keys,
-        order: [[sort, order]],
+        order: [
+          [sort, order]
+        ],
         limit: 10
       })
       .then(recipe => res.status(200).send({
         message: 'All Top Recipes Retrieved SuccessFullly!',
         recipeData: recipe
       }))
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
 
   /**
@@ -276,7 +313,9 @@ const recipesController = {
     }));
     return Recipe
       .all({
-        where: { $or: query },
+        where: {
+          $or: query
+        },
         limit: 10,
         attributes: keys
       })
@@ -291,7 +330,9 @@ const recipesController = {
           recipeData: recipe
         });
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
 
   /**
@@ -330,10 +371,15 @@ const recipesController = {
     return Recipe
       .findAll({
         where: {
-          $or: [
-            { $or: query },
-            { $or: query1 },
-            { $or: query2 }
+          $or: [{
+            $or: query
+          },
+            {
+              $or: query1
+            },
+            {
+              $or: query2
+            }
           ]
         },
         limit: 2,
@@ -350,7 +396,9 @@ const recipesController = {
           recipeData: recipe
         });
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   }
 };
 export default recipesController;

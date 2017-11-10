@@ -1,6 +1,6 @@
 import React from 'react';
-import Logo from '../../public/images/recipe_logo.png';
 import { NavLink } from 'react-router-dom';
+import Logo from '../../public/images/recipe_logo.png';
 
 /**
  * ResetPasswordHeader commponent
@@ -22,7 +22,7 @@ const ResetPasswordHeader = () => (
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon" />
         </button>
         <a href="#/" className="navbar-brand">
           <img

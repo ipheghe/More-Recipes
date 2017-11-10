@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
+import isOnline from 'is-online';
 import dotenv from 'dotenv';
 import db from '../models/index';
-import isOnline from 'is-online';
 
 dotenv.load();
 const Recipe = db.Recipe;
@@ -22,14 +22,15 @@ const transporter = nodemailer.createTransport({
 
 /**
  * @module reviewNotification
- * @description controller function sends notification to user after user recipe has a new post review
+ * @description controller function sends notification
+ * to user after user recipe has a new post review
  * @function
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {Object} next - Express next middleware function
  * @return {*} void
  */
-const reviewNotification = (req, res) => {
+const reviewNotification = (req, res, next) => {
   isOnline().then((online) => {
     if (online) {
       Recipe.findOne({
@@ -49,7 +50,8 @@ const reviewNotification = (req, res) => {
             };
             transporter.sendMail(mailOptions, (err, info) => {
               if (err) {
-                res.status(400).send({ error: err.message });
+                next();
+                res.status(400);
               } else {
                 res.status(200).send({ message: 'mail sent successfully', info });
               }
@@ -57,11 +59,10 @@ const reviewNotification = (req, res) => {
           });
         });
     } else {
-      console.log('no internet');
       return res.status(400);
     }
   })
-  .catch(error => res.status(400).send({ error: error.message }));
+    .catch(error => res.status(400).send({ error: error.message }));
 };
 
 export default reviewNotification;

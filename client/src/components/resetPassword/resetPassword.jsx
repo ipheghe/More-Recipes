@@ -1,8 +1,8 @@
 import React from 'react';
-import { ResetPasswordHeader } from '../../views/index';
-import { connect } from 'react-redux';
-import { verifyTokenPassword } from '../../actions/userActions';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { ResetPasswordHeader } from '../../views/index';
+import { verifyTokenPassword } from '../../actions/userActions';
 
 /**
  * Reset password form commponent
@@ -10,12 +10,10 @@ import PropTypes from 'prop-types';
  * @extends {React.Component}
  */
 class ResetPassword extends React.Component {
-
   static propTypes = {
-    children: PropTypes.any,
     verifyTokenPassword: PropTypes.func,
     errorMessage: PropTypes.string,
-    match: PropTypes.object
+    match: PropTypes.node
   };
 
   /**
@@ -102,7 +100,7 @@ class ResetPassword extends React.Component {
       return (
         <div>
           <p className="alert error-alert" style={{ color: 'white' }}>
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }}></i>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
             &nbsp;{this.state.errorMessage}</p>
         </div>
       );
@@ -110,7 +108,7 @@ class ResetPassword extends React.Component {
       return (
         <div>
           <p className="alert error-alert" style={{ color: 'white' }}>
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }}></i>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
             &nbsp;{this.props.errorMessage}</p>
         </div>
       );
@@ -145,7 +143,7 @@ class ResetPassword extends React.Component {
                       <label htmlFor="enterPassword">New Password:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
-                          <i className="fa fa-unlock-alt"></i>
+                          <i className="fa fa-unlock-alt" />
                         </span>
                         <input
                           type="password"
@@ -163,7 +161,7 @@ class ResetPassword extends React.Component {
                       <label htmlFor="enterPassword">Confirm Password:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
-                          <i className="fa fa-unlock-alt"></i>
+                          <i className="fa fa-unlock-alt" />
                         </span>
                         <input
                           type="password"
