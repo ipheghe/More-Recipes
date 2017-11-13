@@ -1,18 +1,18 @@
 //= =====================
 // Auth Actions
 //= =====================
-export const AUTH_USER = 'auth_user',
-  UNAUTH_USER = 'unauth_user',
-  AUTH_ERROR = 'auth_error',
-  FORGOT_PASSWORD_REQUEST = 'forgot_password_request',
-  RESET_PASSWORD_REQUEST = 'reset_password_request',
-  PROTECTED_TEST = 'protected_test';
+export const AUTH_USER = 'AUTH_USER',
+  UNAUTH_USER = 'UNAUTH_USER',
+  AUTH_ERROR = 'AUTH_ERROR';
 
 //= =====================
 // User Profile Actions
 //= =====================
 export const FETCH_USER = 'FETCH_USER',
   UPDATE_USER = 'UPDATE_USER',
+  CHANGE_PASSWORD = 'CHANGE_PASSWORD',
+  RESET_PASSWORD = 'RESET_PASSWORD',
+  VERIFY_PASSWORD_TOKEN = 'VERIFY_PASSWORD_TOKEN',
   USER_ERROR = 'USER_ERROR';
 
 //= =====================
@@ -58,4 +58,3 @@ export const UPVOTE_RECIPE = 'UPVOTE_RECIPE',
 export const IMAGE_FILE_REQUEST = 'IMAGE_FILE_REQUEST',
   IMAGE_FILE_SUCCESSFUL = 'IMAGE_FILE_SUCCESSFUL',
   IMAGE_FILE_FAILURE = 'IMAGE_FILE_FAILURE';
-

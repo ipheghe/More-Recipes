@@ -3,15 +3,20 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "Open Sans", sans-serif;
 }
 
 label {
-color: #fff;
-font-weight: bold;
-display: block;
-float: left;
+  color: #fff;
+  font-weight: bold;
+  display: block;
+  float: left;
 }
 
 .landing-background {
@@ -32,15 +37,14 @@ float: left;
   overflow: hidden;
 }
 
-
 .login-background {
   background: url("/dist/banner.jpeg");
   -moz-background-position: 50%;
   -webkit-background-position: 50%;
   background-position: 50%;
-  min-height: 700px;
+  min-height: 850px;
   overflow: hidden;
-  background-size: cover;          
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
@@ -51,7 +55,7 @@ float: left;
   background-position: 50%;
   min-height: 900px;
   overflow: hidden;
-  background-size: cover;          
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
@@ -62,13 +66,11 @@ float: left;
   background-position: 50%;
   overflow: hidden;
   margin: 30px auto;
-
 }
 
 .nav-link i {
-    margin-right: 30px;
-  }
-
+  margin-right: 30px;
+}
 
 .profile-background {
   -moz-background-position: 50%;
@@ -81,19 +83,19 @@ float: left;
   margin-top: 50px;
 }
 
-.profile-background > .container {
+.profile-background>.container {
   width: 100%;
   padding: auto 0px;
   margin: auto 0px;
 }
 
-.profile-background > .container > .navbar {
+.profile-background>.container>.navbar {
   background-color: #e6e6e6;
   margin-top: 30px;
 }
 
 nav#brand-color {
-/*  background-color: transparent;*/
+  /*  background-color: transparent;*/
 }
 
 .landing {
@@ -103,8 +105,8 @@ nav#brand-color {
 
 @media(max-width: 767px) {
   .landing {
-  text-align: center;
-  }  
+    text-align: center;
+  }
 }
 
 .headline {
@@ -115,29 +117,29 @@ nav#brand-color {
   font-weight: 700;
 }
 
-.headline a > button {
+.headline a>button {
   min-width: 60%;
   margin-bottom: 30px;
 }
 
 .account {
-  background-color: rgba(0,0,0,.70);
+  background-color: rgba(0, 0, 0, .70);
   padding: 40px 30px;
   border-radius: 3px;
   z-index: 0;
 }
 
-.account > div {
+.account>div {
   display: block;
   margin: 30px auto;
 }
 
-.account div > a > button {
+.account div>a>button {
   min-width: 100%;
 }
 
-.account h3{
-  color:#fff;
+.account h3 {
+  color: #fff;
   font-weight: 700;
 }
 
@@ -177,34 +179,36 @@ nav#brand-color {
 }
 
 .title-area p {
-display: inline;
+  display: inline;
 }
 
 .title-area span {
-margin-left: 5px;
+  margin-left: 5px;
 }
 
-.recipe-background  .recipe-button {
+.recipe-background .recipe-button {
   text-align: center;
 }
-.recipe-button > button {
+
+.recipe-button>button {
   min-width: 150px;
   margin-right: 10px;
 }
-.recipe-ingredients ul{
+
+.recipe-ingredients ul {
   float: left;
   margin: auto 0;
   padding: 0;
-
 }
 
-.recipe-ingredients li{
-  list-style-type:none;
+.recipe-ingredients li {
+  list-style-type: none;
   margin-bottom: 10px;
-
 }
 
-.recipe-ingredients li i{
+.recipe-ingredients li span {}
+
+.recipe-ingredients li i {
   font-size: 10px;
   margin-right: 5px;
 }
@@ -214,8 +218,8 @@ margin-left: 5px;
 }
 
 .form-rounded {
-border-radius: 1rem;
-min-height: 250px;
+  border-radius: 1rem;
+  min-height: 250px;
 }
 
 .nav-link {
@@ -232,7 +236,7 @@ a:hover {
 
 .profile-background .div-profile {
   background-color: #F8F8FF;
-  padding:10px 10px 10px 10px;
+  padding: 10px 10px 10px 10px;
 }
 
 .profile-background .div-section {
@@ -246,6 +250,7 @@ a:hover {
 .profile-tabs .card-deck {
   margin: auto 10px;
 }
+
 .profile-tabs .card-deck span {
   margin-right: 5px;
 }
@@ -259,34 +264,35 @@ a:hover {
   margin-bottom: 20px;
 }
 
-.profile-category-button > button {
+.profile-category-button>button {
   margin-bottom: 5px;
 }
 
 .profile-background .edit-profile-div-section {
   background-color: #F8F8FF;
-  padding:10px 10px 10px 10px;
+  padding: 10px 10px 10px 10px;
 }
 
 .profile-background .add-padding {
-  padding:10px 15px;
+  padding: 10px 15px;
 }
 
 .edit-profile-div-section label {
   color: #000
 }
 
-.edit-profile-button > button {
+.edit-profile-button>button {
   min-width: 20%;
   margin-right: 10px;
   text-align: center;
 }
 
-.card-footer .text-muted > button {
-  float:right;
+.card-footer .text-muted>button {
+  float: right;
 }
-.card-footer .text-muted > a {
-  float:right;
+
+.card-footer .text-muted>a {
+  float: right;
 }
 
 .profile-menu {
@@ -306,7 +312,7 @@ a:hover {
   margin: auto 20px;
 }
 
-#top-recipes .card-deck span{
+#top-recipes .card-deck span {
   margin-right: 6px;
 }
 
@@ -316,11 +322,11 @@ a:hover {
 
 @media(min-width: 480px) {
   .recipe-background {
-  margin: 30px 15%;
-  }  
+    margin: 30px 15%;
+  }
   .profile-background {
-  margin: 30px 15%;
-  }  
+    margin: 30px 15%;
+  }
   .nav-link i {
     margin-right: 5px;
   }
@@ -328,71 +334,79 @@ a:hover {
     margin: 10px 10px;
   }
 }
-.card-blocks {
 
+.card-blocks {
   display: inline-block;
   margin: auto;
   width: 100%;
   text-align: center;
 }
+
 .card-blocks .card {
   display: inline-block;
   width: 200px;
   margin-bottom: 15px;
   margin-right: 5px;
 }
-.card-blocks .card img{
+
+.card-blocks .card img {
   width: 200px;
   height: 200px;
 }
-.card-blocks .card-title{
+
+.card-blocks .card-title {
   text-align: left;
   height: 60px;
 }
-.card-blocks .card-text{
+
+.card-blocks .card-text {
   height: 200px;
   text-align: left;
 }
-.card-blocks .card-footer{
+
+.card-blocks .card-footer {
   text-align: left;
   padding: 0px;
   font-size: 15px;
   font-weight: 50%;
 }
-.card-blocks-home {
 
+.card-blocks-home {
   display: inline-block;
   margin: auto;
   width: 100%;
   text-align: center;
 }
+
 .card-blocks-home .card {
   display: inline-block;
   width: 300px;
   margin-bottom: 15px;
   margin-right: 10px;
 }
-.card-blocks-home .card img{
+
+.card-blocks-home .card img {
   width: 300px;
   height: 300px;
 }
-.card-blocks-home .card-title{
+
+.card-blocks-home .card-title {
   text-align: left;
   height: 60px;
 }
-.card-blocks-home .card-text{
+
+.card-blocks-home .card-text {
   height: 200px;
   text-align: left;
 }
-.card-blocks-home .card-footer{
+
+.card-blocks-home .card-footer {
   text-align: left;
   padding: 0px;
   font-size: 18px;
   font-weight: 50%;
 }
-.text-muted > span{
-  margin-right: 3px;
-}
+
 .arrow-key {
   font-size: 100px;
 }
@@ -414,53 +428,70 @@ input.active:invalid {
 .panel-shadow {
   box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px;
 }
+
 .panel-white {
-border: 1px solid #dddddd;
-background-color: #fff; 
+  border: 1px solid #dddddd;
+  background-color: #fff;
 }
-.panel-white  .panel-heading {
-color: #333;
-background-color: #fff;
-border-color: #ddd;
+
+.panel-white .panel-heading {
+  color: #333;
+  background-color: #fff;
+  border-color: #ddd;
 }
-.panel-white  .panel-footer {
-background-color: #fff;
-border-color: #ddd;
+
+.panel-white .panel-footer {
+  background-color: #fff;
+  border-color: #ddd;
 }
 
 .post .post-heading {
-height: 95px;
-padding: 20px 15px;
+  height: 95px;
+  padding: 20px 15px;
 }
+
 .post .post-heading .avatar {
-width: 60px;
-height: 60px;
-display: block;
-margin-right: 15px;
+  width: 60px;
+  height: 60px;
+  display: block;
+  margin-right: 15px;
 }
+
 .post .post-heading .meta .title {
-margin-bottom: 0;
+  margin-bottom: 0;
 }
+
 .post .post-heading .meta .title a {
-color: black;
+  color: black;
 }
+
 .post .post-heading .meta .title a:hover {
-color: #aaaaaa;
+  color: #aaaaaa;
 }
+
 .post .post-heading .meta .time {
-margin-top: 8px;
-color: #999;
+  margin-top: 8px;
+  color: #999;
 }
+
 .post .post-image .image {
-width: 100%;
-height: auto;
+  width: 100%;
+  height: auto;
 }
+
 .post .post-description {
-padding: 15px;
+  padding: 15px;
 }
+
 .post .post-description p {
-font-size: 14px;
+  font-size: 14px;
 }
+
 button.close {
   width: 50px;
+}
+
+.div-profile .editProfile-btn {
+  margin-bottom: 5px;
+  margin-right: 5px;
 }

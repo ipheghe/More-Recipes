@@ -1,4 +1,4 @@
-export default (sequelize, DataTypes) => {
+export default (sequelize) => {
   const Favorite = sequelize.define('Favorite', {});
 
   Favorite.associate = (models) => {
@@ -6,16 +6,13 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'recipeId',
       onDelete: 'CASCADE',
     });
-
     Favorite.belongsTo(models.Category, {
       foreignKey: 'categoryId',
-
     });
     Favorite.belongsTo(models.User, {
       foreignKey: 'userId',
       onDelete: 'CASCADE',
     });
-
   };
   return Favorite;
 };

@@ -10,8 +10,16 @@ const keys = [
 ];
 
 const recipesController = {
-  // add recipe record
-  create(req, res) {
+
+  /**
+   * @module addRecipe
+   * @description controller function that creates recipe record
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message recipeData
+   */
+  addRecipe(req, res) {
     return Recipe
       // logged-in user can add recipe
       .create({
@@ -26,99 +34,198 @@ const recipesController = {
         notification: 0,
         userId: req.decoded.user.id,
       })
-      .then(recipe => res.status(201).send({ 'message': 'Recipe Added SuccessFullly!', 'recipeData': recipe }))
-      .catch(error => res.status(400).send({ 'error': error.message }));
+      .then(recipe => res.status(201).send({
+        message: 'Recipe Added SuccessFullly!',
+        recipeData: recipe
+      }))
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
-  //update recipe record
-  update(req, res) {
-    //find if recipe exits
+
+  /**
+   * @module updateRecipe
+   * @description controller function that updates recipe record
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message recipeData
+   */
+  updateRecipe(req, res) {
+    // find if recipe exits
     Recipe.find({
       where: {
-        userId: req.decoded.user.id, id: req.params.id
+        userId: req.decoded.user.id,
+        id: req.params.id
       }
     })
       .then(recipe => {
-        //if recipe exists
+        // if recipe exists
         recipe.update({
           recipeName: req.body.recipeName || recipe.recipeName,
           recipeDesc: req.body.recipeDesc || recipe.recipeDesc,
           ingredients: req.body.ingredients || recipe.ingredients,
           directions: req.body.directions || recipe.directions,
           imageUrl: req.body.imageUrl || recipe.imageUrl,
-          notification: parseInt(req.body.notification) || recipe.notification,
+          notification: req.body.notification || recipe.notification,
         })
-          .then(updatedRecipe => res.status(200).send({ message: 'Recipe Updated SuccessFullly!', recipeData: recipe }))
+          .then(updatedRecipe => res.status(200).send({
+            message: 'Recipe Updated SuccessFullly!',
+            recipeData: updatedRecipe
+          }));
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
-  //delete recipe record 
-  destroy(req, res) {
+
+  /**
+   * @module deleteRecipe
+   * @description controller function that deletes recipe record
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message recipeData
+   */
+  deleteRecipe(req, res) {
     return Recipe
-      //find if recipe exits
-      .find({ where: { userId: req.decoded.user.id, id: req.params.id } })
-      .then(recipe => {
-        //if recipe exits, delete the recipe
-        return recipe
-          .destroy()
-          .then((deleted) => res.status(200).send({ 'message': 'Recipe Deleted SuccessFullly!' }))
-          .catch(error => res.status(400).send({ error: error.message }));
+      // find if recipe exits
+      .find({
+        where: {
+          userId: req.decoded.user.id,
+          id: req.params.id
+        }
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .then(recipe => {
+        // if recipe exits, delete the recipe
+        recipe
+          .destroy()
+          .then((deletedRecipe) => res.status(200).send({
+            message: 'Recipe Deleted SuccessFullly!',
+            recipeData: deletedRecipe
+          }))
+          .catch(error => res.status(400).send({
+            error: error.message
+          }));
+      })
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
-  // Get user personal recipes 
+
+  /**
+   * @module getUserRecipes
+   * @description controller function that gets all recipes for a user
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message userRecipeList
+   */
   getUserRecipes(req, res) {
-    //find all recipes that have the requested username 
+    // find all recipes that have the requested userId
     return Recipe
       .findAll({
-        where: { userId: req.decoded.user.id },
+        where: {
+          userId: req.decoded.user.id
+        },
         attributes: keys
       })
-      //retrieve all recipes for that particular user
+      // retrieve all recipes for that particular user
       .then((recipe) => {
         if (recipe) {
           if (recipe.length === 0) {
-            res.status(404).send({ message: 'No recipe found for user' })
+            res.status(404).send({
+              message: 'No recipe found for user'
+            });
           } else {
-            return res.status(200).send({ message: 'All User Recipes Retrieved SuccessFullly!', userRecipeList: recipe });
+            return res.status(200).send({
+              message: 'All User Recipes Retrieved SuccessFullly!',
+              userRecipeList: recipe
+            });
           }
         }
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
-  // Get recipes by recipeId and also increment views anytime recipe is viewed
+
+  /**
+   * @module viewRecipe
+   * @description controller function that gets recipes by recipeId and also increment views anytime recipe is viewed
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message recipeList
+   */
   viewRecipe(req, res) {
     // Query database for recipe matching id in params
     return Recipe
-      .findOne({ where: { id: req.params.id }, include: [{
-        model: Review,
-        as: 'reviews',
-        attributes: ['message', 'createdAt'],
+      .findOne({
+        where: {
+          id: req.params.id
+        },
         include: [{
-          model: User,
-          attributes: ['username']
-        }]
-      }],
-     })
+          model: Review,
+          as: 'reviews',
+          attributes: ['message', 'createdAt'],
+          include: [{
+            model: User,
+            attributes: ['username']
+          }]
+        }],
+      })
       .then((recipe) => {
         // If found, increment the view count and return new data
         recipe.increment('views').then(() => {
           recipe.reload()
-            .then(() => res.status(200).send({ message: 'Recipe Retrieved SuccessFullly!', recipeList: recipe }));
+            .then(() => res.status(200).send({
+              message: 'Recipe Retrieved SuccessFullly!',
+              recipeList: recipe
+            }));
         });
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
-  // Get recipes by recipeId and also increment views anytime recipe is viewed
+
+  /**
+   * @module getRecipe
+   * @description controller function that gets a single recipe
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message recipe
+   */
   getRecipe(req, res) {
     // Query database for recipe matching id in params
     return Recipe
-      .findOne({ where: { recipeName: req.params.recipeName } })
-      .then((recipe) => {
-        res.status(200).send({ message: 'Recipe Retrieved SuccessFullly!', recipe: recipe })
+      .findOne({
+        where: {
+          recipeName: req.params.recipeName
+        }
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .then((recipe) => {
+        res.status(200).send({
+          message: 'Recipe Retrieved SuccessFullly!',
+          recipe
+        });
+      })
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
-  // get all recipes
+
+  /**
+   * @module getRecipes
+   * @description controller function that gets all recipes
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @param {Object} next - Express next middleware function
+   * @return {object} message recipeData
+   */
   getRecipes(req, res, next) {
     // If url path contains any of the query keys call the next function
     if (req.query.ingredients ||
@@ -139,10 +246,24 @@ const recipesController = {
         // Return only attributes defined in the global scope
         attributes: keys
       })
-      .then(recipe => res.status(200).send({ message: 'All Recipes Retrieved SuccessFullly!', recipeData: recipe }))
-      .catch(error => res.status(400).send({ error: error.message }));
+      .then(recipe => res.status(200).send({
+        message: 'All Recipes Retrieved SuccessFullly!',
+        recipeData: recipe
+      }))
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
-  //get recipes with most upvotes
+
+  /**
+   * @module getTopRecipes
+   * @description controller function that gets all recipes and sorts them by highest upvotes
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @param {Object} next - Express next middleware function
+   * @return {object} message recipeData
+   */
   getTopRecipes(req, res, next) {
     // If query key does not match sort, call next on the next handler
     if (!req.query.sort) return next();
@@ -153,13 +274,29 @@ const recipesController = {
     return Recipe
       .findAll({
         attributes: keys,
-        order: [[sort, order]],
+        order: [
+          [sort, order]
+        ],
         limit: 10
       })
-      .then(recipe => res.status(200).send({ message: 'All Top Recipes Retrieved SuccessFullly!', recipeData: recipe }))
-      .catch(error => res.status(400).send({ error: error.message }));
+      .then(recipe => res.status(200).send({
+        message: 'All Top Recipes Retrieved SuccessFullly!',
+        recipeData: recipe
+      }))
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
-  // search recipes by ingredients
+
+  /**
+   * @module searchRecipesByIngredients
+   * @description controller function that searches for recipes by ingredients
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @param {Object} next - Express next middleware function
+   * @return {object} message recipeData
+   */
   searchRecipesByIngredients(req, res, next) {
     // If query key does not match ingredients, call next on the next handler
     if (!req.query.ingredients) return next();
@@ -176,7 +313,9 @@ const recipesController = {
     }));
     return Recipe
       .all({
-        where: { $or: query },
+        where: {
+          $or: query
+        },
         limit: 10,
         attributes: keys
       })
@@ -186,50 +325,80 @@ const recipesController = {
             message: 'No recipe matches your search'
           });
         }
-        return res.status(200).send({ message: 'Recipes Retrieved SuccessFullly!', recipeData: recipe });
+        return res.status(200).send({
+          message: 'Recipes Retrieved SuccessFullly!',
+          recipeData: recipe
+        });
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
-    // search recipes by ingredients
-    searchRecipes(req, res, next) {
-      // If query key does not match ingredients, call next on the next handler
-      if (!req.query.search) return next();
-  
-      // if multiple ingredients are present, split by the comma
-      const search = req.query.search.split(',');
-  
-      // If multiple ingredients are present, map each keyword to an object and use
-      // the $or and $iLike for case insensitivity sequelize complex query to perform search
-      const query = search.map(word => ({
-        ingredients: {
-          $iLike: `%${word}%`
+
+  /**
+   * @module searchRecipes
+   * @description controller function that searches for recipes by keyword inputed
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @param {Object} next - Express next middleware function
+   * @return {object} message recipeData
+   */
+  searchRecipes(req, res, next) {
+    // If query key does not match ingredients, call next on the next handler
+    if (!req.query.search) return next();
+
+    // if multiple keywords are present, split by the comma
+    const search = req.query.search.split(',');
+
+    // collects the keyword and searches if it is present
+    // in ingredients or recipeName or recipeDescription
+    const query = search.map(word => ({
+      ingredients: {
+        $iLike: `%${word}%`
+      }
+    }));
+    const query1 = search.map(word => ({
+      recipeName: {
+        $iLike: `%${word}%`
+      }
+    }));
+    const query2 = search.map(word => ({
+      recipeDescription: {
+        $iLike: `%${word}%`
+      }
+    }));
+    return Recipe
+      .findAll({
+        where: {
+          $or: [{
+            $or: query
+          },
+            {
+              $or: query1
+            },
+            {
+              $or: query2
+            }
+          ]
+        },
+        limit: 2,
+        attributes: keys
+      })
+      .then((recipe) => {
+        if (!recipe.length) {
+          return res.status(200).send({
+            message: 'No recipe matches your search'
+          });
         }
+        return res.status(200).send({
+          message: 'Recipes Retrieved!',
+          recipeData: recipe
+        });
+      })
+      .catch(error => res.status(400).send({
+        error: error.message
       }));
-      const query1 = search.map(word => ({
-        recipeName: {
-          $iLike: `%${word}%`
-        }
-      }));
-      const query2= search.map(word => ({
-        recipeDescription: {
-          $iLike: `%${word}%`
-        }
-      }));
-      return Recipe
-        .all({
-          where: { $or: query1 },
-          limit: 2,
-          attributes: keys
-        })
-        .then((recipe) => {
-          if (!recipe.length) {
-            return res.status(200).send({
-              message: 'No recipe matches your search'
-            });
-          }
-          return res.status(200).send({ message: 'Recipes Retrieved!', recipeData: recipe });
-        })
-        .catch(error => res.status(400).send({ error: error.message }));
-    }
+  }
 };
 export default recipesController;

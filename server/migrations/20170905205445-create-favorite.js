@@ -42,6 +42,6 @@ module.exports = {
         type: Sequelize.DATE
       }
     }),
-    down: queryInterface /* Sequelize */ =>
+  down: queryInterface /* Sequelize */ =>
     queryInterface.dropTable('Favorites'),
 };

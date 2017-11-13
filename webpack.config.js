@@ -28,7 +28,7 @@ module.exports = {
   devtool: 'inline-source-map',
   entry: [
     'eventsource-polyfill', // necessary for hot reloading with IE
-    'webpack-hot-middleware/client?reload=true', //note that it reloads the page if hot module reloading fails.
+    'webpack-hot-middleware/client?reload=true', // note that it reloads the page if hot module reloading fails.
     path.resolve(__dirname, './client/src/app/index.js')
   ],
   target: 'web', // bundle the code so that a web browser can understand
@@ -177,6 +177,7 @@ module.exports = {
         test: /\.scss/,
         loader: 'style-loader!css-loader!sass-loader'
       },
+      // { test: /\.scss$/, loaders: ['style-loader', 'css-loader', 'sass-loader'] },
       {
         test: /\.css$/,
         loaders: [

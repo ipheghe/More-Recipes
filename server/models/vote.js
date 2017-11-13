@@ -5,14 +5,14 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
     }
   });
-   Vote.associate = (models) => {
-      Vote.belongsTo(models.User, {
-        foreignKey: 'userId',
-        onDelete: 'CASCADE',
-      });
-      Vote.belongsTo(models.Recipe, {
-        foreignKey: 'recipeId',
-      });
+  Vote.associate = (models) => {
+    Vote.belongsTo(models.User, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE',
+    });
+    Vote.belongsTo(models.Recipe, {
+      foreignKey: 'recipeId',
+    });
   };
   return Vote;
 };

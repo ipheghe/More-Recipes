@@ -9,12 +9,10 @@ import superagent from 'superagent';
  * @param {object} imageData
  * @returns {action} dispatch
  */
-export const uploadImageRequest = (imageData) => {
-  return {
-    type: IMAGE_FILE_REQUEST,
-    imageData
-  };
-};
+export const uploadImageRequest = imageData => ({
+  type: IMAGE_FILE_REQUEST,
+  imageData
+});
 
 /**
 * @description upload image request action
@@ -23,20 +21,16 @@ export const uploadImageRequest = (imageData) => {
  * @param {object} response
  * @returns {action} dispatch
  */
-export const uploadImageResponse = (response) => {
-  return {
-    type: IMAGE_FILE_SUCCESSFUL,
-    response
-  };
-};
+export const uploadImageResponse = response => ({
+  type: IMAGE_FILE_SUCCESSFUL,
+  response
+});
 
-export const uploadImageFailed = (error) => {
-  return {
-    type: IMAGE_FILE_FAILURE,
-    error
-  };
-};
+export const uploadImageFailed = error => ({
+  type: IMAGE_FILE_FAILURE,
+  error
 
+});
 
 export const uploadImage = (imageFile) => {
   console.log(imageFile);
@@ -50,9 +44,9 @@ export const uploadImage = (imageFile) => {
     const paramsStr = 'timestamp=' + timestamp + '&upload_preset=' + uploadPreset + 'EEHPrMjK3zGh6V34E2zeDl_IXVk';
     const signature = sha1(paramsStr);
     const params = {
-      'api_key': '866441834971784',
+      api_key: '866441834971784',
       timestamp,
-      'upload_preset': uploadPreset,
+      upload_preset: uploadPreset,
       signature
     };
     const uploadRequest = superagent.post(url);

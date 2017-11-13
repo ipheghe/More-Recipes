@@ -20,15 +20,15 @@ export default (sequelize, DataTypes) => {
     },
     views: {
       type: DataTypes.INTEGER,
-      defaultValue:0,
+      defaultValue: 0,
     },
     upvotes: {
       type: DataTypes.INTEGER,
-      defaultValue:0,
+      defaultValue: 0,
     },
     downvotes: {
       type: DataTypes.INTEGER,
-      defaultValue:0,
+      defaultValue: 0,
     },
     notification: {
       type: DataTypes.INTEGER,
@@ -36,22 +36,21 @@ export default (sequelize, DataTypes) => {
     },
 
   });
-    Recipe.associate = (models) =>  {
-      // associations can be defined here
-      Recipe.belongsTo(models.User, {
-        foreignKey: 'userId',
-        onDelete: 'CASCADE',
-      });
-
-      Recipe.hasMany(models.Review, {
+  Recipe.associate = (models) => {
+    // associations can be defined here
+    Recipe.belongsTo(models.User, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE',
+    });
+    Recipe.hasMany(models.Review, {
       foreignKey: 'recipeId',
       as: 'reviews',
     });
-      Recipe.hasMany(models.Favorite, {
+    Recipe.hasMany(models.Favorite, {
       foreignKey: 'recipeId',
       as: 'favorites',
     });
-      Recipe.hasMany(models.Vote, {
+    Recipe.hasMany(models.Vote, {
       foreignKey: 'recipeId',
       as: 'votes',
     });

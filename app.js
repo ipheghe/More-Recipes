@@ -69,7 +69,7 @@ express.static(path.join(__dirname, '/client/public/dist'));
 
 app.use('/dist', publicPath);
 app.get('/', (req, res) => { res.sendFile(indexPath); });
-//app.get('*', (req, res) => { res.sendFile(indexPath); });
+// app.get('*', (req, res) => { res.sendFile(indexPath); });
 
 
 app.get('/api', (req, res) => res.status(200).send({
@@ -85,5 +85,6 @@ const port = parseInt(process.env.PORT, 10) || 8000;
 app.listen(port, () => {
   console.log('Server listening on port', port);
 });
+
 export default app;
 

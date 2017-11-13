@@ -1,6 +1,5 @@
 export default (sequelize, DataTypes) => {
   const Category = sequelize.define('Category', {
-
     name: {
       type: DataTypes.STRING,
       unique: true,
@@ -8,7 +7,6 @@ export default (sequelize, DataTypes) => {
     },
   });
   Category.associate = (models) => {
-
     Category.belongsTo(models.User, {
       foreignKey: 'userId',
       onDelete: 'CASCADE',
@@ -17,7 +15,6 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'categoryId',
       as: 'favorites',
     });
-
   };
   return Category;
 };

@@ -1,11 +1,18 @@
-import { combineReducers } from 'redux';
-import { reducer as toastrReducer } from 'react-redux-toastr';
-import { reducer as formReducer } from 'redux-form';
+import {
+  combineReducers
+} from 'redux';
+import {
+  reducer as toastrReducer
+} from 'react-redux-toastr';
+import {
+  reducer as formReducer
+} from 'redux-form';
 import authReducer from './auth_reducer';
 import recipeReducer from './recipeReducer';
 import reviewReducer from './reviewReducer';
 import voteReducer from './voteReducer';
 import userReducer from './userReducer';
+import categoryReducer from './categoryReducer';
 import imageUploadReducer from './imageUploadReducer';
 import favoriteReducer from './favoriteReducer';
 
@@ -16,6 +23,7 @@ const rootReducer = combineReducers({
   vote: voteReducer,
   favorite: favoriteReducer,
   user: userReducer,
+  category: categoryReducer,
   form: formReducer,
   toastr: toastrReducer,
   imageUploadReducer

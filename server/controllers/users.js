@@ -1,71 +1,135 @@
 import db from '../models/index';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
+import isOnline from 'is-online';
+import dotenv from 'dotenv';
 
+dotenv.load();
 const User = db.User;
 const Category = db.Category;
 const salt = bcrypt.genSaltSync(10);
+const crypto = require('crypto');
 
-//user signup & signin controller
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.USER_EMAIL,
+    pass: process.env.USER_PASSWORD
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
+
+
+// user signup & signin controller
 const usersController = {
 
+  /**
+   * @module signup
+   * @description controller function that handles creation of new user account
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} status message
+   */
   signup(req, res) {
-
     User.create({
       username: req.body.username,
-      password: bcrypt.hashSync(req.body.password, salt, null), //hash password
+      password: bcrypt.hashSync(req.body.password, salt, null), // hash password
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       mobileNumber: req.body.mobileNumber,
       email: req.body.email
     })
-      .then((user) => {
-        return res.status(201).send({ "message": 'User account successfully created.', 'userData': user });
-      })
-      .catch(error => res.status(400).send({ 'error': error.message }));
+      .then((user) => res.status(201).send({
+        message: 'User account successfully created.',
+        userData: user
+      }))
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
 
+  /**
+   * @module signin
+   * @description controller function that handles login of user
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message authToken
+   */
   signin(req, res) {
-    //check if username field is empty
+    // check if username field is empty
     if (!req.body.username || req.body.username.trim() === '') {
-      return res.status(400).send({ 'error': false, 'message': 'username field cannot be empty', 'userData': req.body });
+      return res.status(400).send({
+        message: 'username field cannot be empty',
+        userData: req.body
+      });
     }
-    //check if password field is empty
+    // check if password field is empty
     if (!req.body.password || req.body.password.trim() === '') {
-      return res.status(400).send({ 'error': false, 'message': 'password field cannot be empty', 'userData': req.body });
+      return res.status(400).send({
+        message: 'password field cannot be empty',
+        userData: req.body
+      });
     }
 
     // check if the username exists
-    User.findOne({ where: { username: req.body.username } })
+    User.findOne({
+      where: {
+        username: req.body.username
+      }
+    })
       .then((user) => {
         if (!user) {
-          res.status(404).send({ 'message': 'Authentication failed. Username is incorrect or does not exist' });//username doesnt exist
+          res.status(404).send({
+            message: 'Authentication failed. Username is incorrect or does not exist'
+          }); // username doesnt exist
         } else if (user) {
           // check if password matches
           if (!(bcrypt.compareSync(req.body.password, user.password))) {
             res.status(404).send({
-              'error': true, 'message': 'Authentication failed. Incorrect password'
+              message: 'Authentication failed. Incorrect password'
             });
           } else {
             // User is found and password is correct
             // create a token for authentication
-            const token = jwt.sign({ user }, 'secretPassword', {
-              expiresIn: '6h' // expires in 6 hours
+            const token = jwt.sign({
+              user
+            }, process.env.TOKEN_SECRET, {
+              expiresIn: process.env.TOKEN_EXPIRY_TIME // expires in 6 hours
             });
             // return success message including token in JSON format
             res.status(200).send({
-              'message': 'Authentication & Login successful', 'authToken': token, 'userData': user
+              message: 'Authentication & Login successful',
+              authToken: token,
+              userData: user
             });
           }
         }
       })
-      .catch(err => res.status(400).send('Login Failed, Please re-confirm details'));
+      .catch(() => res.status(400).send('Login Failed, Please re-confirm details'));
   },
-  // get user details
-  userExists(req, res) {
+
+  /**
+   * @module getUserDetails
+   * @description controller function that gets user details
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message userData
+   */
+  getUserDetails(req, res) {
     return User
       .findOne({
-        where: { username: req.params.username }, include: [{
+        where: {
+          username: req.params.username
+        },
+        include: [{
           model: Category,
           as: 'categories',
           attributes: ['id', 'name']
@@ -73,20 +137,37 @@ const usersController = {
       })
       .then((user) => {
         if (!user) {
-          return res.status(404).send({ message: 'User doesnt exist' });
+          return res.status(404).send({
+            message: 'User doesnt exist'
+          });
         }
-        return res.status(200).send({ message: 'User Exists!', userData: user });
+        return res.status(200).send({
+          message: 'User Exists!',
+          userData: user
+        });
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
   },
-  // update user details
+
+  /**
+   * @module updateUserRecord
+   * @description controller function that updates user record
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message userData
+   */
   updateUserRecord(req, res) {
     return User
       .findOne({
-        where: { id: req.params.id }
+        where: {
+          id: req.params.id
+        }
       })
       .then(user => {
-        //if user exists
+        // f user exists
         user.update({
           username: req.body.username || user.username,
           firstName: req.body.firstName || user.firstName,
@@ -94,10 +175,214 @@ const usersController = {
           mobileNumber: req.body.mobileNumber || user.mobileNumber,
           email: req.body.email || user.email
         })
-          .then(updatedUser => res.status(200).send({ message: 'User Record Updated SuccessFullly!', userData: updatedUser }))
-          .catch(error => res.status(400).send({ error: error.message }));
+          .then(updatedUser => res.status(200).send({
+            message: 'User Record Updated SuccessFullly!',
+            userData: updatedUser
+          }))
+          .catch(error => res.status(400).send({
+            error: error.message
+          }));
       })
-      .catch(err => res.status(400).send({ error: err.message }));
+      .catch(err => res.status(400).send({
+        error: err.message
+      }));
+  },
+
+  /**
+   * @module changePassword
+   * @description controller function that changes user password
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message
+   */
+  changePassword(req, res) {
+    return User
+      .findOne({
+        where: {
+          id: req.params.id
+        }
+      })
+      .then((user) => {
+        if (user) {
+          // check if password matches
+          if (!(bcrypt.compareSync(req.body.password, user.password))) {
+            res.status(404).send({
+              message: 'Incorrect password'
+            });
+          } else {
+            // if password matches, update new password
+            user.update({
+              password: bcrypt.hashSync(req.body.password, salt, null) || user.password,
+            })
+              .then(() => res.status(200).send({
+                message: 'User Password Changed SuccessFullly!'
+              }))
+              .catch(error => res.status(400).send({
+                error: error.message
+              }));
+          }
+        }
+      })
+      .catch(err => res.status(400).send({
+        error: err.message
+      }));
+  },
+
+  /**
+   * @module forgotPassword
+   * @description controller function that resets user password
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @param {Object} next - Express next middleware function
+   * @return {object} message
+   */
+  forgotPassword(req, res, next) {
+    return User
+      .findOne({
+        where: {
+          email: req.body.email
+        }
+      })
+      .then((existingUser) => {
+        if (!existingUser) {
+          // If user is not found, return error
+          return res.status(422).send({
+            error: 'user email does not exist!'
+          });
+        }
+        // Generate a token with Crypto
+        crypto.randomBytes(48, (err, buffer) => {
+          const resetToken = buffer.toString('hex');
+          if (err) {
+            return next(err);
+          }
+
+          existingUser.resetPasswordToken = resetToken;
+          existingUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+          // If user is found, generate and save resetToken
+          existingUser.save((err) => {
+              // If error in saving token, return it
+            if (err) {
+              return res.status(400).json({
+                err
+              });
+            }
+          })
+            .then(() => {
+              const mailOptions = {
+                from: '"MoreRecipes Admin" <iphegheovie@gmail.com>',
+                to: 'iphegheovie@yahoo.com',
+                subject: 'You have a new notification',
+                text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                'http://'}${req.headers.host}/#/reset-password/${resetToken}\n\n` +
+                  `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+              };
+              // Otherwise, send user email via nodemailer
+              // transporter.sendMail(mailOptions);
+              transporter.sendMail(mailOptions, (err, info) => {
+                if (err) {
+                  res.status(400).send({
+                    error: err.message
+                  });
+                } else {
+                  return res.status(200).json({
+                    message: 'Please check your email for the link to reset your password.',
+                    info
+                  });
+                }
+              });
+            });
+        });
+      })
+      .catch(err => res.status(400).send({
+        error: err.message
+      }));
+  },
+
+  /**
+   * @module verifyTokenPassword
+   * @description controller function that verifies token after reset of user password
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @param {Object} next - Express next middleware function
+   * @return {object} message
+   */
+
+  verifyTokenPassword(req, res, next) {
+    // check if password field is empty
+    if (!req.body.password || req.body.password.trim() === '') {
+      return res.status(400).send({
+        message: 'password field cannot be empty',
+        userData: req.body
+      });
+    }
+    User.findOne({
+      where: {
+        resetPasswordToken: req.params.token,
+        resetPasswordExpires: {
+          $gt: Date.now()
+        }
+      }
+    })
+      .then((existingUser) => {
+        if (!existingUser) {
+          res.status(422).json({
+            error: 'Your token has expired. Please attempt to reset your password again.'
+          });
+        }
+
+        // Otherwise, save new password and clear resetToken from database
+        existingUser.password = bcrypt.hashSync(req.body.password, salt, null);
+        existingUser.resetPasswordToken = undefined;
+        existingUser.resetPasswordExpires = undefined;
+
+        existingUser.save((err) => {
+          if (err) {
+            return next(err);
+          }
+        })
+          .then(() => {
+            isOnline().then((online) => {
+              if (online) {
+                const mailOptions = {
+                  from: '"MoreRecipes Admin" <iphegheovie@gmail.com>',
+                  to: 'iphegheovie@yahoo.com',
+                  subject: 'Password Changed',
+                  text: 'You are receiving this email because you changed your password. \n\n' +
+                    'If you did not request this change, please contact us immediately.'
+                };
+                // Otherwise, send user email via nodemailer
+                // transporter.sendMail(mailOptions);
+                transporter.sendMail(mailOptions, (err) => {
+                  if (err) {
+                    res.status(400).send({
+                      error: err.message
+                    });
+                  } else {
+                    return res.status(200).json({
+                      message: 'Password changed successfully. Please login with your new password.'
+                    });
+                  }
+                });
+              } else {
+                return res.status(400).send({
+                  message: 'no internet connectivity'
+                });
+              }
+            })
+              .catch(error => res.status(400).send({
+                error: error.message
+              }));
+          })
+          .catch(error => res.status(400).send({
+            error: error.message
+          }));
+      });
   }
 };
 export default usersController;

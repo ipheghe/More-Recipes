@@ -1,37 +1,33 @@
 import {
-  FETCH_USER,
-  UPDATE_USER,
-  CHANGE_PASSWORD,
-  USER_ERROR
+  ADD_CATEGORY,
+  FETCH_USER_CATEGORIES,
+  CATEGORY_ERROR
 } from '../actions/types';
 
 const INITIAL_STATE = {
   error: '',
   message: '',
-  userData: {}
+  categoryList: [],
+  categoryName: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case UPDATE_USER:
+    case ADD_CATEGORY:
       return {
         ...state,
-        userData: action.payload.userData
+        message: action.payload.message,
+        categoryName: action.payload.categoryData.name
       };
-    case CHANGE_PASSWORD:
+    case FETCH_USER_CATEGORIES:
       return {
         ...state,
-        message: action.payload.message
+        categoryList: action.payload.userCategoryList
       };
-    case USER_ERROR:
+    case CATEGORY_ERROR:
       return {
         ...state,
         error: action.payload.data.message
-      };
-    case FETCH_USER:
-      return {
-        ...state,
-        userData: action.response
       };
     default:
       return state;
