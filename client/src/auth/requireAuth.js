@@ -18,10 +18,10 @@ export default (ComposedComponent) => {
   class Authentication extends Component {
     static propTypes = {
       authenticated: PropTypes.bool.isRequired,
-      location: PropTypes.object
+      location: PropTypes.objectOf(PropTypes.string).isRequired
     };
 
-    /**
+  /**
    * render
    * @return {ReactElement} markup
    */

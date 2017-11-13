@@ -206,6 +206,7 @@ class Login extends React.Component {
                       </div>
                       <div className="text-right col-md-6">
                         <a
+                          href="#"
                           data-toggle="modal"
                           data-target="#myModal"
                         >Forgot your password?

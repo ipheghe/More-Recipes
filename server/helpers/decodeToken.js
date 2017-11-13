@@ -13,4 +13,4 @@ const decodeToken = (encodedToken) => {
   return 'Invalid Token';
 };
 
-module.exports = decodeToken;
+export default decodeToken;

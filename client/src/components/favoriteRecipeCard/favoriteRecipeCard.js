@@ -26,7 +26,7 @@ FavoriteRecipeCard.propTypes = {
     id: PropTypes.number.isRequired,
     recipeName: PropTypes.string.isRequired,
     recipeDescription: PropTypes.string.isRequired,
-  })
+  }).isRequired
 };
 
 export default FavoriteRecipeCard;

@@ -133,6 +133,12 @@ class SignUp extends React.Component {
           errorMessage: 'password must contain more than 7 chareacters'
         });
       }
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
     }
     return this.props.registerUser({
       username,

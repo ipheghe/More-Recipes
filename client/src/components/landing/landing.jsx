@@ -12,8 +12,8 @@ import { getTopRecipes } from '../../actions/recipe';
 class Landing extends React.Component {
   static propTypes = {
     getTopRecipes: PropTypes.func.isRequired,
-    recipes: PropTypes.object,
-    recipeData: PropTypes.array.isRequired
+    recipes: PropTypes.objectOf(PropTypes.string),
+    recipeData: PropTypes.arrayOf(PropTypes.string).isRequired
   };
 
   /**

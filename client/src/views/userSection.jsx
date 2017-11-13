@@ -20,7 +20,7 @@ class UserSection extends React.Component {
     userData: PropTypes.object.isRequired,
     errorMessage: PropTypes.string.isRequired,
     categoryName: PropTypes.string.isRequired,
-    categories: PropTypes.array.isRequired,
+    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
   };
 
   /**
