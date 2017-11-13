@@ -27,7 +27,8 @@ const favoriteRecipe = (recipeId, categoryId) => {
   const directTo = '';
   const toastMessage = 'Recipe added to favorites Successfully';
   const constant = 'RECIPE_FAVORITED';
-  return dispatch => postData(FAVORITE_RECIPE,
+  return dispatch => postData(
+    FAVORITE_RECIPE,
     FAVORITE_ERROR,
     true,
     url,
@@ -35,7 +36,8 @@ const favoriteRecipe = (recipeId, categoryId) => {
     data,
     toastMessage,
     constant,
-    directTo);
+    directTo
+  );
 };
 
 /**

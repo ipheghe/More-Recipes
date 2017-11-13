@@ -15,7 +15,7 @@ class UserNavHeader extends React.Component {
     fetchUsername: PropTypes.func.isRequired,
     getUserCategories: PropTypes.func.isRequired,
     logoutUser: PropTypes.func.isRequired,
-    userData: PropTypes.node.isRequired,
+    userData: PropTypes.object.isRequired,
   };
 
 	/**

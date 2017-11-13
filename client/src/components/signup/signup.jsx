@@ -12,8 +12,8 @@ import { registerUser } from '../../actions/auth';
 class SignUp extends React.Component {
   static propTypes = {
     registerUser: PropTypes.func.isRequired,
-    errorMessage: PropTypes.string.isRequied,
-    message: PropTypes.string.isRequired
+    message: PropTypes.string.isRequired,
+    errorMessage: PropTypes.string.isRequired
   };
 
   /**
@@ -73,6 +73,12 @@ class SignUp extends React.Component {
     const regExpression = /^[A-Za-z][A-Za-z0-9-]+$/i;
     let valid;
     if (!valid) {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
       if (!username.match(regExpression)) {
         return this.setState({
           hasErrored: true,
@@ -127,12 +133,6 @@ class SignUp extends React.Component {
           errorMessage: 'password must contain more than 7 chareacters'
         });
       }
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
     }
     return this.props.registerUser({
       username,
@@ -344,7 +344,7 @@ class SignUp extends React.Component {
 
 const mapStateToProps = state => ({
   errorMessage: state.auth.error,
-  message: state.auth.message,
+  message: state.user.error,
 });
 
 export default connect(mapStateToProps, { registerUser })(SignUp);

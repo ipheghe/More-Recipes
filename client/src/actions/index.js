@@ -1,12 +1,13 @@
 import axios from 'axios';
-export const API_URL = 'http://localhost:8000/api/v1';
-export const CLIENT_ROOT_URL = 'http://localhost:3000';
 import {
   actions as toastrActions
 } from 'react-redux-toastr';
 import {
   bindActionCreators
 } from 'redux';
+
+export const API_URL = 'http://localhost:8000/api/v1';
+export const CLIENT_ROOT_URL = 'http://localhost:3000';
 
 //= ===============================
 // Utility actions
@@ -20,7 +21,6 @@ import {
  * @returns {*} void
  */
 export function errorHandler(dispatch, error, type) {
-  console.log('Error type: ', type);
   const errorMessage = error.response ? error.response.data : error;
   const errorData = {
     data: {
@@ -71,7 +71,7 @@ export const postData = (
   if (isAuthReq) {
     headers = {
       headers: {
-        'x-access-token': localStorage.getItem('token')
+        'x-access-token': window.localStorage.getItem('token')
       }
     };
   }
@@ -88,7 +88,7 @@ export const postData = (
         payload: response.data,
       });
       if (directTo.length > 0) {
-        location.hash = directTo;
+        window.location.hash = directTo;
       }
       toastr.add({
         id: constant,
@@ -123,7 +123,7 @@ export const getData = (action, errorType, isAuthReq, url, dispatch) => {
   if (isAuthReq) {
     headers = {
       headers: {
-        'x-access-token': localStorage.getItem('token')
+        'x-access-token': window.localStorage.getItem('token')
       }
     };
   }
@@ -171,7 +171,7 @@ export const putData = (
   if (isAuthReq) {
     headers = {
       headers: {
-        'x-access-token': localStorage.getItem('token')
+        'x-access-token': window.localStorage.getItem('token')
       }
     };
   }
@@ -189,7 +189,7 @@ export const putData = (
         payload: response.data,
       });
       if (directTo.length > 3) {
-        location.hash = directTo;
+        window.location.hash = directTo;
       }
       toastr.add({
         id: constant,
@@ -236,7 +236,7 @@ export const deleteData = (
   if (isAuthReq) {
     headers = {
       headers: {
-        'x-access-token': localStorage.getItem('token')
+        'x-access-token': window.localStorage.getItem('token')
       }
     };
   }
@@ -249,7 +249,7 @@ export const deleteData = (
         payload: response.data,
       });
       if (directTo.length > 3) {
-        location.hash = directTo;
+        window.location.hash = directTo;
       }
       toastr.add({
         id: constant,
