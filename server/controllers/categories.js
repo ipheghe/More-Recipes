@@ -1,7 +1,7 @@
 import db from '../models/index';
 
 // Assign variable to the database model
-const Category = db.Category;
+const { Category } = db;
 const keys = ['id', 'name'];
 
 const categoriesController = {
@@ -33,7 +33,7 @@ const categoriesController = {
       .catch((error) => { res.status(400).send({ error: error.message }); });
   },
 
-/**
+  /**
  * @module addCategory
  * @description controller function that creates category
  * @function
@@ -46,7 +46,7 @@ const categoriesController = {
       name: req.body.name,
       userId: req.decoded.user.id,
     })
-      .then((category) => res.status(201).send({
+      .then(category => res.status(201).send({
         message: 'Category created Successfully',
         categoryData: category
       }))
@@ -55,7 +55,7 @@ const categoriesController = {
       });
   },
 
-/**
+  /**
  * @module getUserCategories
  * @description controller function that gets all user categories
  * @function

@@ -12,4 +12,6 @@ import { notifications } from './notifications';
 /**
  *@export all controllers
  */
-export default { users, recipes, reviews, favorites, categories, votes, notifications };
+export default {
+  users, recipes, reviews, favorites, categories, votes, notifications
+};

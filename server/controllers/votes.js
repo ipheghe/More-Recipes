@@ -1,8 +1,7 @@
 import db from '../models/index';
 
 // Reference database models
-const Recipe = db.Recipe;
-const Vote = db.Vote;
+const { Recipe, Vote } = db;
 
 const votesController = {
 

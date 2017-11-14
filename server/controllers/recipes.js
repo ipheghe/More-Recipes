@@ -1,9 +1,7 @@
 import db from '../models/index';
 
 // Reference database models
-const Recipe = db.Recipe;
-const Review = db.Review;
-const User = db.User;
+const { User, Recipe, Review } = db;
 const keys = [
   'id', 'recipeName', 'recipeDescription', 'ingredients',
   'directions', 'imageUrl', 'views', 'upvotes', 'downvotes', 'notification'
@@ -59,7 +57,7 @@ const recipesController = {
         id: req.params.id
       }
     })
-      .then(recipe => {
+      .then((recipe) => {
         // if recipe exists
         recipe.update({
           recipeName: req.body.recipeName || recipe.recipeName,
@@ -96,11 +94,11 @@ const recipesController = {
           id: req.params.id
         }
       })
-      .then(recipe => {
+      .then((recipe) => {
         // if recipe exits, delete the recipe
         recipe
           .destroy()
-          .then((deletedRecipe) => res.status(200).send({
+          .then(deletedRecipe => res.status(200).send({
             message: 'Recipe Deleted SuccessFullly!',
             recipeData: deletedRecipe
           }))
@@ -152,7 +150,8 @@ const recipesController = {
 
   /**
    * @module viewRecipe
-   * @description controller function that gets recipes by recipeId and also increment views anytime recipe is viewed
+   * @description controller function that gets recipes by recipeId
+   * and also increment views anytime recipe is viewed
    * @function
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
@@ -269,7 +268,7 @@ const recipesController = {
     if (!req.query.sort) return next();
     // Take the query key and slice order string to get desc
     // which is used to order by descending
-    const sort = req.query.sort,
+    const { sort } = req.query,
       order = (req.query.order).slice(0, 4);
     return Recipe
       .findAll({
@@ -374,12 +373,12 @@ const recipesController = {
           $or: [{
             $or: query
           },
-            {
-              $or: query1
-            },
-            {
-              $or: query2
-            }
+          {
+            $or: query1
+          },
+          {
+            $or: query2
+          }
           ]
         },
         limit: 2,

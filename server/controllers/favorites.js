@@ -1,9 +1,7 @@
 import db from '../models/index';
 
 // Assign variable to the database model
-const Favorite = db.Favorite;
-const User = db.User;
-const Recipe = db.Recipe;
+const { User, Recipe, Favorite } = db;
 
 const keys = [];
 
@@ -24,7 +22,7 @@ const favoritesController = {
       categoryId: req.params.categoryId,
       userId: req.decoded.user.id
     })
-      .then((favorite) => res.status(201).send({
+      .then(favorite => res.status(201).send({
         message: 'Recipe added to favorites Successfully',
         favoriteData: favorite
       }))
@@ -33,7 +31,7 @@ const favoritesController = {
       });
   },
 
-/**
+  /**
  * @module retrieveFavorites
  * @description controller function that retrieves all usere favorite recipes
  * @function

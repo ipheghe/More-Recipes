@@ -1,7 +1,7 @@
 import db from '../models/index';
 
 // Assign variable to the database model
-const Category = db.Category;
+const { Category } = db;
 
 /**
  * @module validateCategoryField
