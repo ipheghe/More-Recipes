@@ -2,9 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
-import router from './server/routes/index';
 import path from 'path';
 import webpack from 'webpack';
+import router from './server/routes/index';
 import config from './webpack.config';
 
 const swaggerUi = require('swagger-ui-express');
@@ -31,6 +31,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
   publicPath: config.output.publicPath
 }));
 app.use(require('webpack-hot-middleware')(compiler));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());

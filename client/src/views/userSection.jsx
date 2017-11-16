@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { addCategory, getUserCategories } from './../actions/category';
 import { changePassword } from './../actions/userActions';
 import { fetchUsername } from '../actions/auth';
-import { connect } from 'react-redux';
 
 /**
  * UserSection component
@@ -12,15 +12,17 @@ import { connect } from 'react-redux';
  */
 @connect(state => state)
 class UserSection extends React.Component {
-
   static propTypes = {
     addCategory: PropTypes.func.isRequired,
     changePassword: PropTypes.func.isRequired,
     fetchUsername: PropTypes.func.isRequired,
-    userData: PropTypes.object.isRequired,
+    userData: PropTypes.shape({
+      id: PropTypes.number,
+      username: PropTypes.string,
+    }).isRequired,
     errorMessage: PropTypes.string.isRequired,
     categoryName: PropTypes.string.isRequired,
-    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
   /**
@@ -31,13 +33,11 @@ class UserSection extends React.Component {
     super(props);
     this.state = {
       categoryName: '',
-      categories: [],
       oldPassword: '',
       newPassword: '',
       confirmPassword: '',
       hasErrored: false,
-      errorMessage: '',
-      isLoading: true,
+      errorMessage: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleAddCategory = this.handleAddCategory.bind(this);
@@ -125,7 +125,8 @@ class UserSection extends React.Component {
         <div>
           <p className="alert error-alert">
             <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.state.errorMessage}</p>
+            &nbsp;{this.state.errorMessage}
+          </p>
         </div>
       );
     } else if (this.props.errorMessage) {
@@ -133,7 +134,8 @@ class UserSection extends React.Component {
         <div>
           <p className="alert error-alert">
             <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.props.errorMessage}</p>
+            &nbsp;{this.props.errorMessage}
+          </p>
         </div>
       );
     }
@@ -147,20 +149,23 @@ class UserSection extends React.Component {
     return (
       <main>
         <div className="div-profile">
-          <h5>{this.props.userData.username}</h5>
-          <h6>@andela</h6>
+          <h5>@{this.props.userData.username}</h5>
           <p>
             <span>
-              <i className="fa fa-circle" aria-hidden="true" style={{ color: 'green' }}></i>
+              <i className="fa fa-circle" aria-hidden="true" style={{ color: 'green' }} />
             </span>Online
           </p>
-          <br></br>
-          <br></br>
+          <br />
+          <br />
           <a href="#editProfile">
-            <button className="btn btn-success editProfile-btn">Edit Profile</button></a>
-          <a data-toggle="modal" data-target="#myModal">
-            <button className="btn btn-success">change Password</button>
+            <button className="btn btn-success editProfile-btn">Edit Profile</button>
           </a>
+          <button
+            className="btn btn-success"
+            data-toggle="modal"
+            data-target="#myModal"
+          >change Password
+          </button>
         </div>
         <br />
         <div className="div-profile">
@@ -184,7 +189,7 @@ class UserSection extends React.Component {
             >Add
             </button>
           </div>
-          <br></br>
+          <br />
           <div className="profile-category-button">
             <button
               type="button"
@@ -195,15 +200,17 @@ class UserSection extends React.Component {
             </button>
             {
               (this.props.categories && this.props.categories.length > 0) ?
-                this.props.categories.map((category, index) =>
-                  <button
-                    type="button"
-                    className="btn btn-default btn-sm"
-                    key={index}
-                  >
-                    {category.name}
-                    <span className="badge text-right">7</span>
-                  </button>)
+                this.props.categories.map(category =>
+                  (
+                    <button
+                      type="button"
+                      className="btn btn-default btn-sm"
+                      key={category.id}
+                    >
+                      {category.name}
+                      <span className="badge text-right">7</span>
+                    </button>
+                  ))
                 : null
             }
           </div>
@@ -285,7 +292,7 @@ class UserSection extends React.Component {
                   </div>
                   {this.state.hasErrored ?
                     <p className="alert error-alert" style={{ color: 'white' }}>
-                      <i className="fa fa-exclamation-triangle"></i>
+                      <i className="fa fa-exclamation-triangle" />
                       &nbsp;{this.state.errorMessage}
                     </p> : ''
                   }

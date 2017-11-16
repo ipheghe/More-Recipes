@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FavoriteRecipeCard from '../favoriteRecipeCard/favoriteRecipeCard';
+import FavoriteRecipeCard from '../favoriteRecipeCard/favoriteRecipeCard.jsx';
 
 const FavoriteRecipeList = ({ recipes }) => (
   <div>
@@ -13,7 +13,7 @@ const FavoriteRecipeList = ({ recipes }) => (
 );
 
 FavoriteRecipeList.propTypes = {
-  recipes: PropTypes.arrayOf(PropTypes.object).isRequired
+  recipes: PropTypes.objectOf(PropTypes.object).isRequired
 };
 
 export default FavoriteRecipeList;

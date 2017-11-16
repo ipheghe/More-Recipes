@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MainHeader } from '../../views/index';
 import { connect } from 'react-redux';
+import { MainHeader } from '../../views/index';
 import { registerUser } from '../../actions/auth';
 
 /**
@@ -12,7 +12,6 @@ import { registerUser } from '../../actions/auth';
 class SignUp extends React.Component {
   static propTypes = {
     registerUser: PropTypes.func.isRequired,
-    message: PropTypes.string.isRequired,
     errorMessage: PropTypes.string.isRequired
   };
 
@@ -44,12 +43,7 @@ class SignUp extends React.Component {
   handleChange(e) {
     e.preventDefault();
     this.setState({
-      username: this.refs.username.value,
-      firstName: this.refs.firstName.value,
-      lastName: this.refs.lastName.value,
-      mobileNumber: this.refs.mobileNumber.value,
-      email: this.refs.email.value,
-      password: this.refs.password.value,
+      [e.target.name]: e.target.value
     });
   }
 
@@ -71,8 +65,8 @@ class SignUp extends React.Component {
     const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     const numericExpression = /^[0-9]+$/;
     const regExpression = /^[A-Za-z][A-Za-z0-9-]+$/i;
-    let valid;
-    if (!valid) {
+    const valid = false;
+    if (valid) {
       setTimeout(() => {
         this.setState({
           hasErrored: false,
@@ -133,21 +127,16 @@ class SignUp extends React.Component {
           errorMessage: 'password must contain more than 7 chareacters'
         });
       }
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
+    } else {
+      return this.props.registerUser({
+        username,
+        password,
+        firstName,
+        lastName,
+        mobileNumber,
+        email
+      });
     }
-    return this.props.registerUser({
-      username,
-      password,
-      firstName,
-      lastName,
-      mobileNumber,
-      email
-    });
   }
 
   /**
@@ -191,8 +180,8 @@ class SignUp extends React.Component {
               <section className="col-md-7 headline">
                 <h1>Welcome to More recipes</h1>
                 <h4>Share your recipe ideas with the world</h4>
-                <br></br>
-                <br></br>
+                <br />
+                <br />
                 <h2><em><i>Sign Up and start sharing recipes</i></em></h2>
               </section>
               <section className="col-md-5 account">
@@ -200,7 +189,7 @@ class SignUp extends React.Component {
                   <form className="reg-form">
                     {this.renderAlert()}
                     <h3 className="login-form-boxx">Registration Form</h3>
-                    <br></br>
+                    <br />
                     <div className="form-group">
                       <label htmlFor="enterUsername">Username:</label>
                       <div className="input-group">
@@ -209,7 +198,6 @@ class SignUp extends React.Component {
                         </span>
                         <input
                           name="username"
-                          ref="username"
                           type="text"
                           className="form-control"
                           value={this.state.username}
@@ -227,7 +215,6 @@ class SignUp extends React.Component {
                         </span>
                         <input
                           name="firstName"
-                          ref="firstName"
                           type="text"
                           className="form-control"
                           value={this.state.firstName}
@@ -245,7 +232,6 @@ class SignUp extends React.Component {
                         </span>
                         <input
                           name="lastName"
-                          ref="lastName"
                           type="text"
                           className="form-control"
                           value={this.state.lastName}
@@ -263,7 +249,6 @@ class SignUp extends React.Component {
                         </span>
                         <input
                           name="mobileNumber"
-                          ref="mobileNumber"
                           type="number"
                           className="form-control"
                           value={this.state.mobileNumber}
@@ -281,7 +266,6 @@ class SignUp extends React.Component {
                         </span>
                         <input
                           name="email"
-                          ref="email"
                           type="email"
                           className="form-control"
                           value={this.state.email}
@@ -299,7 +283,6 @@ class SignUp extends React.Component {
                         </span>
                         <input
                           name="password"
-                          ref="password"
                           type="password"
                           className="form-control"
                           value={this.state.password}
@@ -325,7 +308,7 @@ class SignUp extends React.Component {
                           </button>
                         </a>
                       </div>
-                      <br></br>
+                      <br />
                       <div>
                         <a href="/">
                           <button
@@ -337,7 +320,7 @@ class SignUp extends React.Component {
                       </div>
                     </div>
                   </form>
-                  <br></br>
+                  <br />
                 </div>
               </section>
             </div>
@@ -349,8 +332,7 @@ class SignUp extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  errorMessage: state.auth.error,
-  message: state.user.error,
+  errorMessage: state.auth.error
 });
 
 export default connect(mapStateToProps, { registerUser })(SignUp);

@@ -191,7 +191,7 @@ export const logoutUser = error =>
 export const fetchUsername = () =>
   (dispatch) => {
     const decodedToken = decodeToken(window.localStorage.getItem('token'));
-    const username = decodedToken.user.username;
+    const { username } = decodedToken.user;
     axios.get(`${API_URL}/users/${username}`)
       .then((response) => {
         dispatch({

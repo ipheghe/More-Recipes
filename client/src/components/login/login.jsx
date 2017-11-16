@@ -45,9 +45,7 @@ class Login extends React.Component {
   handleChange(e) {
     e.preventDefault();
     this.setState({
-      username: this.refs.username.value,
-      password: this.refs.password.value,
-      email: this.refs.email.value
+      [e.target.name]: e.target.value
     });
   }
 
@@ -59,34 +57,29 @@ class Login extends React.Component {
   handleLogin(e) {
     e.preventDefault();
     const { username, password } = this.state;
-    if (username === '') {
-      this.setState({
-        hasErrored: true,
-        errorMessage: 'Username field cannot be  empty'
-      });
-    } else if (password === '') {
-      this.setState({
-        hasErrored: true,
-        errorMessage: 'password field cannot be empty'
-      });
-    } else if (username !== '' || password !== '') {
-      this.setState({
-        hasErrored: false,
-        errorMessage: ''
-      });
-      this.props.loginUser({ username, password });
+    const valid = false;
+    if (valid) {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
+      if (username === '') {
+        return this.setState({
+          hasErrored: true,
+          errorMessage: 'Username field cannot be  empty'
+        });
+      }
+      if (password === '') {
+        return this.setState({
+          hasErrored: true,
+          errorMessage: 'password field cannot be empty'
+        });
+      }
     } else {
-      this.setState({
-        hasErrored: true,
-        errorMessage: 'Invalid Usernamer or Password'
-      });
+      return this.props.loginUser({ username, password });
     }
-    setTimeout(() => {
-      this.setState({
-        hasErrored: false,
-        errorMessage: ''
-      });
-    }, 3000);
   }
 
   /**
@@ -124,7 +117,8 @@ class Login extends React.Component {
         <div>
           <p className="alert error-alert" style={{ color: 'white' }}>
             <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.state.errorMessage}</p>
+            &nbsp;{this.state.errorMessage}
+          </p>
         </div>
       );
     } else if (this.props.errorMessage) {
@@ -132,7 +126,8 @@ class Login extends React.Component {
         <div>
           <p className="alert error-alert" style={{ color: 'white' }}>
             <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.props.errorMessage}</p>
+            &nbsp;{this.props.errorMessage}
+          </p>
         </div>
       );
     }
@@ -152,8 +147,8 @@ class Login extends React.Component {
               <section className="col-md-7 headline">
                 <h1>Welcome to More recipes</h1>
                 <h4>Share your recipe ideas with the world</h4>
-                <br></br>
-                <br></br>
+                <br />
+                <br />
                 <h2><em><i>Login and start sharing recipes</i></em></h2>
               </section>
               <section className="col-md-5 account">
@@ -161,7 +156,7 @@ class Login extends React.Component {
                   <form className="login-form">
                     {this.renderAlert()}
                     <h3 className="login-form-boxx">Login Form</h3>
-                    <br></br>
+                    <br />
                     <div className="form-group">
                       <label htmlFor="enterEmail">Username Or Email address:</label>
                       <div className="input-group">
@@ -173,7 +168,6 @@ class Login extends React.Component {
                           className="form-control"
                           name="username"
                           placeholder="Enter your username or email"
-                          ref="username"
                           value={this.state.username}
                           onChange={this.handleChange}
                           required
@@ -191,7 +185,6 @@ class Login extends React.Component {
                           className="form-control"
                           name="password"
                           placeholder="Enter your password"
-                          ref="password"
                           value={this.state.password}
                           onChange={this.handleChange}
                           required
@@ -205,12 +198,13 @@ class Login extends React.Component {
                         </label>
                       </div>
                       <div className="text-right col-md-6">
-                        <a
-                          href="#"
+                        <button
+                          className="invisible-button"
                           data-toggle="modal"
                           data-target="#myModal"
+                          style={{ color: '#2F94D2' }}
                         >Forgot your password?
-                        </a>
+                        </button>
                       </div>
                     </div>
                     <div className="login-buttons">
@@ -224,7 +218,7 @@ class Login extends React.Component {
                           </button>
                         </a>
                       </div>
-                      <br></br>
+                      <br />
                       <div>
                         <a href="#signup">
                           <button
@@ -265,7 +259,7 @@ class Login extends React.Component {
               <div className="modal-body">
                 {(this.props.message) ?
                   <p className="alert error-alert">
-                    <i className="fa fa-exclamation-triangle" style={{ color: 'red' }}></i>
+                    <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
                     &nbsp;{this.props.message}
                   </p> : this.state.modalError
                 }
@@ -280,7 +274,6 @@ class Login extends React.Component {
                       type="email"
                       className="form-control"
                       id="email"
-                      ref="email"
                       placeholder="Enter email"
                       onChange={this.handleChange}
                       value={this.state.email}

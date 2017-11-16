@@ -254,8 +254,7 @@ describe('User signup', () => {
       .send(testValidUsers[3])
       .end((err, res) => {
         res.status.should.equal(400);
-        res.body.error.should.equal(
-          'Validation error: Username must start with a letter and have no spaces.');
+        res.body.error.should.equal('Validation error: Username must start with a letter and have no spaces.');
         if (err) return done(err);
         done();
       });
@@ -279,7 +278,7 @@ describe('User signup', () => {
   });
   it('should return a message for last name field containing numbers', (done) => {
     testData = Object.assign({}, testValidUsers[0]);
-    testData.lastName = '112' + 12;
+    testData.lastName = `112${12}`;
     server
       .post(signupUrl)
       .set('Connection', 'keep alive')
@@ -321,10 +320,8 @@ describe('User signin', () => {
       .send(invalidUsers[0])
       .end((err, res) => {
         res.status.should.equal(404);
-        res.body.message.should.equal(
-          'Authentication failed.'+
-          ' Username is incorrect or does not exist'
-        );
+        res.body.message.should.equal('Authentication failed.' +
+          ' Username is incorrect or does not exist');
         if (err) return done(err);
         done();
       });

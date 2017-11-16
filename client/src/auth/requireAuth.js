@@ -21,7 +21,7 @@ export default (ComposedComponent) => {
       location: PropTypes.objectOf(PropTypes.string).isRequired
     };
 
-  /**
+    /**
    * render
    * @return {ReactElement} markup
    */

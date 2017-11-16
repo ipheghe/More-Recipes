@@ -19,6 +19,23 @@ router.post(
   favoritesController.addFavorites
 );
 
+// API route for users to unfavorite recipes
+router.delete(
+  '/api/v1/favorites/:id',
+  authorize.verifyUser,
+  validUser,
+  recipeExists,
+  favoritesController.unFavoriteRecipe
+);
+
+// API route for users to retrieve favorite recipe
+router.get(
+  '/api/v1/favorite/:id',
+  authorize.verifyUser,
+  validUser,
+  favoritesController.retrieveFavorite
+);
+
 // API route for users to retrieve favorite recipes
 router.get(
   '/api/v1/favorites',
