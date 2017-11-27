@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { UserNavHeader, ProfileHeader, UserSection, UserNavMenu } from '../../views/index';
-import RecipeList from '../recipeList/recipeList';
+import RecipeList from '../recipeList/recipeList.jsx';
 
 
 /**
@@ -16,9 +16,8 @@ class Dashboard extends React.Component {
   };
 
   /**
-   * handle login form event error
-   * @param {SytheticEvent} e
-   * @returns {string} errorMessage
+   * render
+   * @return {ReactElement} markup
    */
   render() {
     return (

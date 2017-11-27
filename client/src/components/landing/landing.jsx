@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MainHeader } from '../../views/index';
-import RecipeList from '../recipeList/recipeList';
+import RecipeList from '../recipeList/recipeList.jsx';
 import { getTopRecipes } from '../../actions/recipe';
 
 /**
