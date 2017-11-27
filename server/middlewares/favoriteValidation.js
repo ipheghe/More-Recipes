@@ -1,7 +1,7 @@
 import db from '../models/index';
 
 // Assign variable to the database model
-const Favorite = db.Favorite;
+const { Favorite } = db;
 
 /**
  * @module favoriteExists

@@ -4,8 +4,7 @@ import dotenv from 'dotenv';
 import db from '../models/index';
 
 dotenv.load();
-const Recipe = db.Recipe;
-const User = db.User;
+const { User, Recipe } = db;
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',

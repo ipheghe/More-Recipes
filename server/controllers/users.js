@@ -1,13 +1,12 @@
-import db from '../models/index';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import isOnline from 'is-online';
 import dotenv from 'dotenv';
+import db from '../models/index';
 
 dotenv.load();
-const User = db.User;
-const Category = db.Category;
+const { User, Category } = db;
 const salt = bcrypt.genSaltSync(10);
 const crypto = require('crypto');
 
@@ -45,7 +44,7 @@ const usersController = {
       mobileNumber: req.body.mobileNumber,
       email: req.body.email
     })
-      .then((user) => res.status(201).send({
+      .then(user => res.status(201).send({
         message: 'User account successfully created.',
         userData: user
       }))
@@ -166,7 +165,7 @@ const usersController = {
           id: req.params.id
         }
       })
-      .then(user => {
+      .then((user) => {
         // f user exists
         user.update({
           username: req.body.username || user.username,
@@ -264,7 +263,7 @@ const usersController = {
 
           // If user is found, generate and save resetToken
           existingUser.save((err) => {
-              // If error in saving token, return it
+            // If error in saving token, return it
             if (err) {
               return res.status(400).json({
                 err
@@ -279,7 +278,7 @@ const usersController = {
                 text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                 'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
                 'http://'}${req.headers.host}/#/reset-password/${resetToken}\n\n` +
-                  `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+                  'If you did not request this, please ignore this email and your password will remain unchanged.\n'
               };
               // Otherwise, send user email via nodemailer
               // transporter.sendMail(mailOptions);

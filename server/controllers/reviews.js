@@ -1,9 +1,7 @@
 import db from '../models/index';
 
 // // Assign variable to the database model
-const Review = db.Review;
-const User = db.User;
-const Recipe = db.Recipe;
+const { User, Recipe, Review } = db;
 const keys = ['id', 'message', 'createdAt'];
 
 const reviewsController = {

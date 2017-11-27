@@ -1,4 +1,6 @@
-const User = require('../models').User;
+import db from '../models/index';
+
+const { User } = db;
 
 /**
  * @module validateUserFields
