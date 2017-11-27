@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 class ProfileHeader extends React.Component {
 
   static propTypes = {
-    categories: PropTypes.node.isRequired,
+    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
   };
 
   /**

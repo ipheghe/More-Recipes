@@ -16,11 +16,9 @@ export default (ComposedComponent) => {
  * @extends {Component}
  */
   class Authentication extends Component {
-
     static propTypes = {
-      children: PropTypes.any,
-      authenticated: PropTypes.bool,
-      location: PropTypes.string
+      authenticated: PropTypes.bool.isRequired,
+      location: PropTypes.objectOf(PropTypes.string).isRequired
     };
 
   /**
@@ -30,7 +28,7 @@ export default (ComposedComponent) => {
     render() {
       return (
         <div>
-        {
+          {
           this.props.authenticated ?
             <ComposedComponent {...this.props} /> :
             <Redirect

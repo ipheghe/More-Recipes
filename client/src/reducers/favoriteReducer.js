@@ -1,6 +1,8 @@
 import { FAVORITE_RECIPE, RETRIEVE_USER_FAVORITE_RECIPES, FAVORITE_ERROR } from '../actions/types';
 
-const INITIAL_STATE = { message: '', error: '', userFavorites: [], favoriteData: {} };
+const INITIAL_STATE = {
+  message: '', error: '', userFavorites: [], favoriteData: {}
+};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -16,7 +18,5 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, error: action.payload };
     default:
       return state;
-
-
   }
 };

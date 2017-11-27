@@ -25,7 +25,9 @@ import {
  * @returns {array} dispatch
  */
 const addRecipe = (recipeName, recipeDescription, imageUrl, ingredients, directions) => {
-  const data = { recipeName, recipeDescription, imageUrl, ingredients, directions };
+  const data = {
+    recipeName, recipeDescription, imageUrl, ingredients, directions
+  };
   const url = '/recipes';
   const directTo = '#myRecipe';
   const message = 'Recipe added Successfully';
@@ -121,7 +123,7 @@ const getUserRecipes = () => {
  * @param {object} id
  * @returns {array} dispatch
  */
-const getRecipe = id => {
+const getRecipe = (id) => {
   const url = `/recipes/${id}`;
   return dispatch => getData(FETCH_RECIPE, RECIPE_ERROR, true, url, dispatch);
 };

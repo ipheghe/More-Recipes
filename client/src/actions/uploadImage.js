@@ -1,6 +1,6 @@
-import { IMAGE_FILE_FAILURE, IMAGE_FILE_REQUEST, IMAGE_FILE_SUCCESSFUL } from './types';
 import sha1 from 'sha1';
 import superagent from 'superagent';
+import { IMAGE_FILE_FAILURE, IMAGE_FILE_REQUEST, IMAGE_FILE_SUCCESSFUL } from './types';
 
 /**
 * @description upload image request action
@@ -32,16 +32,14 @@ export const uploadImageFailed = error => ({
 
 });
 
-export const uploadImage = (imageFile) => {
-  console.log(imageFile);
-  console.log('+++++++++++++++++++');
-  return (dispatch) => {
+export const uploadImage = imageFile =>
+  (dispatch) => {
     dispatch(uploadImageRequest(imageFile));
     const cloudName = 'dd3lv0o93';
-    const url = 'https://api.cloudinary.com/v1_1/' + cloudName + '/image/upload';
+    const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
     const timestamp = Date.now() / 1000;
     const uploadPreset = 'tsoddiyz';
-    const paramsStr = 'timestamp=' + timestamp + '&upload_preset=' + uploadPreset + 'EEHPrMjK3zGh6V34E2zeDl_IXVk';
+    const paramsStr = `timestamp=${timestamp}&upload_preset=${uploadPreset}EEHPrMjK3zGh6V34E2zeDl_IXVk`;
     const signature = sha1(paramsStr);
     const params = {
       api_key: '866441834971784',
@@ -61,4 +59,3 @@ export const uploadImage = (imageFile) => {
       return dispatch(uploadImageResponse(response.body.url));
     });
   };
-};

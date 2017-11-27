@@ -12,7 +12,8 @@ import { getTopRecipes } from '../../actions/recipe';
 class Landing extends React.Component {
   static propTypes = {
     getTopRecipes: PropTypes.func.isRequired,
-    recipes: PropTypes.node.isRequired
+    recipes: PropTypes.objectOf(PropTypes.string),
+    recipeData: PropTypes.arrayOf(PropTypes.string).isRequired
   };
 
   /**
@@ -77,7 +78,7 @@ class Landing extends React.Component {
             <h3>Welcome to the top recipes of the week</h3>
           </div>
           <div className="card-blocks-home" >
-            <RecipeList recipes={this.props.recipes} />
+            <RecipeList recipes={this.props.recipeData} />
           </div>
         </section>
         <br></br>
@@ -87,7 +88,7 @@ class Landing extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  recipes: state.recipe.recipeData
+  recipeData: state.recipe.recipeData
 });
 
 export default connect(mapStateToProps, { getTopRecipes })(Landing);

@@ -56,4 +56,3 @@ const downvoteRecipe = (recipeId) => {
 };
 
 export { upvoteRecipe, downvoteRecipe };
- 

@@ -1,5 +1,11 @@
 import axios from 'axios';
 import {
+  actions as toastrActions
+} from 'react-redux-toastr';
+import {
+  bindActionCreators
+} from 'redux';
+import {
   API_URL,
   errorHandler
 } from './index';
@@ -9,13 +15,7 @@ import {
   UNAUTH_USER,
   FETCH_USER
 } from './types';
-import {
-  actions as toastrActions
-} from 'react-redux-toastr';
-import {
-  bindActionCreators
-} from 'redux';
-import jwtDecode from 'jwt-decode';
+import decodeToken from '../../../server/helpers/decodeToken';
 
 //= ===============================
 // Authentication actions
@@ -27,21 +27,19 @@ import jwtDecode from 'jwt-decode';
  * @export signupFailed
  * @returns {object} toastr
  */
-export function signupFailed() {
-  return dispatch => {
-    const toastr = bindActionCreators(toastrActions, dispatch);
-    toastr.add({
-      id: 'INCORRECT_DETAILS',
-      type: 'error',
-      title: 'Error',
-      message: 'One or more of your field(s) is invalid, Please retry with the correct details',
-      timeout: 5000,
-    });
-    setTimeout(() => {
-      toastr.remove('INCORRECT_DETAILS');
-    }, 3500);
-  };
-}
+export const signupFailed = () => (dispatch) => {
+  const toastr = bindActionCreators(toastrActions, dispatch);
+  toastr.add({
+    id: 'INCORRECT_DETAILS',
+    type: 'error',
+    title: 'Error',
+    message: 'One or more of your field(s) is invalid, Please retry with the correct details',
+    timeout: 5000,
+  });
+  setTimeout(() => {
+    toastr.remove('INCORRECT_DETAILS');
+  }, 3500);
+};
 
 /**
  * @description display toastr message for failed login
@@ -49,21 +47,19 @@ export function signupFailed() {
  * @export loginFailed
  * @returns {object} toastr
  */
-export function loginFailed() {
-  return dispatch => {
-    const toastr = bindActionCreators(toastrActions, dispatch);
-    toastr.add({
-      id: 'INCORRECT_CREDENTIALS',
-      type: 'error',
-      title: 'Error',
-      message: 'Your username/password is incorrect, Please retry with the correct details',
-      timeout: 5000,
-    });
-    setTimeout(() => {
-      toastr.remove('INCORRECT_CREDENTIALS');
-    }, 3500);
-  };
-}
+export const loginFailed = () => (dispatch) => {
+  const toastr = bindActionCreators(toastrActions, dispatch);
+  toastr.add({
+    id: 'INCORRECT_CREDENTIALS',
+    type: 'error',
+    title: 'Error',
+    message: 'Your username/password is incorrect, Please retry with the correct details',
+    timeout: 5000,
+  });
+  setTimeout(() => {
+    toastr.remove('INCORRECT_CREDENTIALS');
+  }, 3500);
+};
 
 /**
  * @description signup user action
@@ -77,15 +73,15 @@ export function loginFailed() {
  * @param {str} email
  * @returns {object} dispatch
  */
-export function registerUser({
+export const registerUser = ({
   username,
   password,
   firstName,
   lastName,
   mobileNumber,
   email
-}) {
-  return function (dispatch) {
+}) =>
+  (dispatch) => {
     axios.post(`${API_URL}/users/signup`, {
       username,
       password,
@@ -100,7 +96,7 @@ export function registerUser({
           dispatch({
             type: AUTH_USER
           });
-          location.hash = '#login';
+          window.location.hash = '#login';
           toastr.add({
             id: 'USER_LOGGEDIN',
             type: 'success',
@@ -121,7 +117,6 @@ export function registerUser({
         errorHandler(dispatch, error.response, AUTH_ERROR);
       });
   };
-}
 
 /**
  * @description add recipe action
@@ -132,11 +127,11 @@ export function registerUser({
  * @returns {array} response
  * @callback {object}
  */
-export function loginUser({
+export const loginUser = ({
   username,
   password
-}) {
-  return function (dispatch) {
+}) =>
+  (dispatch) => {
     axios.post(`${API_URL}/users/signin`, {
       username,
       password
@@ -144,11 +139,11 @@ export function loginUser({
       .then((response) => {
         const toastr = bindActionCreators(toastrActions, dispatch);
         if (response.status >= 200 && response.status < 300) {
-          localStorage.setItem('token', response.data.authToken);
+          window.localStorage.setItem('token', response.data.authToken);
           dispatch({
             type: AUTH_USER
           });
-          location.hash = '#dashboard';
+          window.location.hash = '#dashboard';
           toastr.add({
             id: 'USER_SIGNEDIN',
             type: 'success',
@@ -169,7 +164,7 @@ export function loginUser({
         errorHandler(dispatch, error.response, AUTH_ERROR);
       });
   };
-}
+
 
 /**
  * @description logoutUser user action
@@ -178,25 +173,25 @@ export function loginUser({
  * @param {object} error
  * @returns {array} response
  */
-export function logoutUser(error) {
-  return function (dispatch) {
-    localStorage.clear();
-    location.hash = '#';
+export const logoutUser = error =>
+  (dispatch) => {
+    window.localStorage.clear();
+    window.location.hash = '#';
     dispatch({
       type: UNAUTH_USER,
       payload: error || ''
     });
   };
-}
+
 
 /**
  * @export fetchUsername
  * @returns {array} response
  */
-export function fetchUsername() {
-  const decoded = jwtDecode(localStorage.getItem('token'));
-  const username = decoded.user.username;
-  return ((dispatch) => {
+export const fetchUsername = () =>
+  (dispatch) => {
+    const decodedToken = decodeToken(window.localStorage.getItem('token'));
+    const username = decodedToken.user.username;
     axios.get(`${API_URL}/users/${username}`)
       .then((response) => {
         dispatch({
@@ -207,5 +202,4 @@ export function fetchUsername() {
       .catch((error) => {
         errorHandler(dispatch, error.response, AUTH_ERROR);
       });
-  });
-}
+  };

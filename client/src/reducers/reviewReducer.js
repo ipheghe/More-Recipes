@@ -1,6 +1,8 @@
 import { REVIEW_RECIPE, RETRIEVE_RECIPE_REVIEWS, REVIEW_ERROR } from '../actions/types';
 
-const INITIAL_STATE = { message: '', error: '', reviewList: [], reviewData: {} };
+const INITIAL_STATE = {
+  message: '', error: '', reviewList: [], reviewData: {}
+};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {

@@ -1,16 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import FavoriteRecipeCard from '../favoriteRecipeCard/favoriteRecipeCard';
 
-const FavoriteRecipeList = ({ recipes }) => {
-  console.log(recipes, 'ghh')
-  return (
-    <div>
-      {
+const FavoriteRecipeList = ({ recipes }) => (
+  <div>
+    {
         (recipes && recipes.length > 0) ?
-          recipes.map((recipe, index) => <FavoriteRecipeCard recipe={recipe} key={index} />)
+          recipes.map(recipe => <FavoriteRecipeCard recipe={recipe} key={recipe.id} />)
           : null
       }
-    </div>
-  );
-}
+  </div>
+);
+
+FavoriteRecipeList.propTypes = {
+  recipes: PropTypes.arrayOf(PropTypes.object).isRequired
+};
+
 export default FavoriteRecipeList;
