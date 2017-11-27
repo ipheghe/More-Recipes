@@ -24,6 +24,7 @@ ReactDOM.render(<Provider store={store}>
       timeOut={4000}
       newestOnTop={false}
       preventDuplicates
+      preventOpenDuplicates
       position="top-left"
       transitionIn="fadeIn"
       transitionOut="fadeOut"

@@ -5,6 +5,7 @@ import ProfileHeader from './profileHeader.jsx';
 import UserSection from './userSection.jsx';
 import UserNavMenu from './userNavMenu.jsx';
 import ReviewBox from './reviewBox.jsx';
+import ManageCategoryModal from './manageCategoryModal.jsx';
 
 export {
   MainHeader,
@@ -13,5 +14,6 @@ export {
   ProfileHeader,
   UserSection,
   UserNavMenu,
-  ReviewBox
+  ReviewBox,
+  ManageCategoryModal
 };

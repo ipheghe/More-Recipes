@@ -6,12 +6,7 @@ import {
   bindActionCreators
 } from 'redux';
 
-export const API_URL = 'http://localhost:8000/api/v1';
-export const CLIENT_ROOT_URL = 'http://localhost:3000';
-
-//= ===============================
-// Utility actions
-//= ===============================
+export const BASE_URL = '/api/v1';
 
 /**
  * @export errorHandler
@@ -20,7 +15,8 @@ export const CLIENT_ROOT_URL = 'http://localhost:3000';
  * @param {constant} type
  * @returns {*} void
  */
-export function errorHandler(dispatch, error, type) {
+export const errorHandler = (dispatch, error, type) => {
+  console.log(error, 'error');
   const errorMessage = error.response ? error.response.data : error;
   const errorData = {
     data: {
@@ -38,7 +34,7 @@ export function errorHandler(dispatch, error, type) {
       payload: errorData
     });
   }, 5000);
-}
+};
 
 // Post Request
 /**
@@ -50,7 +46,7 @@ export function errorHandler(dispatch, error, type) {
  * @param {action} dispatch
  * @param {object} data
  * @param {string} message
- * @param {constant} constant
+ * @param {constant} toastrConstant
  * @param {string} directTo
  * @returns {*} void
  */
@@ -62,10 +58,10 @@ export const postData = (
   dispatch,
   data,
   message,
-  constant,
+  toastrConstant,
   directTo
 ) => {
-  const requestUrl = API_URL + url;
+  const requestUrl = BASE_URL + url;
   let headers = {};
 
   if (isAuthReq) {
@@ -77,7 +73,8 @@ export const postData = (
   }
   axios.post(requestUrl, data, headers)
     .then((response) => {
-      if (document.getElementById('myModal')) {
+      console.log(response, 'response');
+      if (document.getElementById('myModal').className === 'modal fade show') {
         document.getElementById('myModal').className = 'modal fade hide';
         document.getElementsByClassName('modal-backdrop')[0].className =
           'modal-backdrop fade hide';
@@ -89,21 +86,22 @@ export const postData = (
       if (directTo.length > 0) {
         window.location.hash = directTo;
       }
-      if (constant.length > 2) {
+      if (toastrConstant.length > 2) {
         const toastr = bindActionCreators(toastrActions, dispatch);
         toastr.add({
-          id: constant,
+          id: toastrConstant,
           type: 'success',
           title: 'Success',
           message,
           timeout: 5000,
         });
         setTimeout(() => {
-          toastr.remove(constant);
+          toastr.remove(toastrConstant);
         }, 3500);
       }
     })
     .catch((error) => {
+      console.log(error, 'error2');
       errorHandler(dispatch, error.response, errorType);
     });
 };
@@ -119,7 +117,7 @@ export const postData = (
  *  @returns {*} void
  */
 export const getData = (action, errorType, isAuthReq, url, dispatch) => {
-  const requestUrl = API_URL + url;
+  const requestUrl = BASE_URL + url;
   let headers = {};
 
   if (isAuthReq) {
@@ -152,7 +150,7 @@ export const getData = (action, errorType, isAuthReq, url, dispatch) => {
  * @param {action} dispatch
  * @param {object} data
  * @param {string} message
- * @param {constant} constant
+ * @param {constant} toastrConstant
  * @param {string} directTo
  * @returns {*} void
  */
@@ -164,10 +162,10 @@ export const putData = (
   dispatch,
   data,
   message,
-  constant,
+  toastrConstant,
   directTo
 ) => {
-  const requestUrl = API_URL + url;
+  const requestUrl = BASE_URL + url;
   let headers = {};
 
   if (isAuthReq) {
@@ -180,11 +178,6 @@ export const putData = (
 
   axios.put(requestUrl, data, headers)
     .then((response) => {
-      if (document.getElementById('myModal')) {
-        document.getElementById('myModal').className = 'modal fade hide';
-        document.getElementsByClassName('modal-backdrop')[0].className =
-          'modal-backdrop fade hide';
-      }
       const toastr = bindActionCreators(toastrActions, dispatch);
       dispatch({
         type: action,
@@ -193,20 +186,21 @@ export const putData = (
       if (directTo.length > 3) {
         window.location.hash = directTo;
       }
-      if (constant.length > 2) {
+      if (toastrConstant.length > 2) {
         toastr.add({
-          id: constant,
+          id: toastrConstant,
           type: 'success',
           title: 'Success',
           message,
           timeout: 5000,
         });
         setTimeout(() => {
-          toastr.remove(constant);
+          toastr.remove(toastrConstant);
         }, 3500);
       }
     })
     .catch((error) => {
+      console.log(error, 'error');
       errorHandler(dispatch, error.response, errorType);
     });
 };
@@ -220,7 +214,7 @@ export const putData = (
  * @param {string} url
  * @param {action} dispatch
  * @param {string} message
- * @param {constant} constant
+ * @param {constant} toastrConstant
  * @param {string} directTo
  * @returns {*} void
  */
@@ -231,10 +225,10 @@ export const deleteData = (
   url,
   dispatch,
   message,
-  constant,
+  toastrConstant,
   directTo
 ) => {
-  const requestUrl = API_URL + url;
+  const requestUrl = BASE_URL + url;
   let headers = {};
 
   if (isAuthReq) {
@@ -254,21 +248,22 @@ export const deleteData = (
       if (directTo.length > 3) {
         window.location.hash = directTo;
       }
-      if (constant.length > 2) {
+      if (toastrConstant.length > 2) {
         const toastr = bindActionCreators(toastrActions, dispatch);
         toastr.add({
-          id: constant,
+          id: toastrConstant,
           type: 'success',
           title: 'Success',
           message,
           timeout: 5000,
         });
         setTimeout(() => {
-          toastr.remove(constant);
+          toastr.remove(toastrConstant);
         }, 3500);
       }
     })
     .catch((error) => {
+      console.log(error, 'error');
       errorHandler(dispatch, error.response, errorType);
     });
 };

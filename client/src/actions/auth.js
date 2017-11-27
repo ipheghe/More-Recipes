@@ -6,7 +6,7 @@ import {
   bindActionCreators
 } from 'redux';
 import {
-  API_URL,
+  BASE_URL,
   errorHandler
 } from './index';
 import {
@@ -16,10 +16,6 @@ import {
   FETCH_USER
 } from './types';
 import decodeToken from '../../../server/helpers/decodeToken';
-
-//= ===============================
-// Authentication actions
-//= ===============================
 
 /**
  * @description display toastr message for failed signup
@@ -82,7 +78,7 @@ export const registerUser = ({
   email
 }) =>
   (dispatch) => {
-    axios.post(`${API_URL}/users/signup`, {
+    axios.post(`${BASE_URL}/users/signup`, {
       username,
       password,
       firstName,
@@ -132,7 +128,7 @@ export const loginUser = ({
   password
 }) =>
   (dispatch) => {
-    axios.post(`${API_URL}/users/signin`, {
+    axios.post(`${BASE_URL}/users/signin`, {
       username,
       password
     })
@@ -192,7 +188,7 @@ export const fetchUsername = () =>
   (dispatch) => {
     const decodedToken = decodeToken(window.localStorage.getItem('token'));
     const { username } = decodedToken.user;
-    axios.get(`${API_URL}/users/${username}`)
+    axios.get(`${BASE_URL}/users/${username}`)
       .then((response) => {
         dispatch({
           type: FETCH_USER,

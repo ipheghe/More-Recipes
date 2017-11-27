@@ -1,27 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addCategory, getUserCategories } from './../actions/category';
+import { ManageCategoryModal } from './index';
+import {
+  addCategory,
+  updateCategory,
+  deleteCategory,
+  getUserCategories,
+  getUserCategory
+} from './../actions/categoryActions';
 import { changePassword } from './../actions/userActions';
-import { fetchUsername } from '../actions/auth';
 
 /**
  * UserSection component
  * @class UserSection
  * @extends {React.Component}
  */
-@connect(state => state)
+@connect(state => ({ state, }))
 class UserSection extends React.Component {
   static propTypes = {
     addCategory: PropTypes.func.isRequired,
+    updateCategory: PropTypes.func.isRequired,
+    deleteCategory: PropTypes.func.isRequired,
+    getUserCategory: PropTypes.func.isRequired,
     changePassword: PropTypes.func.isRequired,
-    fetchUsername: PropTypes.func.isRequired,
     userData: PropTypes.shape({
       id: PropTypes.number,
       username: PropTypes.string,
     }).isRequired,
+    categoryData: PropTypes.arrayOf(PropTypes.object).isRequired,
     errorMessage: PropTypes.string.isRequired,
-    categoryName: PropTypes.string.isRequired,
     categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
@@ -33,15 +41,80 @@ class UserSection extends React.Component {
     super(props);
     this.state = {
       categoryName: '',
+      modalCategoryName: '',
       oldPassword: '',
       newPassword: '',
       confirmPassword: '',
       hasErrored: false,
-      errorMessage: ''
+      errorMessage: '',
+      modalIsOpen: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleAddCategory = this.handleAddCategory.bind(this);
+    this.handleUpdateCategory = this.handleUpdateCategory.bind(this);
+    this.handleDeleteCategory = this.handleDeleteCategory.bind(this);
+    this.getCategory = this.getCategory.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  /**
+   * @param {any} nextProps
+   * @memberOf UserSection
+   * @returns {*} void
+   */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.state.category.categoryData.length > 0) {
+      this.setState({
+        modalCategoryName: nextProps.state.category.categoryData[0].name
+      });
+    }
+  }
+
+  /**
+   * handle get category  event
+   * @param {number} categoryId
+   * @returns {*} void
+   */
+  getCategory(categoryId) {
+    this.props.getUserCategory(categoryId);
+    this.setState({ modalIsOpen: true });
+  }
+
+  /**
+   * handle add category form event
+   * @param {SytheticEvent} e
+   * @returns {*} void
+   */
+  handleAddCategory(e) {
+    e.preventDefault();
+    this.props.addCategory(this.state.categoryName);
+    this.setState({ categoryName: '' });
+  }
+
+  /**
+   * handle update category form event
+   * @param {SytheticEvent} e
+   * @returns {*} void
+   */
+  handleUpdateCategory(e) {
+    e.preventDefault();
+    const categoryId = this.props.categoryData[0].id;
+    this.props.updateCategory(categoryId, this.state.modalCategoryName);
+    this.setState({ modalIsOpen: false });
+  }
+
+  /**
+   * handle delete category form event
+   * @param {SytheticEvent} e
+   * @returns {*} void
+   */
+  handleDeleteCategory(e) {
+    e.preventDefault();
+    const categoryId = this.props.categoryData[0].id;
+    this.props.deleteCategory(categoryId);
+    this.setState({ modalIsOpen: false });
   }
 
   /**
@@ -55,16 +128,6 @@ class UserSection extends React.Component {
     });
   }
 
-  /**
-   * handle add category form event
-   * @param {SytheticEvent} e
-   * @returns {*} void
-   */
-  handleAddCategory(e) {
-    e.preventDefault();
-    this.props.addCategory(this.state.categoryName);
-    this.props.fetchUsername();
-  }
 
   /**
    * handle change password event
@@ -85,7 +148,7 @@ class UserSection extends React.Component {
       if (oldPassword === '') {
         return this.setState({
           hasErrored: true,
-          errorMessage: 'old password field cannot be  empty'
+          errorMessage: 'old password field cannot be empty'
         });
       }
       if (newPassword === '') {
@@ -112,6 +175,23 @@ class UserSection extends React.Component {
       errorMessage: ''
     });
     return this.props.changePassword(this.props.userData.id, oldPassword, newPassword);
+  }
+
+  /**
+   * handle get category  event
+   * @returns {*} void
+   */
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    this.subtitle.style.color = '#f00';
+  }
+
+  /**
+   * handle get category  event
+   * @returns {*} void
+   */
+  closeModal() {
+    this.setState({ modalIsOpen: false });
   }
 
   /**
@@ -146,6 +226,24 @@ class UserSection extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
+    const customStyles = {
+      overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.75)'
+      },
+      content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+      }
+    };
     return (
       <main>
         <div className="div-profile">
@@ -191,24 +289,20 @@ class UserSection extends React.Component {
           </div>
           <br />
           <div className="profile-category-button">
-            <button
-              type="button"
-              className="btn btn-default btn-sm"
-            >
-              {this.props.categoryName}
-              <span className="badge text-right">7</span>
-            </button>
             {
               (this.props.categories && this.props.categories.length > 0) ?
-                this.props.categories.map(category =>
+              this.props.categories.map(category =>
                   (
                     <button
                       type="button"
                       className="btn btn-default btn-sm"
+                      name="categoryModalName"
                       key={category.id}
+                      value={category.id}
+                      ref={node => this.categoryInput = node}
+                      onClick={() => this.getCategory(category.id)}
                     >
                       {category.name}
-                      <span className="badge text-right">7</span>
                     </button>
                   ))
                 : null
@@ -315,6 +409,21 @@ class UserSection extends React.Component {
             </div>
           </div>
         </div>
+        {
+          this.props.categoryData.length > 0 ?
+            <ManageCategoryModal
+              isOpen={this.state.modalIsOpen}
+              afterOpen={this.afterOpenModal}
+              onClose={this.closeModal}
+              closeModal={this.closeModal}
+              customStyles={customStyles}
+              value={this.state.modalCategoryName}
+              onChange={this.handleChange}
+              onUpdate={this.handleUpdateCategory}
+              onDelete={this.handleDeleteCategory}
+              refName={subtitle => this.subtitle = subtitle}
+            /> : ''
+        }
       </main>
     );
   }
@@ -322,14 +431,16 @@ class UserSection extends React.Component {
 const mapStateToProps = state => ({
   userData: state.auth.userData,
   categories: state.category.categoryList,
-  categoryName: state.category.categoryName,
+  categoryData: state.category.categoryData,
   errorMessage: state.user.error,
 });
 
 export default connect(mapStateToProps, {
-  fetchUsername,
   addCategory,
+  updateCategory,
+  deleteCategory,
   getUserCategories,
+  getUserCategory,
   changePassword
 })(UserSection);
 

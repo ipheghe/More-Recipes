@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchUsername, logoutUser } from '../actions/auth';
-import { getUserCategories } from './../actions/category';
+import { getUserCategories } from './../actions/categoryActions';
 import Logo from '../../public/images/recipe_logo.png';
 
 /**
