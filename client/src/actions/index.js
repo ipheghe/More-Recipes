@@ -16,7 +16,6 @@ export const BASE_URL = '/api/v1';
  * @returns {*} void
  */
 export const errorHandler = (dispatch, error, type) => {
-  console.log(error, 'error');
   const errorMessage = error.response ? error.response.data : error;
   const errorData = {
     data: {
@@ -73,7 +72,6 @@ export const postData = (
   }
   axios.post(requestUrl, data, headers)
     .then((response) => {
-      console.log(response, 'response');
       if (document.getElementById('myModal').className === 'modal fade show') {
         document.getElementById('myModal').className = 'modal fade hide';
         document.getElementsByClassName('modal-backdrop')[0].className =
@@ -101,7 +99,6 @@ export const postData = (
       }
     })
     .catch((error) => {
-      console.log(error, 'error2');
       errorHandler(dispatch, error.response, errorType);
     });
 };
@@ -200,7 +197,6 @@ export const putData = (
       }
     })
     .catch((error) => {
-      console.log(error, 'error');
       errorHandler(dispatch, error.response, errorType);
     });
 };
@@ -263,7 +259,6 @@ export const deleteData = (
       }
     })
     .catch((error) => {
-      console.log(error, 'error');
       errorHandler(dispatch, error.response, errorType);
     });
 };

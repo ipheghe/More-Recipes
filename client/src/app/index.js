@@ -7,6 +7,8 @@ import configureStore from '../store/configure-store';
 import '../../public/style.css';
 import '../../../node_modules/font-awesome/css/font-awesome.min.css';
 import { AUTH_USER } from '../actions/types';
+import { logoutUser } from '../actions/auth';
+import decodeToken from '../helpers/decodeToken';
 
 
 const store = configureStore({});
@@ -14,9 +16,16 @@ const app = document.getElementById('app');
 const token = window.localStorage.getItem('token');
 
 if (token) {
-  // Update application state. User has token and is probably authenticated
-  store.dispatch({ type: AUTH_USER });
+  const decodedToken = decodeToken(token);
+  if (decodedToken.exp < Math.floor(Date.now() / 1000)) {
+    // log user out
+    store.dispatch(logoutUser());
+  } else {
+    // add user data and token to auth store
+    store.dispatch({ type: AUTH_USER });
+  }
 }
+
 ReactDOM.render(<Provider store={store}>
   <div>
     <App />
@@ -31,5 +40,5 @@ ReactDOM.render(<Provider store={store}>
       progressBar
     />
   </div>
-</Provider>, app);
+                </Provider>, app);
 

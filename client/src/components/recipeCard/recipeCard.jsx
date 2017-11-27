@@ -12,9 +12,11 @@ const RecipeCard = ({ recipe }) => (
     </div>
     <div className="card-footer">
       <small className="text-muted">
-        <span className="views"><i className="fa fa-eye" aria-hidden="true" style={{ color: 'green' }} />{recipe.views}</span>
-        <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true" style={{ color: 'red' }} />{recipe.upvotes}</span>
-        <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true" style={{ color: 'orange' }} />{recipe.downvotes}</span>
+        <div className="landing-card-footer">
+          <span className="views"><i className="fa fa-eye" aria-hidden="true" style={{ color: 'green' }} />{recipe.views}</span>
+          <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true" style={{ color: 'red' }} />{recipe.upvotes}</span>
+          <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true" style={{ color: 'orange' }} />{recipe.downvotes}</span>
+        </div>
         <Link to={`/recipes/${recipe.id}`} className="btn btn-secondary btn-sm" >More</Link>
       </small>
     </div>

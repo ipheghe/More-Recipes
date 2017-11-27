@@ -118,7 +118,7 @@ class UserNavHeader extends React.Component {
                   </button>
                 </li>
                 <li className="nav-item">
-                  <button className="nav-link invisible-button" href="./profile.html">
+                  <button className="nav-link invisible-button" href="#dashboard">
                     <span>
                       <i className="fa fa-user" aria-hidden="true" />
                     </span> {this.state.userData.firstName} {this.state.userData.lastName}

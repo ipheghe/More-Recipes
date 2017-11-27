@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getUserCategories } from './../actions/categoryActions';
+import { getRecipesBySearch } from './../actions/recipe';
 
 /**
  * ProfileHeader component
@@ -12,6 +13,7 @@ import { getUserCategories } from './../actions/categoryActions';
 class ProfileHeader extends React.Component {
   static propTypes = {
     categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    getRecipesBySearch: PropTypes.func.isRequired
   };
 
   /**
@@ -24,6 +26,7 @@ class ProfileHeader extends React.Component {
       keyword: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   /**
@@ -34,6 +37,20 @@ class ProfileHeader extends React.Component {
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
+    });
+  }
+
+  /**
+  * handle recipe search form event
+  * @param {SytheticEvent} e
+  * @returns {object} state
+  */
+  handleSearch(e) {
+    e.preventDefault();
+    this.props.getRecipesBySearch(this.state.keyword);
+    window.location.hash = `#search?sort=${this.state.keyword}`;
+    this.setState({
+      keyword: ''
     });
   }
 
@@ -56,7 +73,9 @@ class ProfileHeader extends React.Component {
           <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <button className="navbar-brand invisible-button"><h2>Profile Page</h2></button>
+          <Link to="/dashboard" className="navbar-brand invisible-button" >
+            <h2>Profile Page</h2>
+          </Link>
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
             <li className="nav-item">
               <button className="nav-link invisible-button disabled" />
@@ -106,11 +125,7 @@ class ProfileHeader extends React.Component {
               required
               formNoValidate
             />
-            <Link
-              to={`/search?sort=${this.state.keyword}`}
-              className="btn btn-outline-success my-2 my-sm-0"
-            >Search
-            </Link>
+            <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.handleSearch}>Search</button>
           </form>
         </div>
       </nav>
@@ -121,5 +136,5 @@ const mapStateToProps = state => ({
   categories: state.category.categoryList
 });
 
-export default connect(mapStateToProps, { getUserCategories })(ProfileHeader);
+export default connect(mapStateToProps, { getUserCategories, getRecipesBySearch })(ProfileHeader);
 

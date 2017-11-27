@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MainHeader } from '../../views/index';
-import RecipeList from '../recipeList/recipeList';
+import LandingRecipeList from '../landingRecipeList/landingRecipeList.jsx';
 import { getTopRecipes } from '../../actions/recipe';
 
 /**
@@ -77,7 +77,7 @@ class Landing extends React.Component {
             <h3>Welcome to the top recipes of the week</h3>
           </div>
           <div className="card-blocks-home" >
-            <RecipeList recipes={this.props.recipeData} />
+            <LandingRecipeList recipes={this.props.recipeData} />
           </div>
         </section>
         <br />

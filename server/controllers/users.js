@@ -95,23 +95,28 @@ const usersController = {
               message: 'Authentication failed. Incorrect password'
             });
           } else {
+            const userData = {
+              id: user.id,
+              username: user.username
+            };
             // User is found and password is correct
             // create a token for authentication
             const token = jwt.sign({
-              user
+              user: userData
             }, process.env.TOKEN_SECRET, {
               expiresIn: process.env.TOKEN_EXPIRY_TIME // expires in 6 hours
             });
             // return success message including token in JSON format
             res.status(200).send({
               message: 'Authentication & Login successful',
-              authToken: token,
-              userData: user
+              authToken: token
             });
           }
         }
       })
-      .catch(() => res.status(400).send('Login Failed, Please re-confirm details'));
+      .catch(() => res.status(400).send({
+        message: 'Login Failed, Please re-confirm details'
+      }));
   },
 
   /**

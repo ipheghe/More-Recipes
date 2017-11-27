@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { UserNavHeader, ProfileHeader, UserSection, UserNavMenu } from '../../views/index';
-import RecipeList from '../recipeList/recipeList';
+import RecipeList from '../recipeList/recipeList.jsx';
 
 
 /**
@@ -16,9 +16,8 @@ class Dashboard extends React.Component {
   };
 
   /**
-   * handle login form event error
-   * @param {SytheticEvent} e
-   * @returns {string} errorMessage
+   * render
+   * @return {ReactElement} markup
    */
   render() {
     return (
@@ -47,25 +46,6 @@ class Dashboard extends React.Component {
                     </div>
                   </div>
                 </section>
-              </div>
-              <div className="profile-pagination">
-                <nav aria-label="pagination-nav">
-                  <ul className="pagination">
-                    <li className="page-item">
-                      <a className="page-link" href="#" tabIndex="-1">Previous</a>
-                    </li>
-                    <li className="page-item"><a className="page-link" href="#">1</a></li>
-                    <li className="page-item active">
-                      <a className="page-link" href="#">2
-                        <span className="sr-only">(current)</span>
-                      </a>
-                    </li>
-                    <li className="page-item"><a className="page-link" href="#">3</a></li>
-                    <li className="page-item">
-                      <a className="page-link" href="#">Next</a>
-                    </li>
-                  </ul>
-                </nav>
               </div>
             </div>
           </div>

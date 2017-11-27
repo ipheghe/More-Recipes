@@ -32,11 +32,9 @@ app.use(require('webpack-dev-middleware')(compiler, {
 }));
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json' }));
-// app.use(express.static('template'));
 
 // Enable CORS from client-side
 app.use((req, res, next) => {
@@ -70,7 +68,6 @@ express.static(path.join(__dirname, '/client/public/dist'));
 
 app.use('/dist', publicPath);
 app.get('/', (req, res) => { res.sendFile(indexPath); });
-// app.get('*', (req, res) => { res.sendFile(indexPath); });
 
 
 app.get('/api', (req, res) => res.status(200).send({
@@ -84,7 +81,6 @@ app.all('*', (req, res) => res.status(404).send({
 
 const port = parseInt(process.env.PORT, 10) || 8000;
 app.listen(port, () => {
-  console.log('Server listening on port', port);
 });
 
 export default app;

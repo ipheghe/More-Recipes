@@ -19,6 +19,7 @@ import { changePassword } from './../actions/userActions';
 @connect(state => ({ state, }))
 class UserSection extends React.Component {
   static propTypes = {
+    state: PropTypes.arrayOf(PropTypes.object).isRequired,
     addCategory: PropTypes.func.isRequired,
     updateCategory: PropTypes.func.isRequired,
     deleteCategory: PropTypes.func.isRequired,
@@ -178,16 +179,15 @@ class UserSection extends React.Component {
   }
 
   /**
-   * handle get category  event
+   * handle after open modal event
    * @returns {*} void
    */
   afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#f00';
+    this.subtitle.style.color = '#252A2D';
   }
 
   /**
-   * handle get category  event
+   * handle close modal event
    * @returns {*} void
    */
   closeModal() {
@@ -195,7 +195,7 @@ class UserSection extends React.Component {
   }
 
   /**
-   * handle login form event error
+   * handle form event error
    * @param {SytheticEvent} e
    * @returns {string} errorMessage
    */
