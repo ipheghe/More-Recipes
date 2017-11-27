@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MainHeader } from '../../views/index';
-import RecipeList from '../recipeList/recipeList';
+import RecipeList from '../recipeList/recipeList.jsx';
 import { getTopRecipes } from '../../actions/recipe';
 
 /**
@@ -12,8 +12,7 @@ import { getTopRecipes } from '../../actions/recipe';
 class Landing extends React.Component {
   static propTypes = {
     getTopRecipes: PropTypes.func.isRequired,
-    recipes: PropTypes.objectOf(PropTypes.string),
-    recipeData: PropTypes.arrayOf(PropTypes.string).isRequired
+    recipeData: PropTypes.arrayOf(PropTypes.object).isRequired
   };
 
   /**
@@ -38,8 +37,8 @@ class Landing extends React.Component {
               <section className="col-md-7 headline">
                 <h1>Welcome to More recipes</h1>
                 <h4>Share your recipe ideas with the world</h4>
-                <br></br>
-                <br></br>
+                <br />
+                <br />
                 <a href="#top-recipes">
                   <button className="btn btn-success">View top recipes</button>
                 </a>
@@ -81,7 +80,7 @@ class Landing extends React.Component {
             <RecipeList recipes={this.props.recipeData} />
           </div>
         </section>
-        <br></br>
+        <br />
       </div>
     );
   }

@@ -1,6 +1,6 @@
+import supertest from 'supertest';
 import jwt from 'jsonwebtoken';
 import app from '../app';
-import supertest from 'supertest';
 import users from '../server/seeders/userSeeder';
 import recipes from '../server/seeders/recipeSeeder';
 import postReview from '../server/seeders/reviewSeeder';

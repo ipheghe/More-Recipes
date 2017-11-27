@@ -15,8 +15,8 @@ const upvoteRecipe = (recipeId) => {
   const data = { recipeId };
   const url = `/recipes/${recipeId}/votes`;
   const directTo = '';
-  const message = 'Recipe upvoted Successfully';
-  const constant = 'RECIPE_UPVOTED';
+  const message = '';
+  const constant = '';
   return dispatch => putData(
     UPVOTE_RECIPE,
     VOTE_ERROR,
@@ -40,8 +40,8 @@ const downvoteRecipe = (recipeId) => {
   const data = { recipeId };
   const url = `/recipes/${recipeId}/votes?sort=downvotes`;
   const directTo = '';
-  const message = 'Recipe downvoted Successfully';
-  const constant = 'RECIPE_DOWNVOTED';
+  const message = '';
+  const constant = '';
   return dispatch => putData(
     DOWNVOTE_RECIPE,
     VOTE_ERROR,

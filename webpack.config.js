@@ -1,17 +1,10 @@
 
 import webpack from 'webpack';
-// import path from 'path';
-// import HtmlWebpackPlugin from 'html-webpack-plugin';
-// import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
-// import ModuleScopePlugin from 'react-dev-utils/ModuleScopePlugin';
-// import eslintFormatter from 'react-dev-utils/eslintFormatter';
-
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
-const eslintFormatter = require('react-dev-utils/eslintFormatter');
-const BundleEnsureWebpackPlugin = require("bundle-ensure-webpack-plugin");
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import ModuleScopePlugin from 'react-dev-utils/ModuleScopePlugin';
+import eslintFormatter from 'react-dev-utils/eslintFormatter';
 
 module.exports = {
   devServer: {

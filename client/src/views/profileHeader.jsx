@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getUserCategories } from './../actions/category';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { getUserCategories } from './../actions/category';
+import { getRecipesBySearch } from './../actions/recipe';
 
 /**
  * ProfileHeader component
@@ -10,9 +10,9 @@ import { Link } from 'react-router-dom';
  * @extends {React.Component}
  */
 class ProfileHeader extends React.Component {
-
   static propTypes = {
-    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    getRecipesBySearch: PropTypes.func.isRequired
   };
 
   /**
@@ -25,6 +25,7 @@ class ProfileHeader extends React.Component {
       keyword: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   /**
@@ -35,6 +36,20 @@ class ProfileHeader extends React.Component {
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
+    });
+  }
+
+  /**
+  * handle recipe search form event
+  * @param {SytheticEvent} e
+  * @returns {object} state
+  */
+  handleSearch(e) {
+    e.preventDefault();
+    this.props.getRecipesBySearch(this.state.keyword);
+    window.location.hash = `#search?sort=${this.state.keyword}`;
+    this.setState({
+      keyword: ''
     });
   }
 
@@ -54,61 +69,60 @@ class ProfileHeader extends React.Component {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <a className="navbar-brand" href={undefined}><h2>Profile Page</h2></a>
+          <button className="navbar-brand invisible-button"><h2>Profile Page</h2></button>
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
             <li className="nav-item">
-              <a className="nav-link disabled" />
+              <button className="nav-link invisible-button disabled" />
             </li>
           </ul>
           <ul className="navbar-nav profile-menu">
-            <button type="button" className="btn btn-default"><li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="http://example.com"
-                id="navbarDropdownMenuLink"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Browse
-              </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <p className="dropdown-item"><b>Categories</b></p>
-                <hr></hr>
-                {
-                  (this.props.categories && this.props.categories.length > 0) ?
-                    this.props.categories.map((category) =>
-                      <a className="dropdown-item" key={category.id}>{category.name}</a>)
-                    : null
-                }
-                <br></br>
-                <p className="dropdown-item"><b>Favorites</b></p>
-                <hr></hr>
-                <a className="dropdown-item">Egusi Soup</a>
-                <a className="dropdown-item">Pizza</a>
-                <a className="dropdown-item">Pepper Soup</a>
-              </div>
-            </li>
+            <button type="button" className="btn btn-default">
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="http://example.com"
+                  id="navbarDropdownMenuLink"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Browse
+                </a>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <p className="dropdown-item"><b>Categories</b></p>
+                  <hr />
+                  {
+                    (this.props.categories && this.props.categories.length > 0) ?
+                      this.props.categories.map(category =>
+                        <a className="dropdown-item" key={category.id} href="/dashboard">{category.name}</a>)
+                      : null
+                  }
+                  <br />
+                  <p className="dropdown-item"><b>Favorites</b></p>
+                  <hr />
+                  <a className="dropdown-item" href="/favorite">Egusi Soup</a>
+                  <a className="dropdown-item" href="/favorite">Pizza</a>
+                  <a className="dropdown-item" href="/favorite">Pepper Soup</a>
+                </div>
+              </li>
             </button>
           </ul>
 
           <form className="form-inline my-2 my-lg-0">
             <input
               className="form-control mr-sm-2"
-              type="text" name="keyword"
+              type="text"
+              name="keyword"
               value={this.state.keyword}
               onChange={this.handleChange}
               placeholder="Search"
-              required formNoValidate
+              required
+              formNoValidate
             />
-            <Link
-              to={`/search?sort=, ${this.state.keyword}`}
-              className="btn btn-outline-success my-2 my-sm-0"
-            >Search
-            </Link>
+            <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.handleSearch}>Search</button>
           </form>
         </div>
       </nav>
@@ -119,5 +133,5 @@ const mapStateToProps = state => ({
   categories: state.category.categoryList
 });
 
-export default connect(mapStateToProps, { getUserCategories })(ProfileHeader);
+export default connect(mapStateToProps, { getUserCategories, getRecipesBySearch })(ProfileHeader);
 

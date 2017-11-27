@@ -10,33 +10,56 @@ import Logo from '../../public/images/recipe_logo.png';
  * @class UserNavHeader
  * @extends {React.Component}
  */
+@connect(state => ({ state, }))
 class UserNavHeader extends React.Component {
   static propTypes = {
     fetchUsername: PropTypes.func.isRequired,
     getUserCategories: PropTypes.func.isRequired,
     logoutUser: PropTypes.func.isRequired,
-    userData: PropTypes.objectOf(PropTypes.string),
+    userData: PropTypes.shape({
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+    }).isRequired
   };
 
-	/**
+  /**
    * constructor
    * @param {object} props
    */
   constructor(props) {
     super(props);
+    this.state = {
+      userData: {},
+      isLoading: true
+    };
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-	/**
-	 * @memberOf UserNavHeader
-	 * @returns {*} void
-	 */
+  /**
+   * @memberOf UserNavHeader
+   * @returns {*} void
+   */
   componentDidMount() {
     this.props.fetchUsername();
     this.props.getUserCategories();
   }
 
-	/**
+  /**
+   * @param {any} nextprops
+   * @memberOf UserNavHeader
+   * @returns {*} void
+   */
+  componentWillReceiveProps(nextprops) {
+    if (nextprops.state.auth) {
+      const { userData } = nextprops.state.auth;
+      this.setState({
+        userData: Object.assign({}, this.state.userData, userData),
+        isLoading: false,
+      });
+    }
+  }
+
+  /**
    * handle change logout event
    * @param {SytheticEvent} e
    * @returns {*} void
@@ -51,6 +74,7 @@ class UserNavHeader extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
+    if (this.state.isLoading) return (<div>IS LOADING....</div>);
     return (
       <div>
         <header>
@@ -87,21 +111,21 @@ class UserNavHeader extends React.Component {
               <ul className="navbar-nav mr-auto" />
               <ul className="nav justify-content-end" id="profile-nav">
                 <li className="nav-item">
-                  <a className="nav-link" href={undefined}>
+                  <button className="nav-link invisible-button" >
                     <span>
                       <i className="fa fa-bell" aria-hidden="true" />
                     </span>Notifications<span className="badge badge-pill badge-danger">2</span>
-                  </a>
+                  </button>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="./profile.html">
+                  <button className="nav-link invisible-button" href="./profile.html">
                     <span>
                       <i className="fa fa-user" aria-hidden="true" />
-                    </span> {this.props.userData.firstName} {this.props.userData.lastName}
-                  </a>
+                    </span> {this.state.userData.firstName} {this.state.userData.lastName}
+                  </button>
                 </li>
                 <li className="nav-item">
-                  <button className="nav-link" onClick={this.handleLogout}>
+                  <button className="nav-link invisible-button" onClick={this.handleLogout}>
                     <span>
                       <i className="fa fa-sign-out" aria-hidden="true" />
                     </span> Logout

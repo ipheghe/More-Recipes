@@ -1,168 +1,303 @@
-import React from "react";
-import { UserNavHeader, ReviewBox } from "../../views/index";
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchUsername } from '../../actions/auth';
+import { UserNavHeader, ReviewBox } from '../../views/index';
 import { getRecipe } from '../../actions/recipe';
-import { postReview, getReviews } from '../../actions/review';
+import { postReview } from '../../actions/review';
 import { upvoteRecipe, downvoteRecipe } from '../../actions/vote';
-import { favoriteRecipe } from '../../actions/favorite';
+import { favoriteRecipe, unfavoriteRecipe, getFavoriteRecipe } from '../../actions/favorite';
 
-@connect((state) => {
-  return { state, }
-})
-
+/**
+ * ViewRecipe component
+ * @class ViewRecipe
+ * @extends {React.Component}
+ */
+@connect(state => ({ state, }))
 class ViewRecipe extends React.Component {
+  static propTypes = {
+    getRecipe: PropTypes.func.isRequired,
+    postReview: PropTypes.func.isRequired,
+    upvoteRecipe: PropTypes.func.isRequired,
+    downvoteRecipe: PropTypes.func.isRequired,
+    favoriteRecipe: PropTypes.func.isRequired,
+    unfavoriteRecipe: PropTypes.func.isRequired,
+    getFavoriteRecipe: PropTypes.func.isRequired,
+    match: PropTypes.shape({
+      params: PropTypes.objectOf(PropTypes.string),
+    }).isRequired,
+    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    recipe: PropTypes.shape({
+      params: PropTypes.objectOf(PropTypes.string),
+    }).isRequired,
+    upvote: PropTypes.number.isRequired,
+    downvote: PropTypes.number.isRequired
+  };
+
+  /**
+   * constructor
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
     this.state = {
       recipe: {},
-      categoryName: 'foreign dish',
+      ingredients: {},
+      directions: {},
+      reviewMessage: '',
+      isFavorite: true,
       isLoading: true,
-      reviewMessage: ''
-    }
+      upVoteState: true,
+      downVoteState: true
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handlePostReview = this.handlePostReview.bind(this);
     this.handleFavoriteRecipe = this.handleFavoriteRecipe.bind(this);
+    this.handleUnfavoriteRecipe = this.handleUnfavoriteRecipe.bind(this);
   }
 
+  /**
+   * @memberOf Favorite
+   * @returns {*} void
+   */
   componentDidMount() {
-    const { id } = this.props.match.params
-    this.props.getRecipe(id)
+    const { id } = this.props.match.params;
+    this.props.getRecipe(id);
+    this.props.getFavoriteRecipe(id);
   }
 
+  /**
+   * @param {any} nextprops
+   * @memberOf UserNavHeader
+   * @returns {*} void
+   */
   componentWillReceiveProps(nextprops) {
-    console.log("here", nextprops);
-    if (nextprops.state.recipe.recipeList && nextprops.state.review.reviewList) {
-      const { recipeList } = nextprops.state.recipe
-      this.setState({
-        recipe: Object.assign({}, this.state.recipe, recipeList),
-        isLoading: false,
-      })
+    if (nextprops.state.recipe) {
+      const { recipeList } = nextprops.state.recipe;
+      if (Object.keys(recipeList).length > 0) {
+        this.setState({
+          recipe: Object.assign({}, this.state.recipe, recipeList),
+          ingredients: recipeList.ingredients.split(',').map(item => item.trim()),
+          directions: recipeList.directions.split(',').map(item => item.trim()),
+          isLoading: false,
+        });
+      }
+    }
+
+    if (nextprops.state.favorite) {
+      const { favoriteData } = nextprops.state.favorite;
+      if (Object.keys(favoriteData).length < 1) {
+        this.setState({
+          isFavorite: false,
+          isLoading: false,
+        });
+      }
     }
   }
 
+  /**
+   * handle change form event
+   * @param {SytheticEvent} e
+   * @returns {object} state
+   */
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
+  /**
+   * handle post review form event
+   * @param {SytheticEvent} e
+   * @returns {*} void
+   */
   handlePostReview(e) {
+    e.preventDefault();
     this.setState({
       reviewMessage: ''
     });
-    const { id } = this.props.match.params
-    let { reviewMessage } = this.state;
-    this.props.postReview(reviewMessage, id)
-    this.props.getRecipe(id)
-  }
-
-  handleUpvote = (e) => {
-    const { id } = this.props.match.params
-    this.props.upvoteRecipe(id)
-  }
-
-  handleDownvote = (e) => {
-    const { id } = this.props.match.params
-    this.props.downvoteRecipe(id)
-  }
-
-  handleFavoriteRecipe() {
-    const { id } = this.props.match.params
-    const {categoryId}  = this.refs.categoryName.value
-    this.props.favoriteRecipe(id, this.refs.categoryName.value)
-
+    const { id } = this.props.match.params;
+    const { reviewMessage } = this.state;
+    this.props.postReview(reviewMessage, id);
+    this.props.getRecipe(id);
   }
 
   /**
-   * SearchWiki layout component that enables a user search wikipedia right from the dashboard.
-   * 
-   * @param {component} <MainHeader/> - The landing page main header navigation.
-   * @param {component} <Footer/> - The landing page footer navigation.
+   * handle upvote event
+   * @param {SytheticEvent} e
+   * @returns {*} void
+   */
+  handleUpvote = (e) => {
+    e.preventDefault();
+    const { id } = this.props.match.params;
+    this.props.upvoteRecipe(id);
+    this.setState({
+      upVoteState: false,
+      downVoteState: false
+    });
+  }
+
+  /**
+   * handle downvote event
+   * @param {SytheticEvent} e
+   * @returns {*} void
+   */
+  handleDownvote = (e) => {
+    e.preventDefault();
+    const { id } = this.props.match.params;
+    this.props.downvoteRecipe(id);
+    this.setState({
+      upVoteState: false,
+      downVoteState: false
+    });
+  }
+
+  /**
+   * handle favorite event
+   * @param {SytheticEvent} e
+   * @returns {*} void
+   */
+  handleFavoriteRecipe(e) {
+    e.preventDefault();
+    const { id } = this.props.match.params;
+    this.props.favoriteRecipe(id, this.categoryInput.value);
+    this.setState({
+      isFavorite: true
+    });
+  }
+
+  /**
+   * handle unfavorite event
+   * @param {SytheticEvent} e
+   * @returns {*} void
+   */
+  handleUnfavoriteRecipe(e) {
+    e.preventDefault();
+    const { id } = this.props.match.params;
+    this.props.unfavoriteRecipe(id);
+    this.setState({
+      isFavorite: false
+    });
+  }
+
+  /**
+   * handle handleVote event
+   * @param {SytheticEvent} e
+   * @returns {*} void
+   */
+  handleUpVote() {
+    if (this.state.upVoteState) {
+      return this.state.recipe.upvotes;
+    }
+    return this.props.upvote;
+  }
+
+  /**
+   * handle handleVote event
+   * @param {SytheticEvent} e
+   * @returns {*} void
+   */
+  handleDownVote() {
+    if (this.state.downVoteState) {
+      return this.state.recipe.downvotes;
+    }
+    return this.props.downvote;
+  }
+
+  /**
+   * render
+   * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<div>IS LOADING....</div>)
-    const ingredients = this.props.recipe.ingredients.split(',').map(item => item.trim());
-    const directions = this.props.recipe.directions.split(',').map(item => item.trim());
-    const reviewFields = this.props.recipe.reviews;
-
-
+    if (this.state.isLoading) return (<div>IS LOADING....</div>);
+    const reviewFields = this.state.recipe.reviews;
     return (
       <div>
-        <UserNavHeader firstName={this.props.userData.firstName} lastName={this.props.userData.lastName} onChange={this.handleLogout} />
+        <UserNavHeader />
         <div className="banner-background">
           <div className="recipe-background">
             <div className="container">
               <div className="row recipe-top">
                 <section className="col-md-6 title-area">
-                  <h3>{this.props.state.recipe.recipeList.recipeName}</h3>
-                  <br></br>
+                  <h3>{this.state.recipe.recipeName}</h3>
+                  <br />
                   <div>
-                    <p>{this.props.state.recipe.recipeList.recipeDescription}</p>
+                    <p>{this.state.recipe.recipeDescription}</p>
                   </div>
-                  <br></br>
+                  <br />
                   <div>
-                    <p>{this.props.state.recipe.recipeList.views}<span><b>Views |</b></span></p>
-                    {/* <p>{this.props.state.recipe.recipeList.reviews.length}<span><b>Reviews |</b></span></p> */}
-                    <p>{this.props.recipeVotes.upvotes}
-                      {/* {
-                        this.props.upvote === 0 ?
-                          this.props.state.recipe.recipeList.upvotes
-                          : this.props.recipeVotes.upvotes
-                      } */}
-                      <span><b>Upvotes |</b></span></p>
-                    <p>{this.props.recipeVotes.downvotes}
-                      {/* {
-                        this.props.downvote === 0 ?
-                          this.props.state.recipe.recipeList.downvotes
-                          : this.props.recipeVotes.downvotes
-                      } */}
-                      <span><b>Downvotes |</b></span></p>
+                    <p>{this.state.recipe.views}<span><b>Views |</b></span></p>
+                    <p>{this.handleUpVote()}
+                      <span><b>Upvotes |</b></span>
+                    </p>
+                    <p>{this.handleDownVote()}
+                      <span><b>Downvotes |</b></span>
+                    </p>
                   </div>
                 </section>
                 <section className="col-md-6 recipe-image">
-                  <img className="img-thumbnail" src="/dist/egusi_new.jpg" alt="egusi soup image" />
+                  <img
+                    className="img-thumbnail"
+                    src={(this.state.recipe.imageUrl === null || this.state.recipe.imageUrl === 'no-image') ? 'dist/pizza1.jpg'
+                  : this.state.recipe.imageUrl}
+                    alt="egusi soup"
+                  />
                 </section>
               </div>
-              <hr></hr>
+              <hr />
               <div className="recipe-button">
-                <button type="button" className="btn btn-success btn-lg" id="favorite" data-toggle="modal" data-target="#categoryModal">Favorite</button>
-                <button type="button" className="btn btn-success  btn-lg" id="upvote" onClick={this.handleUpvote}>Upvote</button>
-                <button type="button" className="btn btn-success  btn-lg" id="downvote" onClick={this.handleDownvote}>Downvote</button>
+                {
+                  this.state.isFavorite ?
+                    <button type="button" className="btn btn-success btn-lg" id="favorite" onClick={this.handleUnfavoriteRecipe}>UnFavorite</button>
+                : <button type="button" className="btn btn-success btn-lg" id="favorite" data-toggle="modal" data-target="#categoryModal">Favorite</button>
+                }
+                <button
+                  type="button"
+                  className="btn btn-success btn-lg"
+                  id="upvote"
+                  onClick={this.handleUpvote}
+                >Upvote
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-success  btn-lg"
+                  id="downvote"
+                  onClick={this.handleDownvote}
+                >Downvote
+                </button>
               </div>
-              <br></br>
+              <br />
               <div>
                 <h3> Ingredients</h3>
               </div>
-              <hr></hr>
+              <hr />
               <div className="row recipe-ingredients">
                 <section className="col-md-6">
                   <div>
                     <ul>
-                      {ingredients.map((item, i) => <li key={i}><i className="fa fa-dot-circle-o"></i><span>{item}</span></li>)}
+                      {this.state.ingredients.map(item => <li key={item}><i className="fa fa-dot-circle-o" /><span>{item}</span></li>)}
                     </ul>
                   </div>
                 </section>
               </div>
-              <br></br>
+              <br />
               <div>
                 <h3> Directions</h3>
               </div>
-              <hr></hr>
+              <hr />
               <div className="row recipe-ingredients">
                 <section className="col-md-12">
                   <div>
                     <ul>
-                      {directions.map((item, i) => <li key={i}><i className="fa fa-dot-circle-o"></i><span>{item}</span></li>)}
+                      {this.state.directions.map(item => <li key={item}><i className="fa fa-dot-circle-o" /><span>{item}</span></li>)}
                     </ul>
                   </div>
                 </section>
               </div>
-              <br></br>
+              <br />
               <div>
                 <h3> Reviews</h3>
               </div>
-              <hr></hr>
+              <hr />
               <div className="recipe-review">
                 <section>
                   <div>
@@ -175,7 +310,7 @@ class ViewRecipe extends React.Component {
                       required
                     />
                   </div>
-                  <br></br>
+                  <br />
                   <div>
                     <button type="button" className="btn btn-success" onClick={this.handlePostReview}>Add Review</button>
                   </div>
@@ -183,17 +318,17 @@ class ViewRecipe extends React.Component {
               </div>
               <div>
                 {
-                  reviewFields.map((item, i) => {
-                    return (
-                      < ReviewBox
-                        key={i} username={item.User.username}
-                        createdAt={item.createdAt}
-                        message={item.message} />
-                    )
-                  })
+                  reviewFields.map(review => (
+                    <ReviewBox
+                      key={review.id}
+                      username={review.User.username}
+                      createdAt={review.createdAt.substring(0, 10)}
+                      message={review.message}
+                    />
+                    ))
                 }
               </div>
-              <hr></hr>
+              <hr />
             </div>
           </div>
         </div>
@@ -201,23 +336,29 @@ class ViewRecipe extends React.Component {
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title col-md-6" id="exampleModalLabel">Select Category</h5>
-                <button type="button" className="close col-md-6" data-dismiss="modal" aria-label="Close" >
+                <h4 className="modal-title" id="myModalLabel">Select Category</h4>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div className="modal-body">
-                <div class="form-group">
-                  <label for="category-list">Select Category</label>
+                <div className="form-group">
+                  <label htmlFor="category-list">Select Category</label>
                   <select
                     type="text"
                     className="form-control"
-                    ref="categoryName"
                     name="categoryName"
+                    ref={node => this.categoryInput = node}
                   >
                     {
                       (this.props.categories && this.props.categories.length > 0) ?
-                        this.props.categories.map((category, index) => <option value={category.id} key={index} >{category.name}</option>)
+                        this.props.categories.map(category =>
+                          <option value={category.id} key={category.id} >{category.name}</option>)
                         : null
                     }
                   </select>
@@ -234,26 +375,24 @@ class ViewRecipe extends React.Component {
     );
   }
 }
-function mapStateToProps(state) {
-  console.log(state.review, 'uuuuuu')
-  return {
-    categories: state.auth.categories,
-    userData: state.auth.userData,
-    recipe: state.recipe.recipeList,
-    review: state.review.reviewList,
-    reviewData: state.review.reviewData,
-    recipeVotes: state.vote.recipe,
-    upvote: state.vote.upvote,
-    downvote: state.vote.downvote,
-  };
-}
-export default connect(mapStateToProps,
-   { 
-     getRecipe, 
-     getReviews, 
-     postReview, 
-     upvoteRecipe, 
-     downvoteRecipe,
-     favoriteRecipe 
-    })(ViewRecipe);
+const mapStateToProps = state => ({
+  categories: state.category.categoryList,
+  recipe: state.recipe.recipeList,
+  reviewData: state.review.reviewData,
+  upvote: state.vote.upvote,
+  downvote: state.vote.downvote
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    getRecipe,
+    getFavoriteRecipe,
+    postReview,
+    upvoteRecipe,
+    downvoteRecipe,
+    favoriteRecipe,
+    unfavoriteRecipe
+  }
+)(ViewRecipe);
 

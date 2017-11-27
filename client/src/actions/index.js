@@ -82,7 +82,6 @@ export const postData = (
         document.getElementsByClassName('modal-backdrop')[0].className =
           'modal-backdrop fade hide';
       }
-      const toastr = bindActionCreators(toastrActions, dispatch);
       dispatch({
         type: action,
         payload: response.data,
@@ -90,16 +89,19 @@ export const postData = (
       if (directTo.length > 0) {
         window.location.hash = directTo;
       }
-      toastr.add({
-        id: constant,
-        type: 'success',
-        title: 'Success',
-        message,
-        timeout: 5000,
-      });
-      setTimeout(() => {
-        toastr.remove(constant);
-      }, 3500);
+      if (constant.length > 2) {
+        const toastr = bindActionCreators(toastrActions, dispatch);
+        toastr.add({
+          id: constant,
+          type: 'success',
+          title: 'Success',
+          message,
+          timeout: 5000,
+        });
+        setTimeout(() => {
+          toastr.remove(constant);
+        }, 3500);
+      }
     })
     .catch((error) => {
       errorHandler(dispatch, error.response, errorType);
@@ -191,16 +193,18 @@ export const putData = (
       if (directTo.length > 3) {
         window.location.hash = directTo;
       }
-      toastr.add({
-        id: constant,
-        type: 'success',
-        title: 'Success',
-        message,
-        timeout: 5000,
-      });
-      setTimeout(() => {
-        toastr.remove(constant);
-      }, 3500);
+      if (constant.length > 2) {
+        toastr.add({
+          id: constant,
+          type: 'success',
+          title: 'Success',
+          message,
+          timeout: 5000,
+        });
+        setTimeout(() => {
+          toastr.remove(constant);
+        }, 3500);
+      }
     })
     .catch((error) => {
       errorHandler(dispatch, error.response, errorType);
@@ -243,7 +247,6 @@ export const deleteData = (
 
   axios.delete(requestUrl, headers)
     .then((response) => {
-      const toastr = bindActionCreators(toastrActions, dispatch);
       dispatch({
         type: action,
         payload: response.data,
@@ -251,16 +254,19 @@ export const deleteData = (
       if (directTo.length > 3) {
         window.location.hash = directTo;
       }
-      toastr.add({
-        id: constant,
-        type: 'success',
-        title: 'Success',
-        message,
-        timeout: 5000,
-      });
-      setTimeout(() => {
-        toastr.remove(constant);
-      }, 3500);
+      if (constant.length > 2) {
+        const toastr = bindActionCreators(toastrActions, dispatch);
+        toastr.add({
+          id: constant,
+          type: 'success',
+          title: 'Success',
+          message,
+          timeout: 5000,
+        });
+        setTimeout(() => {
+          toastr.remove(constant);
+        }, 3500);
+      }
     })
     .catch((error) => {
       errorHandler(dispatch, error.response, errorType);

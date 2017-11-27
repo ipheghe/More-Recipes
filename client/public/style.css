@@ -495,3 +495,14 @@ button.close {
   margin-bottom: 5px;
   margin-right: 5px;
 }
+
+.invisible-button {
+  -webkit-appearance: none;
+  border: 0;
+  padding: 0;
+  background: none;
+}
+
+.nav-item .invisible-button {
+  margin-right: 15px;
+}
