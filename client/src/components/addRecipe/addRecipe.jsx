@@ -1,18 +1,26 @@
-import React from "react";
-import { UserNavHeader, ProfileHeader, UserSection } from "../../views/index";
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { fetchUsername } from '../../actions/auth';
+import { UserNavHeader, ProfileHeader, UserSection, UserNavMenu } from '../../views/index';
 import { addRecipe } from '../../actions/recipe';
 import { uploadImage } from '../../actions/uploadImage';
 
-@connect((state) => {
-  return { state, }
-})
+/**
+ * AddRecipe component
+ * @class AddRecipe
+ * @extends {React.Component}
+ */
+@connect(state => ({ state, }))
 class AddRecipe extends React.Component {
+  static propTypes = {
+    addRecipe: PropTypes.func.isRequired,
+    uploadImage: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string.isRequired
+  };
+
   /**
-   * 
-   * @param {component} <MainHeader/> - The landing page main header navigation.
+   * constructor
+   * @param {object} props
    */
   constructor(props) {
     super(props);
@@ -30,26 +38,12 @@ class AddRecipe extends React.Component {
     this.handleImageChange = this.handleImageChange.bind(this);
   }
 
-  handleChange(e) {
-    this.setState({
-      recipeName: this.refs.recipeName.value,
-      recipeDetail: this.refs.recipeDetail.value,
-      ingredients: this.refs.ingredients.value,
-      directions: this.refs.directions.value
-    });
-  }
-
-  handleImageChange(e) {
-    let imageUrl = this.state.imageUrl;
-    imageUrl = e.target.files[0];
-    this.setState({
-      imageUrl
-    });
-    this.props.uploadImage(imageUrl);
-  }
-
+  /**
+   * @param {any} nextprops
+   * @memberOf UserNavHeader
+   * @returns {*} void
+   */
   componentWillReceiveProps(nextprops) {
-
     if (nextprops.imageUrl) {
       this.setState({
         imageUrl: nextprops.imageUrl
@@ -57,38 +51,74 @@ class AddRecipe extends React.Component {
     }
   }
 
+  /**
+   * handle change form event
+   * @param {SytheticEvent} e
+   * @returns {object} state
+   */
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  /**
+   * handle image change form event
+   * @param {SytheticEvent} e
+   * @returns {object} state
+   */
+  handleImageChange(e) {
+    const { imageUrl } = e.target.files;
+    this.setState({
+      imageUrl
+    });
+    this.props.uploadImage(imageUrl);
+  }
+
+  /**
+   * handle add recipe form event
+   * @param {SytheticEvent} e
+   * @returns {*} void
+   */
   handleAddRecipe(e) {
     e.preventDefault();
-    console.log('state: ', this.state);
-    let { recipeName, recipeDetail, imageUrl, ingredients, directions } = this.state;
-    let isRecipeFieldsvalid;
-    if (!isRecipeFieldsvalid) {
-      if (recipeName === '') {
+    const {
+      recipeName, recipeDetail, imageUrl, ingredients, directions
+    } = this.state;
+    const isRecipeFieldsvalid = false;
+    if (isRecipeFieldsvalid) {
+      setTimeout(() => {
         this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
+      if (recipeName === '') {
+        return this.setState({
           hasErrored: true,
           errorMessage: 'Recipe name field cannot be empty'
         });
       }
       if (recipeDetail === '') {
-        this.setState({
+        return this.setState({
           hasErrored: true,
           errorMessage: 'Recipe Detail field cannot be empty'
         });
       }
       if (ingredients === '') {
-        this.setState({
+        return this.setState({
           hasErrored: true,
           errorMessage: 'ingredients field cannot be empty'
         });
       }
       if (directions === '') {
-        this.setState({
+        return this.setState({
           hasErrored: true,
           errorMessage: 'directions field cannot be empty'
         });
       }
       if (imageUrl === '') {
-        this.setState({
+        return this.setState({
           hasErrored: true,
           errorMessage: 'Recipe image field cannot be empty'
         });
@@ -98,21 +128,46 @@ class AddRecipe extends React.Component {
       hasErrored: false,
       errorMessage: ''
     });
-    console.log(recipeName, "recipeName")
-    this.props.addRecipe(recipeName, recipeDetail, imageUrl, ingredients, directions);
-    this.props.addRecipe(recipeName, recipeDetail, imageUrl, ingredients, directions);
+    return this.props.addRecipe(
+      recipeName,
+      recipeDetail,
+      imageUrl,
+      ingredients,
+      directions
+    );
   }
 
+  /**
+   * handle login form event error
+   * @param {SytheticEvent} e
+   * @returns {string} errorMessage
+   */
   renderAlert() {
-    if (this.props.errorMessage) {
+    if (this.state.hasErrored) {
       return (
         <div>
-          <span><strong>Error!</strong> {this.props.errorMessage}</span>
+          <p className="alert error-alert" style={{ color: 'white' }}>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
+            &nbsp;{this.state.errorMessage}
+          </p>
+        </div>
+      );
+    } else if (this.props.errorMessage) {
+      return (
+        <div>
+          <p className="alert error-alert" style={{ color: 'white' }}>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
+            &nbsp;{this.props.errorMessage}
+          </p>
         </div>
       );
     }
   }
 
+  /**
+   * render
+   * @return {ReactElement} markup
+   */
   render() {
     return (
       <div>
@@ -121,44 +176,26 @@ class AddRecipe extends React.Component {
           <div className="profile-background">
             <div className="container">
               <ProfileHeader />
-              <br></br>
+              <br />
               <div className="row profile-landing">
                 <section className="col-md-3 profile-details">
                   <UserSection />
                 </section>
                 <section className="col-md-9 profile-tabs" >
                   <div className="div-section">
-                    <ul className="nav nav-tabs nav-fill">
-                      <li className="nav-item">
-                        <a className="nav-link" href="#dashboard">Top Recipes</a>
-                      </li>
-                      <li className="nav-item">
-                        <a className="nav-link" href="#favorite">Favorites</a>
-                      </li>
-                      <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">My Recipes</a>
-                        <div className="dropdown-menu">
-                          <a className="dropdown-item" href="#myRecipe">Personal Recipes</a>
-                          <a className="dropdown-item" href="#manageRecipe">Manage Recipes</a>
-                        </div>
-                      </li>
-                      <li className="nav-item">
-                        <a className="nav-link active " href="#addRecipe">Add Recipe</a>
-                      </li>
-                    </ul>
-                    <br></br>
+                    <UserNavMenu />
+                    <br />
                     <div className="add-padding">
                       <h3><b> Add Recipe</b></h3>
-                      <br></br>
+                      <br />
                       <form>
                         {this.renderAlert()}
                         <div className="form-group">
-                          <label for="recipe-name">Recipe Name</label>
+                          <label htmlFor="recipe-name">Recipe Name</label>
                           <input
                             type="text"
                             className="form-control"
-                            id="recipeName"
-                            ref="recipeName"
+                            name="recipeName"
                             aria-describedby="recipeHelp"
                             placeholder="Enter Recipe Name"
                             value={this.state.recipeName}
@@ -166,25 +203,23 @@ class AddRecipe extends React.Component {
                             required
                           />
                         </div>
-                        <div class="form-group">
-                          <label for="recipe-detail">Recipe Detail</label>
+                        <div className="form-group">
+                          <label htmlFor="recipe-detail">Recipe Detail</label>
                           <input
                             type="text"
                             className="form-control"
-                            id="recipeDetail"
-                            ref="recipeDetail"
+                            name="recipeDetail"
                             placeholder="Enter Recipe Detail"
                             value={this.state.recipeDescription}
                             onChange={this.handleChange}
                             required
                           />
                         </div>
-                        <div class="form-group">
-                          <label for="ingredients">Ingredients</label>
+                        <div className="form-group">
+                          <label htmlFor="ingredients">Ingredients</label>
                           <textarea
                             className="form-control"
-                            id="ingredients"
-                            ref="ingredients"
+                            name="ingredients"
                             rows="5"
                             value={this.state.ingredients}
                             onChange={this.handleChange}
@@ -192,44 +227,41 @@ class AddRecipe extends React.Component {
                           />
                         </div>
                         <div className="form-group">
-                          <label for="directions">Directions</label>
+                          <label htmlFor="directions">Directions</label>
                           <textarea
                             className="form-control"
-                            id="directions"
-                            ref="directions"
+                            name="directions"
                             rows="10"
                             value={this.state.directions}
                             onChange={this.handleChange}
                             required
                           />
                         </div>
-                        <div class="form-group">
-                          <label for="recipe-image">Add Image</label>
+                        <div className="form-group">
+                          <label htmlFor="recipe-image">Add Image</label>
                           <input
                             type="file"
                             className="form-control-file"
                             id="imageUrl"
                             name="imageUrl"
-                            ref="imageUrl"
                             aria-describedby="fileHelp"
                             onChange={this.handleImageChange}
                           />
                           <small id="fileHelp" className="form-text text-muted">Please attach an image file.</small>
                         </div>
-                        {this.state.hasErrored ?
-                          <p className="alert error-alert" style={{ color: 'black' }}>
-                            <i className="fa fa-exclamation-triangle"></i>
-                            &nbsp;{this.state.errorMessage}
-                          </p> : ''
-                        }
                         <div className="edit-profile-button">
-                          <button type="submit" className="btn btn-success" onClick={this.handleAddRecipe} >Add Recipe</button>
+                          <button
+                            type="submit"
+                            className="btn btn-success"
+                            onClick={this.handleAddRecipe}
+                          >Add Recipe
+                          </button>
                         </div>
                       </form>
                     </div>
-                    <br></br>
+                    <br />
                   </div>
-                  <br></br>
+                  <br />
                 </section>
               </div>
             </div>
@@ -239,14 +271,11 @@ class AddRecipe extends React.Component {
     );
   }
 }
-function mapStateToProps(state) {
-  return {
-    errorMessage: state.recipe.error,
-    userData: state.auth.userData,
-    imageFile: state.recipe.imageUrl,
-    imageUrl: state.imageUploadReducer[0].response
-  };
-}
-export default connect(mapStateToProps, { fetchUsername, addRecipe, uploadImage })(AddRecipe);
 
+const mapStateToProps = state => ({
+  errorMessage: state.recipe.error,
+  imageFile: state.recipe.imageUrl,
+  imageUrl: state.imageUploadReducer[0].response
+});
+export default connect(mapStateToProps, { addRecipe, uploadImage })(AddRecipe);
 

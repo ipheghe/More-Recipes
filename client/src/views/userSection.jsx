@@ -19,7 +19,6 @@ import { changePassword } from './../actions/userActions';
 @connect(state => ({ state, }))
 class UserSection extends React.Component {
   static propTypes = {
-    state: PropTypes.arrayOf(PropTypes.object).isRequired,
     addCategory: PropTypes.func.isRequired,
     updateCategory: PropTypes.func.isRequired,
     deleteCategory: PropTypes.func.isRequired,
@@ -61,14 +60,14 @@ class UserSection extends React.Component {
   }
 
   /**
-   * @param {any} nextProps
+   * @param {any} nextprops
    * @memberOf UserSection
    * @returns {*} void
    */
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.state.category.categoryData.length > 0) {
+  componentWillReceiveProps(nextprops) {
+    if (nextprops.state.category.categoryData.length > 0) {
       this.setState({
-        modalCategoryName: nextProps.state.category.categoryData[0].name
+        modalCategoryName: nextprops.state.category.categoryData[0].name
       });
     }
   }

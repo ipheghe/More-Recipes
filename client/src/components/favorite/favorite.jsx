@@ -39,16 +39,15 @@ class Favorite extends React.Component {
 
   /**
    * @param {any} nextprops
-   * @memberOf UserNavHeader
+   * @memberOf Favorite
    * @returns {*} void
    */
   componentWillReceiveProps(nextprops) {
-    if (nextprops.state.favorite.userFavorites !== null) {
+    if (nextprops.state.favorite) {
       const { userFavorites } = nextprops.state.favorite;
-      const { message } = nextprops.state.favorite;
       this.setState({
         userFavorites: Object.assign([], this.state.userFavorites, userFavorites),
-        message,
+        message: nextprops.state.favorite.message,
         isLoading: false
       });
     }
@@ -81,32 +80,15 @@ class Favorite extends React.Component {
                       <br />
                       <div className="card-blocks" >
                         {
-                        (this.state.userFavorites.length > 1) ?
-                        (<FavoriteRecipeList recipes={this.state.userFavorites} />)
-                        : <h5>{this.state.message}</h5>
-                      }
+                          this.state.userFavorites.length === 0 ?
+                            (<h5>{this.state.message}</h5>)
+                            : <FavoriteRecipeList recipes={this.state.userFavorites} />
+                        }
                       </div>
                       <br />
                     </div>
                   </div>
                 </section>
-              </div>
-              <div className="profile-pagination">
-                <nav aria-label="pagination-nav">
-                  <ul className="pagination">
-                    <li className="page-item">
-                      <a className="page-link" href="#" tabIndex="-1">Previous</a>
-                    </li>
-                    <li className="page-item"><a className="page-link" href="#">1</a></li>
-                    <li className="page-item active">
-                      <a className="page-link" href="#">2 <span className="sr-only">(current)</span></a>
-                    </li>
-                    <li className="page-item"><a className="page-link" href="#">3</a></li>
-                    <li className="page-item">
-                      <a className="page-link" href="#">Next</a>
-                    </li>
-                  </ul>
-                </nav>
               </div>
             </div>
           </div>

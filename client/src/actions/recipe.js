@@ -49,14 +49,20 @@ const addRecipe = (recipeName, recipeDescription, imageUrl, ingredients, directi
  * Update Recipe
  * @description update recipe action
  * @type {function} updateRecipe
- * @param {object} recipeId
- * @param {object} recipeDescription
- * @param {object} ingredients
- * @param {object} directions
+ * @param {number} recipeId
+ * @param {string} recipeName
+ * @param {string} recipeDescription
+ * @param {string} ingredients
+ * @param {string} directions
  * @returns {array} dispatch
  */
-const updateRecipe = (recipeId, recipeDescription, ingredients, directions) => {
-  const data = { recipeDescription, ingredients, directions };
+const updateRecipe = (recipeId, recipeName, recipeDescription, ingredients, directions) => {
+  const data = {
+    recipeName,
+    recipeDescription,
+    ingredients,
+    directions
+  };
   const url = `/recipes/${recipeId}`;
   const directTo = '#myRecipe';
   const message = 'Recipe updated Successfully';

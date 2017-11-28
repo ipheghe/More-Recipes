@@ -5,15 +5,15 @@ import FavoriteRecipeCard from '../favoriteRecipeCard/favoriteRecipeCard.jsx';
 const FavoriteRecipeList = ({ recipes }) => (
   <div>
     {
-        (recipes && recipes.length > 0) ?
-          recipes.map(recipe => <FavoriteRecipeCard recipe={recipe} key={recipe.id} />)
+        recipes && recipes.length > 0 ?
+          recipes.map(recipe => <FavoriteRecipeCard recipe={recipe} key={recipe.Recipe.id} />)
           : null
       }
   </div>
 );
 
 FavoriteRecipeList.propTypes = {
-  recipes: PropTypes.objectOf(PropTypes.object).isRequired
+  recipes: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default FavoriteRecipeList;

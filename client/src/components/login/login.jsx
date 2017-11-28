@@ -158,7 +158,7 @@ class Login extends React.Component {
                     <h3 className="login-form-boxx">Login Form</h3>
                     <br />
                     <div className="form-group">
-                      <label htmlFor="enterEmail">Username Or Email address:</label>
+                      <label htmlFor="enterEmail">Username:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
                           <i className="fa fa-envelope" />

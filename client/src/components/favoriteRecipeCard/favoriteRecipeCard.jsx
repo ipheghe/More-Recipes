@@ -12,21 +12,23 @@ const FavoriteRecipeCard = ({ recipe }) => (
     </div>
     <div className="card-footer">
       <small className="text-muted">
-        <span className="views"><i className="fa fa-eye" aria-hidden="true" style={{ color: 'green' }} />{recipe.Recipe.views}</span>
-        <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true" style={{ color: 'red' }} />{recipe.Recipe.upvotes}</span>
-        <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true" style={{ color: 'orange' }} />{recipe.Recipe.downvotes}</span>
-        <Link href={`/recipes/${recipe.id}`} className="btn btn-secondary btn-sm" >More</Link>
+        <div className="landing-card-footer">
+          <span className="views"><i className="fa fa-eye" aria-hidden="true" style={{ color: 'green' }} />{recipe.Recipe.views}</span>
+          <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true" style={{ color: 'red' }} />{recipe.Recipe.upvotes}</span>
+          <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true" style={{ color: 'orange' }} />{recipe.Recipe.downvotes}</span>
+        </div>
+        <Link to={`/recipes/${recipe.Recipe.id}`} className="btn btn-secondary btn-sm" >More</Link>
       </small>
     </div>
   </div>
 );
 
 FavoriteRecipeCard.propTypes = {
-  recipe: PropTypes.shape({
+  recipe: PropTypes.objectOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     recipeName: PropTypes.string.isRequired,
     recipeDescription: PropTypes.string.isRequired,
-  }).isRequired
+  }).isRequired).isRequired
 };
 
 export default FavoriteRecipeCard;
