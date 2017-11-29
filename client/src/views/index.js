@@ -6,6 +6,7 @@ import UserSection from './userSection.jsx';
 import UserNavMenu from './userNavMenu.jsx';
 import ReviewBox from './reviewBox.jsx';
 import ManageCategoryModal from './manageCategoryModal.jsx';
+import ChangePasswordModal from './changePasswordModal.jsx';
 
 export {
   MainHeader,
@@ -15,5 +16,6 @@ export {
   UserSection,
   UserNavMenu,
   ReviewBox,
-  ManageCategoryModal
+  ManageCategoryModal,
+  ChangePasswordModal
 };

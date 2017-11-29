@@ -72,11 +72,6 @@ export const postData = (
   }
   axios.post(requestUrl, data, headers)
     .then((response) => {
-      if (document.getElementById('myModal').className === 'modal fade show') {
-        document.getElementById('myModal').className = 'modal fade hide';
-        document.getElementsByClassName('modal-backdrop')[0].className =
-          'modal-backdrop fade hide';
-      }
       dispatch({
         type: action,
         payload: response.data,

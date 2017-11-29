@@ -26,12 +26,12 @@ const App = () =>
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />
         <Route path="/reset-password/:token" component={ResetPassword} />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/recipes/:id" component={ViewRecipe} />
-        <Route path="/search" component={Search} />
+        <Route path="/dashboard" component={RequireAuth(Dashboard)} />
+        <Route path="/recipes/:id" component={RequireAuth(ViewRecipe)} />
+        <Route path="/search" component={RequireAuth(Search)} />
         <Route path="/favorite" component={RequireAuth(Favorite)} />
         <Route path="/myRecipe" component={RequireAuth(MyRecipe)} />
-        <Route path="/addRecipe" component={AddRecipe} />
+        <Route path="/addRecipe" component={RequireAuth(AddRecipe)} />
         <Route path="/manageRecipe" component={RequireAuth(ManageRecipe)} />
         <Route path="/editProfile" component={RequireAuth(EditProfile)} />
       </div>

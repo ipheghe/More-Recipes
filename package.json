@@ -108,6 +108,8 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-transform-hmr": "^1.0.4",
+    "react-transition-group": "^2.2.1",
+    "reactstrap": "^4.8.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-form": "^6.8.0",
@@ -142,6 +144,7 @@
     "node-sass": "^4.5.3",
     "nyc": "^11.1.0",
     "path": "^0.12.7",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "uglifyjs-webpack-plugin": "^1.1.1"
   }
 }

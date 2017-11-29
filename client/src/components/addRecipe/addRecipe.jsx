@@ -68,7 +68,7 @@ class AddRecipe extends React.Component {
    * @returns {object} state
    */
   handleImageChange(e) {
-    const { imageUrl } = e.target.files;
+    const imageUrl = e.target.files[0];
     this.setState({
       imageUrl
     });

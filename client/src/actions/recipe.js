@@ -54,14 +54,23 @@ const addRecipe = (recipeName, recipeDescription, imageUrl, ingredients, directi
  * @param {string} recipeDescription
  * @param {string} ingredients
  * @param {string} directions
+ * @param {string} imageUrl
  * @returns {array} dispatch
  */
-const updateRecipe = (recipeId, recipeName, recipeDescription, ingredients, directions) => {
+const updateRecipe = (
+  recipeId,
+  recipeName,
+  recipeDescription,
+  ingredients,
+  directions,
+  imageUrl
+) => {
   const data = {
     recipeName,
     recipeDescription,
     ingredients,
-    directions
+    directions,
+    imageUrl
   };
   const url = `/recipes/${recipeId}`;
   const directTo = '#myRecipe';

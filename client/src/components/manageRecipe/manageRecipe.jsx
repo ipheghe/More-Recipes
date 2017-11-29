@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { UserNavHeader, ProfileHeader, UserSection, UserNavMenu } from '../../views/index';
 import { fetchUsername } from '../../actions/auth';
 import { updateRecipe, deleteRecipe, getUserRecipes, getRecipe } from '../../actions/recipe';
+import { uploadImage } from '../../actions/uploadImage';
 
 /**
  * ManageRecipe component
@@ -15,6 +16,7 @@ class ManageRecipe extends React.Component {
   static propTypes = {
     getUserRecipes: PropTypes.func.isRequired,
     updateRecipe: PropTypes.func.isRequired,
+    uploadImage: PropTypes.func.isRequired,
     deleteRecipe: PropTypes.func.isRequired,
     getRecipe: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
@@ -36,6 +38,7 @@ class ManageRecipe extends React.Component {
       recipeDetail: '',
       ingredients: '',
       directions: '',
+      imageUrl: '',
       hasErrored: false,
       errorMessage: '',
       isLoading: true
@@ -44,6 +47,7 @@ class ManageRecipe extends React.Component {
     this.handleUpdateRecipe = this.handleUpdateRecipe.bind(this);
     this.handleDeleteRecipe = this.handleDeleteRecipe.bind(this);
     this.handleLoadRecipe = this.handleLoadRecipe.bind(this);
+    this.handleImageChange = this.handleImageChange.bind(this);
   }
 
   /**
@@ -73,6 +77,7 @@ class ManageRecipe extends React.Component {
         recipeDetail: recipeList.recipeDescription,
         ingredients: recipeList.ingredients,
         directions: recipeList.directions,
+        imageUrl: nextprops.imageUrl,
         isLoading: false,
       });
     }
@@ -87,6 +92,19 @@ class ManageRecipe extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+  }
+
+  /**
+   * handle image change form event
+   * @param {SytheticEvent} e
+   * @returns {object} state
+   */
+  handleImageChange(e) {
+    const imageUrl = e.target.files[0];
+    this.setState({
+      imageUrl
+    });
+    this.props.uploadImage(imageUrl);
   }
 
   /**
@@ -109,7 +127,8 @@ class ManageRecipe extends React.Component {
     const {
       recipeDetail,
       ingredients,
-      directions
+      directions,
+      imageUrl
     } = this.state;
     const isRecipeFieldsvalid = false;
     if (isRecipeFieldsvalid) {
@@ -137,18 +156,26 @@ class ManageRecipe extends React.Component {
           errorMessage: 'directions field cannot be empty'
         });
       }
+      if (imageUrl === '') {
+        return this.setState({
+          hasErrored: true,
+          errorMessage: 'Recipe image field cannot be empty'
+        });
+      }
     }
     this.setState({
       recipeDetail: '',
       ingredients: '',
-      directions: ''
+      directions: '',
+      imageUrl: ''
     });
     return this.props.updateRecipe(
       this.props.recipe.id,
       this.props.recipe.recipeName,
       recipeDetail,
       ingredients,
-      directions
+      directions,
+      imageUrl
     );
   }
 
@@ -283,10 +310,10 @@ class ManageRecipe extends React.Component {
                           <input
                             type="file"
                             className="form-control-file"
-                            name="recipeImage"
+                            id="imageUrl"
+                            name="imageUrl"
                             aria-describedby="fileHelp"
-                            value={this.recipeImage}
-                            onChange={this.handleChange}
+                            onChange={this.handleImageChange}
                           />
                           <small id="fileHelp" className="form-text text-muted">Please attach an image file.</small>
                         </div>
@@ -312,9 +339,16 @@ const mapStateToProps = state => ({
   userData: state.auth.userData,
   userRecipe: state.recipe.userRecipe,
   recipe: state.recipe.recipeList,
-  errorMessage: state.recipe.error
+  errorMessage: state.recipe.error,
+  imageFile: state.recipe.imageUrl,
+  imageUrl: state.imageUploadReducer[0].response
 });
 export default connect(mapStateToProps, {
-  fetchUsername, updateRecipe, deleteRecipe, getUserRecipes, getRecipe
+  fetchUsername,
+  updateRecipe,
+  deleteRecipe,
+  getUserRecipes,
+  getRecipe,
+  uploadImage
 })(ManageRecipe);
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { Nav, NavItem, Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from 'reactstrap';
 
 const UserNavMenu = () => (
   <div>
@@ -23,43 +24,34 @@ const UserNavMenu = () => (
         </NavLink>
       </li>
       <li className="nav-item dropdown">
-        {/* <NavLink
+        <a
           to="/myRecipes"
           className="nav-link dropdown-toggle"
           data-toggle="dropdown"
           role="button"
           aria-haspopup="true"
           aria-expanded="false"
-          activeClassName="active"
-          exact
-        >My Recipes
-        </NavLink> */}
-        <a
-          className="nav-link dropdown-toggle"
-          data-toggle="dropdown"
-          href="#"
-          role="button"
-          aria-haspopup="true"
-          aria-expanded="false"
         >My Recipes
         </a>
         <div className="dropdown-menu">
-          <NavLink
-            to="/myRecipe"
-            className="nav-link dropdown-item"
-            activeClassName="active"
-            exact
-          >Personal Recipes
-          </NavLink>
-          <NavLink
-            to="/manageRecipe"
-            className="nav-link dropdown-item"
-            activeClassName="active"
-            exact
-          >Manage Recipes
-          </NavLink>
+          <a className="dropdown-item" href="#myRecipe">Personal Recipes</a>
+          <a className="dropdown-item" href="#manageRecipe">Manage Recipes</a>
         </div>
       </li>
+      {/* <li className="nav-item dropdown">
+        <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+          <DropdownToggle nav caret>
+              Dropdown
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem header>Header</DropdownItem>
+            <DropdownItem disabled>Action</DropdownItem>
+            <DropdownItem>Another Action</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem>Another Action</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </li> */}
       <li className="nav-item">
         <NavLink
           to="/addRecipe"

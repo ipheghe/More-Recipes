@@ -4,6 +4,7 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ModuleScopePlugin from 'react-dev-utils/ModuleScopePlugin';
 import eslintFormatter from 'react-dev-utils/eslintFormatter';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 
 const dotenv = require('dotenv');
 
@@ -27,6 +28,7 @@ module.exports = {
       'window.jQuery': 'jquery',
       Hammer: 'hammerjs/hammer'
     }),
+    new UglifyJsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new ModuleScopePlugin('client/src'),
     new HtmlWebpackPlugin({

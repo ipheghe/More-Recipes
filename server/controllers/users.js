@@ -171,7 +171,7 @@ const usersController = {
         }
       })
       .then((user) => {
-        // f user exists
+        // if user exists
         user.update({
           username: req.body.username || user.username,
           firstName: req.body.firstName || user.firstName,
@@ -212,23 +212,27 @@ const usersController = {
           // check if password matches
           if (!(bcrypt.compareSync(req.body.password, user.password))) {
             res.status(404).send({
+              status: 'Fail',
               message: 'Incorrect password'
             });
           } else {
             // if password matches, update new password
             user.update({
-              password: bcrypt.hashSync(req.body.password, salt, null) || user.password,
+              password: bcrypt.hashSync(req.body.password, salt, null),
             })
               .then(() => res.status(200).send({
+                status: 'Success',
                 message: 'User Password Changed SuccessFullly!'
               }))
               .catch(error => res.status(400).send({
+                status: 'Fail',
                 error: error.message
               }));
           }
         }
       })
       .catch(err => res.status(400).send({
+        status: 'Fail',
         error: err.message
       }));
   },
