@@ -155,7 +155,7 @@ describe('Create Recipe', () => {
       .send(addRecipe[0])
       .end((err, res) => {
         res.status.should.equal(403);
-        res.body.message.should.equal('invalid signature');
+        res.body.message.should.equal('Invalid Token');
         if (err) return done(err);
         done();
       });
@@ -764,7 +764,7 @@ describe('Create Category', () => {
       .send(categories[0])
       .end((err, res) => {
         res.status.should.equal(403);
-        res.body.message.should.equal('invalid signature');
+        res.body.message.should.equal('Invalid Token');
         if (err) return done(err);
         done();
       });
