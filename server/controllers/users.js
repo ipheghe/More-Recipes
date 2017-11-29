@@ -44,10 +44,18 @@ const usersController = {
       mobileNumber: req.body.mobileNumber,
       email: req.body.email
     })
-      .then(user => res.status(201).send({
-        message: 'User account successfully created.',
-        userData: user
-      }))
+      .then((user) => {
+        const userData = {
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email
+        };
+        return res.status(201).send({
+          message: 'User account successfully created.',
+          userData
+        });
+      })
       .catch(error => res.status(400).send({
         error: error.message
       }));
