@@ -23,17 +23,15 @@ const UserNavMenu = () => (
         </NavLink>
       </li>
       <li className="nav-item dropdown">
-        <NavLink
+        <a
           to="/myRecipes"
           className="nav-link dropdown-toggle"
           data-toggle="dropdown"
           role="button"
           aria-haspopup="true"
           aria-expanded="false"
-          activeClassName="active"
-          exact
         >My Recipes
-        </NavLink>
+        </a>
         <div className="dropdown-menu">
           <a className="dropdown-item" href="#myRecipe">Personal Recipes</a>
           <a className="dropdown-item" href="#manageRecipe">Manage Recipes</a>

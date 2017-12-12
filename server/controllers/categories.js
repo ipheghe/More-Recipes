@@ -56,6 +56,72 @@ const categoriesController = {
   },
 
   /**
+   * @module updateCategory
+   * @description controller function that updates category name
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message userData
+   */
+  updateCategory(req, res) {
+    return Category
+      .findOne({
+        where: {
+          id: req.params.id
+        }
+      })
+      .then((category) => {
+        // f user exists
+        category.update({
+          name: req.body.name || category.name
+        })
+          .then(updatedCategory => res.status(200).send({
+            message: 'category name changed SuccessFullly!',
+            categoryData: updatedCategory
+          }))
+          .catch(error => res.status(400).send({
+            error: error.message
+          }));
+      })
+      .catch(err => res.status(400).send({
+        error: err.message
+      }));
+  },
+
+  /**
+   * @module deleteCategory
+   * @description controller function that deletes category record
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message favoriteData
+   */
+  deleteCategory(req, res) {
+    return Category
+      // find if recipe exits
+      .findOne({
+        where: {
+          id: req.params.id
+        }
+      })
+      .then((category) => {
+        // if category exits, delete the recipe
+        category
+          .destroy()
+          .then(deletedCategory => res.status(200).send({
+            message: 'Category deleted SuccessFullly!',
+            categoryData: deletedCategory
+          }))
+          .catch(error => res.status(400).send({
+            error: error.message
+          }));
+      })
+      .catch(error => res.status(400).send({
+        error: error.message
+      }));
+  },
+
+  /**
  * @module getUserCategories
  * @description controller function that gets all user categories
  * @function
@@ -79,6 +145,40 @@ const categoriesController = {
             return res.status(200).send({
               message: 'All User Categories Retrieved SuccessFullly!',
               userCategoryList: category
+            });
+          }
+        }
+      })
+      .catch(error => res.status(400).send({ error: error.message }));
+  },
+
+  /**
+   * @module getUserCategory
+   * @description controller function that gets a user category
+   * @function
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} message userCategoryList
+   */
+  getUserCategory(req, res) {
+    // find all categories that have the requested username
+    return Category
+      .findAll({
+        where: {
+          id: req.params.id,
+          userId: req.decoded.user.id
+        },
+        attributes: keys
+      })
+      // retrieve category for that particular user
+      .then((category) => {
+        if (category) {
+          if (!category) {
+            res.status(404).send({ message: 'No category found for user' });
+          } else {
+            return res.status(200).send({
+              message: 'User Category Retrieved SuccessFullly!',
+              userCategoryData: category
             });
           }
         }

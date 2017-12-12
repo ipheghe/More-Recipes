@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchUsername, logoutUser } from '../actions/auth';
-import { getUserCategories } from './../actions/category';
+import { getUserCategories } from './../actions/categoryActions';
 import Logo from '../../public/images/recipe_logo.png';
 
 /**
@@ -93,7 +93,7 @@ class UserNavHeader extends React.Component {
             >
               <span className="navbar-toggler-icon" />
             </button>
-            <a className="navbar-brand" href="/">
+            <a className="navbar-brand">
               <img
                 src={Logo}
                 width="30"
@@ -118,7 +118,12 @@ class UserNavHeader extends React.Component {
                   </button>
                 </li>
                 <li className="nav-item">
-                  <button className="nav-link invisible-button" href="./profile.html">
+                  <button
+                    className="nav-link invisible-button"
+                    onClick={() => {
+                    window.location.hash = '/dashboard';
+                  }}
+                  >
                     <span>
                       <i className="fa fa-user" aria-hidden="true" />
                     </span> {this.state.userData.firstName} {this.state.userData.lastName}

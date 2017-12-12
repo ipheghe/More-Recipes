@@ -44,10 +44,18 @@ const usersController = {
       mobileNumber: req.body.mobileNumber,
       email: req.body.email
     })
-      .then(user => res.status(201).send({
-        message: 'User account successfully created.',
-        userData: user
-      }))
+      .then((user) => {
+        const userData = {
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email
+        };
+        return res.status(201).send({
+          message: 'User account successfully created.',
+          userData
+        });
+      })
       .catch(error => res.status(400).send({
         error: error.message
       }));
@@ -95,23 +103,28 @@ const usersController = {
               message: 'Authentication failed. Incorrect password'
             });
           } else {
+            const userData = {
+              id: user.id,
+              username: user.username
+            };
             // User is found and password is correct
             // create a token for authentication
             const token = jwt.sign({
-              user
+              user: userData
             }, process.env.TOKEN_SECRET, {
               expiresIn: process.env.TOKEN_EXPIRY_TIME // expires in 6 hours
             });
             // return success message including token in JSON format
             res.status(200).send({
               message: 'Authentication & Login successful',
-              authToken: token,
-              userData: user
+              authToken: token
             });
           }
         }
       })
-      .catch(() => res.status(400).send('Login Failed, Please re-confirm details'));
+      .catch(() => res.status(400).send({
+        message: 'Login Failed, Please re-confirm details'
+      }));
   },
 
   /**
@@ -166,7 +179,7 @@ const usersController = {
         }
       })
       .then((user) => {
-        // f user exists
+        // if user exists
         user.update({
           username: req.body.username || user.username,
           firstName: req.body.firstName || user.firstName,
@@ -207,23 +220,27 @@ const usersController = {
           // check if password matches
           if (!(bcrypt.compareSync(req.body.password, user.password))) {
             res.status(404).send({
+              status: 'Fail',
               message: 'Incorrect password'
             });
           } else {
             // if password matches, update new password
             user.update({
-              password: bcrypt.hashSync(req.body.password, salt, null) || user.password,
+              password: bcrypt.hashSync(req.body.password, salt, null),
             })
               .then(() => res.status(200).send({
+                status: 'Success',
                 message: 'User Password Changed SuccessFullly!'
               }))
               .catch(error => res.status(400).send({
+                status: 'Fail',
                 error: error.message
               }));
           }
         }
       })
       .catch(err => res.status(400).send({
+        status: 'Fail',
         error: err.message
       }));
   },

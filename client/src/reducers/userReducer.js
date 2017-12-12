@@ -6,9 +6,10 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
+  status: '',
   error: '',
   message: '',
-  userData: {}
+  userData: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -21,11 +22,13 @@ export default (state = INITIAL_STATE, action) => {
     case CHANGE_PASSWORD:
       return {
         ...state,
+        status: action.payload.status,
         message: action.payload.message
       };
     case USER_ERROR:
       return {
         ...state,
+        status: action.payload.data.status,
         error: action.payload.data.message
       };
     case FETCH_USER:

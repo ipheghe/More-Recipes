@@ -39,56 +39,33 @@ class Login extends React.Component {
 
   /**
    * handle change form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {object} state
    */
-  handleChange(e) {
-    e.preventDefault();
+  handleChange(event) {
+    event.preventDefault();
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
   /**
    * handle login form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleLogin(e) {
-    e.preventDefault();
-    const { username, password } = this.state;
-    const valid = false;
-    if (valid) {
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      if (username === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'Username field cannot be  empty'
-        });
-      }
-      if (password === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'password field cannot be empty'
-        });
-      }
-    } else {
-      return this.props.loginUser({ username, password });
-    }
+  handleLogin(event) {
+    event.preventDefault();
+    this.validateFormField();
   }
 
   /**
    * handle Reset password form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleResetPassword(e) {
-    e.preventDefault();
+  handleResetPassword(event) {
+    event.preventDefault();
     if (this.state.email === '') {
       setTimeout(() => {
         this.setState({
@@ -107,8 +84,38 @@ class Login extends React.Component {
   }
 
   /**
+   * validateFormField
+   * @returns {string} errorMessage
+   */
+  validateFormField() {
+    const { username, password } = this.state;
+    setTimeout(() => {
+      this.setState({
+        hasErrored: false,
+        errorMessage: ''
+      });
+    }, 3000);
+    if (username === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Username field cannot be  empty'
+      });
+    }
+    if (password === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'password field cannot be empty'
+      });
+    }
+    this.setState({
+      hasErrored: false,
+      errorMessage: ''
+    });
+    return this.props.loginUser({ username, password });
+  }
+
+  /**
    * handle login form event error
-   * @param {SytheticEvent} e
    * @returns {string} errorMessage
    */
   renderAlert() {
@@ -158,7 +165,7 @@ class Login extends React.Component {
                     <h3 className="login-form-boxx">Login Form</h3>
                     <br />
                     <div className="form-group">
-                      <label htmlFor="enterEmail">Username Or Email address:</label>
+                      <label htmlFor="enterEmail">Username:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
                           <i className="fa fa-envelope" />

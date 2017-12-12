@@ -13,6 +13,11 @@ const { Favorite } = db;
  * @return {*} void
  */
 const favoriteExists = (req, res, next) => {
+  if (Number.isNaN(parseInt(req.params.id, 10))) {
+    return res.status(400).send({
+      message: 'Invalid Id!'
+    });
+  }
   Favorite
     .findOne({ where: { userId: req.decoded.user.id, recipeId: req.params.id } })
     .then((favorite) => {

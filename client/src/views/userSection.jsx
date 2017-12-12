@@ -1,27 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addCategory, getUserCategories } from './../actions/category';
+import { ManageCategoryModal, ChangePasswordModal } from './index';
+import {
+  addCategory,
+  updateCategory,
+  deleteCategory,
+  getUserCategories,
+  getUserCategory
+} from './../actions/categoryActions';
 import { changePassword } from './../actions/userActions';
-import { fetchUsername } from '../actions/auth';
 
 /**
  * UserSection component
  * @class UserSection
  * @extends {React.Component}
  */
-@connect(state => state)
+@connect(state => ({ state, }))
 class UserSection extends React.Component {
   static propTypes = {
     addCategory: PropTypes.func.isRequired,
+    updateCategory: PropTypes.func.isRequired,
+    deleteCategory: PropTypes.func.isRequired,
+    getUserCategory: PropTypes.func.isRequired,
     changePassword: PropTypes.func.isRequired,
-    fetchUsername: PropTypes.func.isRequired,
     userData: PropTypes.shape({
       id: PropTypes.number,
       username: PropTypes.string,
     }).isRequired,
+    categoryData: PropTypes.arrayOf(PropTypes.object).isRequired,
+    status: PropTypes.string.isRequired,
     errorMessage: PropTypes.string.isRequired,
-    categoryName: PropTypes.string.isRequired,
     categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
@@ -33,46 +42,108 @@ class UserSection extends React.Component {
     super(props);
     this.state = {
       categoryName: '',
+      modalCategoryName: '',
       oldPassword: '',
       newPassword: '',
       confirmPassword: '',
       hasErrored: false,
-      errorMessage: ''
+      status: 'Success',
+      errorMessage: '',
+      modalIsOpen: false,
+      passwordModalIsOpen: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleAddCategory = this.handleAddCategory.bind(this);
+    this.handleUpdateCategory = this.handleUpdateCategory.bind(this);
+    this.handleDeleteCategory = this.handleDeleteCategory.bind(this);
+    this.getCategory = this.getCategory.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   /**
-   * handle change form event
-   * @param {SytheticEvent} e
-   * @returns {object} state
+   * @param {any} nextprops
+   * @memberOf UserSection
+   * @returns {*} void
    */
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+  componentWillReceiveProps(nextprops) {
+    if (nextprops.state.category.categoryData.length > 0) {
+      this.setState({
+        modalCategoryName: nextprops.state.category.categoryData[0].name
+      });
+    }
+    if (nextprops.state.user.status.length > 0) {
+      this.setState({
+        status: nextprops.state.user.status
+      });
+    }
+  }
+
+  /**
+   * handle get category  event
+   * @param {number} categoryId
+   * @returns {*} void
+   */
+  getCategory(categoryId) {
+    this.props.getUserCategory(categoryId);
+    this.setState({ modalIsOpen: true });
   }
 
   /**
    * handle add category form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleAddCategory(e) {
-    e.preventDefault();
+  handleAddCategory(event) {
+    event.preventDefault();
     this.props.addCategory(this.state.categoryName);
-    this.props.fetchUsername();
+    this.setState({ categoryName: '' });
   }
 
   /**
-   * handle change password event
-   * @param {SytheticEvent} e
+   * handle update category form event
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleChangePassword(e) {
-    e.preventDefault();
+  handleUpdateCategory(event) {
+    event.preventDefault();
+    const categoryId = this.props.categoryData[0].id;
+    this.props.updateCategory(categoryId, this.state.modalCategoryName);
+    this.setState({ modalIsOpen: false });
+  }
+
+  /**
+   * handle delete category form event
+   * @param {SytheticEvent} event
+   * @returns {*} void
+   */
+  handleDeleteCategory(event) {
+    event.preventDefault();
+    const categoryId = this.props.categoryData[0].id;
+    this.props.deleteCategory(categoryId);
+    this.setState({ modalIsOpen: false });
+  }
+
+  /**
+   * handle change form event
+   * @param {SytheticEvent} event
+   * @returns {object} state
+   */
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+
+  /**
+   * handle change password event
+   * @param {SytheticEvent} event
+   * @returns {*} void
+   */
+  handleChangePassword(event) {
+    event.preventDefault();
     const { oldPassword, newPassword, confirmPassword } = this.state;
     let valid;
     if (!valid) {
@@ -85,7 +156,7 @@ class UserSection extends React.Component {
       if (oldPassword === '') {
         return this.setState({
           hasErrored: true,
-          errorMessage: 'old password field cannot be  empty'
+          errorMessage: 'old password field cannot be empty'
         });
       }
       if (newPassword === '') {
@@ -107,16 +178,31 @@ class UserSection extends React.Component {
         });
       }
     }
-    this.setState({
-      hasErrored: false,
-      errorMessage: ''
-    });
     return this.props.changePassword(this.props.userData.id, oldPassword, newPassword);
   }
 
   /**
-   * handle login form event error
-   * @param {SytheticEvent} e
+   * handle after open modal event
+   * @returns {*} void
+   */
+  afterOpenModal() {
+    this.subtitle.style.color = '#252A2D';
+  }
+
+  /**
+   * handle close modal event
+   * @returns {*} void
+   */
+  closeModal() {
+    this.setState({
+      modalIsOpen: false,
+      passwordModalIsOpen: false,
+      status: 'Success'
+    });
+  }
+
+  /**
+   * handle form event error
    * @returns {string} errorMessage
    */
   renderAlert() {
@@ -146,6 +232,24 @@ class UserSection extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
+    const customStyles = {
+      overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.75)'
+      },
+      content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+      }
+    };
     return (
       <main>
         <div className="div-profile">
@@ -157,14 +261,26 @@ class UserSection extends React.Component {
           </p>
           <br />
           <br />
-          <a href="#editProfile">
-            <button className="btn btn-success editProfile-btn">Edit Profile</button>
-          </a>
           <button
-            className="btn btn-success"
-            data-toggle="modal"
-            data-target="#myModal"
-          >change Password
+            className="invisible-button"
+            style={{ color: '#0275d8', textAlign: 'center' }}
+            onClick={() => {
+              window.location.hash = 'editProfile';
+          }}
+          >
+          Edit Profile
+          </button>
+          <button
+            className="invisible-button"
+            style={{ color: '#0275d8', textAlign: 'center' }}
+            onClick={() => {
+              this.setState({
+                passwordModalIsOpen: true,
+                status: 'Success'
+              });
+            }}
+          >
+          Change Password
           </button>
         </div>
         <br />
@@ -191,130 +307,60 @@ class UserSection extends React.Component {
           </div>
           <br />
           <div className="profile-category-button">
-            <button
-              type="button"
-              className="btn btn-default btn-sm"
-            >
-              {this.props.categoryName}
-              <span className="badge text-right">7</span>
-            </button>
             {
               (this.props.categories && this.props.categories.length > 0) ?
-                this.props.categories.map(category =>
+              this.props.categories.map(category =>
                   (
                     <button
                       type="button"
                       className="btn btn-default btn-sm"
+                      name="categoryModalName"
                       key={category.id}
+                      value={category.id}
+                      ref={node => this.categoryInput = node}
+                      onClick={() => this.getCategory(category.id)}
                     >
                       {category.name}
-                      <span className="badge text-right">7</span>
                     </button>
                   ))
                 : null
             }
           </div>
         </div>
-        <div
-          className="modal fade"
-          id="myModal"
-          tabIndex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h4 className="modal-title" id="myModalLabel">Change Password?</h4>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <form>
-                  {this.renderAlert()}
-                  <div className="form-group">
-                    <label htmlFor="oldPassword">Old Password:</label>
-                    <div className="input-group input-group-lg">
-                      <span className="input-group-addon">
-                        <i className="fa fa-envelope" />
-                      </span>
-                      <input
-                        name="oldPassword"
-                        type="password"
-                        className="form-control"
-                        id="oldPassword"
-                        onChange={this.handleChange}
-                        value={this.state.oldPassword}
-                        placeholder="Enter old password"
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="newPassword">New Password:</label>
-                    <div className="input-group input-group-lg">
-                      <span className="input-group-addon">
-                        <i className="fa fa-envelope" />
-                      </span>
-                      <input
-                        name="newPassword"
-                        type="password"
-                        className="form-control"
-                        id="newPassword"
-                        onChange={this.handleChange}
-                        value={this.state.newPassword}
-                        placeholder="Enter new passoword"
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="confirmPassword">Confirm Password:</label>
-                    <div className="input-group input-group-lg">
-                      <span className="input-group-addon">
-                        <i className="fa fa-envelope" />
-                      </span>
-                      <input
-                        name="confirmPassword"
-                        type="password"
-                        className="form-control"
-                        id="confirmPassword"
-                        onChange={this.handleChange}
-                        value={this.state.confirmPassword}
-                        placeholder="Confirm new passoword"
-                      />
-                    </div>
-                  </div>
-                  {this.state.hasErrored ?
-                    <p className="alert error-alert" style={{ color: 'white' }}>
-                      <i className="fa fa-exclamation-triangle" />
-                      &nbsp;{this.state.errorMessage}
-                    </p> : ''
-                  }
-                </form>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                >Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  onClick={this.handleChangePassword}
-                >Change Password
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        {
+          this.props.categoryData.length > 0 ?
+            <ManageCategoryModal
+              isOpen={this.state.modalIsOpen}
+              afterOpen={this.afterOpenModal}
+              onClose={this.closeModal}
+              closeModal={this.closeModal}
+              customStyles={customStyles}
+              value={this.state.modalCategoryName}
+              onChange={this.handleChange}
+              onUpdate={this.handleUpdateCategory}
+              onDelete={this.handleDeleteCategory}
+              refName={subtitle => this.subtitle = subtitle}
+            /> : ''
+        }
+        {
+          this.state.status === 'Success' ?
+            <div>
+              {this.renderAlert()}
+              <ChangePasswordModal
+                error={this.renderAlert()}
+                isOpen={this.state.passwordModalIsOpen}
+                onClose={this.closeModal}
+                closeModal={this.closeModal}
+                customStyles={customStyles}
+                oldPasswordValue={this.state.oldPassword}
+                newPasswordValue={this.state.newPassword}
+                confirmPasswordValue={this.state.confirmPassword}
+                onChange={this.handleChange}
+                onUpdate={this.handleChangePassword}
+                errorMessage={this.state.errorMessage}
+              />
+            </div> : ''
+        }
       </main>
     );
   }
@@ -322,14 +368,17 @@ class UserSection extends React.Component {
 const mapStateToProps = state => ({
   userData: state.auth.userData,
   categories: state.category.categoryList,
-  categoryName: state.category.categoryName,
+  categoryData: state.category.categoryData,
   errorMessage: state.user.error,
+  status: state.user.status
 });
 
 export default connect(mapStateToProps, {
-  fetchUsername,
   addCategory,
+  updateCategory,
+  deleteCategory,
   getUserCategories,
+  getUserCategory,
   changePassword
 })(UserSection);
 

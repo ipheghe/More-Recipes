@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getUserCategories } from './../actions/category';
+import { Link } from 'react-router-dom';
+import { getUserCategories } from './../actions/categoryActions';
 import { getRecipesBySearch } from './../actions/recipe';
 
 /**
@@ -72,7 +73,9 @@ class ProfileHeader extends React.Component {
           <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <button className="navbar-brand invisible-button"><h2>Profile Page</h2></button>
+          <Link to="/dashboard" className="navbar-brand invisible-button" >
+            <h2>Profile Page</h2>
+          </Link>
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
             <li className="nav-item">
               <button className="nav-link invisible-button disabled" />

@@ -94,10 +94,6 @@ label {
   margin-top: 30px;
 }
 
-nav#brand-color {
-  /*  background-color: transparent;*/
-}
-
 .landing {
   position: relative;
   margin-top: 120px;
@@ -205,8 +201,6 @@ nav#brand-color {
   list-style-type: none;
   margin-bottom: 10px;
 }
-
-.recipe-ingredients li span {}
 
 .recipe-ingredients li i {
   font-size: 10px;
@@ -505,4 +499,14 @@ button.close {
 
 .nav-item .invisible-button {
   margin-right: 15px;
+}
+
+.card .text-muted > .landing-card-footer{
+  width: 100%;
+  text-align: center !important;
+}
+
+.card .text-muted span{
+  font-size: 20px;
+  margin-right: 20px;
 }

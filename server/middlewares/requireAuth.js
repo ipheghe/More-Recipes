@@ -13,7 +13,15 @@ const authorize = {
     } else if (token) {
       jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
         if (err) {
-          return res.status(403).send(err);
+          return res.status(403).send({
+            message: 'Invalid Token'
+          });
+        }
+        if (decoded.exp < Math.floor(Date.now() / 1000)) {
+          // log user out
+          return res.status(403).send({
+            message: 'Expired Token'
+          });
         }
         req.decoded = decoded;
         return next();

@@ -11,9 +11,11 @@ import { verifyTokenPassword } from '../../actions/userActions';
  */
 class ResetPassword extends React.Component {
   static propTypes = {
-    verifyTokenPassword: PropTypes.func,
-    errorMessage: PropTypes.string,
-    match: PropTypes.node
+    verifyTokenPassword: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string.isRequired,
+    match: PropTypes.shape({
+      params: PropTypes.objectOf(PropTypes.string),
+    }).isRequired
   };
 
   /**
@@ -40,8 +42,7 @@ class ResetPassword extends React.Component {
   handleChange(e) {
     e.preventDefault();
     this.setState({
-      newPassword: this.refs.newPassword.value,
-      confirmPassword: this.refs.confirmPassword.value
+      [e.target.name]: e.target.value
     });
   }
 
@@ -101,7 +102,8 @@ class ResetPassword extends React.Component {
         <div>
           <p className="alert error-alert" style={{ color: 'white' }}>
             <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.state.errorMessage}</p>
+            &nbsp;{this.state.errorMessage}
+          </p>
         </div>
       );
     } else if (this.props.errorMessage) {
@@ -109,7 +111,8 @@ class ResetPassword extends React.Component {
         <div>
           <p className="alert error-alert" style={{ color: 'white' }}>
             <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.props.errorMessage}</p>
+            &nbsp;{this.props.errorMessage}
+          </p>
         </div>
       );
     }
@@ -129,8 +132,8 @@ class ResetPassword extends React.Component {
               <section className="col-md-7 headline">
                 <h1>Welcome to More recipes</h1>
                 <h4>Share your recipe ideas with the world</h4>
-                <br></br>
-                <br></br>
+                <br />
+                <br />
                 <h2><em><i>Please input your new password</i></em></h2>
               </section>
               <section className="col-md-5 account">
@@ -138,7 +141,7 @@ class ResetPassword extends React.Component {
                   <form className="login-form">
                     {this.renderAlert()}
                     <h3 className="login-form-boxx">Update Password</h3>
-                    <br></br>
+                    <br />
                     <div className="form-group">
                       <label htmlFor="enterPassword">New Password:</label>
                       <div className="input-group">
@@ -150,7 +153,6 @@ class ResetPassword extends React.Component {
                           className="form-control"
                           name="newPassword"
                           placeholder="Enter new password"
-                          ref="newPassword"
                           value={this.state.newPassword}
                           onChange={this.handleChange}
                           required
@@ -168,7 +170,6 @@ class ResetPassword extends React.Component {
                           className="form-control"
                           name="confirmPassword"
                           placeholder="Confirm password"
-                          ref="confirmPassword"
                           value={this.state.confirmPassword}
                           onChange={this.handleChange}
                           required
@@ -186,7 +187,7 @@ class ResetPassword extends React.Component {
                           </button>
                         </a>
                       </div>
-                      <br></br>
+                      <br />
                     </div>
                   </form>
                 </div>

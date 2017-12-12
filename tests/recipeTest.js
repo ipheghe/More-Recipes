@@ -8,7 +8,6 @@ import categories from '../server/seeders/categorySeeder';
 
 process.env.NODE_ENV = 'test';
 const { expect } = require('chai');
-const should = require('chai').should();
 // This agent refers to PORT where program is runninng.
 const server = supertest.agent(app);
 const rootURL = '/api/v1';
@@ -156,7 +155,7 @@ describe('Create Recipe', () => {
       .send(addRecipe[0])
       .end((err, res) => {
         res.status.should.equal(403);
-        res.body.message.should.equal('invalid signature');
+        res.body.message.should.equal('Invalid Token');
         if (err) return done(err);
         done();
       });
@@ -765,7 +764,7 @@ describe('Create Category', () => {
       .send(categories[0])
       .end((err, res) => {
         res.status.should.equal(403);
-        res.body.message.should.equal('invalid signature');
+        res.body.message.should.equal('Invalid Token');
         if (err) return done(err);
         done();
       });

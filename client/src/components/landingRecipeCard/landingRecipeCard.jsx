@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 
-const RecipeCard = ({ recipe }) => (
+const LandingRecipeCard = ({ recipe }) => (
   <div className="card">
     <img className="card-img-top" src={(recipe.imageUrl === null || recipe.imageUrl === 'no-image') ? 'dist/pizza1.jpg' : recipe.imageUrl} alt="recipe" />
     <div className="card-block">
@@ -17,13 +16,12 @@ const RecipeCard = ({ recipe }) => (
           <span className="upvote"><i className="fa fa-thumbs-up" aria-hidden="true" style={{ color: 'red' }} />{recipe.upvotes}</span>
           <span className="downvote"><i className="fa fa-thumbs-down" aria-hidden="true" style={{ color: 'orange' }} />{recipe.downvotes}</span>
         </div>
-        <Link to={`/recipes/${recipe.id}`} className="btn btn-secondary btn-sm" >More</Link>
       </small>
     </div>
   </div>
 );
 
-RecipeCard.propTypes = {
+LandingRecipeCard.propTypes = {
   recipe: PropTypes.shape({
     id: PropTypes.number.isRequired,
     recipeName: PropTypes.string.isRequired,
@@ -31,4 +29,4 @@ RecipeCard.propTypes = {
   }).isRequired
 };
 
-export default RecipeCard;
+export default LandingRecipeCard;

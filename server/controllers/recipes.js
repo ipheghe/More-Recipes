@@ -278,10 +278,16 @@ const recipesController = {
         ],
         limit: 10
       })
-      .then(recipe => res.status(200).send({
-        message: 'All Top Recipes Retrieved SuccessFullly!',
-        recipeData: recipe
-      }))
+      .then((recipe) => {
+        if (recipe.length === 0) {
+          res.status(404).send({ message: 'No recipe available' });
+        } else {
+          return res.status(200).send({
+            message: 'All Top Recipes Retrieved SuccessFullly!',
+            recipeData: recipe
+          });
+        }
+      })
       .catch(error => res.status(400).send({
         error: error.message
       }));

@@ -82,6 +82,11 @@ const validateRecipeFields = (req, res, next) => {
  * @return {*} void
  */
 const recipeExists = (req, res, next) => {
+  if (Number.isNaN(parseInt(req.params.id, 10))) {
+    return res.status(400).send({
+      message: 'Invalid Id!'
+    });
+  }
   Recipe
     .find({ where: { id: req.params.id } })
     .then((recipe) => {
