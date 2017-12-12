@@ -30,7 +30,8 @@ class Login extends React.Component {
       email: '',
       hasErrored: false,
       errorMessage: '',
-      modalError: ''
+      modalError: '',
+      valid: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -56,30 +57,13 @@ class Login extends React.Component {
    */
   handleLogin(e) {
     e.preventDefault();
-    const { username, password } = this.state;
-    const valid = false;
-    if (valid) {
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      if (username === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'Username field cannot be  empty'
-        });
-      }
-      if (password === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'password field cannot be empty'
-        });
-      }
-    } else {
+    const { username, password, valid } = this.state;
+    this.validateFormField();
+    if (valid === true) {
+      console.log(this.state.valid, 'jhb_________________________>');
       return this.props.loginUser({ username, password });
     }
+    console.log(valid, 'jhb_________________________>');
   }
 
   /**
@@ -104,6 +88,37 @@ class Login extends React.Component {
       email: '',
     });
     this.props.resetPassword(this.state.email);
+  }
+
+  /**
+   * validateFormField
+   * @returns {string} errorMessage
+   */
+  validateFormField() {
+    const { username, password } = this.state;
+    setTimeout(() => {
+      this.setState({
+        hasErrored: false,
+        errorMessage: ''
+      });
+    }, 3000);
+    if (username === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Username field cannot be  empty'
+      });
+    }
+    if (password === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'password field cannot be empty'
+      });
+    }
+    return this.setState({
+      hasErrored: false,
+      errorMessage: '',
+      valid: true
+    });
   }
 
   /**
