@@ -37,23 +37,31 @@ class SignUp extends React.Component {
 
   /**
    * handle change form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {object} state
    */
-  handleChange(e) {
-    e.preventDefault();
+  handleChange(event) {
+    event.preventDefault();
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
   /**
    * handle signUp form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleSignup(e) {
-    e.preventDefault();
+  handleSignup(event) {
+    event.preventDefault();
+    this.validateFormField();
+  }
+
+  /**
+   * validateFormField
+   * @returns {string} errorMessage
+   */
+  validateFormField() {
     const {
       username,
       firstName,
@@ -65,83 +73,82 @@ class SignUp extends React.Component {
     const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     const numericExpression = /^[0-9]+$/;
     const regExpression = /^[A-Za-z][A-Za-z0-9-]+$/i;
-    const valid = false;
-    if (valid) {
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      if (!username.match(regExpression)) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'Username must start with a letter and have no spaces.'
-        });
-      }
-      if (firstName.length < 4) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'firstName must contain more than 3 chareacters'
-        });
-      }
-      if (firstName.match(numericExpression)) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'firstName must contain only alphabets'
-        });
-      }
-      if (!mobileNumber.match(numericExpression)) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'mobile number must contain only numbers'
-        });
-      }
-      if (!mobileNumber === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'mobile numberfield cannot be empty'
-        });
-      }
-      if (lastName.lenght < 4) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'lastName must contain more than 4 chareacters'
-        });
-      }
-      if (lastName.match(numericExpression)) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'firstName must contain only alphabets'
-        });
-      }
-      if (reg.test(email) === false) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'Invalid Email Address'
-        });
-      }
-      if (password < 8) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'password must contain more than 7 chareacters'
-        });
-      }
-    } else {
-      return this.props.registerUser({
-        username,
-        password,
-        firstName,
-        lastName,
-        mobileNumber,
-        email
+    setTimeout(() => {
+      this.setState({
+        hasErrored: false,
+        errorMessage: ''
+      });
+    }, 3000);
+    if (!username.match(regExpression)) {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Username must start with a letter and have no spaces.'
       });
     }
+    if (firstName.length < 4) {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'firstName must contain more than 3 chareacters'
+      });
+    }
+    if (firstName.match(numericExpression)) {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'firstName must contain only alphabets'
+      });
+    }
+    if (!mobileNumber.match(numericExpression)) {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'mobile number must contain only numbers'
+      });
+    }
+    if (!mobileNumber === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'mobile numberfield cannot be empty'
+      });
+    }
+    if (lastName.lenght < 4) {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'lastName must contain more than 4 chareacters'
+      });
+    }
+    if (lastName.match(numericExpression)) {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'firstName must contain only alphabets'
+      });
+    }
+    if (reg.test(email) === false) {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Invalid Email Address'
+      });
+    }
+    if (password < 8) {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'password must contain more than 7 chareacters'
+      });
+    }
+    this.setState({
+      hasErrored: false,
+      errorMessage: ''
+    });
+    return this.props.registerUser({
+      username,
+      password,
+      firstName,
+      lastName,
+      mobileNumber,
+      email
+    });
   }
 
   /**
    * handle signUp form event error
-   * @param {SytheticEvent} e
    * @returns {string} errorMessage
    */
   renderAlert() {

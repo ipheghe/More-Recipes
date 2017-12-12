@@ -92,22 +92,22 @@ class UserSection extends React.Component {
 
   /**
    * handle add category form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleAddCategory(e) {
-    e.preventDefault();
+  handleAddCategory(event) {
+    event.preventDefault();
     this.props.addCategory(this.state.categoryName);
     this.setState({ categoryName: '' });
   }
 
   /**
    * handle update category form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleUpdateCategory(e) {
-    e.preventDefault();
+  handleUpdateCategory(event) {
+    event.preventDefault();
     const categoryId = this.props.categoryData[0].id;
     this.props.updateCategory(categoryId, this.state.modalCategoryName);
     this.setState({ modalIsOpen: false });
@@ -115,11 +115,11 @@ class UserSection extends React.Component {
 
   /**
    * handle delete category form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleDeleteCategory(e) {
-    e.preventDefault();
+  handleDeleteCategory(event) {
+    event.preventDefault();
     const categoryId = this.props.categoryData[0].id;
     this.props.deleteCategory(categoryId);
     this.setState({ modalIsOpen: false });
@@ -127,23 +127,23 @@ class UserSection extends React.Component {
 
   /**
    * handle change form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {object} state
    */
-  handleChange(e) {
+  handleChange(event) {
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
 
   /**
    * handle change password event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleChangePassword(e) {
-    e.preventDefault();
+  handleChangePassword(event) {
+    event.preventDefault();
     const { oldPassword, newPassword, confirmPassword } = this.state;
     let valid;
     if (!valid) {
@@ -203,7 +203,6 @@ class UserSection extends React.Component {
 
   /**
    * handle form event error
-   * @param {SytheticEvent} e
    * @returns {string} errorMessage
    */
   renderAlert() {

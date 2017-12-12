@@ -30,8 +30,7 @@ class Login extends React.Component {
       email: '',
       hasErrored: false,
       errorMessage: '',
-      modalError: '',
-      valid: false
+      modalError: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -40,39 +39,33 @@ class Login extends React.Component {
 
   /**
    * handle change form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {object} state
    */
-  handleChange(e) {
-    e.preventDefault();
+  handleChange(event) {
+    event.preventDefault();
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
   /**
    * handle login form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleLogin(e) {
-    e.preventDefault();
-    const { username, password, valid } = this.state;
+  handleLogin(event) {
+    event.preventDefault();
     this.validateFormField();
-    if (valid === true) {
-      console.log(this.state.valid, 'jhb_________________________>');
-      return this.props.loginUser({ username, password });
-    }
-    console.log(valid, 'jhb_________________________>');
   }
 
   /**
    * handle Reset password form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleResetPassword(e) {
-    e.preventDefault();
+  handleResetPassword(event) {
+    event.preventDefault();
     if (this.state.email === '') {
       setTimeout(() => {
         this.setState({
@@ -114,16 +107,15 @@ class Login extends React.Component {
         errorMessage: 'password field cannot be empty'
       });
     }
-    return this.setState({
+    this.setState({
       hasErrored: false,
-      errorMessage: '',
-      valid: true
+      errorMessage: ''
     });
+    return this.props.loginUser({ username, password });
   }
 
   /**
    * handle login form event error
-   * @param {SytheticEvent} e
    * @returns {string} errorMessage
    */
   renderAlert() {
