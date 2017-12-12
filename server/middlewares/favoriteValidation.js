@@ -13,7 +13,7 @@ const { Favorite } = db;
  * @return {*} void
  */
 const favoriteExists = (req, res, next) => {
-  if (isNaN(parseInt(req.params.id, 10))) {
+  if (Number.isNaN(parseInt(req.params.id, 10))) {
     return res.status(400).send({
       message: 'Invalid Id!'
     });

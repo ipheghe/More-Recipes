@@ -38,7 +38,9 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         message: action.payload.message,
         categoryName: '',
-        categoryList: [...state.categoryList.filter(category => category.id !== state.categoryData[0].id)]
+        categoryList: [
+          ...state.categoryList.filter(category => category.id !== state.categoryData[0].id)
+        ]
       };
     case FETCH_USER_CATEGORIES:
       return {

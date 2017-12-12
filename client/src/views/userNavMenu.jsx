@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Nav, NavItem, Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from 'reactstrap';
 
 const UserNavMenu = () => (
   <div>
@@ -38,20 +37,6 @@ const UserNavMenu = () => (
           <a className="dropdown-item" href="#manageRecipe">Manage Recipes</a>
         </div>
       </li>
-      {/* <li className="nav-item dropdown">
-        <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-          <DropdownToggle nav caret>
-              Dropdown
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem header>Header</DropdownItem>
-            <DropdownItem disabled>Action</DropdownItem>
-            <DropdownItem>Another Action</DropdownItem>
-            <DropdownItem divider />
-            <DropdownItem>Another Action</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      </li> */}
       <li className="nav-item">
         <NavLink
           to="/addRecipe"
