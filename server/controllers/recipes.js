@@ -3,9 +3,10 @@ import db from '../models/index';
 // Reference database models
 const { User, Recipe, Review } = db;
 const keys = [
-  'id', 'recipeName', 'recipeDescription', 'ingredients',
+  'id', 'name', 'description', 'ingredients',
   'directions', 'imageUrl', 'views', 'upvotes', 'downvotes', 'notification'
 ];
+let pageNumber;
 
 const recipesController = {
 
@@ -15,28 +16,45 @@ const recipesController = {
    * @function
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} message recipeData
+   * @return {object} message recipe
    */
   addRecipe(req, res) {
-    return Recipe
-      // logged-in user can add recipe
-      .create({
-        recipeName: req.body.recipeName,
-        recipeDescription: req.body.recipeDescription,
-        ingredients: req.body.ingredients,
-        directions: req.body.directions,
-        imageUrl: req.body.imageUrl,
-        views: 0,
-        upvotes: 0,
-        downvotes: 0,
-        notification: 0,
+    // find if recipe Name
+    Recipe.find({
+      where: {
         userId: req.decoded.user.id,
+        name: req.body.name
+      }
+    })
+      .then((existingRecipeName) => {
+        if (!existingRecipeName) {
+          // logged-in user can add recipe
+          Recipe.create({
+            name: req.body.name,
+            description: req.body.description,
+            ingredients: req.body.ingredients,
+            directions: req.body.directions,
+            imageUrl: req.body.imageUrl,
+            views: 0,
+            upvotes: 0,
+            downvotes: 0,
+            notification: 0,
+            userId: req.decoded.user.id,
+          })
+            .then(recipe => res.status(201).send({
+              message: 'Recipe Added SuccessFullly!',
+              recipe
+            }))
+            .catch(error => res.status(401).send({
+              error: error.message
+            }));
+        } else {
+          return res.send({
+            message: 'Recipe name exists!',
+          });
+        }
       })
-      .then(recipe => res.status(201).send({
-        message: 'Recipe Added SuccessFullly!',
-        recipeData: recipe
-      }))
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -47,7 +65,7 @@ const recipesController = {
    * @function
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} message recipeData
+   * @return {object} message recipe
    */
   updateRecipe(req, res) {
     // find if recipe exits
@@ -69,10 +87,13 @@ const recipesController = {
         })
           .then(updatedRecipe => res.status(200).send({
             message: 'Recipe Updated SuccessFullly!',
-            recipeData: updatedRecipe
+            recipe: updatedRecipe
+          }))
+          .catch(error => res.status(401).send({
+            error: error.message
           }));
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -98,15 +119,14 @@ const recipesController = {
         // if recipe exits, delete the recipe
         recipe
           .destroy()
-          .then(deletedRecipe => res.status(200).send({
-            message: 'Recipe Deleted SuccessFullly!',
-            recipeData: deletedRecipe
+          .then(() => res.status(200).send({
+            message: 'Recipe Deleted SuccessFullly!'
           }))
-          .catch(error => res.status(400).send({
+          .catch(error => res.status(401).send({
             error: error.message
           }));
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -117,33 +137,38 @@ const recipesController = {
    * @function
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} message userRecipeList
+   * @return {object} message recipes
    */
   getUserRecipes(req, res) {
+    const { limit, offset } = req.body;
     // find all recipes that have the requested userId
     return Recipe
-      .findAll({
+      .findAndCountAll({
         where: {
           userId: req.decoded.user.id
         },
-        attributes: keys
+        attributes: keys,
+        limit: limit || 6,
+        offset: offset || 0
       })
       // retrieve all recipes for that particular user
-      .then((recipe) => {
-        if (recipe) {
-          if (recipe.length === 0) {
+      .then((recipes) => {
+        if (recipes) {
+          if (recipes.rows.length === 0) {
             res.status(404).send({
               message: 'No recipe found for user'
             });
           } else {
+            pageNumber = parseInt(recipes.count, 10) / parseInt(limit || 6, 10);
             return res.status(200).send({
               message: 'All User Recipes Retrieved SuccessFullly!',
-              userRecipeList: recipe
+              recipes,
+              pages: Math.ceil(pageNumber)
             });
           }
         }
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -180,11 +205,11 @@ const recipesController = {
           recipe.reload()
             .then(() => res.status(200).send({
               message: 'Recipe Retrieved SuccessFullly!',
-              recipeList: recipe
+              recipe
             }));
         });
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -211,7 +236,7 @@ const recipesController = {
           recipe
         });
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -232,24 +257,15 @@ const recipesController = {
     // Find all recipes and do an eagerload to include the reviews associated
     // with each recipe and also to include the user whomposted the review
     return Recipe
-      .all({
-        include: [{
-          model: Review,
-          as: 'reviews',
-          attributes: ['message'],
-          include: [{
-            model: User,
-            attributes: ['username']
-          }]
-        }],
+      .findAll({
         // Return only attributes defined in the global scope
         attributes: keys
       })
-      .then(recipe => res.status(200).send({
+      .then(recipes => res.status(200).send({
         message: 'All Recipes Retrieved SuccessFullly!',
-        recipeData: recipe
+        recipes
       }))
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -261,9 +277,10 @@ const recipesController = {
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Object} next - Express next middleware function
-   * @return {object} message recipeData
+   * @return {object} message recipes
    */
   getTopRecipes(req, res, next) {
+    const { limit, offset } = req.body;
     // If query key does not match sort, call next on the next handler
     if (!req.query.sort) return next();
     // Take the query key and slice order string to get desc
@@ -271,24 +288,27 @@ const recipesController = {
     const { sort } = req.query,
       order = (req.query.order).slice(0, 4);
     return Recipe
-      .findAll({
+      .findAndCountAll({
         attributes: keys,
         order: [
           [sort, order]
         ],
-        limit: 10
+        limit: limit || 6,
+        offset: offset || 0
       })
-      .then((recipe) => {
-        if (recipe.length === 0) {
+      .then((recipes) => {
+        if (recipes.rows.length === 0) {
           res.status(404).send({ message: 'No recipe available' });
         } else {
+          pageNumber = parseInt(recipes.count, 10) / parseInt(limit || 6, 10);
           return res.status(200).send({
             message: 'All Top Recipes Retrieved SuccessFullly!',
-            recipeData: recipe
+            recipes,
+            pages: Math.ceil(pageNumber)
           });
         }
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -300,9 +320,11 @@ const recipesController = {
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Object} next - Express next middleware function
-   * @return {object} message recipeData
+   * @return {object} message recipes
    */
   searchRecipesByIngredients(req, res, next) {
+    const { limit, offset } = req.body;
+
     // If query key does not match ingredients, call next on the next handler
     if (!req.query.ingredients) return next();
 
@@ -317,25 +339,28 @@ const recipesController = {
       }
     }));
     return Recipe
-      .all({
+      .findAndCountAll({
         where: {
           $or: query
         },
-        limit: 10,
-        attributes: keys
+        attributes: keys,
+        limit: limit || 6,
+        offset: offset || 0
       })
-      .then((recipe) => {
-        if (!recipe.length) {
+      .then((recipes) => {
+        if (recipes.rows.length === 0) {
           return res.status(200).send({
             message: 'No recipe matches your search'
           });
         }
+        pageNumber = parseInt(recipes.count, 10) / parseInt(limit || 6, 10);
         return res.status(200).send({
           message: 'Recipes Retrieved SuccessFullly!',
-          recipeData: recipe
+          recipes,
+          pages: Math.ceil(pageNumber)
         });
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -347,9 +372,11 @@ const recipesController = {
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Object} next - Express next middleware function
-   * @return {object} message recipeData
+   * @return {object} message recipes
    */
   searchRecipes(req, res, next) {
+    const { limit, offset } = req.body;
+
     // If query key does not match ingredients, call next on the next handler
     if (!req.query.search) return next();
 
@@ -374,7 +401,7 @@ const recipesController = {
       }
     }));
     return Recipe
-      .findAll({
+      .findAndCountAll({
         where: {
           $or: [{
             $or: query
@@ -387,21 +414,24 @@ const recipesController = {
           }
           ]
         },
-        limit: 2,
-        attributes: keys
+        attributes: keys,
+        limit: limit || 6,
+        offset: offset || 0
       })
-      .then((recipe) => {
-        if (!recipe.length) {
+      .then((recipes) => {
+        if (recipes.rows.length === 0) {
           return res.status(200).send({
             message: 'No recipe matches your search'
           });
         }
+        pageNumber = parseInt(recipes.count, 10) / parseInt(limit || 6, 10);
         return res.status(200).send({
-          message: 'Recipes Retrieved!',
-          recipeData: recipe
+          message: 'Search result retrieved successfully!',
+          recipes,
+          pages: Math.ceil(pageNumber)
         });
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   }

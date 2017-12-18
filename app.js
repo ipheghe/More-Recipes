@@ -4,18 +4,18 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import path from 'path';
 import webpack from 'webpack';
-import router from './server/routes/index';
 import config from './webpack.config';
+import {
+  userRoute,
+  recipeRoute,
+  reviewRoute,
+  categoryRoute,
+  favoriteRoute,
+  voteRoute
+} from './server/routes';
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-
-const userRoute = router.user,
-  recipeRoute = router.recipe,
-  reviewRoute = router.review,
-  categoryRoute = router.category,
-  favoriteRoute = router.favorite,
-  voteRoute = router.vote;
 
 // set up the express app
 const app = express();

@@ -11,13 +11,13 @@ const { expect } = require('chai');
 // This agent refers to PORT where program is runninng.
 const server = supertest.agent(app);
 const rootURL = '/api/v1';
-const usersUrl = `${rootURL}/users`;
+const usersUrl = `${rootURL}/user`;
 const favoritesUrl = `${rootURL}/favorites`;
-const recipesUrl = `${rootURL}/recipes`;
+const recipesUrl = `${rootURL}/recipe`;
 const reviewsUrl = `${rootURL}/reviews`;
-const categoriesUrl = `${usersUrl}/categories`;
-const signupUrl = `${rootURL}/users/signup`;
-const signinUrl = `${rootURL}/users/signin`;
+const categoriesUrl = `${usersUrl}/category`;
+const signupUrl = `${rootURL}/user/signup`;
+const signinUrl = `${rootURL}/user/signin`;
 const [validUsersLogin, testValidUsers] = [users.validUsersLogin, users.testValidUsers];
 const [addRecipe, updateRecipe] = [recipes.addRecipe, recipes.updateRecipe];
 const userToken = [];
@@ -228,7 +228,7 @@ describe('Create Recipe', () => {
   });
   it('should return 400 status for null recipeName field', (done) => {
     testData = Object.assign({}, addRecipe[0]);
-    delete testData.recipeName;
+    delete testData.name;
     server
       .post(recipesUrl)
       .set('Connection', 'keep alive')
@@ -239,7 +239,7 @@ describe('Create Recipe', () => {
       .send(testData)
       .end((err, res) => {
         res.status.should.equal(400);
-        res.body.message.should.equal('recipe name field cannot be empty');
+        res.body.message.should.equal('name field cannot be empty');
         if (err) return done(err);
         done();
       });
@@ -379,7 +379,8 @@ describe('Update Recipe', () => {
       .type('form')
       .send(updateRecipe[0])
       .end((err, res) => {
-        res.status.should.equal(400);
+        res.status.should.equal(404);
+        res.body.message.should.equal('Access Denied!');
         if (err) return done(err);
         done();
       });
@@ -411,7 +412,8 @@ describe('Update Recipe', () => {
       .type('form')
       .send(updateRecipe[0])
       .end((err, res) => {
-        res.status.should.equal(400);
+        res.status.should.equal(404);
+        res.body.message.should.equal('Access Denied!');
         if (err) return done(err);
         done();
       });
@@ -420,7 +422,7 @@ describe('Update Recipe', () => {
 describe('Get Recipe', () => {
   it('should return 200 status for retrieving user recipe', (done) => {
     server
-      .get(`${recipesUrl}/users`)
+      .get('/api/v1/recipes/users')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -435,7 +437,7 @@ describe('Get Recipe', () => {
   });
   it('should return 200 status for retrieving user recipe', (done) => {
     server
-      .get(`${recipesUrl}/users`)
+      .get('/api/v1/recipes/users')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[2])
@@ -473,14 +475,14 @@ describe('Get Recipe', () => {
       .type('form')
       .end((err, res) => {
         res.status.should.equal(200);
-        res.body.recipeList.views.should.equal(2);
+        res.body.recipe.views.should.equal(2);
         if (err) return done(err);
         done();
       });
   });
   it('should retrieve all recipes successfully', (done) => {
     server
-      .get(recipesUrl)
+      .get('/api/v1/recipes')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -495,7 +497,7 @@ describe('Get Recipe', () => {
   });
   it('should retrieve all top recipes by upvotes successfully', (done) => {
     server
-      .get(`${recipesUrl}?sort=upvotes&order=descending`)
+      .get('/api/v1/recipes?sort=upvotes&order=descending')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -510,7 +512,7 @@ describe('Get Recipe', () => {
   });
   it('should retrieve all recipes by ingredients', (done) => {
     server
-      .get(`${recipesUrl}?ingredients=maggi`)
+      .get('/api/v1/recipes?ingredients=maggi')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -525,7 +527,7 @@ describe('Get Recipe', () => {
   });
   it('should retrieve all top recipes by upvotes successfully', (done) => {
     server
-      .get(`${recipesUrl}?ingredients= maggi, rice`)
+      .get('/api/v1/recipes?ingredients= maggi, rice')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -540,7 +542,7 @@ describe('Get Recipe', () => {
   });
   it('should get a message for invalid ingredient search', (done) => {
     server
-      .get(`${recipesUrl}?ingredients=palm kernel`)
+      .get('/api/v1/recipes?ingredients=palm kernel')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -555,7 +557,7 @@ describe('Get Recipe', () => {
   });
   it('should get a 404 status for invalid ingredient search', (done) => {
     server
-      .get(`/2/${recipesUrl}?ingredients=/2`)
+      .get('/2/api/v1/recipes?ingredients=/2')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -569,7 +571,7 @@ describe('Get Recipe', () => {
   });
   it('should get a message for invalid ingredient search', (done) => {
     server
-      .get(`${recipesUrl}?ingredients`)
+      .get('/api/v1/recipes?ingredients')
       .set('Connection', 'keep alive')
       .query({
         ingredients: 'sort'
@@ -591,7 +593,7 @@ describe('Review a recipe', () => {
     testData = Object.assign({}, postReview[0]);
     delete testData.message;
     server
-      .post(`${recipesUrl}/2/reviews`)
+      .post(`${recipesUrl}/2/review`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -607,7 +609,7 @@ describe('Review a recipe', () => {
   });
   it('should return 404 status for non existent recipe', (done) => {
     server
-      .post(`${recipesUrl}/8/reviews`)
+      .post(`${recipesUrl}/8/review`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -625,7 +627,7 @@ describe('Review a recipe', () => {
     testData = Object.assign({}, postReview[1]);
     testData.recipeId = 2;
     server
-      .post(`${recipesUrl}/2/reviews`)
+      .post(`${recipesUrl}/2/review`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -643,7 +645,7 @@ describe('Review a recipe', () => {
     testData = Object.assign({}, postReview[1]);
     testData.recipeId = 2;
     server
-      .post(`${recipesUrl}/2/reviews`)
+      .post(`${recipesUrl}/2/review`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[1])
@@ -661,7 +663,7 @@ describe('Review a recipe', () => {
     testData = Object.assign({}, postReview[1]);
     testData.recipeId = 3;
     server
-      .post(`${recipesUrl}/3/reviews`)
+      .post(`${recipesUrl}/3/review`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -675,7 +677,7 @@ describe('Review a recipe', () => {
         done();
       });
   });
-  it('should return 201 status for posting a review for a recipe', (done) => {
+  it('should return 404 status for posting a review for a recipe', (done) => {
     testData = Object.assign({}, postReview[1]);
     testData.recipeId = 3;
     server
@@ -838,7 +840,7 @@ describe('Create Category', () => {
 describe('FavoriteRecipe', () => {
   it('should return 404 status for non existent recipe', (done) => {
     server
-      .post(`${recipesUrl}/8/1/favorites`)
+      .post(`${recipesUrl}/8/1/favorite`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -854,7 +856,7 @@ describe('FavoriteRecipe', () => {
   });
   it('should add recipe to uncategorized group if an invalid category is supplied', (done) => {
     server
-      .post(`${recipesUrl}/2/67/favorites`)
+      .post(`${recipesUrl}/2/67/favorite`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -872,7 +874,7 @@ describe('FavoriteRecipe', () => {
   });
   it('should return 400 status for user trying to favorite a recipe more than once', (done) => {
     server
-      .post(`${recipesUrl}/2/1/favorites`)
+      .post(`${recipesUrl}/2/1/favorite`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -917,7 +919,7 @@ describe('FavoriteRecipe', () => {
 describe('Vote a recipe', () => {
   it('allows logged in user upvote a posted recipe', (done) => {
     server
-      .put(`${recipesUrl}/2/votes`)
+      .put(`${recipesUrl}/2/vote`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -934,7 +936,7 @@ describe('Vote a recipe', () => {
   });
   it('allows logged in user remove his upvote on a posted recipe', (done) => {
     server
-      .put(`${recipesUrl}/2/votes`)
+      .put(`${recipesUrl}/2/vote`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -951,7 +953,7 @@ describe('Vote a recipe', () => {
   });
   it('allows logged in user downvote a posted recipe', (done) => {
     server
-      .put(`${recipesUrl}/2/votes?sort=downvotes`)
+      .put(`${recipesUrl}/2/vote?sort=downvotes`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[1])
@@ -968,7 +970,7 @@ describe('Vote a recipe', () => {
   });
   it('allows logged in user remove downvote on a posted recipe', (done) => {
     server
-      .put(`${recipesUrl}/2/votes?sort=downvotes`)
+      .put(`${recipesUrl}/2/vote?sort=downvotes`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[1])
@@ -985,7 +987,7 @@ describe('Vote a recipe', () => {
   });
   it('allows logged in user upvote a posted recipe', (done) => {
     server
-      .put(`${recipesUrl}/2/votes`)
+      .put(`${recipesUrl}/2/vote`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -1002,7 +1004,7 @@ describe('Vote a recipe', () => {
   });
   it('allows user that has upvoted to downvote same recipe', (done) => {
     server
-      .put(`${recipesUrl}/2/votes?sort=downvotes`)
+      .put(`${recipesUrl}/2/vote?sort=downvotes`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -1019,7 +1021,7 @@ describe('Vote a recipe', () => {
   });
   it('allows logged in user downvote a posted recipe', (done) => {
     server
-      .put(`${recipesUrl}/2/votes?sort=downvotes`)
+      .put(`${recipesUrl}/2/vote?sort=downvotes`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[1])
@@ -1036,7 +1038,7 @@ describe('Vote a recipe', () => {
   });
   it('allows user upvote same recipe he/she has downvoted', (done) => {
     server
-      .put(`${recipesUrl}/2/votes`)
+      .put(`${recipesUrl}/2/vote`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[1])

@@ -77,7 +77,7 @@ const votesController = {
             });
         }
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(500).send(error));
   },
 
   /**
@@ -152,7 +152,7 @@ const votesController = {
               });
           }
         })
-        .catch(error => res.status(400).send(error));
+        .catch(error => res.status(500).send(error));
     }
   }
 };

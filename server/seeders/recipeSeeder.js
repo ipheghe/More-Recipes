@@ -1,24 +1,27 @@
 const addRecipe = [
   {
-    recipeName: 'Banga Soup',
-    recipeDesc: 'This recipe is very popular in the south south part of Nigeria',
+    name: 'Banga Soup',
+    description: 'This recipe is very popular in the south south part of Nigeria',
     ingredients: 'palm kernel, assorted meat, maggi, palm oil',
-    directions: 'pour palm oil in pot, blanch oil for 10mins'
+    directions: 'pour palm oil in pot, blanch oil for 10mins',
+    imageUrl: 'dist/image1'
   },
   {
-    recipeName: 'Jollof Rice',
-    recipeDesc: 'This recipe is very popular and enjoyed by all',
+    name: 'Jollof Rice',
+    description: 'This recipe is very popular and enjoyed by all',
     ingredients: 'rice, onions, fresh tomatoes, assorted meat, maggi, turkey',
-    directions: 'parboil rice for 15mins, prepare stew in a separte pot'
+    directions: 'parboil rice for 15mins, prepare stew in a separte pot',
+    imageUrl: 'dist/image2'
   },
 ];
 
 const updateRecipe = [
   {
-    recipeName: 'Banga Soup',
-    recipeDesc: 'This recipe is very popular in the south south part of Nigeria',
+    name: 'Banga Soup',
+    description: 'This recipe is very popular in the south south part of Nigeria',
     ingredients: 'palm kernel, assorted meat, fresh fish, maggi, palm oil',
-    directions: 'pour palm oil in pot, blanch oil for 10mins'
+    directions: 'pour palm oil in pot, blanch oil for 10mins',
+    imageUrl: 'dist/image3'
   }
 ];
 

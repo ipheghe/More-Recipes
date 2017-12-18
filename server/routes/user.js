@@ -1,37 +1,40 @@
 import express from 'express';
 import authorize from '../middlewares/requireAuth';
-import usersController from '../controllers/users';
+import { users } from '../controllers';
 import {
   validateUserFields,
+  validateUserSigninFeild,
+  validatePasswordField,
   validUser
 } from '../middlewares/userValidation';
 
 const router = express.Router();
 
 // API route for users to create accounts
-router.post('/api/v1/users/signup', validateUserFields, usersController.signup);
+router.post('/api/v1/user/signup', validateUserFields, users.signup);
 
 // API route for users to login to the application
-router.post('/api/v1/users/signin', usersController.signin);
+router.post('/api/v1/user/signin', validateUserSigninFeild, users.signin);
 
 // API route to check if user exists
-router.get('/api/v1/users/:username', usersController.getUserDetails);
+router.get('/api/v1/user/:username', users.getUserDetails);
 
 // API route to update user record
-router.put('/api/v1/users/:id', authorize.verifyUser, validUser, usersController.updateUserRecord);
+router.put('/api/v1/user/:id', authorize.verifyUser, validUser, users.updateUserRecord);
 
 // API route to change password
 router.put(
-  '/api/v1/users/changePassword/:id',
+  '/api/v1/user/changePassword/:id',
   authorize.verifyUser,
   validUser,
-  usersController.changePassword
+  validatePasswordField,
+  users.changePassword
 );
 
 // Password reset request route (generate/send token)
-router.post('/api/v1/users/forgotPassword', usersController.forgotPassword);
+router.post('/api/v1/user/forgotPassword', users.forgotPassword);
 
 // Password reset route (change password using token)
-router.post('/api/v1/users/reset-password/:token', usersController.verifyTokenPassword);
+router.post('/api/v1/user/reset-password/:token', users.verifyTokenPassword);
 
 export default router;

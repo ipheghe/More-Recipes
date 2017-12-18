@@ -8,9 +8,9 @@ const should = require('chai').should();
 // This agent refers to PORT where program is runninng.
 const server = supertest.agent(app);
 const rootURL = '/api/v1';
-const usersUrl = `${rootURL}/users`;
-const signupUrl = `${rootURL}/users/signup`;
-const signinUrl = `${rootURL}/users/signin`;
+const usersUrl = `${rootURL}/user`;
+const signupUrl = `${rootURL}/user/signup`;
+const signinUrl = `${rootURL}/user/signin`;
 const [
   validUsersLogin,
   testValidUsers,
@@ -85,7 +85,6 @@ describe('User signup', () => {
       .send(testData)
       .end((err, res) => {
         res.status.should.equal(400);
-        res.body.userData.firstName.should.eql('Emeka');
         res.body.message.should.equal('username field cannot be empty');
         if (err) return done(err);
         done();
@@ -108,9 +107,9 @@ describe('User signup', () => {
         done();
       });
   });
-  it('should return a message for null firstName field', (done) => {
+  it('should return a message for null fullName field', (done) => {
     testData = Object.assign({}, testValidUsers[0]);
-    testData.firstName = '';
+    testData.fullName = '';
     server
       .post(signupUrl)
       .set('Connection', 'keep alive')
@@ -120,24 +119,7 @@ describe('User signup', () => {
       .send(testData)
       .end((err, res) => {
         res.status.should.equal(400);
-        res.body.message.should.equal('firstName field cannot be empty');
-        if (err) return done(err);
-        done();
-      });
-  });
-  it('should return a message for null lastName field', (done) => {
-    testData = Object.assign({}, testValidUsers[0]);
-    delete testData.lastName;
-    server
-      .post(signupUrl)
-      .set('Connection', 'keep alive')
-      .set('Accept', 'application/json')
-      .set('Content-Type', 'application/json')
-      .type('form')
-      .send(testData)
-      .end((err, res) => {
-        res.status.should.equal(400);
-        res.body.message.should.equal('lastName field cannot be empty');
+        res.body.message.should.equal('fullName field cannot be empty');
         if (err) return done(err);
         done();
       });
@@ -210,9 +192,9 @@ describe('User signup', () => {
         done();
       });
   });
-  it('should return a message for invalid first name length', (done) => {
+  it('should return a message for invalid full name length', (done) => {
     testData = Object.assign({}, testValidUsers[0]);
-    testData.firstName = 'a'.repeat(64);
+    testData.fullName = 'a'.repeat(64);
     server
       .post(signupUrl)
       .set('Connection', 'keep alive')
@@ -222,29 +204,12 @@ describe('User signup', () => {
       .send(testData)
       .end((err, res) => {
         res.status.should.equal(400);
-        res.body.message.should.equal('firstName must have less than 51 characters');
+        res.body.message.should.equal('fullName must have less than 51 characters');
         if (err) return done(err);
         done();
       });
   });
-  it('should return a message for invalid last name length', (done) => {
-    testData = Object.assign({}, testValidUsers[0]);
-    testData.lastName = 'a'.repeat(64);
-    server
-      .post(signupUrl)
-      .set('Connection', 'keep alive')
-      .set('Accept', 'application/json')
-      .set('Content-Type', 'application/json')
-      .type('form')
-      .send(testData)
-      .end((err, res) => {
-        res.status.should.equal(400);
-        res.body.message.should.equal('lastName must have less than 51 characters');
-        if (err) return done(err);
-        done();
-      });
-  });
-  it('should return 400 status error for adding spaces inbetween username', (done) => {
+  it('should return 401 status error for adding spaces inbetween username', (done) => {
     server
       .post(signupUrl)
       .set('Connection', 'keep alive')
@@ -253,13 +218,13 @@ describe('User signup', () => {
       .type('form')
       .send(testValidUsers[3])
       .end((err, res) => {
-        res.status.should.equal(400);
+        res.status.should.equal(401);
         res.body.error.should.equal('Validation error: Username must start with a letter and have no spaces.');
         if (err) return done(err);
         done();
       });
   });
-  it('should return a 400 status for entering an existing username', (done) => {
+  it('should return a 401 status for entering an existing username', (done) => {
     testData = Object.assign({}, testValidUsers[0]);
     testData.email = 'jack@yahoo.com';
     server
@@ -270,30 +235,13 @@ describe('User signup', () => {
       .type('form')
       .send(testData)
       .end((err, res) => {
-        res.status.should.equal(400);
+        res.status.should.equal(401);
         res.body.error.should.equal('Username already exists');
         if (err) return done(err);
         done();
       });
   });
-  it('should return a message for last name field containing numbers', (done) => {
-    testData = Object.assign({}, testValidUsers[0]);
-    testData.lastName = `112${12}`;
-    server
-      .post(signupUrl)
-      .set('Connection', 'keep alive')
-      .set('Accept', 'application/json')
-      .set('Content-Type', 'application/json')
-      .type('form')
-      .send(testData)
-      .end((err, res) => {
-        res.status.should.equal(400);
-        res.body.error[0].should.equal('V');
-        if (err) return done(err);
-        done();
-      });
-  });
-  it('should return a 400 status for entering an invalid email', (done) => {
+  it('should return a 401 status for entering an invalid email', (done) => {
     server
       .post(signupUrl)
       .set('Connection', 'keep alive')
@@ -302,7 +250,7 @@ describe('User signup', () => {
       .type('form')
       .send(testValidUsers[2])
       .end((err, res) => {
-        res.status.should.equal(400);
+        res.status.should.equal(401);
         res.body.error.should.equal('Validation error: Invalid Email');
         if (err) return done(err);
         done();
@@ -350,8 +298,8 @@ describe('User signin', () => {
       .type('form')
       .send(incorrectPassword[0])
       .end((err, res) => {
-        res.status.should.equal(404);
-        res.body.message.should.equal('Authentication failed. Incorrect password');
+        res.status.should.equal(401);
+        res.body.message.should.equal('Authentication failed!');
         if (err) return done(err);
         done();
       });

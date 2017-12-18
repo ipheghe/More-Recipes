@@ -1,10 +1,10 @@
 export default (sequelize, DataTypes) => {
   const Recipe = sequelize.define('Recipe', {
-    recipeName: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    recipeDescription: {
+    description: {
       type: DataTypes.STRING,
     },
     ingredients: {

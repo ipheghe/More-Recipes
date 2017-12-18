@@ -1,10 +1,15 @@
-import user from './user';
-import recipe from './recipe';
-import review from './review';
-import category from './category';
-import favorite from './favorite';
-import vote from './vote';
+import userRoute from './user';
+import recipeRoute from './recipe';
+import reviewRoute from './review';
+import categoryRoute from './category';
+import favoriteRoute from './favorite';
+import voteRoute from './vote';
 
-export default {
-  user, recipe, review, category, favorite, vote
+export {
+  userRoute,
+  recipeRoute,
+  reviewRoute,
+  categoryRoute,
+  favoriteRoute,
+  voteRoute
 };
