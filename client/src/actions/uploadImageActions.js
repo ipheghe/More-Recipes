@@ -6,7 +6,9 @@ import { IMAGE_FILE_FAILURE, IMAGE_FILE_REQUEST, IMAGE_FILE_SUCCESSFUL } from '.
 * @description upload image request action
  * @type {function} uploadImageRequest
  * @export uploadImageRequest
+ *
  * @param {object} imageData
+ *
  * @returns {action} dispatch
  */
 export const uploadImageRequest = imageData => ({
@@ -18,7 +20,9 @@ export const uploadImageRequest = imageData => ({
 * @description upload image request action
  * @type {function} uploadImageRequest
  * @export uploadImageRequest
+ *
  * @param {object} response
+ *
  * @returns {action} dispatch
  */
 export const uploadImageResponse = response => ({

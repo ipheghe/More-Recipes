@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MainHeader } from '../../common';
+import { MainHeader, Footer } from '../../common';
 import { loginUser } from '../../actions/authActions';
 import { resetPassword } from '../../actions/userActions';
+import RecoverPasswordModal from './recoverPasswordModal.jsx';
 
 /**
  * Login form commponent
@@ -14,7 +15,6 @@ class Login extends React.Component {
   static propTypes = {
     loginUser: PropTypes.func.isRequired,
     resetPassword: PropTypes.func.isRequired,
-    message: PropTypes.string.isRequired,
     errorMessage: PropTypes.string.isRequired
   };
 
@@ -30,11 +30,27 @@ class Login extends React.Component {
       email: '',
       hasErrored: false,
       errorMessage: '',
-      modalError: ''
+      modalIsOpen: false,
+      status: 'Success',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleResetPassword = this.handleResetPassword.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  /**
+   * @param {any} nextprops
+   * @memberOf UserSection
+   * @returns {*} void
+   */
+  componentWillReceiveProps(nextprops) {
+    if (nextprops.state.user.status.length > 0) {
+      this.setState({
+        status: nextprops.state.user.status
+      });
+    }
   }
 
   /**
@@ -60,6 +76,18 @@ class Login extends React.Component {
   }
 
   /**
+   * opens forgotPasswordModal
+   * @param {SytheticEvent} event
+   * @returns {*} void
+   */
+  openModal(event) {
+    event.preventDefault();
+    this.setState({
+      modalIsOpen: true
+    });
+  }
+
+  /**
    * handle Reset password form event
    * @param {SytheticEvent} event
    * @returns {*} void
@@ -70,15 +98,17 @@ class Login extends React.Component {
       setTimeout(() => {
         this.setState({
           hasErrored: false,
-          modalError: ''
+          errorMessage: ''
         });
       }, 3000);
       return this.setState({
-        modalError: 'email field cannot be empty'
+        errorMessage: 'email field cannot be empty'
       });
     }
     this.setState({
       email: '',
+      hasErrored: false,
+      errorMessage: ''
     });
     this.props.resetPassword(this.state.email);
   }
@@ -107,11 +137,31 @@ class Login extends React.Component {
         errorMessage: 'password field cannot be empty'
       });
     }
-    this.setState({
-      hasErrored: false,
-      errorMessage: ''
-    });
+
+
     return this.props.loginUser({ username, password });
+  }
+
+  /**
+   * handle after open modal event
+   * @returns {*} void
+   */
+  afterOpenModal() {
+    this.subtitle.style.color = '#252A2D';
+  }
+
+  /**
+   * handle close modal event
+   * @returns {*} void
+   */
+  closeModal() {
+    this.setState({
+      email: '',
+      modalIsOpen: false,
+      hasErrored: false,
+      errorMessage: '',
+      status: 'Success'
+    });
   }
 
   /**
@@ -141,10 +191,54 @@ class Login extends React.Component {
   }
 
   /**
+   * handle recover password form event error
+   * @returns {string} errorMessage
+   */
+  renderModalAlert() {
+    if (this.state.hasErrored) {
+      return (
+        <div>
+          <p className="alert error-alert" style={{ color: 'white' }}>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
+            &nbsp;{this.state.errorMessage}
+          </p>
+        </div>
+      );
+    } else if (this.props.errorMessage) {
+      return (
+        <div>
+          <p className="alert error-alert" style={{ color: 'white' }}>
+            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
+            &nbsp;{this.props.errorMessage}
+          </p>
+        </div>
+      );
+    }
+  }
+
+  /**
    * render
    * @return {ReactElement} markup
    */
   render() {
+    const customStyles = {
+      overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.75)'
+      },
+      content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+      }
+    };
     return (
       <div>
         <MainHeader />
@@ -207,9 +301,8 @@ class Login extends React.Component {
                       <div className="text-right col-md-6">
                         <button
                           className="invisible-button"
-                          data-toggle="modal"
-                          data-target="#myModal"
                           style={{ color: '#2F94D2' }}
+                          onClick={this.openModal}
                         >Forgot your password?
                         </button>
                       </div>
@@ -241,72 +334,20 @@ class Login extends React.Component {
             </div>
           </div>
         </div>
-        <div
-          className="modal fade"
-          id="myModal"
-          tabIndex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h4 className="modal-title" id="myModalLabel">Forgot Password?</h4>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                {(this.props.message) ?
-                  <p className="alert error-alert">
-                    <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-                    &nbsp;{this.props.message}
-                  </p> : this.state.modalError
-                }
-                <div className="form-group">
-                  <label htmlFor="enterEmailForgot">Email address:</label>
-                  <div className="input-group input-group-lg">
-                    <span className="input-group-addon">
-                      <i className="fa fa-envelope" />
-                    </span>
-                    <input
-                      name="email"
-                      type="email"
-                      className="form-control"
-                      id="email"
-                      placeholder="Enter email"
-                      onChange={this.handleChange}
-                      value={this.state.email}
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  onClick={this.handleResetPassword}
-                >
-                  Recover Password
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        {
+          this.state.status === 'Success' ?
+            <RecoverPasswordModal
+              error={this.renderModalAlert()}
+              isOpen={this.state.modalIsOpen}
+              onClose={this.closeModal}
+              customStyles={customStyles}
+              email={this.state.email}
+              onChange={this.handleChange}
+              resetPassword={this.handleResetPassword}
+              errorMessage={this.state.errorMessage}
+            /> : ''
+        }
+        <Footer />
       </div>
     );
   }

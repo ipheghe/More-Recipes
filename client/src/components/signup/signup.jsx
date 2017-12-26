@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MainHeader } from '../../common';
+import { MainHeader, Footer } from '../../common';
 import { registerUser } from '../../actions/authActions';
 
 /**
@@ -66,17 +66,12 @@ class SignUp extends React.Component {
       fullName,
       mobileNumber,
       email,
-      password
+      password,
+      hasErrored
     } = this.state;
     const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     const numericExpression = /^[0-9]+$/;
     const regExpression = /^[A-Za-z][A-Za-z0-9-]+$/i;
-    setTimeout(() => {
-      this.setState({
-        hasErrored: false,
-        errorMessage: ''
-      });
-    }, 3000);
     if (!username.match(regExpression)) {
       return this.setState({
         hasErrored: true,
@@ -118,6 +113,14 @@ class SignUp extends React.Component {
         hasErrored: true,
         errorMessage: 'password must contain more than 7 chareacters'
       });
+    }
+    if (hasErrored === true) {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
     }
     this.setState({
       hasErrored: false,
@@ -282,16 +285,6 @@ class SignUp extends React.Component {
                           </button>
                         </a>
                       </div>
-                      <br />
-                      <div>
-                        <a href="/">
-                          <button
-                            type="button"
-                            className="btn btn-block btn-success"
-                          >Cancel
-                          </button>
-                        </a>
-                      </div>
                     </div>
                   </form>
                   <br />
@@ -300,6 +293,7 @@ class SignUp extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

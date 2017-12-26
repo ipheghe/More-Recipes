@@ -5,7 +5,8 @@ import {
   UserNavHeader,
   ProfileHeader,
   UserSection,
-  UserNavMenu
+  UserNavMenu,
+  Footer
 } from '../../common';
 import { getFavoriteRecipes } from '../../actions/favoriteActions';
 import FavoriteRecipeList from '../favoriteRecipeList/favoriteRecipeList.jsx';
@@ -98,6 +99,7 @@ class Favorite extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

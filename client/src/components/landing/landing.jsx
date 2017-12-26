@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MainHeader } from '../../common';
+import { MainHeader, Footer } from '../../common';
 import LandingRecipeList from '../landingRecipeList/landingRecipeList.jsx';
 import { getTopRecipes } from '../../actions/recipeActions';
 
@@ -12,7 +12,7 @@ import { getTopRecipes } from '../../actions/recipeActions';
 class Landing extends React.Component {
   static propTypes = {
     getTopRecipes: PropTypes.func.isRequired,
-    recipeData: PropTypes.arrayOf(PropTypes.object).isRequired
+    recipeList: PropTypes.arrayOf(PropTypes.object).isRequired
   };
 
   /**
@@ -77,17 +77,18 @@ class Landing extends React.Component {
             <h3>Welcome to the top recipes of the week</h3>
           </div>
           <div className="card-blocks-home" >
-            <LandingRecipeList recipes={this.props.recipeData} />
+            <LandingRecipeList recipes={this.props.recipeList} />
           </div>
         </section>
         <br />
+        <Footer />
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  recipeData: state.recipe.recipeData
+  recipeList: state.recipe.recipeList
 });
 
 export default connect(mapStateToProps, { getTopRecipes })(Landing);

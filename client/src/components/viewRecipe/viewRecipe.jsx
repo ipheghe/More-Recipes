@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { UserNavHeader, ReviewBox } from '../../common';
+import Loader from 'react-loaders';
+import { UserNavHeader, ReviewBox, Footer } from '../../common';
 import { getRecipe } from '../../actions/recipeActions';
-import { postReview } from '../../actions/reviewActions';
+import { postReview, getReviews } from '../../actions/reviewActions';
 import { upvoteRecipe, downvoteRecipe } from '../../actions/voteActions';
 import {
   favoriteRecipe,
@@ -21,6 +22,7 @@ class ViewRecipe extends React.Component {
   static propTypes = {
     getRecipe: PropTypes.func.isRequired,
     postReview: PropTypes.func.isRequired,
+    getReviews: PropTypes.func.isRequired,
     upvoteRecipe: PropTypes.func.isRequired,
     downvoteRecipe: PropTypes.func.isRequired,
     favoriteRecipe: PropTypes.func.isRequired,
@@ -29,12 +31,14 @@ class ViewRecipe extends React.Component {
     match: PropTypes.shape({
       params: PropTypes.objectOf(PropTypes.string),
     }).isRequired,
-    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    categories: PropTypes.arrayOf(PropTypes.object),
     recipe: PropTypes.shape({
       params: PropTypes.objectOf(PropTypes.string),
     }).isRequired,
+    reviews: PropTypes.arrayOf(PropTypes.object).isRequired,
     upvote: PropTypes.number.isRequired,
-    downvote: PropTypes.number.isRequired
+    downvote: PropTypes.number.isRequired,
+    userData: PropTypes.objectOf(PropTypes.string)
   };
 
   /**
@@ -45,6 +49,7 @@ class ViewRecipe extends React.Component {
     super(props);
     this.state = {
       recipe: {},
+      reviews: [],
       ingredients: {},
       directions: {},
       reviewMessage: '',
@@ -67,6 +72,7 @@ class ViewRecipe extends React.Component {
     const { id } = this.props.match.params;
     this.props.getRecipe(id);
     this.props.getFavoriteRecipe(id);
+    this.props.getReviews(id);
   }
 
   /**
@@ -75,13 +81,15 @@ class ViewRecipe extends React.Component {
    * @returns {*} void
    */
   componentWillReceiveProps(nextprops) {
-    if (nextprops.state.recipe) {
-      const { recipeList } = nextprops.state.recipe;
-      if (Object.keys(recipeList).length > 0) {
+    if (nextprops.state.recipe && nextprops.reviews) {
+      const { recipeData } = nextprops.state.recipe;
+      const reviewList = nextprops.reviews;
+      if (Object.keys(recipeData).length > 0) {
         this.setState({
-          recipe: Object.assign({}, this.state.recipe, recipeList),
-          ingredients: recipeList.ingredients.split(',').map(item => item.trim()),
-          directions: recipeList.directions.split(',').map(item => item.trim()),
+          recipe: Object.assign({}, this.state.recipe, recipeData),
+          reviews: Object.assign([], this.state.reviews, reviewList),
+          ingredients: recipeData.ingredients.split(',').map(item => item.trim()),
+          directions: recipeData.directions.split(',').map(item => item.trim()),
           isLoading: false,
         });
       }
@@ -91,8 +99,7 @@ class ViewRecipe extends React.Component {
       const { favoriteData } = nextprops.state.favorite;
       if (Object.keys(favoriteData).length < 1) {
         this.setState({
-          isFavorite: false,
-          isLoading: false,
+          isFavorite: false
         });
       }
     }
@@ -100,38 +107,37 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle change form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {object} state
    */
-  handleChange(e) {
+  handleChange(event) {
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
   /**
    * handle post review form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handlePostReview(e) {
-    e.preventDefault();
+  handlePostReview(event) {
+    event.preventDefault();
     this.setState({
       reviewMessage: ''
     });
     const { id } = this.props.match.params;
     const { reviewMessage } = this.state;
     this.props.postReview(reviewMessage, id);
-    this.props.getRecipe(id);
   }
 
   /**
    * handle upvote event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleUpvote = (e) => {
-    e.preventDefault();
+  handleUpvote = (event) => {
+    event.preventDefault();
     const { id } = this.props.match.params;
     this.props.upvoteRecipe(id);
     this.setState({
@@ -142,11 +148,11 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle downvote event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleDownvote = (e) => {
-    e.preventDefault();
+  handleDownvote = (event) => {
+    event.preventDefault();
     const { id } = this.props.match.params;
     this.props.downvoteRecipe(id);
     this.setState({
@@ -157,11 +163,11 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle favorite event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleFavoriteRecipe(e) {
-    e.preventDefault();
+  handleFavoriteRecipe(event) {
+    event.preventDefault();
     const { id } = this.props.match.params;
     this.props.favoriteRecipe(id, this.categoryInput.value);
     this.setState({
@@ -171,11 +177,11 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle unfavorite event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleUnfavoriteRecipe(e) {
-    e.preventDefault();
+  handleUnfavoriteRecipe(event) {
+    event.preventDefault();
     const { id } = this.props.match.params;
     this.props.unfavoriteRecipe(id);
     this.setState({
@@ -185,7 +191,6 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle handleVote event
-   * @param {SytheticEvent} e
    * @returns {*} void
    */
   handleUpVote() {
@@ -197,7 +202,6 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle handleVote event
-   * @param {SytheticEvent} e
    * @returns {*} void
    */
   handleDownVote() {
@@ -212,8 +216,8 @@ class ViewRecipe extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<div>IS LOADING....</div>);
-    const reviewFields = this.state.recipe.reviews;
+    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
+    const reviewFields = this.state.reviews;
     return (
       <div>
         <UserNavHeader />
@@ -222,10 +226,10 @@ class ViewRecipe extends React.Component {
             <div className="container">
               <div className="row recipe-top">
                 <section className="col-md-6 title-area">
-                  <h3>{this.state.recipe.recipeName}</h3>
+                  <h3>{this.state.recipe.name}</h3>
                   <br />
                   <div>
-                    <p>{this.state.recipe.recipeDescription}</p>
+                    <p>{this.state.recipe.description}</p>
                   </div>
                   <br />
                   <div>
@@ -325,7 +329,7 @@ class ViewRecipe extends React.Component {
                   reviewFields.map(review => (
                     <ReviewBox
                       key={review.id}
-                      username={review.User.username}
+                      username={review.User ? review.User.username : this.props.userData.username}
                       createdAt={review.createdAt.substring(0, 10)}
                       message={review.message}
                     />
@@ -375,16 +379,24 @@ class ViewRecipe extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
 }
+
+ViewRecipe.defaultProps = {
+  categories: null,
+  userData: {}
+};
+
 const mapStateToProps = state => ({
   categories: state.category.categoryList,
-  recipe: state.recipe.recipeList,
-  reviewData: state.review.reviewData,
+  recipe: state.recipe.recipeData,
+  reviews: state.review.reviewList,
   upvote: state.vote.upvote,
-  downvote: state.vote.downvote
+  downvote: state.vote.downvote,
+  userData: state.auth.userData
 });
 
 export default connect(
@@ -393,6 +405,7 @@ export default connect(
     getRecipe,
     getFavoriteRecipe,
     postReview,
+    getReviews,
     upvoteRecipe,
     downvoteRecipe,
     favoriteRecipe,

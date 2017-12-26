@@ -166,11 +166,7 @@ module.exports = {
             'transform-class-properties'],
         }
       },
-      {
-        test: /\.scss/,
-        loader: 'style-loader!css-loader!sass-loader'
-      },
-      // { test: /\.scss$/, loaders: ['style-loader', 'css-loader', 'sass-loader'] },
+      { test: /\.scss$/, loaders: ['style-loader', 'css-loader', 'sass-loader'] },
       {
         test: /\.css$/,
         loaders: [

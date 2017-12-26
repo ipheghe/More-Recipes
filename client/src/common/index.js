@@ -7,6 +7,7 @@ import UserNavMenu from './userNavMenu.jsx';
 import ReviewBox from './reviewBox.jsx';
 import ManageCategoryModal from './manageCategoryModal.jsx';
 import ChangePasswordModal from './changePasswordModal.jsx';
+import Footer from './footer.jsx';
 
 export {
   MainHeader,
@@ -17,5 +18,6 @@ export {
   UserNavMenu,
   ReviewBox,
   ManageCategoryModal,
-  ChangePasswordModal
+  ChangePasswordModal,
+  Footer
 };

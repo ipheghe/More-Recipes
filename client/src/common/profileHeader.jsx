@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getUserCategories } from './../actions/categoryActions';
-import { getRecipesBySearch } from './../actions/recipe';
+import { getRecipesBySearch } from './../actions/recipeActions';
 
 /**
  * ProfileHeader component
@@ -12,7 +12,7 @@ import { getRecipesBySearch } from './../actions/recipe';
  */
 class ProfileHeader extends React.Component {
   static propTypes = {
-    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    categories: PropTypes.arrayOf(PropTypes.object),
     getRecipesBySearch: PropTypes.func.isRequired
   };
 
@@ -132,6 +132,9 @@ class ProfileHeader extends React.Component {
     );
   }
 }
+ProfileHeader.defaultProps = {
+  categories: null
+};
 const mapStateToProps = state => ({
   categories: state.category.categoryList
 });

@@ -13,12 +13,14 @@ import {
 /**
  * @description update recipe action
  * @type {function} updateRecipe
+ *
  * @param {int} userId
- * @param {str} username
- * @param {str} fullName
- * @param {int} mobileNumber
- * @param {str} email
- * @returns {object} dispatch
+ * @param {string} username
+ * @param {string} fullName
+ * @param {number} mobileNumber
+ * @param {string} email
+ *
+ * @returns {action} dispatch
  */
 const updateUserRecord = (userId, username, fullName, mobileNumber, email) => {
   const data = {
@@ -47,10 +49,12 @@ const updateUserRecord = (userId, username, fullName, mobileNumber, email) => {
 /**
  * @description action to change password
  * @type {function} changePassword
- * @param {int} userId
- * @param {str} password
- * @param {str} newPassword
- * @returns {object} dispatch
+ *
+ * @param {number} userId
+ * @param {string} password
+ * @param {string} newPassword
+ *
+ * @returns {action} dispatch
  */
 const changePassword = (userId, password, newPassword) => {
   const data = {
@@ -77,8 +81,10 @@ const changePassword = (userId, password, newPassword) => {
 /**
  * @description action to reset password
  * @type {function} resetPassword
- * @param {str} email
- * @returns {object} dispatch
+ *
+ * @param {string} email
+ *
+ * @returns {action} dispatch
  */
 const resetPassword = (email) => {
   const data = {
@@ -105,9 +111,11 @@ const resetPassword = (email) => {
 /**
  * @description action to verify password token for user to put new password
  * @type {function} verifyTokenPassword
- * @param {str} password
- * @param {str} token
- * @returns {object} dispatch
+ *
+ * @param {string} password
+ * @param {string} token
+ *
+ * @returns {action} dispatch
  */
 const verifyTokenPassword = (password, token) => {
   const data = {

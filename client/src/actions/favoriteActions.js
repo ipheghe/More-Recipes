@@ -14,9 +14,11 @@ import {
 /**
  * @description favorite recipe action
  * @type {function} favoriteRecipe
- * @param {object} recipeId
- * @param {object} categoryId
- * @returns {array} dispatch
+ *
+ * @param {number} recipeId
+ * @param {number} categoryId
+ *
+ * @returns {action} dispatch
  */
 const favoriteRecipe = (recipeId, categoryId) => {
   const data = {
@@ -43,9 +45,11 @@ const favoriteRecipe = (recipeId, categoryId) => {
 /**
  * @description favorite recipe action
  * @type {function} favoriteRecipe
- * @param {object} recipeId
- * @param {object} categoryId
- * @returns {array} dispatch
+ *
+ * @param {number} recipeId
+ * @param {number} categoryId
+ *
+ * @returns {action} dispatch
  */
 const unfavoriteRecipe = (recipeId) => {
   const url = `/favorite/${recipeId}`;
@@ -67,8 +71,10 @@ const unfavoriteRecipe = (recipeId) => {
 /**
  * @description action to get user favorite recipe
  * @type {function} getFavoriteRecipe
- * @param {object} recipeId
- * @returns {array} dispatch
+ *
+ * @param {number} recipeId
+ *
+ * @returns {action} dispatch
  */
 const getFavoriteRecipe = (recipeId) => {
   const url = `/favorite/${recipeId}`;
@@ -78,7 +84,8 @@ const getFavoriteRecipe = (recipeId) => {
 /**
  * @description action to get user favorite recipes
  * @type {function} getFavoriteRecipes
- * @returns {array} dispatch
+ *
+ * @returns {action} dispatch
  */
 const getFavoriteRecipes = () => {
   const url = '/favorites';

@@ -16,12 +16,10 @@ export const BASE_URL = '/api/v1';
  * @returns {*} void
  */
 export const errorHandler = (dispatch, error, type) => {
+  console.log(error, '-----------------_>');
   const errorMessage = error.response ? error.response.data : error;
-  const errorData = {
-    data: {
-      message: ''
-    }
-  };
+  const errorData = errorMessage;
+  errorData.data.message = '';
 
   dispatch({
     type,

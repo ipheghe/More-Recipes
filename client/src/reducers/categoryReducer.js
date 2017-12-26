@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   error: '',
   message: '',
   categoryList: [],
-  categoryData: [],
+  userCategoryList: [],
   categoryName: ''
 };
 
@@ -21,16 +21,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         message: action.payload.message,
-        categoryName: action.payload.categoryData.name,
-        categoryList: [...state.categoryList, action.payload.categoryData]
+        categoryName: action.payload.category.name,
+        categoryList: [...state.categoryList, action.payload.category]
       };
     case UPDATE_CATEGORY:
       return {
         ...state,
         message: action.payload.message,
-        categoryName: action.payload.categoryData.name,
+        categoryName: action.payload.category.name,
         categoryList: [...state.categoryList.map(item => (
-          item.id === action.payload.categoryData.id ? action.payload.categoryData : item
+          item.id === action.payload.category.id ? action.payload.category : item
         ))]
       };
     case DELETE_CATEGORY:
@@ -39,18 +39,18 @@ export default (state = INITIAL_STATE, action) => {
         message: action.payload.message,
         categoryName: '',
         categoryList: [
-          ...state.categoryList.filter(category => category.id !== state.categoryData[0].id)
+          ...state.categoryList.filter(category => category.id !== state.userCategoryList[0].id)
         ]
       };
     case FETCH_USER_CATEGORIES:
       return {
         ...state,
-        categoryList: action.payload.userCategoryList
+        categoryList: action.payload.userCategories
       };
     case FETCH_USER_CATEGORY:
       return {
         ...state,
-        categoryData: action.payload.userCategoryData
+        userCategoryList: action.payload.userCategory
       };
     case CATEGORY_ERROR:
       return {

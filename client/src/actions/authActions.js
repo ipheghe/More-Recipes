@@ -21,12 +21,14 @@ import decodeToken from '../../../server/helpers/decodeToken';
  * @description signup user action
  * @type {function} registerUser
  * @export registerUser
+ *
  * @param {str} username
  * @param {str} password
  * @param {str} fullName
  * @param {int} mobileNumber
  * @param {str} email
- * @returns {object} dispatch
+ *
+ * @returns {action} dispatch
  */
 export const registerUser = ({
   username,
@@ -36,7 +38,7 @@ export const registerUser = ({
   email
 }) =>
   (dispatch) => {
-    axios.post(`${BASE_URL}/users/signup`, {
+    axios.post(`${BASE_URL}/user/signup`, {
       username,
       password,
       fullName,
@@ -71,9 +73,11 @@ export const registerUser = ({
  * @description add recipe action
  * @type {function} loginUser
  * @export loginUser
+ *
  * @param {str} username
  * @param {str} password
- * @returns {array} response
+ *
+ * @returns {action} response
  * @callback {object}
  */
 export const loginUser = ({
@@ -81,7 +85,7 @@ export const loginUser = ({
   password
 }) =>
   (dispatch) => {
-    axios.post(`${BASE_URL}/users/signin`, {
+    axios.post(`${BASE_URL}/user/signin`, {
       username,
       password
     })
@@ -114,9 +118,11 @@ export const loginUser = ({
 /**
  * @description logoutUser user action
  * @type {function} logoutUser
+ *
  * @export logoutUser
  * @param {object} error
- * @returns {array} response
+ *
+ * @returns {action} dispatch
  */
 export const logoutUser = error =>
   (dispatch) => {
@@ -137,7 +143,7 @@ export const fetchUsername = () =>
   (dispatch) => {
     const decodedToken = decodeToken(window.localStorage.getItem('token'));
     const { username } = decodedToken.user;
-    axios.get(`${BASE_URL}/users/${username}`)
+    axios.get(`${BASE_URL}/user/${username}`)
       .then((response) => {
         dispatch({
           type: FETCH_USER,

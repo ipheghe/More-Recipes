@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import Logo from '../../public/images/recipe_logo.png';
+import Logo from '../../public/assets/images/recipe_logo.png';
 
 /**
  * ResetPasswordHeader commponent

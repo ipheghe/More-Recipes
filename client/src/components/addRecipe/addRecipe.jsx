@@ -5,7 +5,8 @@ import {
   UserNavHeader,
   ProfileHeader,
   UserSection,
-  UserNavMenu
+  UserNavMenu,
+  Footer
 } from '../../common';
 import { addRecipe } from '../../actions/recipeActions';
 import { uploadImage } from '../../actions/uploadImageActions';
@@ -58,22 +59,22 @@ class AddRecipe extends React.Component {
 
   /**
    * handle change form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {object} state
    */
-  handleChange(e) {
+  handleChange(event) {
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
   /**
    * handle image change form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {object} state
    */
-  handleImageChange(e) {
-    const imageUrl = e.target.files[0];
+  handleImageChange(event) {
+    const imageUrl = event.target.files[0];
     this.setState({
       imageUrl
     });
@@ -82,52 +83,64 @@ class AddRecipe extends React.Component {
 
   /**
    * handle add recipe form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleAddRecipe(e) {
-    e.preventDefault();
+  handleAddRecipe(event) {
+    event.preventDefault();
+    this.validateFormField();
+  }
+
+  /**
+   * validateFormField
+   * @returns {string} errorMessage
+   */
+  validateFormField() {
     const {
-      recipeName, recipeDetail, imageUrl, ingredients, directions
+      recipeName,
+      recipeDetail,
+      ingredients,
+      directions,
+      imageUrl,
+      hasErrored
     } = this.state;
-    const isRecipeFieldsvalid = false;
-    if (isRecipeFieldsvalid) {
+    if (recipeName === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Recipe name field cannot be empty'
+      });
+    }
+    if (recipeDetail === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Recipe Detail field cannot be empty'
+      });
+    }
+    if (ingredients === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'ingredients field cannot be empty'
+      });
+    }
+    if (directions === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'directions field cannot be empty'
+      });
+    }
+    if (imageUrl === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Recipe image field cannot be empty'
+      });
+    }
+    if (hasErrored === true) {
       setTimeout(() => {
         this.setState({
           hasErrored: false,
           errorMessage: ''
         });
       }, 3000);
-      if (recipeName === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'Recipe name field cannot be empty'
-        });
-      }
-      if (recipeDetail === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'Recipe Detail field cannot be empty'
-        });
-      }
-      if (ingredients === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'ingredients field cannot be empty'
-        });
-      }
-      if (directions === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'directions field cannot be empty'
-        });
-      }
-      if (imageUrl === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'Recipe image field cannot be empty'
-        });
-      }
     }
     this.setState({
       hasErrored: false,
@@ -151,7 +164,7 @@ class AddRecipe extends React.Component {
     if (this.state.hasErrored) {
       return (
         <div>
-          <p className="alert error-alert" style={{ color: 'white' }}>
+          <p className="alert error-alert">
             <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
             &nbsp;{this.state.errorMessage}
           </p>
@@ -160,7 +173,7 @@ class AddRecipe extends React.Component {
     } else if (this.props.errorMessage) {
       return (
         <div>
-          <p className="alert error-alert" style={{ color: 'white' }}>
+          <p className="alert error-alert">
             <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
             &nbsp;{this.props.errorMessage}
           </p>
@@ -272,6 +285,7 @@ class AddRecipe extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

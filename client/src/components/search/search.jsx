@@ -5,7 +5,8 @@ import {
   UserNavHeader,
   ProfileHeader,
   UserSection,
-  UserNavMenu
+  UserNavMenu,
+  Footer
 } from '../../common';
 import RecipeList from '../recipeList/recipeList.jsx';
 
@@ -18,7 +19,7 @@ import RecipeList from '../recipeList/recipeList.jsx';
 class Search extends React.Component {
   static propTypes = {
     message: PropTypes.string.isRequired,
-    searchResult: PropTypes.arrayOf(PropTypes.object)
+    searchResult: PropTypes.arrayOf(PropTypes.object).isRequired
   };
 
   /**
@@ -84,6 +85,7 @@ class Search extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

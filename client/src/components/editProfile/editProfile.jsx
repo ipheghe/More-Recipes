@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { UserNavHeader, ProfileHeader, UserSection } from '../../common';
+import {
+  UserNavHeader,
+  ProfileHeader,
+  UserSection,
+  Footer
+} from '../../common';
 import { updateUserRecord } from '../../actions/userActions';
 
 /**
@@ -47,7 +52,6 @@ class EditProfile extends React.Component {
         this.setState({
           username: nextprops.userData.username,
           fullName: nextprops.userData.fullName,
-          lastName: nextprops.userData.lastName,
           mobileNumber: nextprops.userData.mobileNumber,
           email: nextprops.userData.email
         });
@@ -201,7 +205,7 @@ class EditProfile extends React.Component {
                           </div>
                         </div>
                         <div className="form-group">
-                          <label htmlFor="enterFirstName">FullName Name:</label>
+                          <label htmlFor="enterFirstName">Full Name:</label>
                           <div className="input-group input-group-lg">
                             <span className="input-group-addon">
                               <i className="fa fa-user-o" />
@@ -256,7 +260,7 @@ class EditProfile extends React.Component {
                         </div>
                         <div className="edit-profile-button">
                           <button type="submit" className="btn btn-success" >Update</button>
-                          <a href="#dashboard"><button type="button" className="btn btn-success">Cancel</button></a>
+                          <a href="#dashboard"><button type="button" className="btn btn-danger">Cancel</button></a>
                         </div>
                       </form>
                       {this.state.hasErrored ?
@@ -272,6 +276,7 @@ class EditProfile extends React.Component {
               </div>
             </div>
           </div>
+          <Footer />
         </div>
       );
     }

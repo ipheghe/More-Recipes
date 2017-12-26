@@ -9,7 +9,6 @@ const INITIAL_STATE = {
   error: '',
   message: '',
   userData: {},
-  recipeData: [],
   authenticated: false,
   categories: []
 };

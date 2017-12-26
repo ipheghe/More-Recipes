@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import ReduxToastr from 'react-redux-toastr';
 import App from './App';
-import configureStore from '../store/configure-store';
-import '../../public/style.css';
+import configureStore from '../store';
+import '../../public/style.scss';
 import '../../../node_modules/font-awesome/css/font-awesome.min.css';
 import { AUTH_USER } from '../actions/types';
-import { logoutUser } from '../actions/auth';
+import { logoutUser } from '../actions/authActions';
 import decodeToken from '../helpers/decodeToken';
 
 
@@ -40,5 +40,5 @@ ReactDOM.render(<Provider store={store}>
       progressBar
     />
   </div>
-                </Provider>, app);
+</Provider>, app);
 
