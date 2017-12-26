@@ -11,9 +11,6 @@ import {
   FAVORITE_ERROR
 } from './types';
 
-//= ===============================
-// Favorite actions
-//= ===============================
 /**
  * @description favorite recipe action
  * @type {function} favoriteRecipe
@@ -26,7 +23,7 @@ const favoriteRecipe = (recipeId, categoryId) => {
     recipeId,
     categoryId
   };
-  const url = `/recipes/${recipeId}/${categoryId}/favorites`;
+  const url = `/recipe/${recipeId}/${categoryId}/favorite`;
   const directTo = '';
   const toastMessage = '';
   const constant = '';
@@ -51,7 +48,7 @@ const favoriteRecipe = (recipeId, categoryId) => {
  * @returns {array} dispatch
  */
 const unfavoriteRecipe = (recipeId) => {
-  const url = `/favorites/${recipeId}`;
+  const url = `/favorite/${recipeId}`;
   const directTo = '';
   const toastMessage = '';
   const constant = '';

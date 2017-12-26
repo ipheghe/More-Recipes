@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MainHeader } from '../../views/index';
+import { MainHeader } from '../../common';
 import LandingRecipeList from '../landingRecipeList/landingRecipeList.jsx';
-import { getTopRecipes } from '../../actions/recipe';
+import { getTopRecipes } from '../../actions/recipeActions';
 
 /**
  * Landing page commponent

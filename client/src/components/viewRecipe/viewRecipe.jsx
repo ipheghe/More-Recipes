@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { UserNavHeader, ReviewBox } from '../../views/index';
-import { getRecipe } from '../../actions/recipe';
-import { postReview } from '../../actions/review';
-import { upvoteRecipe, downvoteRecipe } from '../../actions/vote';
-import { favoriteRecipe, unfavoriteRecipe, getFavoriteRecipe } from '../../actions/favorite';
+import { UserNavHeader, ReviewBox } from '../../common';
+import { getRecipe } from '../../actions/recipeActions';
+import { postReview } from '../../actions/reviewActions';
+import { upvoteRecipe, downvoteRecipe } from '../../actions/voteActions';
+import {
+  favoriteRecipe,
+  unfavoriteRecipe,
+  getFavoriteRecipe
+} from '../../actions/favoriteActions';
 
 /**
  * ViewRecipe component

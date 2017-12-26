@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { UserNavHeader, ProfileHeader, UserSection, UserNavMenu } from '../../views/index';
-import { addRecipe } from '../../actions/recipe';
-import { uploadImage } from '../../actions/uploadImage';
+import {
+  UserNavHeader,
+  ProfileHeader,
+  UserSection,
+  UserNavMenu
+} from '../../common';
+import { addRecipe } from '../../actions/recipeActions';
+import { uploadImage } from '../../actions/uploadImageActions';
 
 /**
  * AddRecipe component

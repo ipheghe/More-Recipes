@@ -15,21 +15,19 @@ import {
  * @type {function} updateRecipe
  * @param {int} userId
  * @param {str} username
- * @param {str} firstName
- * @param {str} lastName
+ * @param {str} fullName
  * @param {int} mobileNumber
  * @param {str} email
  * @returns {object} dispatch
  */
-const updateUserRecord = (userId, username, firstName, lastName, mobileNumber, email) => {
+const updateUserRecord = (userId, username, fullName, mobileNumber, email) => {
   const data = {
     username,
-    firstName,
-    lastName,
+    fullName,
     mobileNumber,
     email
   };
-  const url = `/users/${userId}`;
+  const url = `/user/${userId}`;
   const directTo = '#dashboard';
   const message = 'User Profile updated Successfully';
   const constant = 'UPDATE_USER';
@@ -59,7 +57,7 @@ const changePassword = (userId, password, newPassword) => {
     password,
     newPassword
   };
-  const url = `/users/changePassword/${userId}`;
+  const url = `/user/changePassword/${userId}`;
   const directTo = '#login';
   const message = 'User Password changed Successfully';
   const constant = 'CHANGE_PASSWORD';
@@ -86,7 +84,7 @@ const resetPassword = (email) => {
   const data = {
     email
   };
-  const url = '/users/forgotPassword';
+  const url = '/user/forgotPassword';
   const directTo = '#';
   const message =
     'Password Reset Successfully! Please check your email to and follow link to create a new password';
@@ -115,7 +113,7 @@ const verifyTokenPassword = (password, token) => {
   const data = {
     password
   };
-  const url = `/users/reset-password/${token}`;
+  const url = `/user/reset-password/${token}`;
   const directTo = '#';
   const message = 'new user password created Successfully';
   const constant = 'VERIFY_PASSWORD_TOKEN';

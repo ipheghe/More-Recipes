@@ -16,7 +16,7 @@ import {
  */
 const addCategory = (name) => {
   const data = { name };
-  const url = '/users/categories';
+  const url = '/user/category';
   const directTo = '';
   const toastMessage = '';
   const toastrConstant = '';
@@ -43,7 +43,7 @@ const addCategory = (name) => {
  */
 const updateCategory = (categoryId, name) => {
   const data = { name };
-  const url = `/users/categories/${categoryId}`;
+  const url = `/user/category/${categoryId}`;
   const directTo = '';
   const message = '';
   const constant = '';
@@ -67,7 +67,7 @@ const updateCategory = (categoryId, name) => {
  * @returns {array} dispatch
  */
 const deleteCategory = (categoryId) => {
-  const url = `/users/categories/${categoryId}`;
+  const url = `/user/category/${categoryId}`;
   const directTo = '';
   const toastMessage = '';
   const constant = '';
@@ -100,7 +100,7 @@ const getUserCategories = () => {
  * @returns {object} dispatch
  */
 const getUserCategory = (categoryId) => {
-  const url = `/category/users/${categoryId}`;
+  const url = `/categories/users/${categoryId}`;
   return dispatch => getData(FETCH_USER_CATEGORY, CATEGORY_ERROR, true, url, dispatch);
 };
 

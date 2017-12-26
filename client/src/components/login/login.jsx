@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MainHeader } from '../../views/index';
-import { loginUser } from '../../actions/auth';
+import { MainHeader } from '../../common';
+import { loginUser } from '../../actions/authActions';
 import { resetPassword } from '../../actions/userActions';
 
 /**
@@ -218,7 +218,6 @@ class Login extends React.Component {
                       <div>
                         <a href="#dashboard">
                           <button
-                            type="submit"
                             className="btn btn-block btn-success"
                             onClick={this.handleLogin}
                           >Login

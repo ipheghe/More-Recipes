@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { UserNavHeader, ProfileHeader, UserSection, UserNavMenu } from '../../views/index';
+import {
+  UserNavHeader,
+  ProfileHeader,
+  UserSection,
+  UserNavMenu
+} from '../../common';
 import RecipeList from '../recipeList/recipeList.jsx';
-import { getUserRecipes } from '../../actions/recipe';
+import { getUserRecipes } from '../../actions/recipeActions';
 
 /**
  * MyRecipe component

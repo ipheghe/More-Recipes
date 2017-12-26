@@ -1,10 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { UserNavHeader, ProfileHeader, UserSection, UserNavMenu } from '../../views/index';
+import {
+  UserNavHeader,
+  ProfileHeader,
+  UserSection,
+  UserNavMenu
+} from '../../common';
 import { fetchUsername } from '../../actions/auth';
-import { updateRecipe, deleteRecipe, getUserRecipes, getRecipe } from '../../actions/recipe';
-import { uploadImage } from '../../actions/uploadImage';
+import {
+  updateRecipe,
+  deleteRecipe,
+  getUserRecipes,
+  getRecipe
+} from '../../actions/recipeActions';
+import { uploadImage } from '../../actions/uploadImageActions';
 
 /**
  * ManageRecipe component

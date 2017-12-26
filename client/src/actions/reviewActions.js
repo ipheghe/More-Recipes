@@ -1,10 +1,6 @@
 import { getData, postData } from './index';
 import { REVIEW_RECIPE, RETRIEVE_RECIPE_REVIEWS, REVIEW_ERROR } from './types';
 
-//= ===============================
-// Review actions
-//= ===============================
-
 /**
 * @description post review action
  * @type {function} postReview
@@ -14,7 +10,7 @@ import { REVIEW_RECIPE, RETRIEVE_RECIPE_REVIEWS, REVIEW_ERROR } from './types';
  */
 const postReview = (message, recipeId) => {
   const data = { message, recipeId };
-  const url = `/recipes/${recipeId}/reviews`;
+  const url = `/recipe/${recipeId}/review`;
   const directTo = '';
   const toastMessage = 'Review posted Successfully';
   const constant = 'REVIEW_POSTED';

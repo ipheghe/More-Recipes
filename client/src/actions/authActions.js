@@ -18,53 +18,12 @@ import {
 import decodeToken from '../../../server/helpers/decodeToken';
 
 /**
- * @description display toastr message for failed signup
- * @type {function} signupFailed
- * @export signupFailed
- * @returns {object} toastr
- */
-export const signupFailed = () => (dispatch) => {
-  const toastr = bindActionCreators(toastrActions, dispatch);
-  toastr.add({
-    id: 'INCORRECT_DETAILS',
-    type: 'error',
-    title: 'Error',
-    message: 'One or more of your field(s) is invalid, Please retry with the correct details',
-    timeout: 5000,
-  });
-  setTimeout(() => {
-    toastr.remove('INCORRECT_DETAILS');
-  }, 3500);
-};
-
-/**
- * @description display toastr message for failed login
- * @type {function} loginFailed
- * @export loginFailed
- * @returns {object} toastr
- */
-export const loginFailed = () => (dispatch) => {
-  const toastr = bindActionCreators(toastrActions, dispatch);
-  toastr.add({
-    id: 'INCORRECT_CREDENTIALS',
-    type: 'error',
-    title: 'Error',
-    message: 'Your username/password is incorrect, Please retry with the correct details',
-    timeout: 5000,
-  });
-  setTimeout(() => {
-    toastr.remove('INCORRECT_CREDENTIALS');
-  }, 3500);
-};
-
-/**
  * @description signup user action
  * @type {function} registerUser
  * @export registerUser
  * @param {str} username
  * @param {str} password
- * @param {str} firstName
- * @param {str} lastName
+ * @param {str} fullName
  * @param {int} mobileNumber
  * @param {str} email
  * @returns {object} dispatch
@@ -72,8 +31,7 @@ export const loginFailed = () => (dispatch) => {
 export const registerUser = ({
   username,
   password,
-  firstName,
-  lastName,
+  fullName,
   mobileNumber,
   email
 }) =>
@@ -81,8 +39,7 @@ export const registerUser = ({
     axios.post(`${BASE_URL}/users/signup`, {
       username,
       password,
-      firstName,
-      lastName,
+      fullName,
       mobileNumber,
       email
     })
@@ -103,10 +60,6 @@ export const registerUser = ({
           setTimeout(() => {
             toastr.remove('USER_LOGGEDIN');
           }, 3500);
-        } else {
-          const error = new Error(response.statusText);
-          error.response = response;
-          dispatch(signupFailed(response));
         }
       })
       .catch((error) => {
@@ -150,10 +103,6 @@ export const loginUser = ({
           setTimeout(() => {
             toastr.remove('USER_SIGNEDIN');
           }, 3500);
-        } else if (response.status === 404) {
-          const error = new Error(response.statusText);
-          error.response = response;
-          dispatch(loginFailed(error));
         }
       })
       .catch((error) => {
