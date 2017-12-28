@@ -177,31 +177,49 @@ class UserSection extends React.Component {
       newPassword,
       confirmPassword,
     } = this.state;
-    setTimeout(() => {
-      this.setState({
-        hasErrored: false,
-        errorMessage: ''
-      });
-    }, 3000);
     if (oldPassword === '') {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
       return this.setState({
         hasErrored: true,
         errorMessage: 'old password field cannot be empty'
       });
     }
     if (newPassword === '') {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
       return this.setState({
         hasErrored: true,
         errorMessage: 'new password field cannot be empty'
       });
     }
     if (confirmPassword === '') {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
       return this.setState({
         hasErrored: true,
         errorMessage: 'confirm password field cannot be empty'
       });
     }
     if (newPassword !== confirmPassword) {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
       return this.setState({
         hasErrored: true,
         errorMessage: 'Password mismatch!'
@@ -283,7 +301,6 @@ class UserSection extends React.Component {
             className="invisible-button"
             style={{ color: '#0275d8', textAlign: 'center' }}
             onClick={() => {
-              console.log(this.state);
               this.setState({
                 passwordModalIsOpen: true,
                 status: ''

@@ -119,19 +119,25 @@ class Login extends React.Component {
    */
   validateFormField() {
     const { username, password } = this.state;
-    setTimeout(() => {
-      this.setState({
-        hasErrored: false,
-        errorMessage: ''
-      });
-    }, 3000);
     if (username === '') {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
       return this.setState({
         hasErrored: true,
         errorMessage: 'Username field cannot be  empty'
       });
     }
     if (password === '') {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
       return this.setState({
         hasErrored: true,
         errorMessage: 'password field cannot be empty'
