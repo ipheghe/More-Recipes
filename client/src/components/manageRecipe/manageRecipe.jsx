@@ -85,7 +85,7 @@ class ManageRecipe extends React.Component {
     if (nextprops.state.recipe.recipeData) {
       const { recipeData } = nextprops.state.recipe;
       this.setState({
-        recipeDetail: recipeData.recipeDescription,
+        recipeDetail: recipeData.description,
         ingredients: recipeData.ingredients,
         directions: recipeData.directions,
         imageUrl: nextprops.imageUrl,
@@ -120,12 +120,11 @@ class ManageRecipe extends React.Component {
 
   /**
    * handle load recipe event
-   * @param {SytheticEvent} event
+   * @param {number} recipeId
    * @returns {*} void
    */
-  handleLoadRecipe(event) {
-    event.preventDefault();
-    this.props.getRecipe(this.state.recipeId);
+  handleLoadRecipe(recipeId) {
+    this.props.getRecipe(recipeId);
   }
 
   /**
@@ -145,7 +144,7 @@ class ManageRecipe extends React.Component {
    */
   handleDeleteRecipe(event) {
     event.preventDefault();
-    this.props.deleteRecipe(this.props.recipe.id);
+    this.props.deleteRecipe(this.state.recipeId);
   }
 
   /**
@@ -268,7 +267,8 @@ class ManageRecipe extends React.Component {
                             type="text"
                             className="form-control"
                             name="recipeId"
-                            onChange={this.handleChange}
+                            ref={node => this.recipeId = node}
+                            onChange={() => this.handleLoadRecipe(this.recipeId.value)}
                           >
                             {
                               (this.state.recipes && this.state.recipes.length > 0) ?
@@ -284,12 +284,6 @@ class ManageRecipe extends React.Component {
                                 : null
                             }
                           </select>
-                          <button
-                            type="button"
-                            className="btn btn-success"
-                            onClick={this.handleLoadRecipe}
-                          >Load Recipe Details
-                          </button>
                         </div>
                         <div className="form-group">
                           <label htmlFor="recipe-detail">Recipe Detail</label>
@@ -357,7 +351,7 @@ class ManageRecipe extends React.Component {
 
 const mapStateToProps = state => ({
   userData: state.auth.userData,
-  userRecipe: state.recipe.userRecipe,
+  userRecipe: state.recipe.userRecipes,
   recipe: state.recipe.recipeData,
   errorMessage: state.recipe.error,
   imageFile: state.recipe.imageUrl,

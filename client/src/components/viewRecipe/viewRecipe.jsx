@@ -11,6 +11,7 @@ import {
   unfavoriteRecipe,
   getFavoriteRecipe
 } from '../../actions/favoriteActions';
+import SelectCategoryModal from './selectCategoryModal.jsx';
 
 /**
  * ViewRecipe component
@@ -38,7 +39,10 @@ class ViewRecipe extends React.Component {
     reviews: PropTypes.arrayOf(PropTypes.object).isRequired,
     upvote: PropTypes.number.isRequired,
     downvote: PropTypes.number.isRequired,
-    userData: PropTypes.objectOf(PropTypes.string)
+    userData: PropTypes.shape({
+      id: PropTypes.number,
+      username: PropTypes.string
+    })
   };
 
   /**
@@ -56,12 +60,15 @@ class ViewRecipe extends React.Component {
       isFavorite: true,
       isLoading: true,
       upVoteState: true,
-      downVoteState: true
+      downVoteState: true,
+      modalIsOpen: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePostReview = this.handlePostReview.bind(this);
     this.handleFavoriteRecipe = this.handleFavoriteRecipe.bind(this);
     this.handleUnfavoriteRecipe = this.handleUnfavoriteRecipe.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   /**
@@ -171,7 +178,8 @@ class ViewRecipe extends React.Component {
     const { id } = this.props.match.params;
     this.props.favoriteRecipe(id, this.categoryInput.value);
     this.setState({
-      isFavorite: true
+      isFavorite: true,
+      modalIsOpen: false,
     });
   }
 
@@ -212,12 +220,58 @@ class ViewRecipe extends React.Component {
   }
 
   /**
+   * handle open modal event
+   * @returns {*} void
+   */
+  openModal() {
+    if (this.props.categories.length === 0) {
+      const { id } = this.props.match.params;
+      this.props.favoriteRecipe(id, 88);
+      this.setState({
+        isFavorite: true
+      });
+    } else {
+      this.setState({
+        modalIsOpen: true
+      });
+    }
+  }
+
+  /**
+   * handle close modal event
+   * @returns {*} void
+   */
+  closeModal() {
+    this.setState({
+      modalIsOpen: false
+    });
+  }
+
+  /**
    * render
    * @return {ReactElement} markup
    */
   render() {
     if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
     const reviewFields = this.state.reviews;
+    const customStyles = {
+      overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.75)'
+      },
+      content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+      }
+    };
     return (
       <div>
         <UserNavHeader />
@@ -255,8 +309,20 @@ class ViewRecipe extends React.Component {
               <div className="recipe-button">
                 {
                   this.state.isFavorite ?
-                    <button type="button" className="btn btn-success btn-lg" id="favorite" onClick={this.handleUnfavoriteRecipe}>UnFavorite</button>
-                : <button type="button" className="btn btn-success btn-lg" id="favorite" data-toggle="modal" data-target="#categoryModal">Favorite</button>
+                    <button
+                      type="button"
+                      className="btn btn-success btn-lg"
+                      id="favorite"
+                      onClick={this.handleUnfavoriteRecipe}
+                    >UnFavorite
+                    </button>
+                : <button
+                  type="button"
+                  className="btn btn-success btn-lg"
+                  id="favorite"
+                  onClick={this.openModal}
+                >Favorite
+                  </button>
                 }
                 <button
                   type="button"
@@ -340,45 +406,14 @@ class ViewRecipe extends React.Component {
             </div>
           </div>
         </div>
-        <div className="modal fade" id="categoryModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h4 className="modal-title" id="myModalLabel">Select Category</h4>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <div className="form-group">
-                  <label htmlFor="category-list">Select Category</label>
-                  <select
-                    type="text"
-                    className="form-control"
-                    name="categoryName"
-                    ref={node => this.categoryInput = node}
-                  >
-                    {
-                      (this.props.categories && this.props.categories.length > 0) ?
-                        this.props.categories.map(category =>
-                          <option value={category.id} key={category.id} >{category.name}</option>)
-                        : null
-                    }
-                  </select>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" className="btn btn-success" data-dismiss="modal" onClick={this.handleFavoriteRecipe}>Favorite Recipe</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SelectCategoryModal
+          isOpen={this.state.modalIsOpen}
+          onClose={this.closeModal}
+          customStyles={customStyles}
+          categories={this.props.categories}
+          categoryInput={node => this.categoryInput = node}
+          favoriteRecipe={this.handleFavoriteRecipe}
+        />
         <Footer />
       </div>
     );

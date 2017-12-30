@@ -52,12 +52,18 @@ export default (state = INITIAL_STATE, action) => {
     case UPDATE_RECIPE:
       return {
         ...state,
-        message: action.payload.message
+        message: action.payload.message,
+        userRecipes: [...state.userRecipes.map(item => (
+          item.id === action.payload.recipe.id ? action.payload.recipe : item
+        ))]
       };
     case DELETE_RECIPE:
       return {
         ...state,
-        message: action.payload.message
+        message: action.payload.message,
+        userRecipes: [
+          ...state.userRecipes.filter(recipe => recipe.id !== state.recipeData.id)
+        ]
       };
     case RECIPE_ERROR:
       return {
