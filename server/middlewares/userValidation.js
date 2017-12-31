@@ -26,17 +26,10 @@ const validateUserFields = (req, res, next) => {
       userData: req.body
     });
   }
-  // check if firstName field is empty
-  if (!req.body.firstName || req.body.firstName.trim() === '') {
+  // check if fullName field is empty
+  if (!req.body.fullName || req.body.fullName.trim() === '') {
     return res.status(400).send({
-      message: 'firstName field cannot be empty',
-      userData: req.body
-    });
-  }
-  // check if lastName field is empty
-  if (!req.body.lastName || req.body.lastName.trim() === '') {
-    return res.status(400).send({
-      message: 'lastName field cannot be empty',
+      message: 'fullName field cannot be empty',
       userData: req.body
     });
   }
@@ -69,16 +62,56 @@ const validateUserFields = (req, res, next) => {
     });
   }
   // check if firstName field contains more than 3 characters
-  if (req.body.firstName.length > 50) {
+  if (req.body.fullName.length > 50) {
     return res.status(400).send({
-      message: 'firstName must have less than 51 characters',
+      message: 'fullName must have less than 51 characters',
       userData: req.body
     });
   }
-  //  check if lastName field contains more than 3 characters
-  if (req.body.lastName.length > 50) {
+  return next();
+};
+
+/**
+ * @module validateUserSigninFeild
+ * @description middleware function to validate password field
+ * @function
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Object} next - Express next middleware function
+ * @return {*} void
+ */
+const validateUserSigninFeild = (req, res, next) => {
+  // check if username field is empty
+  if (!req.body.username || req.body.username.trim() === '') {
     return res.status(400).send({
-      message: 'lastName must have less than 51 characters',
+      message: 'username field cannot be empty',
+      userData: req.body
+    });
+  }
+  // check if password field is empty
+  if (!req.body.password || req.body.password.trim() === '') {
+    return res.status(400).send({
+      message: 'password field cannot be empty',
+      userData: req.body
+    });
+  }
+  return next();
+};
+
+/**
+ * @module validatePasswordField
+ * @description middleware function to validate password field
+ * @function
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Object} next - Express next middleware function
+ * @return {*} void
+ */
+const validatePasswordField = (req, res, next) => {
+  // check if password field is empty
+  if (!req.body.password || req.body.password.trim() === '') {
+    return res.status(400).send({
+      message: 'password field cannot be empty',
       userData: req.body
     });
   }
@@ -95,16 +128,25 @@ const validateUserFields = (req, res, next) => {
  * @return {*} void
  */
 const validUser = (req, res, next) => {
+  if (Number.isNaN(parseInt(req.params.userId || req.decoded.user.id, 10))) {
+    return res.status(400).send({
+      message: 'Id is Invalid!'
+    });
+  }
   User.findById(req.params.userId || req.decoded.user.id)
     .then((user) => {
       if (!user) {
         return res.status(401).send({
-          message: 'user account not available!',
-          userData: req.body
+          message: 'user account not available!'
         });
       }
       next();
     });
 };
 
-export { validateUserFields, validUser };
+export {
+  validateUserFields,
+  validateUserSigninFeild,
+  validatePasswordField,
+  validUser
+};

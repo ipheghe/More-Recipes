@@ -20,15 +20,7 @@ module.exports = {
           min: 4,
         },
       },
-      firstName: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        validate: {
-          isAlpha: true,
-          max: 50
-        }
-      },
-      lastName: {
+      fullName: {
         allowNull: false,
         type: Sequelize.STRING,
         validate: {

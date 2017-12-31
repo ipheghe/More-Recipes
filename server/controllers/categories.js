@@ -30,7 +30,7 @@ const categoriesController = {
         }
         next();
       })
-      .catch((error) => { res.status(400).send({ error: error.message }); });
+      .catch((error) => { res.status(401).send({ error: error.message }); });
   },
 
   /**
@@ -48,10 +48,10 @@ const categoriesController = {
     })
       .then(category => res.status(201).send({
         message: 'Category created Successfully',
-        categoryData: category
+        category
       }))
       .catch((error) => {
-        res.status(400).send({ error: error.message });
+        res.status(401).send({ error: error.message });
       });
   },
 
@@ -77,13 +77,13 @@ const categoriesController = {
         })
           .then(updatedCategory => res.status(200).send({
             message: 'category name changed SuccessFullly!',
-            categoryData: updatedCategory
+            category: updatedCategory
           }))
-          .catch(error => res.status(400).send({
+          .catch(error => res.status(401).send({
             error: error.message
           }));
       })
-      .catch(err => res.status(400).send({
+      .catch(err => res.status(500).send({
         error: err.message
       }));
   },
@@ -108,15 +108,14 @@ const categoriesController = {
         // if category exits, delete the recipe
         category
           .destroy()
-          .then(deletedCategory => res.status(200).send({
+          .then(() => res.status(200).send({
             message: 'Category deleted SuccessFullly!',
-            categoryData: deletedCategory
           }))
-          .catch(error => res.status(400).send({
+          .catch(error => res.status(401).send({
             error: error.message
           }));
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -130,21 +129,21 @@ const categoriesController = {
  * @return {object} message userCategoryList
  */
   getUserCategories(req, res) {
-    // find all categories that have the requested username
+    // find all categories belonging to user
     return Category
       .findAll({
         where: { userId: req.decoded.user.id },
         attributes: keys
       })
       // retrieve all categories for that particular user
-      .then((category) => {
-        if (category) {
-          if (category.length === 0) {
-            res.status(404).send({ message: 'No category found for user' });
+      .then((userCategories) => {
+        if (userCategories) {
+          if (userCategories.length === 0) {
+            res.status(200).send({ message: 'No category found for user' });
           } else {
             return res.status(200).send({
               message: 'All User Categories Retrieved SuccessFullly!',
-              userCategoryList: category
+              userCategories
             });
           }
         }
@@ -161,7 +160,7 @@ const categoriesController = {
    * @return {object} message userCategoryList
    */
   getUserCategory(req, res) {
-    // find all categories that have the requested username
+    // find a category for a user
     return Category
       .findAll({
         where: {
@@ -171,19 +170,19 @@ const categoriesController = {
         attributes: keys
       })
       // retrieve category for that particular user
-      .then((category) => {
-        if (category) {
-          if (!category) {
+      .then((userCategory) => {
+        if (userCategory) {
+          if (!userCategory) {
             res.status(404).send({ message: 'No category found for user' });
           } else {
             return res.status(200).send({
               message: 'User Category Retrieved SuccessFullly!',
-              userCategoryData: category
+              userCategory
             });
           }
         }
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(500).send({ error: error.message }));
   }
 };
 

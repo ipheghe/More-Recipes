@@ -1,8 +1,9 @@
 import db from '../models/index';
 
-// // Assign variable to the database model
+// Assign variable to the database model
 const { User, Recipe, Review } = db;
 const keys = ['id', 'message', 'createdAt'];
+let pageNumber;
 
 const reviewsController = {
 
@@ -21,14 +22,14 @@ const reviewsController = {
       userId: req.decoded.user.id,
       recipeId: req.params.id,
     })
-      .then((reviews) => {
+      .then((review) => {
         res.status(201).send({
           message: 'Review Posted Successfully',
-          reviewData: reviews
+          review
         });
         next();
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(401).send({
         error: error.message
       }));
   },
@@ -46,11 +47,7 @@ const reviewsController = {
     Review.all({
       include: [{
         model: Recipe,
-        attributes: ['recipeName'],
-        include: [{
-          model: User,
-          attributes: ['username']
-        }]
+        attributes: ['name']
       },
       {
         model: User,
@@ -59,9 +56,9 @@ const reviewsController = {
       ],
       attributes: keys
     })
-      .then(review => res.status(200).send({
+      .then(reviews => res.status(200).send({
         message: 'All Reviews Retrieved SuccessFullly!',
-        reviewList: review
+        reviews
       }))
       .catch(error => res.status(400).send({
         error: error.message
@@ -77,41 +74,42 @@ const reviewsController = {
    * @return {object} message reviewList
    */
   getRecipeReviews(req, res) {
-    Review.findAll({
+    const { limit, offset } = req.body;
+    Review.findAndCountAll({
       where: {
         recipeId: req.params.id
       },
       include: [{
         model: Recipe,
-        attributes: ['recipeName'],
-        include: [{
-          model: User,
-          attributes: ['username']
-        }]
+        attributes: ['name']
       },
       {
         model: User,
         attributes: ['username'],
       }
       ],
-      attributes: keys
+      attributes: keys,
+      limit: limit || 6,
+      offset: offset || 0
     })
       // retrieve all recipes for that particular user
-      .then((review) => {
-        if (review) {
-          if (review.length === 0) {
+      .then((reviews) => {
+        if (reviews) {
+          if (reviews.rows.length === 0) {
             res.send({
               message: 'No review for this recipe!'
             });
           } else {
+            pageNumber = parseInt(reviews.count, 10) / parseInt(limit || 6, 10);
             return res.status(200).send({
               message: 'Recipe reviews Retrieved SuccessFullly!',
-              reviewList: review
+              reviews,
+              pages: Math.ceil(pageNumber)
             });
           }
         }
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   }

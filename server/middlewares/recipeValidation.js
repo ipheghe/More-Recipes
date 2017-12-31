@@ -14,10 +14,10 @@ const { Recipe } = db;
  */
 const validateRecipeFields = (req, res, next) => {
   // check if recipe name field is empty
-  if (!req.body.recipeName || req.body.recipeName === '') {
+  if (!req.body.name || req.body.name === '') {
     return res.status(400)
       .send({
-        message: 'recipe name field cannot be empty',
+        message: 'name field cannot be empty',
         recipeData: req.body
       });
   }
@@ -34,6 +34,15 @@ const validateRecipeFields = (req, res, next) => {
     return res.status(400)
       .send({
         message: 'directions field cannot be empty',
+        recipeData: req.body
+      });
+  }
+
+  // check if directions field is empty
+  if (!req.body.imageUrl || req.body.imageUrl === '') {
+    return res.status(400)
+      .send({
+        message: 'imageUrl field cannot be empty',
         recipeData: req.body
       });
   }
@@ -101,4 +110,38 @@ const recipeExists = (req, res, next) => {
     .catch(error => res.status(400).send(error));
 };
 
-export { validateRecipeFields, recipeExists };
+/**
+ * @module userRecipeExists
+ * @description middleware function to check if recipe exists
+ * @function
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Object} next - Express next middleware function
+ * @return {*} void
+ */
+const userRecipeExists = (req, res, next) => {
+  if (Number.isNaN(parseInt(req.params.id, 10))) {
+    return res.status(400).send({
+      message: 'Invalid Id!'
+    });
+  }
+  Recipe
+    .find({
+      where: {
+        id: req.params.id,
+        userId: req.decoded.user.id
+      }
+    })
+    .then((recipe) => {
+      if (!recipe) {
+        return res.status(404).send({
+          status: 'fail',
+          message: 'Access Denied!'
+        });
+      }
+      next();
+    })
+    .catch(error => res.status(400).send(error));
+};
+
+export { validateRecipeFields, recipeExists, userRecipeExists };

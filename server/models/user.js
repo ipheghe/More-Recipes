@@ -28,31 +28,13 @@ export default (sequelize, DataTypes) => {
         },
       },
     },
-    firstName: {
+    fullName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isAlpha: {
-          args: true,
-          msg: 'first name  must contain only alphabets'
-        },
         len: {
           args: [4, 30],
-          msg: 'first name characters must be minimum 4 and maximum 30'
-        },
-      }
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isAlpha: {
-          args: true,
-          msg: 'last name  must contain only alphabets'
-        },
-        len: {
-          args: [4, 30],
-          msg: 'last name characters must be minimum 4 and maximum 30'
+          msg: 'full name characters must be minimum 4 and maximum 30'
         },
       }
     },

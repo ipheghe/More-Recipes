@@ -2,8 +2,8 @@ import db from '../models/index';
 
 // Assign variable to the database model
 const { User, Recipe, Favorite } = db;
-
 const keys = [];
+let pageNumber;
 
 const favoritesController = {
 
@@ -24,10 +24,10 @@ const favoritesController = {
     })
       .then(favorite => res.status(201).send({
         message: 'Recipe added to favorites Successfully',
-        favoriteData: favorite
+        favorite
       }))
       .catch((error) => {
-        res.status(400).send({ error: error.message });
+        res.status(401).send({ error: error.message });
       });
   },
 
@@ -52,15 +52,14 @@ const favoritesController = {
         // if recipe exits, delete the recipe
         favorite
           .destroy()
-          .then(unfavoritedRecipe => res.status(200).send({
+          .then(() => res.status(200).send({
             message: 'Recipe Unfavorited SuccessFullly!',
-            favoriteData: unfavoritedRecipe
           }))
-          .catch(error => res.status(400).send({
+          .catch(error => res.status(401).send({
             error: error.message
           }));
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -74,7 +73,7 @@ const favoritesController = {
    * @return {object} message userFavorite
    */
   retrieveFavorite(req, res) {
-    // find all recipes that have the requested username
+    // find recipe that have the requested userId and recipeId
     Favorite.findOne({
       where: { userId: req.decoded.user.id, recipeId: req.params.id },
       include: [{
@@ -99,7 +98,7 @@ const favoritesController = {
           }
         }
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(500).send({ error: error.message }));
   },
 
   /**
@@ -111,6 +110,7 @@ const favoritesController = {
    * @return {object} message userFavorites
    */
   retrieveFavorites(req, res) {
+    const { limit, offset } = req.body;
     // find all recipes that have the requested username
     Favorite.findAll({
       where: { userId: req.decoded.user.id },
@@ -121,22 +121,26 @@ const favoritesController = {
           attributes: ['username']
         }]
       }],
-      attributes: keys
+      attributes: keys,
+      limit: limit || 6,
+      offset: offset || 0
     })
       // retrieve all recipes for that particular user
-      .then((favorite) => {
-        if (favorite) {
-          if (favorite.length === 0) {
+      .then((favorites) => {
+        if (favorites) {
+          if (favorites.length === 0) {
             res.send({ message: 'There are no favourite recipe for this user' });
           } else {
+            pageNumber = parseInt(favorites.count, 10) / parseInt(limit || 6, 10);
             return res.status(200).send({
               message: 'User Favorite recipes retrieved Successfully',
-              userFavorites: favorite
+              userFavorites: favorites,
+              pages: Math.ceil(pageNumber)
             });
           }
         }
       })
-      .catch(error => res.status(400).send({ error: error.message }));
+      .catch(error => res.status(500).send({ error: error.message }));
   }
 };
 export default favoritesController;

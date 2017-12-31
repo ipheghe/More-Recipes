@@ -1,23 +1,10 @@
-import nodemailer from 'nodemailer';
 import isOnline from 'is-online';
 import dotenv from 'dotenv';
 import db from '../models/index';
+import transporter from '../helpers/mailTransporter';
 
 dotenv.load();
 const { User, Recipe } = db;
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.USER_EMAIL,
-    pass: process.env.USER_PASSWORD
-  },
-  tls: {
-    rejectUnauthorized: false
-  }
-});
 
 /**
  * @module reviewNotification
@@ -50,7 +37,6 @@ const reviewNotification = (req, res, next) => {
             transporter.sendMail(mailOptions, (err, info) => {
               if (err) {
                 next();
-                res.status(400);
               } else {
                 res.status(200).send({ message: 'mail sent successfully', info });
               }
@@ -58,10 +44,10 @@ const reviewNotification = (req, res, next) => {
           });
         });
     } else {
-      return res.status(400);
+      return res.status(401);
     }
   })
-    .catch(error => res.status(400).send({ error: error.message }));
+    .catch(error => res.status(500).send({ error: error.message }));
 };
 
 export default reviewNotification;

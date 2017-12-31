@@ -1,28 +1,14 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
 import isOnline from 'is-online';
 import dotenv from 'dotenv';
 import db from '../models/index';
+import transporter from '../helpers/mailTransporter';
 
 dotenv.load();
 const { User, Category } = db;
 const salt = bcrypt.genSaltSync(10);
 const crypto = require('crypto');
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.USER_EMAIL,
-    pass: process.env.USER_PASSWORD
-  },
-  tls: {
-    rejectUnauthorized: false
-  }
-});
-
 
 // user signup & signin controller
 const usersController = {
@@ -39,8 +25,7 @@ const usersController = {
     User.create({
       username: req.body.username,
       password: bcrypt.hashSync(req.body.password, salt, null), // hash password
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      fullName: req.body.fullName,
       mobileNumber: req.body.mobileNumber,
       email: req.body.email
     })
@@ -56,7 +41,7 @@ const usersController = {
           userData
         });
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(401).send({
         error: error.message
       }));
   },
@@ -70,21 +55,6 @@ const usersController = {
    * @return {object} message authToken
    */
   signin(req, res) {
-    // check if username field is empty
-    if (!req.body.username || req.body.username.trim() === '') {
-      return res.status(400).send({
-        message: 'username field cannot be empty',
-        userData: req.body
-      });
-    }
-    // check if password field is empty
-    if (!req.body.password || req.body.password.trim() === '') {
-      return res.status(400).send({
-        message: 'password field cannot be empty',
-        userData: req.body
-      });
-    }
-
     // check if the username exists
     User.findOne({
       where: {
@@ -99,8 +69,8 @@ const usersController = {
         } else if (user) {
           // check if password matches
           if (!(bcrypt.compareSync(req.body.password, user.password))) {
-            res.status(404).send({
-              message: 'Authentication failed. Incorrect password'
+            res.status(401).send({
+              message: 'Authentication failed!'
             });
           } else {
             const userData = {
@@ -122,7 +92,7 @@ const usersController = {
           }
         }
       })
-      .catch(() => res.status(400).send({
+      .catch(() => res.status(500).send({
         message: 'Login Failed, Please re-confirm details'
       }));
   },
@@ -158,7 +128,7 @@ const usersController = {
           userData: user
         });
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -191,11 +161,11 @@ const usersController = {
             message: 'User Record Updated SuccessFullly!',
             userData: updatedUser
           }))
-          .catch(error => res.status(400).send({
+          .catch(error => res.status(401).send({
             error: error.message
           }));
       })
-      .catch(err => res.status(400).send({
+      .catch(err => res.status(500).send({
         error: err.message
       }));
   },
@@ -219,7 +189,7 @@ const usersController = {
         if (user) {
           // check if password matches
           if (!(bcrypt.compareSync(req.body.password, user.password))) {
-            res.status(404).send({
+            res.status(401).send({
               status: 'Fail',
               message: 'Incorrect password'
             });
@@ -232,14 +202,14 @@ const usersController = {
                 status: 'Success',
                 message: 'User Password Changed SuccessFullly!'
               }))
-              .catch(error => res.status(400).send({
+              .catch(error => res.status(401).send({
                 status: 'Fail',
                 error: error.message
               }));
           }
         }
       })
-      .catch(err => res.status(400).send({
+      .catch(err => res.status(500).send({
         status: 'Fail',
         error: err.message
       }));
@@ -264,7 +234,7 @@ const usersController = {
       .then((existingUser) => {
         if (!existingUser) {
           // If user is not found, return error
-          return res.status(422).send({
+          return res.status(404).json({
             error: 'user email does not exist!'
           });
         }
@@ -301,7 +271,7 @@ const usersController = {
               // transporter.sendMail(mailOptions);
               transporter.sendMail(mailOptions, (err, info) => {
                 if (err) {
-                  res.status(400).send({
+                  res.status(400).json({
                     error: err.message
                   });
                 } else {
@@ -314,7 +284,7 @@ const usersController = {
             });
         });
       })
-      .catch(err => res.status(400).send({
+      .catch(err => res.status(500).json({
         error: err.message
       }));
   },
@@ -330,13 +300,6 @@ const usersController = {
    */
 
   verifyTokenPassword(req, res, next) {
-    // check if password field is empty
-    if (!req.body.password || req.body.password.trim() === '') {
-      return res.status(400).send({
-        message: 'password field cannot be empty',
-        userData: req.body
-      });
-    }
     User.findOne({
       where: {
         resetPasswordToken: req.params.token,
@@ -391,11 +354,11 @@ const usersController = {
                 });
               }
             })
-              .catch(error => res.status(400).send({
+              .catch(error => res.status(401).send({
                 error: error.message
               }));
           })
-          .catch(error => res.status(400).send({
+          .catch(error => res.status(500).send({
             error: error.message
           }));
       });

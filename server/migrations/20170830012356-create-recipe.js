@@ -7,11 +7,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      recipeName: {
+      name: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      recipeDescription: {
+      description: {
         type: Sequelize.STRING
       },
       ingredients: {

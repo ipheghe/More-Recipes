@@ -1,45 +1,47 @@
 import express from 'express';
 import authorize from '../middlewares/requireAuth';
-import recipesController from '../controllers/recipes';
-import { validateRecipeFields, recipeExists } from '../middlewares/recipeValidation';
+import { recipes } from '../controllers';
+import { validateRecipeFields, recipeExists, userRecipeExists } from '../middlewares/recipeValidation';
 import { validUser } from '../middlewares/userValidation';
 
 const router = express.Router();
 
 // API route for users to add recipe
 router.post(
-  '/api/v1/recipes/',
+  '/api/v1/recipe/',
   authorize.verifyUser,
   validUser,
   validateRecipeFields,
-  recipesController.addRecipe
+  recipes.addRecipe
 );
 
 // API route for users to update recipe
 router.put(
-  '/api/v1/recipes/:id',
+  '/api/v1/recipe/:id',
   authorize.verifyUser,
   validUser,
   recipeExists,
+  userRecipeExists,
   validateRecipeFields,
-  recipesController.updateRecipe
+  recipes.updateRecipe
 );
 
 // API route for users to delete recipe
 router.delete(
-  '/api/v1/recipes/:id',
+  '/api/v1/recipe/:id',
   authorize.verifyUser,
   validUser, recipeExists,
-  recipesController.deleteRecipe
+  userRecipeExists,
+  recipes.deleteRecipe
 );
 
 // API route for users to retrieve all recipes
 router.get(
   '/api/v1/recipes',
   authorize.verifyUser,
-  recipesController.getRecipes,
-  recipesController.getTopRecipes,
-  recipesController.searchRecipesByIngredients
+  recipes.getRecipes,
+  recipes.getTopRecipes,
+  recipes.searchRecipesByIngredients
 );
 
 // API route for users to retrieve only personal recipes
@@ -47,33 +49,33 @@ router.get(
   '/api/v1/recipes/users',
   authorize.verifyUser,
   validUser,
-  recipesController.getUserRecipes
+  recipes.getUserRecipes
 );
 
 // API route to retrieve recipes by recipeId and
 // it increments the views column each time recipe is viewed
 router.get(
-  '/api/v1/recipes/:id',
+  '/api/v1/recipe/:id',
   authorize.verifyUser,
   validUser,
   recipeExists,
-  recipesController.viewRecipe
+  recipes.viewRecipe
 );
 
 // API route to retrieve recipe by recipeId
 router.get(
-  '/api/v1/recipes/:recipeName',
+  '/api/v1/recipe/:recipeName',
   authorize.verifyUser,
   validUser,
   recipeExists,
-  recipesController.getRecipe
+  recipes.getRecipe
 );
 
 // API route for users to retrieve all recipes
 router.get(
   '/api/v1/topRecipes',
-  recipesController.getTopRecipes,
-  recipesController.searchRecipes
+  recipes.getTopRecipes,
+  recipes.searchRecipes
 );
 
 export default router;
