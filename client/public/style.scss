@@ -22,30 +22,38 @@ body {
   overflow-x: hidden;
   font-family: $font_family_1;
 }
+
 h1 {
   font-family: $font_family_1;
 }
+
 h2 {
   font-family: $font_family_1;
 }
+
 h3 {
   font-family: $font_family_1;
 }
+
 h4 {
   font-family: $font_family_1;
 }
+
 h5 {
   font-family: $font_family_1;
 }
+
 h6 {
   font-family: $font_family_1;
 }
+
 label {
   color: $color_1;
   font-weight: bold;
   display: block;
   float: left;
 }
+
 .landing-background {
   background: url("/dist/banner.jpeg") !important;
   -moz-background-position: 50%;
@@ -54,6 +62,7 @@ label {
   min-height: 700px;
   overflow: hidden;
 }
+
 .banner-background {
   background: url("/dist/banner.jpeg");
   -moz-background-position: 50%;
@@ -62,6 +71,7 @@ label {
   min-height: 1000px;
   overflow: hidden;
 }
+
 .login-background {
   background: url("/dist/banner.jpeg");
   -moz-background-position: 50%;
@@ -72,6 +82,7 @@ label {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
 .reg-background {
   background: url("/dist/banner.jpeg");
   -moz-background-position: 50%;
@@ -82,6 +93,7 @@ label {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
 .recipe-background {
   -moz-background-position: 50%;
   background-color: $background_color_1;
@@ -93,12 +105,14 @@ label {
     text-align: center;
   }
 }
+
 .nav-link {
   i {
     margin-right: 30px;
   }
   color: $color_2;
 }
+
 .profile-background {
   -moz-background-position: 50%;
   background-color: $background_color_1;
@@ -117,21 +131,26 @@ label {
       margin-top: 30px;
     }
   }
+
   .div-profile {
     background-color: $background_color_3;
-    padding: 10px 10px 10px 10px;
+    padding: 10px;
   }
+
   .div-section {
     background-color: $background_color_3;
   }
+
   .edit-profile-div-section {
     background-color: $background_color_3;
-    padding: 10px 10px 10px 10px;
+    padding: 10px;
   }
+
   .add-padding {
     padding: 10px 15px;
   }
 }
+
 .landing {
   position: relative;
   margin-top: 120px;
@@ -139,6 +158,7 @@ label {
     text-decoration: none;
   }
 }
+
 .headline {
   color: $color_1;
   h1 {
@@ -151,6 +171,7 @@ label {
     }
   }
 }
+
 .account {
   background-color: $background_color_2;
   padding: 40px 30px;
@@ -180,12 +201,14 @@ label {
     }
   }
 }
+
 .brief {
   display: block;
   font-size: 12px;
   margin: 10px auto 0 auto;
   color: $color_1;
 }
+
 #top-recipes {
   margin-top: 60px;
   margin-bottom: 30px;
@@ -200,14 +223,17 @@ label {
     }
   }
 }
+
 #login-checkbox {
   margin-right: 5px;
 }
+
 .recipe-top {
   position: relative;
   margin-top: 50px;
   box-sizing: border-box;
 }
+
 .title-area {
   p {
     display: inline;
@@ -216,12 +242,14 @@ label {
     margin-left: 5px;
   }
 }
+
 .recipe-button {
   >button {
     min-width: 150px;
     margin-right: 10px;
   }
 }
+
 .recipe-ingredients {
   ul {
     float: left;
@@ -237,21 +265,26 @@ label {
     }
   }
 }
+
 .recipe-review {
   margin-bottom: 50px;
 }
+
 .form-rounded {
   border-radius: 1rem;
   min-height: 250px;
 }
+
 a {
   &:hover {
     color: $color_3;
   }
 }
+
 .profile-landing {
   height: 100%;
 }
+
 .profile-tabs {
   .card-image-top {
     height: 1500px;
@@ -266,20 +299,24 @@ a {
     color: $color_2;
   }
 }
+
 .profile-pagination {
   float: right;
   margin-bottom: 20px;
 }
+
 .profile-category-button {
   >button {
     margin-bottom: 5px;
   }
 }
+
 .edit-profile-div-section {
   label {
     color: $color_2;
   }
 }
+
 .edit-profile-button {
   >button {
     min-width: 20%;
@@ -287,6 +324,7 @@ a {
     text-align: center;
   }
 }
+
 .card-footer {
   .text-muted {
     >button {
@@ -297,14 +335,17 @@ a {
     }
   }
 }
+
 .profile-menu {
   margin-right: 5px;
   margin: 5px 5px;
 }
+
 .rounded-circle {
   width: 50px;
   height: 50px;
 }
+
 .card-blocks {
   display: inline-block;
   margin: auto;
@@ -335,6 +376,7 @@ a {
     font-weight: 50%;
   }
 }
+
 .card-blocks-home {
   display: inline-block;
   margin: auto;
@@ -365,9 +407,11 @@ a {
     font-weight: 50%;
   }
 }
+
 .arrow-key {
   font-size: 100px;
 }
+
 input.active {
   &:valid {
     box-shadow: 0 0 5px 1px green;
@@ -376,14 +420,17 @@ input.active {
     box-shadow: 0 0 5px 1px red;
   }
 }
+
 .error {
   color: $color_4;
   font-size: 12px;
   margin-top: 5px;
 }
+
 .panel-shadow {
   box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px;
 }
+
 .panel-white {
   border: 1px solid #dddddd;
   background-color: $background_color_4;
@@ -397,6 +444,7 @@ input.active {
     border-color: $border_color_1;
   }
 }
+
 .post {
   .post-heading {
     height: 95px;
@@ -436,26 +484,31 @@ input.active {
     }
   }
 }
+
 button.close {
   width: 50px;
 }
+
 .div-profile {
   .editProfile-btn {
     margin-bottom: 5px;
     margin-right: 5px;
   }
 }
+
 .invisible-button {
   -webkit-appearance: none;
   border: 0;
   padding: 0;
   background: none;
 }
+
 .nav-item {
   .invisible-button {
     margin-right: 15px;
   }
 }
+
 .card {
   .text-muted {
     >.landing-card-footer {
@@ -468,6 +521,7 @@ button.close {
     }
   }
 }
+
 .footer {
   right: 0;
   left: 0;
@@ -478,6 +532,7 @@ button.close {
   color: $footer_text_color;
   text-align: center;
 }
+
 .loader {
   position: fixed;
   z-index: 999;
@@ -490,17 +545,21 @@ button.close {
   bottom: 0;
   right: 0;
 }
+
 .loader-hidden {
   display: none;
 }
+
 .loader-active {
   display: block;
 }
+
 @media (max-width: 767px) {
   .landing {
     text-align: center;
   }
 }
+
 @media (min-width: 480px) {
   .recipe-background {
     margin: 30px 15%;
@@ -516,4 +575,5 @@ button.close {
       margin-right: 5px;
     }
   }
+  
 }
