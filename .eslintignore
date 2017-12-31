@@ -60,4 +60,5 @@ typings/
 
 client/public/dist/bundle.js
 client/public/style.scss
+*.scss
 template
