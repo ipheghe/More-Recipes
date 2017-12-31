@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Loader from 'react-loaders';
 import {
   UserNavHeader,
   ProfileHeader,
   UserSection,
   UserNavMenu,
+  Pagination,
   Footer
 } from '../../common';
 import RecipeList from '../recipeList/recipeList.jsx';
+import { getRecipesBySearch } from '../../actions/recipeActions';
 
 /**
  * Search component
@@ -18,8 +21,10 @@ import RecipeList from '../recipeList/recipeList.jsx';
 @connect(state => ({ state, }))
 class Search extends React.Component {
   static propTypes = {
+    getRecipesBySearch: PropTypes.func.isRequired,
     message: PropTypes.string.isRequired,
-    searchResult: PropTypes.arrayOf(PropTypes.object).isRequired
+    location: PropTypes.objectOf(PropTypes.string).isRequired,
+    searchResult: PropTypes.arrayOf(PropTypes.object)
   };
 
   /**
@@ -29,8 +34,11 @@ class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      pages: 1,
+      currentPaginatePage: 1,
       isLoading: true
     };
+    this.onPaginateClick = this.onPaginateClick.bind(this);
   }
 
   /**
@@ -41,9 +49,35 @@ class Search extends React.Component {
   componentWillReceiveProps(nextprops) {
     if (nextprops.state.recipe.message) {
       this.setState({
+        pages: nextprops.state.recipe.pages,
         isLoading: false
       });
     }
+  }
+
+  /**
+   * @description handles click event with pagination
+   *
+   * @param {integer } page
+   *
+   * @return { object } currentPaginatePage
+   */
+  onPaginateClick(page) {
+    this.setState({ currentPaginatePage: page }, () => {
+      this.getRecipes();
+    });
+  }
+
+  /**
+   * get top recipes
+   * @returns {array} recipes
+   */
+  getRecipes() {
+    const offset = 6 * (this.state.currentPaginatePage - 1);
+    const { search } = this.props.location; // could be '?foo=bar'
+    const url = new URLSearchParams(search);
+    const keyword = url.get('sort');
+    this.props.getRecipesBySearch(keyword, offset);
   }
 
   /**
@@ -51,7 +85,7 @@ class Search extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<div>IS LOADING....</div>);
+    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
     return (
       <div>
         <UserNavHeader />
@@ -73,8 +107,8 @@ class Search extends React.Component {
                       <br />
                       <div className="card-blocks" >
                         {
-                          (!this.props.searchResult) ?
-                          this.props.message : <RecipeList recipes={this.props.searchResult} />
+                          (this.props.searchResult.length < 1) ?
+                            <h2>{this.props.message}</h2> : <RecipeList recipes={this.props.searchResult} />
                         }
                       </div>
                       <br />
@@ -82,6 +116,13 @@ class Search extends React.Component {
                   </div>
                 </section>
               </div>
+              {
+                (this.props.searchResult && this.props.searchResult.length > 0) ?
+                  <Pagination
+                    pageNumber={this.state.pages}
+                    currentPaginatePage={this.state.currentPaginatePage}
+                    onPaginateClick={this.onPaginateClick}
+                  /> : '' }
             </div>
           </div>
         </div>
@@ -91,10 +132,15 @@ class Search extends React.Component {
   }
 }
 
+Search.defaultProps = {
+  searchResult: []
+};
+
 const mapStateToProps = state => ({
   message: state.recipe.message,
-  searchResult: state.recipe.searchResult
+  searchResult: state.recipe.searchResult,
+  pages: state.recipe.pages
 });
 
-export default connect(mapStateToProps)(Search);
+export default connect(mapStateToProps, { getRecipesBySearch })(Search);
 

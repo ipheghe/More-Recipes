@@ -48,7 +48,7 @@ const addRecipe = (name, description, imageUrl, ingredients, directions) => {
  * @description update recipe action
  * @type {function} updateRecipe
  *
- * @param {number} recipeId
+ * @param {integer} recipeId
  * @param {string} name
  * @param {string} description
  * @param {string} ingredients
@@ -93,7 +93,7 @@ const updateRecipe = (
  * @description delete recipe action
  * @type {function} deleteRecipe
  *
- * @param {number} recipeId
+ * @param {integer} recipeId
  *
  * @returns {action} dispatch
  */
@@ -120,27 +120,74 @@ const deleteRecipe = (recipeId) => {
  *
  * @returns {action} dispatch
  */
-const getTopRecipes = () => {
+const getTopRecipesLanding = () => {
   const url = '/topRecipes?sort=upvotes&order=descending';
   return dispatch => getData(FETCH_TOP_RECIPES, RECIPE_ERROR, true, url, dispatch);
+};
+
+/**
+ * @description action to get top recipes
+ * @type {function} getTopRecipes
+ *
+ * @param {integer} offset
+ *
+ * @returns {action} dispatch
+ */
+const getTopRecipes = (offset) => {
+  const data = {
+    offset
+  };
+  const url = '/recipes?sort=upvotes&order=descending';
+  const directTo = '';
+  const message = '';
+  const constant = '';
+  return dispatch => postData(
+    FETCH_TOP_RECIPES,
+    RECIPE_ERROR,
+    true,
+    url,
+    dispatch,
+    data,
+    message,
+    constant,
+    directTo
+  );
 };
 
 /**
  * @description action to get user recipes
  * @type {function} getUserRecipes
  *
+ * @param {integer} offset
+ *
  * @returns {action} dispatch
  */
-const getUserRecipes = () => {
+const getUserRecipes = (offset) => {
+  const data = {
+    offset
+  };
   const url = '/recipes/users';
-  return dispatch => getData(FETCH_USER_RECIPES, RECIPE_ERROR, true, url, dispatch);
+  const directTo = '';
+  const message = '';
+  const constant = '';
+  return dispatch => postData(
+    FETCH_USER_RECIPES,
+    RECIPE_ERROR,
+    true,
+    url,
+    dispatch,
+    data,
+    message,
+    constant,
+    directTo
+  );
 };
 
 /**
  * @description action to get a recipe
  * @type {function} getRecipe
  *
- * @param {number} id
+ * @param {integer} id
  *
  * @returns {action} dispatch
  */
@@ -154,12 +201,29 @@ const getRecipe = (id) => {
  * @type {function} getRecipesBySearch
  *
  * @param {string} keyword
+ * @param {integer} offset
  *
  * @returns {action} dispatch
  */
-const getRecipesBySearch = (keyword) => {
-  const url = `/topRecipes?search=${keyword}`;
-  return dispatch => getData(SEARCH_RECIPES, RECIPE_ERROR, true, url, dispatch);
+const getRecipesBySearch = (keyword, offset) => {
+  const data = {
+    offset
+  };
+  const url = `/recipes?search=${keyword}`;
+  const directTo = '';
+  const message = '';
+  const constant = '';
+  return dispatch => postData(
+    SEARCH_RECIPES,
+    RECIPE_ERROR,
+    true,
+    url,
+    dispatch,
+    data,
+    message,
+    constant,
+    directTo
+  );
 };
 
 export {
@@ -169,6 +233,7 @@ export {
   getTopRecipes,
   getUserRecipes,
   getRecipe,
-  getRecipesBySearch
+  getRecipesBySearch,
+  getTopRecipesLanding
 };
 

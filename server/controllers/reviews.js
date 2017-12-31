@@ -89,6 +89,9 @@ const reviewsController = {
       }
       ],
       attributes: keys,
+      order: [
+        ['createdAt', 'desc']
+      ],
       limit: limit || 6,
       offset: offset || 0
     })

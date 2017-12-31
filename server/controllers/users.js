@@ -234,8 +234,9 @@ const usersController = {
       .then((existingUser) => {
         if (!existingUser) {
           // If user is not found, return error
-          return res.status(404).json({
-            error: 'user email does not exist!'
+          return res.status(404).send({
+            status: 'Fail',
+            message: 'user email does not exist!'
           });
         }
         // Generate a token with Crypto

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MainHeader, Footer } from '../../common';
 import LandingRecipeList from '../landingRecipeList/landingRecipeList.jsx';
-import { getTopRecipes } from '../../actions/recipeActions';
+import { getTopRecipesLanding } from '../../actions/recipeActions';
 
 /**
  * Landing page commponent
@@ -11,7 +11,7 @@ import { getTopRecipes } from '../../actions/recipeActions';
  */
 class Landing extends React.Component {
   static propTypes = {
-    getTopRecipes: PropTypes.func.isRequired,
+    getTopRecipesLanding: PropTypes.func.isRequired,
     recipeList: PropTypes.arrayOf(PropTypes.object).isRequired
   };
 
@@ -20,7 +20,7 @@ class Landing extends React.Component {
    * @returns {*} void
    */
   componentDidMount() {
-    this.props.getTopRecipes();
+    this.props.getTopRecipesLanding();
   }
 
   /**
@@ -91,4 +91,4 @@ const mapStateToProps = state => ({
   recipeList: state.recipe.recipeList
 });
 
-export default connect(mapStateToProps, { getTopRecipes })(Landing);
+export default connect(mapStateToProps, { getTopRecipesLanding })(Landing);

@@ -495,6 +495,24 @@ button.close {
 .loader-active {
 	display: block;
 }
+button#loadMore {
+	padding: 10px;
+	text-align: center;
+	background-color: $primary-color;
+	border-width: 0 1px 1px 0;
+	border-style: solid;
+	border-color: $color_1;
+	box-shadow: 0 1px 1px $color_1;
+	width: 50%;
+	transition: all 600ms ease-in-out;
+	-webkit-transition: all 600ms ease-in-out;
+	-moz-transition: all 600ms ease-in-out;
+	-o-transition: all 600ms ease-in-out;
+}
+button#loadMore:hover {
+	background-color: $color_1;
+	color: $primary-color;
+}
 @media (max-width: 767px) {
 	.landing {
 		text-align: center;

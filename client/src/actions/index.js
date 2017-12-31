@@ -17,13 +17,14 @@ export const BASE_URL = '/api/v1';
  */
 export const errorHandler = (dispatch, error, type) => {
   const errorMessage = error.response ? error.response.data : error;
-  const errorData = errorMessage;
-  errorData.data.message = '';
-
   dispatch({
     type,
     payload: errorMessage,
   });
+  let errorData = {};
+  errorData = Object.assign({}, errorMessage);
+  errorData.data.message = '';
+
   setTimeout(() => {
     dispatch({
       type,
@@ -69,6 +70,7 @@ export const postData = (
   }
   axios.post(requestUrl, data, headers)
     .then((response) => {
+      console.log(response, '--------------___>');
       dispatch({
         type: action,
         payload: response.data,
@@ -91,6 +93,7 @@ export const postData = (
       }
     })
     .catch((error) => {
+      console.log(error, '--------------___>');
       errorHandler(dispatch, error.response, errorType);
     });
 };
@@ -189,6 +192,7 @@ export const putData = (
       }
     })
     .catch((error) => {
+      console.log(error.response, '--------------___>');
       errorHandler(dispatch, error.response, errorType);
     });
 };

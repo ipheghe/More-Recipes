@@ -36,16 +36,17 @@ router.delete(
 );
 
 // API route for users to retrieve all recipes
-router.get(
+router.post(
   '/api/v1/recipes',
   authorize.verifyUser,
   recipes.getRecipes,
   recipes.getTopRecipes,
-  recipes.searchRecipesByIngredients
+  recipes.searchRecipesByIngredients,
+  recipes.searchRecipes
 );
 
 // API route for users to retrieve only personal recipes
-router.get(
+router.post(
   '/api/v1/recipes/users',
   authorize.verifyUser,
   validUser,
@@ -74,8 +75,7 @@ router.get(
 // API route for users to retrieve all recipes
 router.get(
   '/api/v1/topRecipes',
-  recipes.getTopRecipes,
-  recipes.searchRecipes
+  recipes.getTopRecipes
 );
 
 export default router;

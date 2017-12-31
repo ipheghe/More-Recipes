@@ -21,6 +21,7 @@ import SelectCategoryModal from './selectCategoryModal.jsx';
 @connect(state => ({ state, }))
 class ViewRecipe extends React.Component {
   static propTypes = {
+    count: PropTypes.number.isRequired,
     getRecipe: PropTypes.func.isRequired,
     postReview: PropTypes.func.isRequired,
     getReviews: PropTypes.func.isRequired,
@@ -69,6 +70,7 @@ class ViewRecipe extends React.Component {
     this.handleUnfavoriteRecipe = this.handleUnfavoriteRecipe.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.loadMore = this.loadMore.bind(this);
   }
 
   /**
@@ -248,6 +250,18 @@ class ViewRecipe extends React.Component {
   }
 
   /**
+   * handle close modal event
+   * @param {SytheticEvent} event
+   * @returns {*} void
+   */
+  loadMore(event) {
+    event.preventDefault();
+    const { id } = this.props.match.params;
+    const limit = this.props.reviews.length + 6;
+    this.props.getReviews(id, limit);
+  }
+
+  /**
    * render
    * @return {ReactElement} markup
    */
@@ -401,6 +415,14 @@ class ViewRecipe extends React.Component {
                     />
                     ))
                 }
+                {
+                  reviewFields.length < this.props.count ?
+                    <button
+                      id="loadMore"
+                      onClick={this.loadMore}
+                    >Load More
+                    </button> : ''
+                }
               </div>
               <hr />
             </div>
@@ -431,7 +453,8 @@ const mapStateToProps = state => ({
   reviews: state.review.reviewList,
   upvote: state.vote.upvote,
   downvote: state.vote.downvote,
-  userData: state.auth.userData
+  userData: state.auth.userData,
+  count: state.review.count
 });
 
 export default connect(

@@ -8,6 +8,7 @@ import ReviewBox from './reviewBox.jsx';
 import ManageCategoryModal from './manageCategoryModal.jsx';
 import ChangePasswordModal from './changePasswordModal.jsx';
 import Footer from './footer.jsx';
+import Pagination from './pagination.jsx';
 
 export {
   MainHeader,
@@ -19,5 +20,6 @@ export {
   ReviewBox,
   ManageCategoryModal,
   ChangePasswordModal,
-  Footer
+  Footer,
+  Pagination
 };

@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Loader from 'react-loaders';
 import {
   UserNavHeader,
   ProfileHeader,
   UserSection,
   UserNavMenu,
-  Footer
+  Footer,
+  Pagination
 } from '../../common';
 import { getFavoriteRecipes } from '../../actions/favoriteActions';
 import FavoriteRecipeList from '../favoriteRecipeList/favoriteRecipeList.jsx';
@@ -20,6 +22,7 @@ import FavoriteRecipeList from '../favoriteRecipeList/favoriteRecipeList.jsx';
 class Favorite extends React.Component {
   static propTypes = {
     getFavoriteRecipes: PropTypes.func.isRequired,
+    userFavorites: PropTypes.arrayOf(PropTypes.object)
   };
 
   /**
@@ -31,6 +34,8 @@ class Favorite extends React.Component {
     this.state = {
       userFavorites: [],
       message: '',
+      pages: 1,
+      currentPaginatePage: 1,
       isLoading: true
     };
   }
@@ -40,7 +45,8 @@ class Favorite extends React.Component {
    * @returns {*} void
    */
   componentDidMount() {
-    this.props.getFavoriteRecipes();
+    const offset = 6 * (this.state.currentPaginatePage - 1);
+    this.props.getFavoriteRecipes(offset);
   }
 
   /**
@@ -54,9 +60,32 @@ class Favorite extends React.Component {
       this.setState({
         userFavorites: Object.assign([], this.state.userFavorites, userFavorites),
         message: nextprops.state.favorite.message,
+        pages: nextprops.state.recipe.pages,
         isLoading: false
       });
     }
+  }
+
+  /**
+   * @description handles click event with pagination
+   *
+   * @param {integer } page
+   *
+   * @return { object } currentPaginatePage
+   */
+  onPaginateClick(page) {
+    this.setState({ currentPaginatePage: page }, () => {
+      this.getRecipes();
+    });
+  }
+
+  /**
+   * get top recipes
+   * @returns {array} recipes
+   */
+  getRecipes() {
+    const offset = 6 * (this.state.currentPaginatePage - 1);
+    this.props.getFavoriteRecipes(offset);
   }
 
   /**
@@ -64,7 +93,7 @@ class Favorite extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<div>IS LOADING....</div>);
+    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
     return (
       <div>
         <UserNavHeader />
@@ -88,7 +117,7 @@ class Favorite extends React.Component {
                         {
                           this.state.userFavorites.length === 0 ?
                             (<h5>{this.state.message}</h5>)
-                            : <FavoriteRecipeList recipes={this.state.userFavorites} />
+                            : <FavoriteRecipeList recipes={this.props.userFavorites} />
                         }
                       </div>
                       <br />
@@ -96,6 +125,13 @@ class Favorite extends React.Component {
                   </div>
                 </section>
               </div>
+              {
+                (this.state.userFavorites && this.state.userFavorites.length > 0) ?
+                  <Pagination
+                    pageNumber={this.state.pages}
+                    currentPaginatePage={this.state.currentPaginatePage}
+                    onPaginateClick={this.onPaginateClick}
+                  /> : '' }
             </div>
           </div>
         </div>
@@ -105,9 +141,14 @@ class Favorite extends React.Component {
   }
 }
 
+Favorite.defaultProps = {
+  userFavorites: []
+};
+
 const mapStateToProps = state => ({
   userFavorites: state.favorite.userFavorites,
-  message: state.favorite.message
+  message: state.favorite.message,
+  pages: state.recipe.pages
 });
 
 export default connect(mapStateToProps, { getFavoriteRecipes })(Favorite);

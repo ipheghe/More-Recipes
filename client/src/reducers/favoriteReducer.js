@@ -9,6 +9,7 @@ import {
 const INITIAL_STATE = {
   message: '',
   error: '',
+  pages: 1,
   userFavorites: [],
   favoriteData: {},
   text: ''
@@ -34,7 +35,8 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         userFavorites: action.payload.userFavorites,
-        message: action.payload.message
+        message: action.payload.message,
+        pages: action.payload.pages
       };
     case FAVORITE_ERROR:
       return { ...state, error: action.payload };

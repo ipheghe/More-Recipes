@@ -31,7 +31,7 @@ export default (state = INITIAL_STATE, action) => {
     case AUTH_ERROR:
       return {
         ...state,
-        error: action.payload.data.message
+        error: action.payload.data ? action.payload.data.message : action.payload.data.error
       };
     case FETCH_USER:
       return {

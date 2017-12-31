@@ -27,7 +27,7 @@ router.get(
 );
 
 // API route for users to retrieve all reviews for a particular recipe
-router.get(
+router.post(
   '/api/v1/reviews/:id',
   authorize.verifyUser,
   validUser,
