@@ -59,6 +59,6 @@ typings/
 .env
 
 client/public/dist/bundle.js
-*.scss
 client/public/style.scss
+*.scss
 template
