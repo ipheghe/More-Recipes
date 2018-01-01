@@ -37,7 +37,7 @@ router.get(
 );
 
 // API route for users to retrieve favorite recipes
-router.get(
+router.post(
   '/api/v1/favorites',
   authorize.verifyUser,
   validUser,

@@ -11,11 +11,13 @@ import RecoverPasswordModal from './recoverPasswordModal.jsx';
  * @class Login
  * @extends {React.Component}
  */
+@connect(state => ({ state, }))
 class Login extends React.Component {
   static propTypes = {
     loginUser: PropTypes.func.isRequired,
     resetPassword: PropTypes.func.isRequired,
-    errorMessage: PropTypes.string.isRequired
+    errorMessage: PropTypes.string.isRequired,
+    modalErrorMessage: PropTypes.string.isRequired
   };
 
   /**
@@ -31,7 +33,7 @@ class Login extends React.Component {
       hasErrored: false,
       errorMessage: '',
       modalIsOpen: false,
-      status: 'Success',
+      status: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -204,18 +206,18 @@ class Login extends React.Component {
     if (this.state.hasErrored) {
       return (
         <div>
-          <p className="alert error-alert" style={{ color: 'white' }}>
+          <p className="alert error-alert">
             <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
             &nbsp;{this.state.errorMessage}
           </p>
         </div>
       );
-    } else if (this.props.errorMessage) {
+    } else if (this.props.modalErrorMessage) {
       return (
         <div>
-          <p className="alert error-alert" style={{ color: 'white' }}>
+          <p className="alert error-alert">
             <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.props.errorMessage}
+            &nbsp;{this.props.modalErrorMessage}
           </p>
         </div>
       );
@@ -341,7 +343,7 @@ class Login extends React.Component {
           </div>
         </div>
         {
-          this.state.status === 'Success' ?
+          this.state.status === '' || this.state.status === 'Fail' ?
             <RecoverPasswordModal
               error={this.renderModalAlert()}
               isOpen={this.state.modalIsOpen}
@@ -361,7 +363,7 @@ class Login extends React.Component {
 
 const mapStateToProps = state => ({
   errorMessage: state.auth.error,
-  message: state.user.error,
+  modalErrorMessage: state.user.error,
 });
 
 

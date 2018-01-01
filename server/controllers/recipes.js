@@ -253,7 +253,7 @@ const recipesController = {
   getRecipes(req, res, next) {
     // If url path contains any of the query keys call the next function
     if (req.query.ingredients ||
-      req.query.sort) return next();
+      req.query.sort || req.query.search) return next();
     // Find all recipes and do an eagerload to include the reviews associated
     // with each recipe and also to include the user whomposted the review
     return Recipe
@@ -391,12 +391,12 @@ const recipesController = {
       }
     }));
     const query1 = search.map(word => ({
-      recipeName: {
+      name: {
         $iLike: `%${word}%`
       }
     }));
     const query2 = search.map(word => ({
-      recipeDescription: {
+      description: {
         $iLike: `%${word}%`
       }
     }));
@@ -421,7 +421,7 @@ const recipesController = {
       .then((recipes) => {
         if (recipes.rows.length === 0) {
           return res.status(200).send({
-            message: 'No recipe matches your search'
+            message: 'Sorry!!! No recipe matches your search'
           });
         }
         pageNumber = parseInt(recipes.count, 10) / parseInt(limit || 6, 10);

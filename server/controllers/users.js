@@ -145,15 +145,14 @@ const usersController = {
     return User
       .findOne({
         where: {
-          id: req.params.id
+          id: req.decoded.user.id
         }
       })
       .then((user) => {
         // if user exists
         user.update({
           username: req.body.username || user.username,
-          firstName: req.body.firstName || user.firstName,
-          lastName: req.body.lastName || user.lastName,
+          fullName: req.body.fullName || user.fullName,
           mobileNumber: req.body.mobileNumber || user.mobileNumber,
           email: req.body.email || user.email
         })
@@ -182,7 +181,7 @@ const usersController = {
     return User
       .findOne({
         where: {
-          id: req.params.id
+          id: req.decoded.user.id
         }
       })
       .then((user) => {
@@ -196,7 +195,7 @@ const usersController = {
           } else {
             // if password matches, update new password
             user.update({
-              password: bcrypt.hashSync(req.body.password, salt, null),
+              password: bcrypt.hashSync(req.body.newPassword, salt, null),
             })
               .then(() => res.status(200).send({
                 status: 'Success',
@@ -234,8 +233,9 @@ const usersController = {
       .then((existingUser) => {
         if (!existingUser) {
           // If user is not found, return error
-          return res.status(404).json({
-            error: 'user email does not exist!'
+          return res.status(404).send({
+            status: 'Fail',
+            message: 'user email does not exist!'
           });
         }
         // Generate a token with Crypto

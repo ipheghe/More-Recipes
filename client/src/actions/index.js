@@ -17,13 +17,14 @@ export const BASE_URL = '/api/v1';
  */
 export const errorHandler = (dispatch, error, type) => {
   const errorMessage = error.response ? error.response.data : error;
-  const errorData = errorMessage;
-  errorData.data.message = '';
-
   dispatch({
     type,
     payload: errorMessage,
   });
+  let errorData = {};
+  errorData = Object.assign({}, errorMessage);
+  errorData.data.message = '';
+
   setTimeout(() => {
     dispatch({
       type,

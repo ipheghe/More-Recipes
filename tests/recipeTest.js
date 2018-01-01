@@ -422,7 +422,7 @@ describe('Update Recipe', () => {
 describe('Get Recipe', () => {
   it('should return 200 status for retrieving user recipe', (done) => {
     server
-      .get('/api/v1/recipes/users')
+      .post('/api/v1/recipes/users')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -437,7 +437,7 @@ describe('Get Recipe', () => {
   });
   it('should return 200 status for retrieving user recipe', (done) => {
     server
-      .get('/api/v1/recipes/users')
+      .post('/api/v1/recipes/users')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[2])
@@ -482,7 +482,7 @@ describe('Get Recipe', () => {
   });
   it('should retrieve all recipes successfully', (done) => {
     server
-      .get('/api/v1/recipes')
+      .post('/api/v1/recipes')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -497,7 +497,7 @@ describe('Get Recipe', () => {
   });
   it('should retrieve all top recipes by upvotes successfully', (done) => {
     server
-      .get('/api/v1/recipes?sort=upvotes&order=descending')
+      .post('/api/v1/recipes?sort=upvotes&order=descending')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -512,7 +512,7 @@ describe('Get Recipe', () => {
   });
   it('should retrieve all recipes by ingredients', (done) => {
     server
-      .get('/api/v1/recipes?ingredients=maggi')
+      .post('/api/v1/recipes?ingredients=maggi')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -527,7 +527,7 @@ describe('Get Recipe', () => {
   });
   it('should retrieve all top recipes by upvotes successfully', (done) => {
     server
-      .get('/api/v1/recipes?ingredients= maggi, rice')
+      .post('/api/v1/recipes?ingredients= maggi, rice')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -542,7 +542,7 @@ describe('Get Recipe', () => {
   });
   it('should get a message for invalid ingredient search', (done) => {
     server
-      .get('/api/v1/recipes?ingredients=palm kernel')
+      .post('/api/v1/recipes?ingredients=palm kernel')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -557,7 +557,7 @@ describe('Get Recipe', () => {
   });
   it('should get a 404 status for invalid ingredient search', (done) => {
     server
-      .get('/2/api/v1/recipes?ingredients=/2')
+      .post('/2/api/v1/recipes?ingredients=/2')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -571,7 +571,7 @@ describe('Get Recipe', () => {
   });
   it('should get a message for invalid ingredient search', (done) => {
     server
-      .get('/api/v1/recipes?ingredients')
+      .post('/api/v1/recipes?ingredients')
       .set('Connection', 'keep alive')
       .query({
         ingredients: 'sort'
@@ -711,7 +711,7 @@ describe('Review a recipe', () => {
   });
   it('should return 200 status for retrieving all reviews for a particular recipe', (done) => {
     server
-      .get(`${reviewsUrl}/2`)
+      .post(`${reviewsUrl}/2`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -726,7 +726,7 @@ describe('Review a recipe', () => {
   });
   it('should return a message for trying to retrieve a non-existent recipe review', (done) => {
     server
-      .get(`${reviewsUrl}/6`)
+      .post(`${reviewsUrl}/6`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -805,6 +805,36 @@ describe('Create Category', () => {
         done();
       });
   });
+  it('should return 200 status for retrieving user category successfully', (done) => {
+    server
+      .get('/api/v1/category/user/1')
+      .set('Connection', 'keep alive')
+      .set('Accept', 'application/json')
+      .set('x-access-token', userToken[0])
+      .set('Content-Type', 'application/json')
+      .type('form')
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.message.should.equal('User Category Retrieved SuccessFullly!');
+        if (err) return done(err);
+        done();
+      });
+  });
+  it('should return 404 status if user has no category to retrieve', (done) => {
+    server
+      .get('/api/v1/categories/users')
+      .set('Connection', 'keep alive')
+      .set('Accept', 'application/json')
+      .set('x-access-token', userToken[1])
+      .set('Content-Type', 'application/json')
+      .type('form')
+      .end((err, res) => {
+        res.status.should.equal(404);
+        res.body.message.should.equal('No category found for user');
+        if (err) return done(err);
+        done();
+      });
+  });
   it('should return 201 status for creating a category successfully', (done) => {
     server
       .post(categoriesUrl)
@@ -813,10 +843,74 @@ describe('Create Category', () => {
       .set('x-access-token', userToken[1])
       .set('Content-Type', 'application/json')
       .type('form')
-      .send(categories[0])
+      .send(categories[1])
       .end((err, res) => {
         res.status.should.equal(201);
         res.body.message.should.equal('Category created Successfully');
+        if (err) return done(err);
+        done();
+      });
+  });
+  it('should return 200 status for updating a category successfully', (done) => {
+    testData = Object.assign({}, categories[1]);
+    testData.name = 'Cakes';
+    server
+      .put('/api/v1/user/category/3')
+      .set('Connection', 'keep alive')
+      .set('Accept', 'application/json')
+      .set('x-access-token', userToken[1])
+      .set('Content-Type', 'application/json')
+      .type('form')
+      .send(categories[0])
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.message.should.equal('category name changed SuccessFullly!');
+        if (err) return done(err);
+        done();
+      });
+  });
+  it('should return 200 status for deleting a category successfully', (done) => {
+    testData = Object.assign({}, categories[0]);
+    server
+      .delete('/api/v1/user/category/3')
+      .set('Connection', 'keep alive')
+      .set('Accept', 'application/json')
+      .set('x-access-token', userToken[1])
+      .set('Content-Type', 'application/json')
+      .type('form')
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.message.should.equal('Category deleted SuccessFullly!');
+        if (err) return done(err);
+        done();
+      });
+  });
+  it('should return 404 status if category doesnt exist for user', (done) => {
+    server
+      .get('/api/v1/category/user/3')
+      .set('Connection', 'keep alive')
+      .set('Accept', 'application/json')
+      .set('x-access-token', userToken[1])
+      .set('Content-Type', 'application/json')
+      .type('form')
+      .end((err, res) => {
+        res.status.should.equal(404);
+        res.body.message.should.equal('No category found for user');
+        if (err) return done(err);
+        done();
+      });
+  });
+  it('should return 200 status for retrieving user categories successfully', (done) => {
+    server
+      .get('/api/v1/categories/users')
+      .set('Connection', 'keep alive')
+      .set('Accept', 'application/json')
+      .set('x-access-token', userToken[0])
+      .set('Content-Type', 'application/json')
+      .type('form')
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.message.should.equal('All User Categories Retrieved SuccessFullly!');
         if (err) return done(err);
         done();
       });
@@ -890,7 +984,7 @@ describe('FavoriteRecipe', () => {
   });
   it('should return 200 status for retrieving user favorite recipes', (done) => {
     server
-      .get(favoritesUrl)
+      .post(favoritesUrl)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -902,9 +996,38 @@ describe('FavoriteRecipe', () => {
         done();
       });
   });
+  it('should return 200 status for retrieving user favorite recipe', (done) => {
+    server
+      .get('/api/v1/favorite/2')
+      .set('Connection', 'keep alive')
+      .set('Accept', 'application/json')
+      .set('x-access-token', userToken[0])
+      .set('Content-Type', 'application/json')
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.message.should.equal('User Favorite recipe retrieved Successfully');
+        if (err) return done(err);
+        done();
+      });
+  });
+  it('should return 200 status for unfavoriting a recipe successfully', (done) => {
+    server
+      .delete('/api/v1/favorite/2')
+      .set('Connection', 'keep alive')
+      .set('Accept', 'application/json')
+      .set('x-access-token', userToken[0])
+      .set('Content-Type', 'application/json')
+      .type('form')
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.message.should.equal('Recipe Unfavorited SuccessFullly!');
+        if (err) return done(err);
+        done();
+      });
+  });
   it('should return a message if user doesnt not have any favorite recipe', (done) => {
     server
-      .get(favoritesUrl)
+      .post(favoritesUrl)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[1])

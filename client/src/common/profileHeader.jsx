@@ -12,7 +12,6 @@ import { getRecipesBySearch } from './../actions/recipeActions';
  */
 class ProfileHeader extends React.Component {
   static propTypes = {
-    categories: PropTypes.arrayOf(PropTypes.object),
     getRecipesBySearch: PropTypes.func.isRequired
   };
 
@@ -47,7 +46,8 @@ class ProfileHeader extends React.Component {
   */
   handleSearch(e) {
     e.preventDefault();
-    this.props.getRecipesBySearch(this.state.keyword);
+    const offset = 0;
+    this.props.getRecipesBySearch(this.state.keyword, offset);
     window.location.hash = `#search?sort=${this.state.keyword}`;
     this.setState({
       keyword: ''
@@ -81,39 +81,6 @@ class ProfileHeader extends React.Component {
               <button className="nav-link invisible-button disabled" />
             </li>
           </ul>
-          <ul className="navbar-nav profile-menu">
-            <button type="button" className="btn btn-default">
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="http://example.com"
-                  id="navbarDropdownMenuLink"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Browse
-                </a>
-                <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <p className="dropdown-item"><b>Categories</b></p>
-                  <hr />
-                  {
-                    (this.props.categories && this.props.categories.length > 0) ?
-                      this.props.categories.map(category =>
-                        <a className="dropdown-item" key={category.id} href="/dashboard">{category.name}</a>)
-                      : null
-                  }
-                  <br />
-                  <p className="dropdown-item"><b>Favorites</b></p>
-                  <hr />
-                  <a className="dropdown-item" href="/favorite">Egusi Soup</a>
-                  <a className="dropdown-item" href="/favorite">Pizza</a>
-                  <a className="dropdown-item" href="/favorite">Pepper Soup</a>
-                </div>
-              </li>
-            </button>
-          </ul>
-
           <form className="form-inline my-2 my-lg-0">
             <input
               className="form-control mr-sm-2"
@@ -132,9 +99,6 @@ class ProfileHeader extends React.Component {
     );
   }
 }
-ProfileHeader.defaultProps = {
-  categories: null
-};
 const mapStateToProps = state => ({
   categories: state.category.categoryList
 });

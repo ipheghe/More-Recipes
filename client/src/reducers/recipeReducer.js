@@ -12,6 +12,7 @@ import {
 const INITIAL_STATE = {
   message: '',
   error: '',
+  pages: 1,
   recipeData: {},
   recipeList: [],
   userRecipes: [],
@@ -29,19 +30,22 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         recipeList: action.payload.recipes.rows,
-        message: action.payload.message
+        message: action.payload.message,
+        pages: action.payload.pages
       };
     case SEARCH_RECIPES:
       return {
         ...state,
-        searchResult: action.payload.recipes.rows,
-        message: action.payload.message
+        searchResult: action.payload.recipes ? action.payload.recipes.rows : [],
+        message: action.payload.message,
+        pages: action.payload.pages
       };
     case FETCH_USER_RECIPES:
       return {
         ...state,
         userRecipes: action.payload.recipes.rows,
-        message: action.payload.message
+        message: action.payload.message,
+        pages: action.payload.pages
       };
     case FETCH_RECIPE:
       return {

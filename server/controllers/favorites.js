@@ -89,7 +89,7 @@ const favoritesController = {
       .then((favorite) => {
         if (favorite) {
           if (favorite.length === 0) {
-            res.send({ message: 'User has not favorited this recipe' });
+            res.status(404).send({ message: 'User has not favorited this recipe' });
           } else {
             return res.status(200).send({
               message: 'User Favorite recipe retrieved Successfully',

@@ -20,11 +20,11 @@ router.post('/api/v1/user/signin', validateUserSigninFeild, users.signin);
 router.get('/api/v1/user/:username', users.getUserDetails);
 
 // API route to update user record
-router.put('/api/v1/user/:id', authorize.verifyUser, validUser, users.updateUserRecord);
+router.put('/api/v1/user', authorize.verifyUser, validUser, users.updateUserRecord);
 
 // API route to change password
 router.put(
-  '/api/v1/user/changePassword/:id',
+  '/api/v1/user/changePassword/user',
   authorize.verifyUser,
   validUser,
   validatePasswordField,

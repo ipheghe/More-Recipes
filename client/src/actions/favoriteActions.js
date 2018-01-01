@@ -15,8 +15,8 @@ import {
  * @description favorite recipe action
  * @type {function} favoriteRecipe
  *
- * @param {number} recipeId
- * @param {number} categoryId
+ * @param {integer} recipeId
+ * @param {integer} categoryId
  *
  * @returns {action} dispatch
  */
@@ -46,8 +46,8 @@ const favoriteRecipe = (recipeId, categoryId) => {
  * @description favorite recipe action
  * @type {function} favoriteRecipe
  *
- * @param {number} recipeId
- * @param {number} categoryId
+ * @param {integer} recipeId
+ * @param {integer} categoryId
  *
  * @returns {action} dispatch
  */
@@ -72,7 +72,7 @@ const unfavoriteRecipe = (recipeId) => {
  * @description action to get user favorite recipe
  * @type {function} getFavoriteRecipe
  *
- * @param {number} recipeId
+ * @param {integer} recipeId
  *
  * @returns {action} dispatch
  */
@@ -85,11 +85,29 @@ const getFavoriteRecipe = (recipeId) => {
  * @description action to get user favorite recipes
  * @type {function} getFavoriteRecipes
  *
+ * @param {integer} offset
+ *
  * @returns {action} dispatch
  */
-const getFavoriteRecipes = () => {
+const getFavoriteRecipes = (offset) => {
+  const data = {
+    offset
+  };
   const url = '/favorites';
-  return dispatch => getData(RETRIEVE_USER_FAVORITE_RECIPES, FAVORITE_ERROR, true, url, dispatch);
+  const directTo = '';
+  const message = '';
+  const constant = '';
+  return dispatch => postData(
+    RETRIEVE_USER_FAVORITE_RECIPES,
+    FAVORITE_ERROR,
+    true,
+    url,
+    dispatch,
+    data,
+    message,
+    constant,
+    directTo
+  );
 };
 
 export {

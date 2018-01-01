@@ -1,4 +1,4 @@
-import { getData, postData } from './index';
+import { postData } from './index';
 import { REVIEW_RECIPE, RETRIEVE_RECIPE_REVIEWS, REVIEW_ERROR } from './types';
 
 /**
@@ -33,13 +33,30 @@ const postReview = (message, recipeId) => {
 * @description get reviews action
  * @type {function} getReviews
  *
- * @param {number} recipeId
+ * @param {integer} recipeId
+ * @param {integer} limit
  *
  * @returns {action} dispatch
  */
-const getReviews = (recipeId) => {
+const getReviews = (recipeId, limit) => {
+  const data = {
+    limit
+  };
   const url = `/reviews/${recipeId}`;
-  return dispatch => getData(RETRIEVE_RECIPE_REVIEWS, REVIEW_ERROR, true, url, dispatch);
+  const directTo = '';
+  const message = '';
+  const constant = '';
+  return dispatch => postData(
+    RETRIEVE_RECIPE_REVIEWS,
+    REVIEW_ERROR,
+    true,
+    url,
+    dispatch,
+    data,
+    message,
+    constant,
+    directTo
+  );
 };
 
 export { postReview, getReviews };

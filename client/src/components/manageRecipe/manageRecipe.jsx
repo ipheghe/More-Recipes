@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Loader from 'react-loaders';
 import {
   UserNavHeader,
   ProfileHeader,
@@ -239,7 +240,7 @@ class ManageRecipe extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<div>IS LOADING....</div>);
+    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
     return (
       <div>
         <UserNavHeader />

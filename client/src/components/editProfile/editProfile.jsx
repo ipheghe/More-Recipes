@@ -18,10 +18,7 @@ import { updateUserRecord } from '../../actions/userActions';
 class EditProfile extends React.Component {
     static propTypes = {
       updateUserRecord: PropTypes.func.isRequired,
-      errorMessage: PropTypes.string.isRequired,
-      userData: PropTypes.shape({
-        id: PropTypes.number
-      }).isRequired
+      errorMessage: PropTypes.string.isRequired
     };
 
   /**
@@ -137,7 +134,6 @@ class EditProfile extends React.Component {
         errorMessage: ''
       });
       return this.props.updateUserRecord(
-        this.props.userData.id,
         username,
         fullName,
         mobileNumber,

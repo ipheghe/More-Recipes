@@ -225,7 +225,7 @@ class UserSection extends React.Component {
         errorMessage: 'Password mismatch!'
       });
     }
-    return this.props.changePassword(this.props.userData.id, oldPassword, newPassword);
+    return this.props.changePassword(oldPassword, newPassword);
   }
 
   /**
