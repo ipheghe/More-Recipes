@@ -14,7 +14,6 @@ import {
  * @description update recipe action
  * @type {function} updateRecipe
  *
- * @param {int} userId
  * @param {string} username
  * @param {string} fullName
  * @param {number} mobileNumber
@@ -22,14 +21,14 @@ import {
  *
  * @returns {action} dispatch
  */
-const updateUserRecord = (userId, username, fullName, mobileNumber, email) => {
+const updateUserRecord = (username, fullName, mobileNumber, email) => {
   const data = {
     username,
     fullName,
     mobileNumber,
     email
   };
-  const url = `/user/${userId}`;
+  const url = '/user';
   const directTo = '#dashboard';
   const message = 'User Profile updated Successfully';
   const constant = 'UPDATE_USER';
@@ -50,18 +49,17 @@ const updateUserRecord = (userId, username, fullName, mobileNumber, email) => {
  * @description action to change password
  * @type {function} changePassword
  *
- * @param {number} userId
  * @param {string} password
  * @param {string} newPassword
  *
  * @returns {action} dispatch
  */
-const changePassword = (userId, password, newPassword) => {
+const changePassword = (password, newPassword) => {
   const data = {
     password,
     newPassword
   };
-  const url = `/user/changePassword/${userId}`;
+  const url = '/user/changePassword';
   const directTo = '#login';
   const message = 'User Password changed Successfully';
   const constant = 'CHANGE_PASSWORD';

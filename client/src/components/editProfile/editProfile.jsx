@@ -137,7 +137,6 @@ class EditProfile extends React.Component {
         errorMessage: ''
       });
       return this.props.updateUserRecord(
-        this.props.userData.id,
         username,
         fullName,
         mobileNumber,

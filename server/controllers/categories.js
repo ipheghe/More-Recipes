@@ -139,7 +139,7 @@ const categoriesController = {
       .then((userCategories) => {
         if (userCategories) {
           if (userCategories.length === 0) {
-            res.status(200).send({ message: 'No category found for user' });
+            res.status(404).send({ message: 'No category found for user' });
           } else {
             return res.status(200).send({
               message: 'All User Categories Retrieved SuccessFullly!',
@@ -172,7 +172,7 @@ const categoriesController = {
       // retrieve category for that particular user
       .then((userCategory) => {
         if (userCategory) {
-          if (!userCategory) {
+          if (userCategory.length === 0) {
             res.status(404).send({ message: 'No category found for user' });
           } else {
             return res.status(200).send({

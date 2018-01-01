@@ -1,4 +1,26 @@
 ---
+version: "2"
+checks:
+  argument-count:
+    enabled: false
+  complex-logic:
+    enabled: false
+  file-lines:
+    enabled: false
+  method-complexity:
+    enabled: false
+  method-count:
+    enabled: false
+  method-lines:
+    enabled: false
+  nested-control-flow:
+    enabled: false
+  return-statements:
+    enabled: false
+  similar-code:
+    enabled: false
+  identical-code:
+    enabled: false
 engines:
   csslint:
     enabled: false
@@ -7,6 +29,9 @@ engines:
     config:
       languages:
       - javascript
+plugins:
+  csslint:
+    enabled: false
   eslint:
     enabled: true
   fixme:
@@ -14,7 +39,9 @@ engines:
 ratings:
   paths:
   - "server/**/*.js"
-exclude_paths:
+exclude_patterns:
   - "node_modules/"
   - "template/*"
   - "server/migrations"
+  - "server/models"
+  - "tests/*"

@@ -382,3 +382,74 @@ describe('Check If User Exists', () => {
       });
   });
 });
+describe('Update User Records', () => {
+  it('should return 200 status for successful updating user record', (done) => {
+    testData = Object.assign({}, testValidUsers[0]);
+    testData.fullName = 'Chima Ejiofor';
+    server
+      .put('/api/v1/user')
+      .set('Connection', 'keep alive')
+      .set('Content-Type', 'application/json')
+      .set('x-access-token', userToken[0])
+      .send(testData)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.body.message).to.equal('User Record Updated SuccessFullly!');
+        if (err) return done(err);
+        done();
+      });
+  });
+  it('return a 401 if user is unauthorized', (done) => {
+    testData = Object.assign({}, testValidUsers[0]);
+    testData.fullName = 'Ch';
+    server
+      .put('/api/v1/user')
+      .set('Connection', 'keep alive')
+      .set('Content-Type', 'application/json')
+      .set('x-access-token', userToken[0])
+      .send(testData)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(401);
+        if (err) return done(err);
+        done();
+      });
+  });
+});
+describe('Change User Password', () => {
+  it('should return 200 status for successful changing user password', (done) => {
+    const passwordData = {
+      password: 'abcdeddddddd',
+      newPassword: 'abcdef'
+    };
+    server
+      .put('/api/v1/user/changePassword/user')
+      .set('Connection', 'keep alive')
+      .set('Content-Type', 'application/json')
+      .set('x-access-token', userToken[0])
+      .send(passwordData)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(401);
+        expect(res.body.message).to.equal('Incorrect password');
+        if (err) return done(err);
+        done();
+      });
+  });
+  it('return a 401 if user is unauthorized', (done) => {
+    const passwordData = {
+      password: 'abcde',
+      newPassword: 'abcdef'
+    };
+    server
+      .put('/api/v1/user/changePassword/user')
+      .set('Connection', 'keep alive')
+      .set('Content-Type', 'application/json')
+      .set('x-access-token', userToken[0])
+      .send(passwordData)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.body.message).to.equal('User Password Changed SuccessFullly!');
+        if (err) return done(err);
+        done();
+      });
+  });
+});
