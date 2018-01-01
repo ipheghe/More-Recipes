@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import Logo from '../../public/images/recipe_logo.png';
+import Logo from '../../public/assets/images/recipe_logo.png';
 
 /**
- * ResetPasswordHeader commponent
- * @returns {component} ResetPasswordHeader
+ * MainHeader commponent
+ * @returns {component} MainHeader
  */
-const ResetPasswordHeader = () => (
+const MainHeader = () => (
   <div>
     <header>
       <nav
@@ -24,7 +24,7 @@ const ResetPasswordHeader = () => (
         >
           <span className="navbar-toggler-icon" />
         </button>
-        <a href="#/" className="navbar-brand">
+        <a href="/" className="navbar-brand">
           <img
             src={Logo}
             width="30"
@@ -45,6 +45,24 @@ const ResetPasswordHeader = () => (
               </NavLink>
               <span className="sr-only">(current)</span>
             </li>
+            <li className="nav-item">
+              <NavLink
+                to="/login"
+                className="nav-link"
+                activeClassName="active"
+                exact
+              >Login
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                to="/signup"
+                className="nav-link"
+                activeClassName="active"
+                exact
+              >SignUp
+              </NavLink>
+            </li>
           </ul>
         </div>
       </nav>
@@ -52,5 +70,5 @@ const ResetPasswordHeader = () => (
   </div>
 );
 
-export default ResetPasswordHeader;
+export default MainHeader;
 

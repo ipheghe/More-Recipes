@@ -1,19 +1,17 @@
 import { putData } from './index';
 import { UPVOTE_RECIPE, DOWNVOTE_RECIPE, VOTE_ERROR } from './types';
 
-//= ===============================
-// Vote actions
-//= ===============================
-
 /**
- * @description action to upvote recipes
+ * @description action to upvote recipe
  * @type {function} upvoteRecipe
- * @param {*} recipeId
- * @returns {array} dispatch
+ *
+ * @param {number} recipeId
+ *
+ * @returns {action} dispatch
  */
 const upvoteRecipe = (recipeId) => {
   const data = { recipeId };
-  const url = `/recipes/${recipeId}/votes`;
+  const url = `/recipe/${recipeId}/vote`;
   const directTo = '';
   const message = '';
   const constant = '';
@@ -31,14 +29,16 @@ const upvoteRecipe = (recipeId) => {
 };
 
 /**
- * @description action to downvote recipes
+ * @description action to downvote recipe
  * @type {function} upvoteRecipe
- * @param {*} recipeId
- * @returns {array} dispatch
+ *
+ * @param {number} recipeId
+ *
+ * @returns {action} dispatch
  */
 const downvoteRecipe = (recipeId) => {
   const data = { recipeId };
-  const url = `/recipes/${recipeId}/votes?sort=downvotes`;
+  const url = `/recipe/${recipeId}/vote?sort=downvotes`;
   const directTo = '';
   const message = '';
   const constant = '';

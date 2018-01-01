@@ -28,10 +28,10 @@ class UserSection extends React.Component {
       id: PropTypes.number,
       username: PropTypes.string,
     }).isRequired,
-    categoryData: PropTypes.arrayOf(PropTypes.object).isRequired,
+    categoryList: PropTypes.arrayOf(PropTypes.object).isRequired,
     status: PropTypes.string.isRequired,
     errorMessage: PropTypes.string.isRequired,
-    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    categories: PropTypes.arrayOf(PropTypes.object)
   };
 
   /**
@@ -47,7 +47,7 @@ class UserSection extends React.Component {
       newPassword: '',
       confirmPassword: '',
       hasErrored: false,
-      status: 'Success',
+      status: '',
       errorMessage: '',
       modalIsOpen: false,
       passwordModalIsOpen: false
@@ -68,9 +68,9 @@ class UserSection extends React.Component {
    * @returns {*} void
    */
   componentWillReceiveProps(nextprops) {
-    if (nextprops.state.category.categoryData.length > 0) {
+    if (nextprops.state.category.userCategoryList.length > 0) {
       this.setState({
-        modalCategoryName: nextprops.state.category.categoryData[0].name
+        modalCategoryName: nextprops.state.category.userCategoryList[0].name
       });
     }
     if (nextprops.state.user.status.length > 0) {
@@ -108,7 +108,7 @@ class UserSection extends React.Component {
    */
   handleUpdateCategory(event) {
     event.preventDefault();
-    const categoryId = this.props.categoryData[0].id;
+    const categoryId = this.props.categoryList[0].id;
     this.props.updateCategory(categoryId, this.state.modalCategoryName);
     this.setState({ modalIsOpen: false });
   }
@@ -120,7 +120,7 @@ class UserSection extends React.Component {
    */
   handleDeleteCategory(event) {
     event.preventDefault();
-    const categoryId = this.props.categoryData[0].id;
+    const categoryId = this.props.categoryList[0].id;
     this.props.deleteCategory(categoryId);
     this.setState({ modalIsOpen: false });
   }
@@ -144,41 +144,7 @@ class UserSection extends React.Component {
    */
   handleChangePassword(event) {
     event.preventDefault();
-    const { oldPassword, newPassword, confirmPassword } = this.state;
-    let valid;
-    if (!valid) {
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      if (oldPassword === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'old password field cannot be empty'
-        });
-      }
-      if (newPassword === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'new password field cannot be empty'
-        });
-      }
-      if (confirmPassword === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'confirm password field cannot be empty'
-        });
-      }
-      if (newPassword !== confirmPassword) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'Password mismatch!'
-        });
-      }
-    }
-    return this.props.changePassword(this.props.userData.id, oldPassword, newPassword);
+    this.validateFormField();
   }
 
   /**
@@ -197,8 +163,69 @@ class UserSection extends React.Component {
     this.setState({
       modalIsOpen: false,
       passwordModalIsOpen: false,
-      status: 'Success'
+      status: ''
     });
+  }
+
+  /**
+   * validateFormField
+   * @returns {string} errorMessage
+   */
+  validateFormField() {
+    const {
+      oldPassword,
+      newPassword,
+      confirmPassword,
+    } = this.state;
+    if (oldPassword === '') {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'old password field cannot be empty'
+      });
+    }
+    if (newPassword === '') {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'new password field cannot be empty'
+      });
+    }
+    if (confirmPassword === '') {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'confirm password field cannot be empty'
+      });
+    }
+    if (newPassword !== confirmPassword) {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Password mismatch!'
+      });
+    }
+    return this.props.changePassword(this.props.userData.id, oldPassword, newPassword);
   }
 
   /**
@@ -276,7 +303,7 @@ class UserSection extends React.Component {
             onClick={() => {
               this.setState({
                 passwordModalIsOpen: true,
-                status: 'Success'
+                status: ''
               });
             }}
           >
@@ -328,7 +355,7 @@ class UserSection extends React.Component {
           </div>
         </div>
         {
-          this.props.categoryData.length > 0 ?
+          this.props.categoryList.length > 0 ?
             <ManageCategoryModal
               isOpen={this.state.modalIsOpen}
               afterOpen={this.afterOpenModal}
@@ -343,9 +370,8 @@ class UserSection extends React.Component {
             /> : ''
         }
         {
-          this.state.status === 'Success' ?
+          this.state.status === '' || this.state.status === 'Fail' ?
             <div>
-              {this.renderAlert()}
               <ChangePasswordModal
                 error={this.renderAlert()}
                 isOpen={this.state.passwordModalIsOpen}
@@ -365,10 +391,15 @@ class UserSection extends React.Component {
     );
   }
 }
+
+UserSection.defaultProps = {
+  categories: []
+};
+
 const mapStateToProps = state => ({
   userData: state.auth.userData,
   categories: state.category.categoryList,
-  categoryData: state.category.categoryData,
+  categoryList: state.category.userCategoryList,
   errorMessage: state.user.error,
   status: state.user.status
 });

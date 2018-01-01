@@ -40,7 +40,7 @@ const ChangePasswordModal = ({
           <label htmlFor="oldPassword">Old Password:</label>
           <div className="input-group input-group-lg">
             <span className="input-group-addon">
-              <i className="fa fa-envelope" />
+              <i className="fa fa-unlock-alt" />
             </span>
             <input
               name="oldPassword"
@@ -57,7 +57,7 @@ const ChangePasswordModal = ({
           <label htmlFor="newPassword">New Password:</label>
           <div className="input-group input-group-lg">
             <span className="input-group-addon">
-              <i className="fa fa-envelope" />
+              <i className="fa fa-unlock-alt" />
             </span>
             <input
               name="newPassword"
@@ -74,7 +74,7 @@ const ChangePasswordModal = ({
           <label htmlFor="confirmPassword">Confirm Password:</label>
           <div className="input-group input-group-lg">
             <span className="input-group-addon">
-              <i className="fa fa-envelope" />
+              <i className="fa fa-unlock-alt" />
             </span>
             <input
               name="confirmPassword"
@@ -98,7 +98,7 @@ const ChangePasswordModal = ({
       </button>
       <button
         type="button"
-        className="btn btn-success"
+        className="btn btn-danger"
         onClick={onClose}
       > Close
       </button>

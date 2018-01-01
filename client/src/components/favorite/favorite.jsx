@@ -1,8 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { UserNavHeader, ProfileHeader, UserSection, UserNavMenu } from '../../views/index';
-import { getFavoriteRecipes } from '../../actions/favorite';
+import {
+  UserNavHeader,
+  ProfileHeader,
+  UserSection,
+  UserNavMenu,
+  Footer
+} from '../../common';
+import { getFavoriteRecipes } from '../../actions/favoriteActions';
 import FavoriteRecipeList from '../favoriteRecipeList/favoriteRecipeList.jsx';
 
 /**
@@ -93,6 +99,7 @@ class Favorite extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

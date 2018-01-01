@@ -1,11 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { UserNavHeader, ReviewBox } from '../../views/index';
-import { getRecipe } from '../../actions/recipe';
-import { postReview } from '../../actions/review';
-import { upvoteRecipe, downvoteRecipe } from '../../actions/vote';
-import { favoriteRecipe, unfavoriteRecipe, getFavoriteRecipe } from '../../actions/favorite';
+import Loader from 'react-loaders';
+import { UserNavHeader, ReviewBox, Footer } from '../../common';
+import { getRecipe } from '../../actions/recipeActions';
+import { postReview, getReviews } from '../../actions/reviewActions';
+import { upvoteRecipe, downvoteRecipe } from '../../actions/voteActions';
+import {
+  favoriteRecipe,
+  unfavoriteRecipe,
+  getFavoriteRecipe
+} from '../../actions/favoriteActions';
+import SelectCategoryModal from './selectCategoryModal.jsx';
 
 /**
  * ViewRecipe component
@@ -17,6 +23,7 @@ class ViewRecipe extends React.Component {
   static propTypes = {
     getRecipe: PropTypes.func.isRequired,
     postReview: PropTypes.func.isRequired,
+    getReviews: PropTypes.func.isRequired,
     upvoteRecipe: PropTypes.func.isRequired,
     downvoteRecipe: PropTypes.func.isRequired,
     favoriteRecipe: PropTypes.func.isRequired,
@@ -25,12 +32,17 @@ class ViewRecipe extends React.Component {
     match: PropTypes.shape({
       params: PropTypes.objectOf(PropTypes.string),
     }).isRequired,
-    categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    categories: PropTypes.arrayOf(PropTypes.object),
     recipe: PropTypes.shape({
       params: PropTypes.objectOf(PropTypes.string),
     }).isRequired,
+    reviews: PropTypes.arrayOf(PropTypes.object).isRequired,
     upvote: PropTypes.number.isRequired,
-    downvote: PropTypes.number.isRequired
+    downvote: PropTypes.number.isRequired,
+    userData: PropTypes.shape({
+      id: PropTypes.number,
+      username: PropTypes.string
+    })
   };
 
   /**
@@ -41,18 +53,22 @@ class ViewRecipe extends React.Component {
     super(props);
     this.state = {
       recipe: {},
+      reviews: [],
       ingredients: {},
       directions: {},
       reviewMessage: '',
       isFavorite: true,
       isLoading: true,
       upVoteState: true,
-      downVoteState: true
+      downVoteState: true,
+      modalIsOpen: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePostReview = this.handlePostReview.bind(this);
     this.handleFavoriteRecipe = this.handleFavoriteRecipe.bind(this);
     this.handleUnfavoriteRecipe = this.handleUnfavoriteRecipe.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   /**
@@ -63,6 +79,7 @@ class ViewRecipe extends React.Component {
     const { id } = this.props.match.params;
     this.props.getRecipe(id);
     this.props.getFavoriteRecipe(id);
+    this.props.getReviews(id);
   }
 
   /**
@@ -71,13 +88,15 @@ class ViewRecipe extends React.Component {
    * @returns {*} void
    */
   componentWillReceiveProps(nextprops) {
-    if (nextprops.state.recipe) {
-      const { recipeList } = nextprops.state.recipe;
-      if (Object.keys(recipeList).length > 0) {
+    if (nextprops.state.recipe && nextprops.reviews) {
+      const { recipeData } = nextprops.state.recipe;
+      const reviewList = nextprops.reviews;
+      if (Object.keys(recipeData).length > 0) {
         this.setState({
-          recipe: Object.assign({}, this.state.recipe, recipeList),
-          ingredients: recipeList.ingredients.split(',').map(item => item.trim()),
-          directions: recipeList.directions.split(',').map(item => item.trim()),
+          recipe: Object.assign({}, this.state.recipe, recipeData),
+          reviews: Object.assign([], this.state.reviews, reviewList),
+          ingredients: recipeData.ingredients.split(',').map(item => item.trim()),
+          directions: recipeData.directions.split(',').map(item => item.trim()),
           isLoading: false,
         });
       }
@@ -87,8 +106,7 @@ class ViewRecipe extends React.Component {
       const { favoriteData } = nextprops.state.favorite;
       if (Object.keys(favoriteData).length < 1) {
         this.setState({
-          isFavorite: false,
-          isLoading: false,
+          isFavorite: false
         });
       }
     }
@@ -96,38 +114,37 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle change form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {object} state
    */
-  handleChange(e) {
+  handleChange(event) {
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
   /**
    * handle post review form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handlePostReview(e) {
-    e.preventDefault();
+  handlePostReview(event) {
+    event.preventDefault();
     this.setState({
       reviewMessage: ''
     });
     const { id } = this.props.match.params;
     const { reviewMessage } = this.state;
     this.props.postReview(reviewMessage, id);
-    this.props.getRecipe(id);
   }
 
   /**
    * handle upvote event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleUpvote = (e) => {
-    e.preventDefault();
+  handleUpvote = (event) => {
+    event.preventDefault();
     const { id } = this.props.match.params;
     this.props.upvoteRecipe(id);
     this.setState({
@@ -138,11 +155,11 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle downvote event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleDownvote = (e) => {
-    e.preventDefault();
+  handleDownvote = (event) => {
+    event.preventDefault();
     const { id } = this.props.match.params;
     this.props.downvoteRecipe(id);
     this.setState({
@@ -153,25 +170,26 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle favorite event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleFavoriteRecipe(e) {
-    e.preventDefault();
+  handleFavoriteRecipe(event) {
+    event.preventDefault();
     const { id } = this.props.match.params;
     this.props.favoriteRecipe(id, this.categoryInput.value);
     this.setState({
-      isFavorite: true
+      isFavorite: true,
+      modalIsOpen: false,
     });
   }
 
   /**
    * handle unfavorite event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleUnfavoriteRecipe(e) {
-    e.preventDefault();
+  handleUnfavoriteRecipe(event) {
+    event.preventDefault();
     const { id } = this.props.match.params;
     this.props.unfavoriteRecipe(id);
     this.setState({
@@ -181,7 +199,6 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle handleVote event
-   * @param {SytheticEvent} e
    * @returns {*} void
    */
   handleUpVote() {
@@ -193,7 +210,6 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle handleVote event
-   * @param {SytheticEvent} e
    * @returns {*} void
    */
   handleDownVote() {
@@ -204,12 +220,58 @@ class ViewRecipe extends React.Component {
   }
 
   /**
+   * handle open modal event
+   * @returns {*} void
+   */
+  openModal() {
+    if (this.props.categories.length === 0) {
+      const { id } = this.props.match.params;
+      this.props.favoriteRecipe(id, 88);
+      this.setState({
+        isFavorite: true
+      });
+    } else {
+      this.setState({
+        modalIsOpen: true
+      });
+    }
+  }
+
+  /**
+   * handle close modal event
+   * @returns {*} void
+   */
+  closeModal() {
+    this.setState({
+      modalIsOpen: false
+    });
+  }
+
+  /**
    * render
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<div>IS LOADING....</div>);
-    const reviewFields = this.state.recipe.reviews;
+    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
+    const reviewFields = this.state.reviews;
+    const customStyles = {
+      overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.75)'
+      },
+      content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+      }
+    };
     return (
       <div>
         <UserNavHeader />
@@ -218,10 +280,10 @@ class ViewRecipe extends React.Component {
             <div className="container">
               <div className="row recipe-top">
                 <section className="col-md-6 title-area">
-                  <h3>{this.state.recipe.recipeName}</h3>
+                  <h3>{this.state.recipe.name}</h3>
                   <br />
                   <div>
-                    <p>{this.state.recipe.recipeDescription}</p>
+                    <p>{this.state.recipe.description}</p>
                   </div>
                   <br />
                   <div>
@@ -247,8 +309,20 @@ class ViewRecipe extends React.Component {
               <div className="recipe-button">
                 {
                   this.state.isFavorite ?
-                    <button type="button" className="btn btn-success btn-lg" id="favorite" onClick={this.handleUnfavoriteRecipe}>UnFavorite</button>
-                : <button type="button" className="btn btn-success btn-lg" id="favorite" data-toggle="modal" data-target="#categoryModal">Favorite</button>
+                    <button
+                      type="button"
+                      className="btn btn-success btn-lg"
+                      id="favorite"
+                      onClick={this.handleUnfavoriteRecipe}
+                    >UnFavorite
+                    </button>
+                : <button
+                  type="button"
+                  className="btn btn-success btn-lg"
+                  id="favorite"
+                  onClick={this.openModal}
+                >Favorite
+                  </button>
                 }
                 <button
                   type="button"
@@ -321,7 +395,7 @@ class ViewRecipe extends React.Component {
                   reviewFields.map(review => (
                     <ReviewBox
                       key={review.id}
-                      username={review.User.username}
+                      username={review.User ? review.User.username : this.props.userData.username}
                       createdAt={review.createdAt.substring(0, 10)}
                       message={review.message}
                     />
@@ -332,55 +406,32 @@ class ViewRecipe extends React.Component {
             </div>
           </div>
         </div>
-        <div className="modal fade" id="categoryModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h4 className="modal-title" id="myModalLabel">Select Category</h4>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <div className="form-group">
-                  <label htmlFor="category-list">Select Category</label>
-                  <select
-                    type="text"
-                    className="form-control"
-                    name="categoryName"
-                    ref={node => this.categoryInput = node}
-                  >
-                    {
-                      (this.props.categories && this.props.categories.length > 0) ?
-                        this.props.categories.map(category =>
-                          <option value={category.id} key={category.id} >{category.name}</option>)
-                        : null
-                    }
-                  </select>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" className="btn btn-success" data-dismiss="modal" onClick={this.handleFavoriteRecipe}>Favorite Recipe</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SelectCategoryModal
+          isOpen={this.state.modalIsOpen}
+          onClose={this.closeModal}
+          customStyles={customStyles}
+          categories={this.props.categories}
+          categoryInput={node => this.categoryInput = node}
+          favoriteRecipe={this.handleFavoriteRecipe}
+        />
+        <Footer />
       </div>
     );
   }
 }
+
+ViewRecipe.defaultProps = {
+  categories: null,
+  userData: {}
+};
+
 const mapStateToProps = state => ({
   categories: state.category.categoryList,
-  recipe: state.recipe.recipeList,
-  reviewData: state.review.reviewData,
+  recipe: state.recipe.recipeData,
+  reviews: state.review.reviewList,
   upvote: state.vote.upvote,
-  downvote: state.vote.downvote
+  downvote: state.vote.downvote,
+  userData: state.auth.userData
 });
 
 export default connect(
@@ -389,6 +440,7 @@ export default connect(
     getRecipe,
     getFavoriteRecipe,
     postReview,
+    getReviews,
     upvoteRecipe,
     downvoteRecipe,
     favoriteRecipe,

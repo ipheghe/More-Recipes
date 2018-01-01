@@ -20,7 +20,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         message: action.payload.message,
-        favoriteData: action.payload.favoriteData
+        favoriteData: action.payload.favorite
       };
     case UNFAVORITE_RECIPE:
       return { ...state };

@@ -1,9 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { UserNavHeader, ProfileHeader, UserSection, UserNavMenu } from '../../views/index';
+import {
+  UserNavHeader,
+  ProfileHeader,
+  UserSection,
+  UserNavMenu,
+  Footer
+} from '../../common';
 import RecipeList from '../recipeList/recipeList.jsx';
-import { getUserRecipes } from '../../actions/recipe';
+import { getUserRecipes } from '../../actions/recipeActions';
 
 /**
  * MyRecipe component
@@ -45,9 +51,9 @@ class MyRecipe extends React.Component {
    */
   componentWillReceiveProps(nextprops) {
     if (nextprops.state.recipe) {
-      const { userRecipe } = nextprops.state.recipe;
+      const { userRecipes } = nextprops.state.recipe;
       this.setState({
-        recipes: Object.assign([], this.state.recipes, userRecipe),
+        recipes: Object.assign([], this.state.recipes, userRecipes),
         message: nextprops.state.recipe.message,
         isLoading: false,
       });
@@ -94,13 +100,14 @@ class MyRecipe extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  recipes: state.recipe.recipeData
+  recipes: state.recipe.recipeList
 });
 
 export default connect(mapStateToProps, { getUserRecipes })(MyRecipe);

@@ -1,9 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { UserNavHeader, ProfileHeader, UserSection, UserNavMenu } from '../../views/index';
+import {
+  UserNavHeader,
+  ProfileHeader,
+  UserSection,
+  UserNavMenu,
+  Footer
+} from '../../common';
 import RecipeList from '../recipeList/recipeList.jsx';
-import { getTopRecipes } from '../../actions/recipe';
+import { getTopRecipes } from '../../actions/recipeActions';
 
 
 /**
@@ -15,7 +21,7 @@ import { getTopRecipes } from '../../actions/recipe';
 class Dashboard extends React.Component {
   static propTypes = {
     getTopRecipes: PropTypes.func.isRequired,
-    recipes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    recipes: PropTypes.arrayOf(PropTypes.object)
   };
 
   /**
@@ -46,9 +52,9 @@ class Dashboard extends React.Component {
    */
   componentWillReceiveProps(nextprops) {
     if (nextprops.state.recipe) {
-      const { recipeData } = nextprops.state.recipe;
+      const { recipeList } = nextprops.state.recipe;
       this.setState({
-        recipes: Object.assign([], this.state.recipes, recipeData),
+        recipes: Object.assign([], this.state.recipes, recipeList),
         message: nextprops.state.recipe.message,
         isLoading: false,
       });
@@ -95,14 +101,19 @@ class Dashboard extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
 }
 
+Dashboard.defaultProps = {
+  recipes: []
+};
+
 const mapStateToProps = state => ({
   userData: state.auth.userData,
-  recipes: state.recipe.recipeData
+  recipes: state.recipe.recipeList
 });
 
 export default connect(mapStateToProps, { getTopRecipes })(Dashboard);

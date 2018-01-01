@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchUsername, logoutUser } from '../actions/auth';
+import { fetchUsername, logoutUser } from '../actions/authActions';
 import { getUserCategories } from './../actions/categoryActions';
-import Logo from '../../public/images/recipe_logo.png';
+import Logo from '../../public/assets/images/recipe_logo.png';
 
 /**
  * UserNavHeader component
@@ -17,8 +17,7 @@ class UserNavHeader extends React.Component {
     getUserCategories: PropTypes.func.isRequired,
     logoutUser: PropTypes.func.isRequired,
     userData: PropTypes.shape({
-      firstName: PropTypes.string,
-      lastName: PropTypes.string,
+      fullname: PropTypes.string,
     }).isRequired
   };
 
@@ -126,7 +125,7 @@ class UserNavHeader extends React.Component {
                   >
                     <span>
                       <i className="fa fa-user" aria-hidden="true" />
-                    </span> {this.state.userData.firstName} {this.state.userData.lastName}
+                    </span> {this.state.userData.fullName}
                   </button>
                 </li>
                 <li className="nav-item">

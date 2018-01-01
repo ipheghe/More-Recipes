@@ -7,8 +7,8 @@ const FavoriteRecipeCard = ({ recipe }) => (
   <div className="card">
     <img className="card-img-top" src={(recipe.Recipe.imageUrl === null || recipe.Recipe.imageUrl === 'no-image') ? 'dist/pizza1.jpg' : recipe.Recipe.imageUrl} alt="recipe" />
     <div className="card-block">
-      <h4 className="card-title">{recipe.Recipe.recipeName}</h4>
-      <p className="card-text">{recipe.Recipe.recipeDescription}</p>
+      <h4 className="card-title">{recipe.Recipe.name}</h4>
+      <p className="card-text">{recipe.Recipe.description}</p>
     </div>
     <div className="card-footer">
       <small className="text-muted">
@@ -25,9 +25,8 @@ const FavoriteRecipeCard = ({ recipe }) => (
 
 FavoriteRecipeCard.propTypes = {
   recipe: PropTypes.objectOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    recipeName: PropTypes.string.isRequired,
-    recipeDescription: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
   }).isRequired).isRequired
 };
 

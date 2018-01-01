@@ -1,10 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { UserNavHeader, ProfileHeader, UserSection, UserNavMenu } from '../../views/index';
-import { fetchUsername } from '../../actions/auth';
-import { updateRecipe, deleteRecipe, getUserRecipes, getRecipe } from '../../actions/recipe';
-import { uploadImage } from '../../actions/uploadImage';
+import {
+  UserNavHeader,
+  ProfileHeader,
+  UserSection,
+  UserNavMenu,
+  Footer
+} from '../../common';
+import { fetchUsername } from '../../actions/authActions';
+import {
+  updateRecipe,
+  deleteRecipe,
+  getUserRecipes,
+  getRecipe
+} from '../../actions/recipeActions';
+import { uploadImage } from '../../actions/uploadImageActions';
 
 /**
  * ManageRecipe component
@@ -20,7 +31,6 @@ class ManageRecipe extends React.Component {
     deleteRecipe: PropTypes.func.isRequired,
     getRecipe: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
-    userRecipe: PropTypes.arrayOf(PropTypes.object).isRequired,
     recipe: PropTypes.shape({
       id: PropTypes.number,
       recipeName: PropTypes.string,
@@ -38,10 +48,11 @@ class ManageRecipe extends React.Component {
       recipeDetail: '',
       ingredients: '',
       directions: '',
+      recipeId: '',
       imageUrl: '',
       hasErrored: false,
       errorMessage: '',
-      isLoading: true
+      isLoading: true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleUpdateRecipe = this.handleUpdateRecipe.bind(this);
@@ -65,18 +76,18 @@ class ManageRecipe extends React.Component {
    */
   componentWillReceiveProps(nextprops) {
     if (nextprops.state.recipe) {
-      const { userRecipe } = nextprops.state.recipe;
+      const { userRecipes } = nextprops.state.recipe;
       this.setState({
-        recipes: Object.assign([], this.state.recipes, userRecipe),
+        recipes: Object.assign([], this.state.recipes, userRecipes),
         isLoading: false,
       });
     }
-    if (nextprops.state.recipe.recipeList) {
-      const { recipeList } = nextprops.state.recipe;
+    if (nextprops.state.recipe.recipeData) {
+      const { recipeData } = nextprops.state.recipe;
       this.setState({
-        recipeDetail: recipeList.recipeDescription,
-        ingredients: recipeList.ingredients,
-        directions: recipeList.directions,
+        recipeDetail: recipeData.description,
+        ingredients: recipeData.ingredients,
+        directions: recipeData.directions,
         imageUrl: nextprops.imageUrl,
         isLoading: false,
       });
@@ -85,22 +96,22 @@ class ManageRecipe extends React.Component {
 
   /**
    * handle change form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {object} state
    */
-  handleChange(e) {
+  handleChange(event) {
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
   /**
    * handle image change form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {object} state
    */
-  handleImageChange(e) {
-    const imageUrl = e.target.files[0];
+  handleImageChange(event) {
+    const imageUrl = event.target.files[0];
     this.setState({
       imageUrl
     });
@@ -109,59 +120,76 @@ class ManageRecipe extends React.Component {
 
   /**
    * handle load recipe event
-   * @param {SytheticEvent} e
+   * @param {number} recipeId
    * @returns {*} void
    */
-  handleLoadRecipe(e) {
-    e.preventDefault();
-    this.props.getRecipe(this.userRecipeId.value);
+  handleLoadRecipe(recipeId) {
+    this.props.getRecipe(recipeId);
   }
 
   /**
    * handle update recipe event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleUpdateRecipe(e) {
-    e.preventDefault();
+  handleUpdateRecipe(event) {
+    event.preventDefault();
+    this.validateFormField();
+  }
+
+  /**
+   * handle delete recipe event
+   * @param {SytheticEvent} event
+   * @returns {*} void
+   */
+  handleDeleteRecipe(event) {
+    event.preventDefault();
+    this.props.deleteRecipe(this.state.recipeId);
+  }
+
+  /**
+   * validateFormField
+   * @returns {string} errorMessage
+   */
+  validateFormField() {
     const {
       recipeDetail,
       ingredients,
       directions,
-      imageUrl
+      imageUrl,
+      hasErrored
     } = this.state;
-    const isRecipeFieldsvalid = false;
-    if (isRecipeFieldsvalid) {
+    if (recipeDetail === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Recipe Detail field cannot be empty'
+      });
+    }
+    if (ingredients === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'ingredients field cannot be empty'
+      });
+    }
+    if (directions === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'directions field cannot be empty'
+      });
+    }
+    if (imageUrl === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Recipe image field cannot be empty'
+      });
+    }
+    if (hasErrored === true) {
       setTimeout(() => {
         this.setState({
           hasErrored: false,
           errorMessage: ''
         });
       }, 3000);
-      if (recipeDetail === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'Recipe Detail field cannot be empty'
-        });
-      }
-      if (ingredients === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'ingredients field cannot be empty'
-        });
-      }
-      if (directions === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'directions field cannot be empty'
-        });
-      }
-      if (imageUrl === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'Recipe image field cannot be empty'
-        });
-      }
     }
     this.setState({
       recipeDetail: '',
@@ -177,16 +205,6 @@ class ManageRecipe extends React.Component {
       directions,
       imageUrl
     );
-  }
-
-  /**
-   * handle delete recipe event
-   * @param {SytheticEvent} e
-   * @returns {*} void
-   */
-  handleDeleteRecipe(e) {
-    e.preventDefault();
-    this.props.deleteRecipe(this.props.recipe.id);
   }
 
   /**
@@ -248,29 +266,24 @@ class ManageRecipe extends React.Component {
                           <select
                             type="text"
                             className="form-control"
-                            name="recipeName"
+                            name="recipeId"
+                            ref={node => this.recipeId = node}
+                            onChange={() => this.handleLoadRecipe(this.recipeId.value)}
                           >
                             {
                               (this.state.recipes && this.state.recipes.length > 0) ?
                                 this.state.recipes.map(userRecipe =>
                                   (
                                     <option
-                                      name="recipeNamme"
+                                      name="recipeId"
                                       value={userRecipe.id}
-                                      ref={node => this.userRecipeId = node}
                                       key={userRecipe.id}
-                                    >{userRecipe.recipeName}
+                                    >{userRecipe.name}
                                     </option>
                                   ))
                                 : null
                             }
                           </select>
-                          <button
-                            type="button"
-                            className="btn btn-success"
-                            onClick={this.handleLoadRecipe}
-                          >Load Recipe Details
-                          </button>
                         </div>
                         <div className="form-group">
                           <label htmlFor="recipe-detail">Recipe Detail</label>
@@ -319,7 +332,7 @@ class ManageRecipe extends React.Component {
                         </div>
                         <div className="edit-profile-button">
                           <button type="submit" className="btn btn-success" onClick={this.handleUpdateRecipe}>Update Recipe</button>
-                          <button type="submit" className="btn btn-success" onClick={this.handleDeleteRecipe}>Delete Recipe</button>
+                          <button type="submit" className="btn btn-danger" onClick={this.handleDeleteRecipe}>Delete Recipe</button>
                         </div>
                       </form>
                     </div>
@@ -330,6 +343,7 @@ class ManageRecipe extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
@@ -337,8 +351,8 @@ class ManageRecipe extends React.Component {
 
 const mapStateToProps = state => ({
   userData: state.auth.userData,
-  userRecipe: state.recipe.userRecipe,
-  recipe: state.recipe.recipeList,
+  userRecipe: state.recipe.userRecipes,
+  recipe: state.recipe.recipeData,
   errorMessage: state.recipe.error,
   imageFile: state.recipe.imageUrl,
   imageUrl: state.imageUploadReducer[0].response

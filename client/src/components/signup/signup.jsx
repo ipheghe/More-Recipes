@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MainHeader } from '../../views/index';
-import { registerUser } from '../../actions/auth';
+import { MainHeader, Footer } from '../../common';
+import { registerUser } from '../../actions/authActions';
 
 /**
  * signUp form commponent
@@ -23,8 +23,7 @@ class SignUp extends React.Component {
     super(props);
     this.state = {
       username: '',
-      firstName: '',
-      lastName: '',
+      fullName: '',
       mobileNumber: '',
       email: '',
       password: '',
@@ -64,34 +63,28 @@ class SignUp extends React.Component {
   validateFormField() {
     const {
       username,
-      firstName,
-      lastName,
+      fullName,
       mobileNumber,
       email,
-      password
+      password,
+      hasErrored
     } = this.state;
     const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     const numericExpression = /^[0-9]+$/;
     const regExpression = /^[A-Za-z][A-Za-z0-9-]+$/i;
-    setTimeout(() => {
-      this.setState({
-        hasErrored: false,
-        errorMessage: ''
-      });
-    }, 3000);
     if (!username.match(regExpression)) {
       return this.setState({
         hasErrored: true,
         errorMessage: 'Username must start with a letter and have no spaces.'
       });
     }
-    if (firstName.length < 4) {
+    if (fullName.length < 4) {
       return this.setState({
         hasErrored: true,
         errorMessage: 'firstName must contain more than 3 chareacters'
       });
     }
-    if (firstName.match(numericExpression)) {
+    if (fullName.match(numericExpression)) {
       return this.setState({
         hasErrored: true,
         errorMessage: 'firstName must contain only alphabets'
@@ -109,18 +102,6 @@ class SignUp extends React.Component {
         errorMessage: 'mobile numberfield cannot be empty'
       });
     }
-    if (lastName.lenght < 4) {
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'lastName must contain more than 4 chareacters'
-      });
-    }
-    if (lastName.match(numericExpression)) {
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'firstName must contain only alphabets'
-      });
-    }
     if (reg.test(email) === false) {
       return this.setState({
         hasErrored: true,
@@ -133,6 +114,14 @@ class SignUp extends React.Component {
         errorMessage: 'password must contain more than 7 chareacters'
       });
     }
+    if (hasErrored === true) {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
+    }
     this.setState({
       hasErrored: false,
       errorMessage: ''
@@ -140,8 +129,7 @@ class SignUp extends React.Component {
     return this.props.registerUser({
       username,
       password,
-      firstName,
-      lastName,
+      fullName,
       mobileNumber,
       email
     });
@@ -221,29 +209,12 @@ class SignUp extends React.Component {
                           <i className="fa fa-user-o" />
                         </span>
                         <input
-                          name="firstName"
+                          name="fullName"
                           type="text"
                           className="form-control"
-                          value={this.state.firstName}
+                          value={this.state.fullName}
                           onChange={this.handleChange}
                           placeholder="e.g John"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="enterLastName">Last Name:</label>
-                      <div className="input-group">
-                        <span className="input-group-addon">
-                          <i className="fa fa-user-o" />
-                        </span>
-                        <input
-                          name="lastName"
-                          type="text"
-                          className="form-control"
-                          value={this.state.lastName}
-                          onChange={this.handleChange}
-                          placeholder="e.g Ken"
                           required
                         />
                       </div>
@@ -308,20 +279,9 @@ class SignUp extends React.Component {
                       <div>
                         <a href="#login">
                           <button
-                            type="submit"
                             className="btn btn-block btn-success"
                             onClick={this.handleSignup}
                           >Sign Up
-                          </button>
-                        </a>
-                      </div>
-                      <br />
-                      <div>
-                        <a href="/">
-                          <button
-                            type="button"
-                            className="btn btn-block btn-success"
-                          >Cancel
                           </button>
                         </a>
                       </div>
@@ -333,6 +293,7 @@ class SignUp extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

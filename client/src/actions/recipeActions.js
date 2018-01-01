@@ -10,25 +10,23 @@ import {
   RECIPE_ERROR,
 } from './types';
 
-//= ===============================
-// Recipe actions
-//= ===============================
-
 /**
  * @description add recipe action
  * @type {function} addRecipe
- * @param {object} recipeName
- * @param {object} recipeDescription
- * @param {object} imageUrl
- * @param {object} ingredients
- * @param {object} directions
- * @returns {array} dispatch
+ *
+ * @param {string} name
+ * @param {string} description
+ * @param {string} imageUrl
+ * @param {string} ingredients
+ * @param {string} directions
+ *
+ * @returns {action} dispatch
  */
-const addRecipe = (recipeName, recipeDescription, imageUrl, ingredients, directions) => {
+const addRecipe = (name, description, imageUrl, ingredients, directions) => {
   const data = {
-    recipeName, recipeDescription, imageUrl, ingredients, directions
+    name, description, imageUrl, ingredients, directions
   };
-  const url = '/recipes';
+  const url = '/recipe';
   const directTo = '#myRecipe';
   const message = 'Recipe added Successfully';
   const constant = 'RECIPE_ADDED';
@@ -49,30 +47,32 @@ const addRecipe = (recipeName, recipeDescription, imageUrl, ingredients, directi
  * Update Recipe
  * @description update recipe action
  * @type {function} updateRecipe
+ *
  * @param {number} recipeId
- * @param {string} recipeName
- * @param {string} recipeDescription
+ * @param {string} name
+ * @param {string} description
  * @param {string} ingredients
  * @param {string} directions
  * @param {string} imageUrl
- * @returns {array} dispatch
+ *
+ * @returns {action} dispatch
  */
 const updateRecipe = (
   recipeId,
-  recipeName,
-  recipeDescription,
+  name,
+  description,
   ingredients,
   directions,
   imageUrl
 ) => {
   const data = {
-    recipeName,
-    recipeDescription,
+    name,
+    description,
     ingredients,
     directions,
     imageUrl
   };
-  const url = `/recipes/${recipeId}`;
+  const url = `/recipe/${recipeId}`;
   const directTo = '#myRecipe';
   const message = 'Recipe updated Successfully';
   const constant = 'RECIPE_UPDATED';
@@ -92,11 +92,13 @@ const updateRecipe = (
 /**
  * @description delete recipe action
  * @type {function} deleteRecipe
- * @param {object} recipeId
- * @returns {array} dispatch
+ *
+ * @param {number} recipeId
+ *
+ * @returns {action} dispatch
  */
 const deleteRecipe = (recipeId) => {
-  const url = `/recipes/${recipeId}`;
+  const url = `/recipe/${recipeId}`;
   const directTo = '';
   const message = 'Recipe deleted Successfully';
   const constant = 'RECIPE_DELETED';
@@ -115,7 +117,8 @@ const deleteRecipe = (recipeId) => {
 /**
  * @description action to get top recipes
  * @type {function} getTopRecipes
- * @returns {array} dispatch
+ *
+ * @returns {action} dispatch
  */
 const getTopRecipes = () => {
   const url = '/topRecipes?sort=upvotes&order=descending';
@@ -125,7 +128,8 @@ const getTopRecipes = () => {
 /**
  * @description action to get user recipes
  * @type {function} getUserRecipes
- * @returns {array} dispatch
+ *
+ * @returns {action} dispatch
  */
 const getUserRecipes = () => {
   const url = '/recipes/users';
@@ -133,21 +137,25 @@ const getUserRecipes = () => {
 };
 
 /**
- * @description action to get top recipes
+ * @description action to get a recipe
  * @type {function} getRecipe
- * @param {object} id
- * @returns {array} dispatch
+ *
+ * @param {number} id
+ *
+ * @returns {action} dispatch
  */
 const getRecipe = (id) => {
-  const url = `/recipes/${id}`;
+  const url = `/recipe/${id}`;
   return dispatch => getData(FETCH_RECIPE, RECIPE_ERROR, true, url, dispatch);
 };
 
 /**
  * @description action to get searched recipes
  * @type {function} getRecipesBySearch
- * @param {object} keyword
- * @returns {array} dispatch
+ *
+ * @param {string} keyword
+ *
+ * @returns {action} dispatch
  */
 const getRecipesBySearch = (keyword) => {
   const url = `/topRecipes?search=${keyword}`;

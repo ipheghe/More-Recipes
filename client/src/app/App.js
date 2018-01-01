@@ -15,7 +15,7 @@ import {
   EditProfile,
   Search,
   ResetPassword
-} from '../components/index';
+} from '../components';
 import RequireAuth from '../auth/requireAuth';
 
 const App = () =>

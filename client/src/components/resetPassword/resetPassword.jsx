@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ResetPasswordHeader } from '../../views/index';
+import { ResetPasswordHeader, Footer } from '../../actions';
 import { verifyTokenPassword } from '../../actions/userActions';
 
 /**
@@ -36,51 +36,58 @@ class ResetPassword extends React.Component {
 
   /**
    * handle change form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {object} state
    */
-  handleChange(e) {
-    e.preventDefault();
+  handleChange(event) {
+    event.preventDefault();
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
   /**
    * handle resetPassword form event
-   * @param {SytheticEvent} e
+   * @param {SytheticEvent} event
    * @returns {*} void
    */
-  handleResetPassword(e) {
-    e.preventDefault();
-    const { newPassword, confirmPassword } = this.state;
+  handleResetPassword(event) {
+    event.preventDefault();
+    this.validateFormField();
+  }
+
+  /**
+   * validateFormField
+   * @returns {string} errorMessage
+   */
+  validateFormField() {
+    const { newPassword, confirmPassword, hasErrored } = this.state;
     const { token } = this.props.match.params;
-    let valid;
-    if (!valid) {
+    if (newPassword === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'new password field cannot be empty'
+      });
+    }
+    if (confirmPassword === '') {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'confirm password field cannot be empty'
+      });
+    }
+    if (newPassword !== confirmPassword) {
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Password mismatch!'
+      });
+    }
+    if (hasErrored === true) {
       setTimeout(() => {
         this.setState({
           hasErrored: false,
           errorMessage: ''
         });
       }, 3000);
-      if (newPassword === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'new password field cannot be empty'
-        });
-      }
-      if (confirmPassword === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'confirm password field cannot be empty'
-        });
-      }
-      if (newPassword !== confirmPassword) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'Password mismatch!'
-        });
-      }
     }
     this.setState({
       newPassword: '',
@@ -93,7 +100,6 @@ class ResetPassword extends React.Component {
 
   /**
    * handle resetPassword form event error
-   * @param {SytheticEvent} e
    * @returns {string} errorMessage
    */
   renderAlert() {
@@ -195,6 +201,7 @@ class ResetPassword extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

@@ -7,8 +7,8 @@ const RecipeCard = ({ recipe }) => (
   <div className="card">
     <img className="card-img-top" src={(recipe.imageUrl === null || recipe.imageUrl === 'no-image') ? 'dist/pizza1.jpg' : recipe.imageUrl} alt="recipe" />
     <div className="card-block">
-      <h4 className="card-title">{recipe.recipeName}</h4>
-      <p className="card-text">{recipe.recipeDescription}</p>
+      <h4 className="card-title">{recipe.name}</h4>
+      <p className="card-text">{recipe.description}</p>
     </div>
     <div className="card-footer">
       <small className="text-muted">
@@ -26,8 +26,8 @@ const RecipeCard = ({ recipe }) => (
 RecipeCard.propTypes = {
   recipe: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    recipeName: PropTypes.string.isRequired,
-    recipeDescription: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
   }).isRequired
 };
 

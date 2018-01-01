@@ -11,22 +11,21 @@ import {
   FAVORITE_ERROR
 } from './types';
 
-//= ===============================
-// Favorite actions
-//= ===============================
 /**
  * @description favorite recipe action
  * @type {function} favoriteRecipe
- * @param {object} recipeId
- * @param {object} categoryId
- * @returns {array} dispatch
+ *
+ * @param {number} recipeId
+ * @param {number} categoryId
+ *
+ * @returns {action} dispatch
  */
 const favoriteRecipe = (recipeId, categoryId) => {
   const data = {
     recipeId,
     categoryId
   };
-  const url = `/recipes/${recipeId}/${categoryId}/favorites`;
+  const url = `/recipe/${recipeId}/${categoryId}/favorite`;
   const directTo = '';
   const toastMessage = '';
   const constant = '';
@@ -46,12 +45,14 @@ const favoriteRecipe = (recipeId, categoryId) => {
 /**
  * @description favorite recipe action
  * @type {function} favoriteRecipe
- * @param {object} recipeId
- * @param {object} categoryId
- * @returns {array} dispatch
+ *
+ * @param {number} recipeId
+ * @param {number} categoryId
+ *
+ * @returns {action} dispatch
  */
 const unfavoriteRecipe = (recipeId) => {
-  const url = `/favorites/${recipeId}`;
+  const url = `/favorite/${recipeId}`;
   const directTo = '';
   const toastMessage = '';
   const constant = '';
@@ -70,8 +71,10 @@ const unfavoriteRecipe = (recipeId) => {
 /**
  * @description action to get user favorite recipe
  * @type {function} getFavoriteRecipe
- * @param {object} recipeId
- * @returns {array} dispatch
+ *
+ * @param {number} recipeId
+ *
+ * @returns {action} dispatch
  */
 const getFavoriteRecipe = (recipeId) => {
   const url = `/favorite/${recipeId}`;
@@ -81,7 +84,8 @@ const getFavoriteRecipe = (recipeId) => {
 /**
  * @description action to get user favorite recipes
  * @type {function} getFavoriteRecipes
- * @returns {array} dispatch
+ *
+ * @returns {action} dispatch
  */
 const getFavoriteRecipes = () => {
   const url = '/favorites';

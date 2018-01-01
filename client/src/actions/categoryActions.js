@@ -11,12 +11,14 @@ import {
 /**
  * @description add category action
  * @type {function} addCategory
- * @param {object} name
- * @returns {object} dispatch
+ *
+ * @param {string} name
+ *
+ * @returns {action} dispatch
  */
 const addCategory = (name) => {
   const data = { name };
-  const url = '/users/categories';
+  const url = '/user/category';
   const directTo = '';
   const toastMessage = '';
   const toastrConstant = '';
@@ -37,13 +39,15 @@ const addCategory = (name) => {
  * modify category name
  * @description update catergory action
  * @type {function} updateCategory
- * @param {object} categoryId
- * @param {object} name
- * @returns {array} dispatch
+ *
+ * @param {number} categoryId
+ * @param {string} name
+ *
+ * @returns {action} dispatch
  */
 const updateCategory = (categoryId, name) => {
   const data = { name };
-  const url = `/users/categories/${categoryId}`;
+  const url = `/user/category/${categoryId}`;
   const directTo = '';
   const message = '';
   const constant = '';
@@ -63,11 +67,13 @@ const updateCategory = (categoryId, name) => {
 /**
  * @description delete category action
  * @type {function} deleteCategory
- * @param {object} categoryId
- * @returns {array} dispatch
+ *
+ * @param {number} categoryId
+ *
+ * @returns {action} dispatch
  */
 const deleteCategory = (categoryId) => {
-  const url = `/users/categories/${categoryId}`;
+  const url = `/user/category/${categoryId}`;
   const directTo = '';
   const toastMessage = '';
   const constant = '';
@@ -85,8 +91,10 @@ const deleteCategory = (categoryId) => {
 
 /**
  * @description action to get user categories
+ *
  * @type {function} getUserCategories
- * @returns {array} dispatch
+ *
+ * @returns {action} dispatch
  */
 const getUserCategories = () => {
   const url = '/categories/users';
@@ -96,11 +104,13 @@ const getUserCategories = () => {
 /**
  * @description action to get user category
  * @type {function} getUserCategory
- * @param {object} categoryId
- * @returns {object} dispatch
+ *
+ * @param {number} categoryId
+ *
+ * @returns {action} dispatch
  */
 const getUserCategory = (categoryId) => {
-  const url = `/category/users/${categoryId}`;
+  const url = `/category/user/${categoryId}`;
   return dispatch => getData(FETCH_USER_CATEGORY, CATEGORY_ERROR, true, url, dispatch);
 };
 

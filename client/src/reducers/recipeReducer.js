@@ -12,9 +12,9 @@ import {
 const INITIAL_STATE = {
   message: '',
   error: '',
-  recipeData: [],
-  recipeList: {},
-  userRecipe: [],
+  recipeData: {},
+  recipeList: [],
+  userRecipes: [],
   searchResult: []
 };
 
@@ -28,36 +28,42 @@ export default (state = INITIAL_STATE, action) => {
     case FETCH_TOP_RECIPES:
       return {
         ...state,
-        recipeData: action.payload.recipeData,
+        recipeList: action.payload.recipes.rows,
         message: action.payload.message
       };
     case SEARCH_RECIPES:
       return {
         ...state,
-        searchResult: action.payload.recipeData,
+        searchResult: action.payload.recipes.rows,
         message: action.payload.message
       };
     case FETCH_USER_RECIPES:
       return {
         ...state,
-        userRecipe: action.payload.userRecipeList,
+        userRecipes: action.payload.recipes.rows,
         message: action.payload.message
       };
     case FETCH_RECIPE:
       return {
         ...state,
-        recipeList: action.payload.recipeList,
+        recipeData: action.payload.recipe,
         message: action.payload.message
       };
     case UPDATE_RECIPE:
       return {
         ...state,
-        message: action.payload.message
+        message: action.payload.message,
+        userRecipes: [...state.userRecipes.map(item => (
+          item.id === action.payload.recipe.id ? action.payload.recipe : item
+        ))]
       };
     case DELETE_RECIPE:
       return {
         ...state,
-        message: action.payload.message
+        message: action.payload.message,
+        userRecipes: [
+          ...state.userRecipes.filter(recipe => recipe.id !== state.recipeData.id)
+        ]
       };
     case RECIPE_ERROR:
       return {
