@@ -21,19 +21,16 @@ checks:
     enabled: false
   identical-code:
     enabled: false
-engines:
-  csslint:
-    enabled: false
-  duplication:
-    enabled: true
-    config:
-      languages:
-      - javascript
 plugins:
   csslint:
     enabled: false
   eslint:
     enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
   fixme:
     enabled: true
 ratings:
