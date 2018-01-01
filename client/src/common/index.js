@@ -20,6 +20,6 @@ export {
   ReviewBox,
   ManageCategoryModal,
   ChangePasswordModal,
-  Footer,
-  Pagination
+  Pagination,
+  Footer
 };

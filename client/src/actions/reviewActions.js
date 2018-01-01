@@ -1,4 +1,4 @@
-import { getData, postData } from './index';
+import { postData } from './index';
 import { REVIEW_RECIPE, RETRIEVE_RECIPE_REVIEWS, REVIEW_ERROR } from './types';
 
 /**
