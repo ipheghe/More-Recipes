@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const FavoriteRecipeCard = ({ recipe }) => (
   <div className="card">
-    <img className="card-img-top" src={(recipe.Recipe.imageUrl === null || recipe.Recipe.imageUrl === 'no-image') ? 'dist/pizza1.jpg' : recipe.Recipe.imageUrl} alt="recipe" />
+    <img className="card-img-top" src={(recipe.Recipe.imageUrl === null || recipe.Recipe.imageUrl === 'no-image') ? 'assets/images/pizza1.jpg' : recipe.Recipe.imageUrl} alt="recipe" />
     <div className="card-block">
       <h4 className="card-title">{recipe.Recipe.name}</h4>
       <p className="card-text">{recipe.Recipe.description}</p>

@@ -73,9 +73,9 @@ app.get('/*', (req, res, next) => {
 // Default catch-all route that sends a message on all more recipes hit.
 const indexPath = path.join(__dirname, '/client/public/index.html');
 const publicPath =
-express.static(path.join(__dirname, '/client/public/dist'));
+express.static(path.join(__dirname, '/client/public/assets'));
 
-app.use('/dist', publicPath);
+app.use('/assets', publicPath);
 app.get('/', (req, res) => { res.sendFile(indexPath); });
 
 

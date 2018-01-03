@@ -276,7 +276,7 @@ class Login extends React.Component {
                           type="text"
                           className="form-control"
                           name="username"
-                          placeholder="Enter your username or email"
+                          placeholder="Enter your username"
                           value={this.state.username}
                           onChange={this.handleChange}
                           required
