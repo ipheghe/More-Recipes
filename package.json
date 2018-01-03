@@ -7,7 +7,7 @@
     "wp": "webpack-dev-server --hot --history-api-fallback --open",
     "test": "sequelize db:migrate:undo:all --env=test&&sequelize db:migrate --env=test  && cross-env NODE_ENV=test nyc mocha --timeout 15000 tests",
     "heroku-postbuild": "sequelize db:migrate && npm run build:client:prod",
-    "build:client:prod": "npm run clean && webpack -p --config webpack.config.prod.js",
+    "build:client:prod": "webpack -p --config webpack.config.prod.js",
     "migrate": "sequelize db:migrate:undo:all&&sequelize db:migrate",
     "start": "babel-node babel-node app.js",
     "start:dev": "cross-env NODE_ENV=development && nodemon --watch server --exec babel-node app.js",
