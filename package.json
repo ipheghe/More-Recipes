@@ -9,7 +9,7 @@
     "heroku-postbuild": "sequelize db:migrate && npm run build:client:prod",
     "build:client:prod": "webpack -p --config webpack.config.prod.js",
     "migrate": "sequelize db:migrate:undo:all&&sequelize db:migrate",
-    "start": "babel-node babel-node app.js",
+    "start": "babel-node app.js",
     "start:dev": "cross-env NODE_ENV=development && nodemon --watch server --exec babel-node app.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "shc": "start coverage/lcov-report/index.html",
