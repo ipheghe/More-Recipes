@@ -6,7 +6,6 @@ import {
   addCategory,
   updateCategory,
   deleteCategory,
-  getUserCategories,
   getUserCategory
 } from './../actions/categoryActions';
 import { changePassword } from './../actions/userActions';
@@ -408,7 +407,6 @@ export default connect(mapStateToProps, {
   addCategory,
   updateCategory,
   deleteCategory,
-  getUserCategories,
   getUserCategory,
   changePassword
 })(UserSection);

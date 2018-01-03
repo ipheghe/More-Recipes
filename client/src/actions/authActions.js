@@ -37,37 +37,35 @@ export const registerUser = ({
   mobileNumber,
   email
 }) =>
-  (dispatch) => {
-    axios.post(`${BASE_URL}/user/signup`, {
-      username,
-      password,
-      fullName,
-      mobileNumber,
-      email
+  dispatch => axios.post(`${BASE_URL}/user/signup`, {
+    username,
+    password,
+    fullName,
+    mobileNumber,
+    email
+  })
+    .then((response) => {
+      const toastr = bindActionCreators(toastrActions, dispatch);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch({
+          type: AUTH_USER
+        });
+        window.location.hash = '#login';
+        toastr.add({
+          id: 'USER_REGISTERED',
+          type: 'success',
+          title: 'Success',
+          message: 'Registration Successful.',
+          timeout: 5000,
+        });
+        setTimeout(() => {
+          toastr.remove('USER_REGISTERED');
+        }, 3500);
+      }
     })
-      .then((response) => {
-        const toastr = bindActionCreators(toastrActions, dispatch);
-        if (response.status >= 200 && response.status < 300) {
-          dispatch({
-            type: AUTH_USER
-          });
-          window.location.hash = '#login';
-          toastr.add({
-            id: 'USER_LOGGEDIN',
-            type: 'success',
-            title: 'Success',
-            message: 'Registration Successful. Welcome back!',
-            timeout: 5000,
-          });
-          setTimeout(() => {
-            toastr.remove('USER_LOGGEDIN');
-          }, 3500);
-        }
-      })
-      .catch((error) => {
-        errorHandler(dispatch, error.response, AUTH_ERROR);
-      });
-  };
+    .catch((error) => {
+      errorHandler(dispatch, error.response, AUTH_ERROR);
+    });
 
 /**
  * @description add recipe action
@@ -84,35 +82,33 @@ export const loginUser = ({
   username,
   password
 }) =>
-  (dispatch) => {
-    axios.post(`${BASE_URL}/user/signin`, {
-      username,
-      password
+  dispatch => axios.post(`${BASE_URL}/user/signin`, {
+    username,
+    password
+  })
+    .then((response) => {
+      const toastr = bindActionCreators(toastrActions, dispatch);
+      if (response.status >= 200 && response.status < 300) {
+        window.localStorage.setItem('token', response.data.authToken);
+        dispatch({
+          type: AUTH_USER
+        });
+        window.location.hash = '#dashboard';
+        toastr.add({
+          id: 'USER_SIGNEDIN',
+          type: 'success',
+          title: 'Success',
+          message: 'Welcome Onboard!',
+          timeout: 5000,
+        });
+        setTimeout(() => {
+          toastr.remove('USER_SIGNEDIN');
+        }, 3500);
+      }
     })
-      .then((response) => {
-        const toastr = bindActionCreators(toastrActions, dispatch);
-        if (response.status >= 200 && response.status < 300) {
-          window.localStorage.setItem('token', response.data.authToken);
-          dispatch({
-            type: AUTH_USER
-          });
-          window.location.hash = '#dashboard';
-          toastr.add({
-            id: 'USER_SIGNEDIN',
-            type: 'success',
-            title: 'Success',
-            message: 'Welcome Onboard!',
-            timeout: 5000,
-          });
-          setTimeout(() => {
-            toastr.remove('USER_SIGNEDIN');
-          }, 3500);
-        }
-      })
-      .catch((error) => {
-        errorHandler(dispatch, error.response, AUTH_ERROR);
-      });
-  };
+    .catch((error) => {
+      errorHandler(dispatch, error.response, AUTH_ERROR);
+    });
 
 
 /**
@@ -134,7 +130,6 @@ export const logoutUser = error =>
     });
   };
 
-
 /**
  * @export fetchUsername
  * @returns {array} response
@@ -143,7 +138,7 @@ export const fetchUsername = () =>
   (dispatch) => {
     const decodedToken = decodeToken(window.localStorage.getItem('token'));
     const { username } = decodedToken.user;
-    axios.get(`${BASE_URL}/user/${username}`)
+    return axios.get(`${BASE_URL}/user/${username}`)
       .then((response) => {
         dispatch({
           type: FETCH_USER,

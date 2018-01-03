@@ -29,7 +29,7 @@ export default (state = INITIAL_STATE, action) => {
     case FETCH_TOP_RECIPES:
       return {
         ...state,
-        recipeList: action.payload.recipes.rows,
+        recipeList: action.payload.recipes ? action.payload.recipes.rows : [],
         message: action.payload.message,
         pages: action.payload.pages
       };
@@ -43,7 +43,7 @@ export default (state = INITIAL_STATE, action) => {
     case FETCH_USER_RECIPES:
       return {
         ...state,
-        userRecipes: action.payload.recipes.rows,
+        userRecipes: action.payload.recipes ? action.payload.recipes.rows : [],
         message: action.payload.message,
         pages: action.payload.pages
       };

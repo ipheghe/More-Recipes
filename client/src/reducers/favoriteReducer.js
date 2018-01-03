@@ -34,7 +34,7 @@ export default (state = INITIAL_STATE, action) => {
     case RETRIEVE_USER_FAVORITE_RECIPES:
       return {
         ...state,
-        userFavorites: action.payload.userFavorites,
+        userFavorites: action.payload.userFavorites ? action.payload.userFavorites.rows : [],
         message: action.payload.message,
         pages: action.payload.pages
       };

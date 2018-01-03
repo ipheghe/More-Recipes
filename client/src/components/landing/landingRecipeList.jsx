@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LandingRecipeCard from '../landingRecipeCard/landingRecipeCard.jsx';
+import LandingRecipeCard from './landingRecipeCard.jsx';
 
 const LandingRecipeList = ({ recipes }) => (
   <div>

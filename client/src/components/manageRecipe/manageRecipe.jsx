@@ -260,18 +260,20 @@ class ManageRecipe extends React.Component {
                     <div className="add-padding">
                       <h3><b>Manage Recipe</b></h3>
                       <br />
-                      <form>
-                        {this.renderAlert()}
-                        <div className="form-group">
-                          <label htmlFor="recipe-name-list">Select recipe</label>
-                          <select
-                            type="text"
-                            className="form-control"
-                            name="recipeId"
-                            ref={node => this.recipeId = node}
-                            onChange={() => this.handleLoadRecipe(this.recipeId.value)}
-                          >
-                            {
+                      {
+                        (this.state.recipes && this.state.recipes.length > 0) ?
+                          <form>
+                            {this.renderAlert()}
+                            <div className="form-group">
+                              <label htmlFor="recipe-name-list">Select recipe</label>
+                              <select
+                                type="text"
+                                className="form-control"
+                                name="recipeId"
+                                ref={node => this.recipeId = node}
+                                onChange={() => this.handleLoadRecipe(this.recipeId.value)}
+                              >
+                                {
                               (this.state.recipes && this.state.recipes.length > 0) ?
                                 this.state.recipes.map(userRecipe =>
                                   (
@@ -284,58 +286,60 @@ class ManageRecipe extends React.Component {
                                   ))
                                 : null
                             }
-                          </select>
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor="recipe-detail">Recipe Detail</label>
-                          <textarea
-                            className="form-control"
-                            name="recipeDetail"
-                            rows="2"
-                            placeholder="Enter Recipe Detail"
-                            value={this.state.recipeDetail}
-                            onChange={this.handleChange}
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor="ingredients">Ingredients</label>
-                          <textarea
-                            className="form-control"
-                            name="ingredients"
-                            rows="5"
-                            placeholder="Enter recipe ingredients separated by a comma"
-                            value={this.state.ingredients}
-                            onChange={this.handleChange}
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor="directions">Directions</label>
-                          <textarea
-                            className="form-control"
-                            id="directions"
-                            rows="10"
-                            placeholder="Enter recipe directions separated by a comma"
-                            value={this.state.directions}
-                            onChange={this.handleChange}
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor="recipe-image">Add Image</label>
-                          <input
-                            type="file"
-                            className="form-control-file"
-                            id="imageUrl"
-                            name="imageUrl"
-                            aria-describedby="fileHelp"
-                            onChange={this.handleImageChange}
-                          />
-                          <small id="fileHelp" className="form-text text-muted">Please attach an image file.</small>
-                        </div>
-                        <div className="edit-profile-button">
-                          <button type="submit" className="btn btn-success" onClick={this.handleUpdateRecipe}>Update Recipe</button>
-                          <button type="submit" className="btn btn-danger" onClick={this.handleDeleteRecipe}>Delete Recipe</button>
-                        </div>
-                      </form>
+                              </select>
+                            </div>
+                            <div className="form-group">
+                              <label htmlFor="recipe-detail">Recipe Detail</label>
+                              <textarea
+                                className="form-control"
+                                name="recipeDetail"
+                                rows="2"
+                                placeholder="Enter Recipe Detail"
+                                value={this.state.recipeDetail}
+                                onChange={this.handleChange}
+                              />
+                            </div>
+                            <div className="form-group">
+                              <label htmlFor="ingredients">Ingredients</label>
+                              <textarea
+                                className="form-control"
+                                name="ingredients"
+                                rows="5"
+                                placeholder="Enter recipe ingredients separated by a comma"
+                                value={this.state.ingredients}
+                                onChange={this.handleChange}
+                              />
+                            </div>
+                            <div className="form-group">
+                              <label htmlFor="directions">Directions</label>
+                              <textarea
+                                className="form-control"
+                                id="directions"
+                                rows="10"
+                                placeholder="Enter recipe directions separated by a comma"
+                                value={this.state.directions}
+                                onChange={this.handleChange}
+                              />
+                            </div>
+                            <div className="form-group">
+                              <label htmlFor="recipe-image">Add Image</label>
+                              <input
+                                type="file"
+                                className="form-control-file"
+                                id="imageUrl"
+                                name="imageUrl"
+                                aria-describedby="fileHelp"
+                                onChange={this.handleImageChange}
+                              />
+                              <small id="fileHelp" className="form-text text-muted">Please attach an image file.</small>
+                            </div>
+                            <div className="edit-profile-button">
+                              <button type="submit" className="btn btn-success" onClick={this.handleUpdateRecipe}>Update Recipe</button>
+                              <button type="submit" className="btn btn-danger" onClick={this.handleDeleteRecipe}>Delete Recipe</button>
+                            </div>
+                          </form> : <h3 style={{ textAlign: 'center' }}>Sorry! You have not added any recipe</h3>
+
+                      }
                     </div>
                     <br />
                   </div>
@@ -352,7 +356,7 @@ class ManageRecipe extends React.Component {
 
 const mapStateToProps = state => ({
   userData: state.auth.userData,
-  userRecipe: state.recipe.userRecipes,
+  userRecipes: state.recipe.userRecipes,
   recipe: state.recipe.recipeData,
   errorMessage: state.recipe.error,
   imageFile: state.recipe.imageUrl,

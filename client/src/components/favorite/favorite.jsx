@@ -11,7 +11,7 @@ import {
   Pagination
 } from '../../common';
 import { getFavoriteRecipes } from '../../actions/favoriteActions';
-import FavoriteRecipeList from '../favoriteRecipeList/favoriteRecipeList.jsx';
+import FavoriteRecipeList from './favoriteRecipeList.jsx';
 
 /**
  * Favorite component
@@ -33,7 +33,7 @@ class Favorite extends React.Component {
     super(props);
     this.state = {
       userFavorites: [],
-      message: '',
+      message: 'Sorry! You have do not have any favorite recipe',
       pages: 1,
       currentPaginatePage: 1,
       isLoading: true
@@ -59,7 +59,6 @@ class Favorite extends React.Component {
       const { userFavorites } = nextprops.state.favorite;
       this.setState({
         userFavorites: Object.assign([], this.state.userFavorites, userFavorites),
-        message: nextprops.state.favorite.message,
         pages: nextprops.state.recipe.pages,
         isLoading: false
       });
@@ -116,7 +115,7 @@ class Favorite extends React.Component {
                       <div className="card-blocks" >
                         {
                           this.state.userFavorites.length === 0 ?
-                            (<h5>{this.state.message}</h5>)
+                            (<h3>{this.state.message}</h3>)
                             : <FavoriteRecipeList recipes={this.props.userFavorites} />
                         }
                       </div>

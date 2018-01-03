@@ -554,6 +554,27 @@ button.close {
   display: block;
 }
 
+#loadMore {
+	padding: 10px;
+	text-align: center;
+	background-color: $primary-color;
+  border-width: 0 1px 1px 0;
+  width: 100%;
+  margin-top: 10px;
+	border-style: solid;
+	border-color: $color_1;
+	box-shadow: 0 1px 1px #ccc;
+	transition: all 600ms ease-in-out;
+	-webkit-transition: all 600ms ease-in-out;
+	-moz-transition: all 600ms ease-in-out;
+	-o-transition: all 600ms ease-in-out;
+}
+
+#loadMore:hover {
+	background-color: $color_1;
+	color: $primary-color;
+}
+
 @media (max-width: 767px) {
   .landing {
     text-align: center;

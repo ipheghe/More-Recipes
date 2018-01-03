@@ -11,6 +11,7 @@ import {
   unfavoriteRecipe,
   getFavoriteRecipe
 } from '../../actions/favoriteActions';
+import { addCategory } from '../../actions/categoryActions';
 import SelectCategoryModal from './selectCategoryModal.jsx';
 
 /**
@@ -30,6 +31,7 @@ class ViewRecipe extends React.Component {
     favoriteRecipe: PropTypes.func.isRequired,
     unfavoriteRecipe: PropTypes.func.isRequired,
     getFavoriteRecipe: PropTypes.func.isRequired,
+    addCategory: PropTypes.func.isRequired,
     match: PropTypes.shape({
       params: PropTypes.objectOf(PropTypes.string),
     }).isRequired,
@@ -104,7 +106,7 @@ class ViewRecipe extends React.Component {
       }
     }
 
-    if (nextprops.state.favorite) {
+    if (nextprops.state.favorite.favoriteData) {
       const { favoriteData } = nextprops.state.favorite;
       if (Object.keys(favoriteData).length < 1) {
         this.setState({
@@ -227,11 +229,7 @@ class ViewRecipe extends React.Component {
    */
   openModal() {
     if (this.props.categories.length === 0) {
-      const { id } = this.props.match.params;
-      this.props.favoriteRecipe(id, 88);
-      this.setState({
-        isFavorite: true
-      });
+      this.props.addCategory('uncategorized');
     } else {
       this.setState({
         modalIsOpen: true
@@ -405,15 +403,15 @@ class ViewRecipe extends React.Component {
                 </section>
               </div>
               <div>
-                {
-                  reviewFields.map(review => (
-                    <ReviewBox
-                      key={review.id}
-                      username={review.User ? review.User.username : this.props.userData.username}
-                      createdAt={review.createdAt.substring(0, 10)}
-                      message={review.message}
-                    />
-                    ))
+                { reviewFields.length > 0 ?
+                    reviewFields.map(review => (
+                      <ReviewBox
+                        key={review.id}
+                        username={review.User ? review.User.username : this.props.userData.username}
+                        createdAt={review.createdAt.substring(0, 10)}
+                        message={review.message}
+                      />
+                    )) : ''
                 }
                 {
                   reviewFields.length < this.props.count ?
@@ -467,7 +465,8 @@ export default connect(
     upvoteRecipe,
     downvoteRecipe,
     favoriteRecipe,
-    unfavoriteRecipe
+    unfavoriteRecipe,
+    addCategory
   }
 )(ViewRecipe);
 

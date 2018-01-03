@@ -17,7 +17,7 @@ const SelectCategoryModal = ({
     contentLabel="Example Modal"
   >
     <div className="modal-header">
-      <h4 className="modal-title" id="myModalLabel">Recover Password</h4>
+      <h4 className="modal-title" id="myModalLabel">Select Category</h4>
       <button
         type="button"
         className="close"

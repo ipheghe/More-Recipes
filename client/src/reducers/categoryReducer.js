@@ -55,7 +55,7 @@ export default (state = INITIAL_STATE, action) => {
     case CATEGORY_ERROR:
       return {
         ...state,
-        error: action.payload.data.message
+        error: action.payload.data ? action.payload.data.message : action.payload.data.error
       };
     default:
       return state;

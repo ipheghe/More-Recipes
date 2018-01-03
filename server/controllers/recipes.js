@@ -154,7 +154,7 @@ const recipesController = {
       // retrieve all recipes for that particular user
       .then((recipes) => {
         if (recipes) {
-          if (recipes.rows.length === 0) {
+          if (recipes.rows === []) {
             res.status(404).send({
               message: 'No recipe found for user'
             });

@@ -15,8 +15,8 @@ export default (state = INITIAL_STATE, action) => {
     case RETRIEVE_RECIPE_REVIEWS:
       return {
         ...state,
-        reviewList: action.payload.reviews.rows,
-        count: action.payload.reviews.count
+        reviewList: action.payload.reviews ? action.payload.reviews.rows : [],
+        count: action.payload.reviews ? action.payload.reviews.count : 0
       };
     case REVIEW_ERROR:
       return { ...state, error: action.payload };

@@ -10,6 +10,11 @@ const { User, Category } = db;
 const salt = bcrypt.genSaltSync(10);
 const crypto = require('crypto');
 
+const keys = [
+  'id', 'username', 'password', 'fullName',
+  'mobileNumber', 'email'
+];
+
 // user signup & signin controller
 const usersController = {
 
@@ -111,6 +116,7 @@ const usersController = {
         where: {
           username: req.params.username
         },
+        attributes: keys,
         include: [{
           model: Category,
           as: 'categories',
@@ -260,12 +266,12 @@ const usersController = {
             .then(() => {
               const mailOptions = {
                 from: '"MoreRecipes Admin" <iphegheovie@gmail.com>',
-                to: 'iphegheovie@yahoo.com',
+                to: existingUser.email,
                 subject: 'You have a new notification',
                 text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                 'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
                 'http://'}${req.headers.host}/#/reset-password/${resetToken}\n\n` +
-                  'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+                  'If you did not request this, please ignore this email and your password will remain unchanged.'
               };
               // Otherwise, send user email via nodemailer
               // transporter.sendMail(mailOptions);
@@ -330,7 +336,7 @@ const usersController = {
               if (online) {
                 const mailOptions = {
                   from: '"MoreRecipes Admin" <iphegheovie@gmail.com>',
-                  to: 'iphegheovie@yahoo.com',
+                  to: existingUser.email,
                   subject: 'Password Changed',
                   text: 'You are receiving this email because you changed your password. \n\n' +
                     'If you did not request this change, please contact us immediately.'

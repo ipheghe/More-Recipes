@@ -68,7 +68,7 @@ export const postData = (
       }
     };
   }
-  axios.post(requestUrl, data, headers)
+  return axios.post(requestUrl, data, headers)
     .then((response) => {
       dispatch({
         type: action,
@@ -118,7 +118,7 @@ export const getData = (action, errorType, isAuthReq, url, dispatch) => {
     };
   }
 
-  axios.get(requestUrl, headers)
+  return axios.get(requestUrl, headers)
     .then((response) => {
       dispatch({
         type: action,
@@ -166,7 +166,7 @@ export const putData = (
     };
   }
 
-  axios.put(requestUrl, data, headers)
+  return axios.put(requestUrl, data, headers)
     .then((response) => {
       const toastr = bindActionCreators(toastrActions, dispatch);
       dispatch({
@@ -228,7 +228,7 @@ export const deleteData = (
     };
   }
 
-  axios.delete(requestUrl, headers)
+  return axios.delete(requestUrl, headers)
     .then((response) => {
       dispatch({
         type: action,

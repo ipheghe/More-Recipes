@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MainHeader, Footer } from '../../common';
-import LandingRecipeList from '../landingRecipeList/landingRecipeList.jsx';
+import LandingRecipeList from './landingRecipeList.jsx';
 import { getTopRecipesLanding } from '../../actions/recipeActions';
 
 /**

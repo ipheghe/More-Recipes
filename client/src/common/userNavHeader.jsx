@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Loader from 'react-loaders';
 import { connect } from 'react-redux';
 import { fetchUsername, logoutUser } from '../actions/authActions';
 import { getUserCategories } from './../actions/categoryActions';
@@ -73,7 +74,7 @@ class UserNavHeader extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<div>IS LOADING....</div>);
+    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
     return (
       <div>
         <header>
@@ -109,13 +110,6 @@ class UserNavHeader extends React.Component {
             >
               <ul className="navbar-nav mr-auto" />
               <ul className="nav justify-content-end" id="profile-nav">
-                <li className="nav-item">
-                  <button className="nav-link invisible-button" >
-                    <span>
-                      <i className="fa fa-bell" aria-hidden="true" />
-                    </span>Notifications<span className="badge badge-pill badge-danger">2</span>
-                  </button>
-                </li>
                 <li className="nav-item">
                   <button
                     className="nav-link invisible-button"

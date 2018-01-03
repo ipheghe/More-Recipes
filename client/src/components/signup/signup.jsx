@@ -81,13 +81,7 @@ class SignUp extends React.Component {
     if (fullName.length < 4) {
       return this.setState({
         hasErrored: true,
-        errorMessage: 'firstName must contain more than 3 chareacters'
-      });
-    }
-    if (fullName.match(numericExpression)) {
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'firstName must contain only alphabets'
+        errorMessage: 'fullname must contain more than 3 chareacters'
       });
     }
     if (!mobileNumber.match(numericExpression)) {
@@ -203,7 +197,7 @@ class SignUp extends React.Component {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label htmlFor="enterFirstName">First Name:</label>
+                      <label htmlFor="enterFullName">Full Name:</label>
                       <div className="input-group">
                         <span className="input-group-addon">
                           <i className="fa fa-user-o" />
@@ -214,7 +208,7 @@ class SignUp extends React.Component {
                           className="form-control"
                           value={this.state.fullName}
                           onChange={this.handleChange}
-                          placeholder="e.g John"
+                          placeholder="e.g John James"
                           required
                         />
                       </div>
