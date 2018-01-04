@@ -23,7 +23,8 @@ export const errorHandler = (dispatch, error, type) => {
   });
   let errorData = {};
   errorData = Object.assign({}, errorMessage);
-  errorData.data.message = '';
+  errorData.message = '';
+  errorData.error = '';
 
   setTimeout(() => {
     dispatch({

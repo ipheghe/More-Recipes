@@ -19,7 +19,10 @@ export default (state = INITIAL_STATE, action) => {
         upvote: action.payload.recipe.upvotes,
       };
     case VOTE_ERROR:
-      return { ...state, error: action.payload.data.message };
+      return {
+        ...state,
+        error: action.payload.message ? action.payload.message : action.payload.error
+      };
     default:
       return state;
   }

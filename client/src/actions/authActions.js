@@ -64,7 +64,8 @@ export const registerUser = ({
       }
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR);
+      console.log(error.response, '----------------__>');
+      errorHandler(dispatch, error, AUTH_ERROR);
     });
 
 /**
@@ -107,7 +108,7 @@ export const loginUser = ({
       }
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR);
+      errorHandler(dispatch, error, AUTH_ERROR);
     });
 
 

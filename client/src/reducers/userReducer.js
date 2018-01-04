@@ -28,13 +28,13 @@ export default (state = INITIAL_STATE, action) => {
     case USER_ERROR:
       return {
         ...state,
-        status: action.payload.data.status,
-        error: action.payload.data ? action.payload.data.message : action.payload.data.error
+        status: action.payload.status,
+        error: action.payload.message ? action.payload.message : action.payload.error
       };
     case FETCH_USER:
       return {
         ...state,
-        userData: action.response
+        userData: action.payload.userData
       };
     default:
       return state;

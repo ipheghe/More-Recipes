@@ -19,7 +19,10 @@ export default (state = INITIAL_STATE, action) => {
         count: action.payload.reviews ? action.payload.reviews.count : 0
       };
     case REVIEW_ERROR:
-      return { ...state, error: action.payload };
+      return {
+        ...state,
+        error: action.payload.message ? action.payload.message : action.payload.error
+      };
     default:
       return state;
   }

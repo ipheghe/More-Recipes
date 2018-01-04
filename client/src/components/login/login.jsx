@@ -16,8 +16,8 @@ class Login extends React.Component {
   static propTypes = {
     loginUser: PropTypes.func.isRequired,
     resetPassword: PropTypes.func.isRequired,
-    errorMessage: PropTypes.string.isRequired,
-    modalErrorMessage: PropTypes.string.isRequired
+    errorMessage: PropTypes.string,
+    modalErrorMessage: PropTypes.string
   };
 
   /**
@@ -360,6 +360,11 @@ class Login extends React.Component {
     );
   }
 }
+
+Login.defaultProps = {
+  errorMessage: '',
+  modalErrorMessage: ''
+};
 
 const mapStateToProps = state => ({
   errorMessage: state.auth.error,

@@ -11,8 +11,7 @@ const INITIAL_STATE = {
   error: '',
   message: '',
   categoryList: [],
-  userCategoryList: [],
-  categoryName: ''
+  userCategoryList: []
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -21,14 +20,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         message: action.payload.message,
-        categoryName: action.payload.category.name,
         categoryList: [...state.categoryList, action.payload.category]
       };
     case UPDATE_CATEGORY:
       return {
         ...state,
         message: action.payload.message,
-        categoryName: action.payload.category.name,
         categoryList: [...state.categoryList.map(item => (
           item.id === action.payload.category.id ? action.payload.category : item
         ))]
@@ -37,7 +34,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         message: action.payload.message,
-        categoryName: '',
         categoryList: [
           ...state.categoryList.filter(category => category.id !== state.userCategoryList[0].id)
         ]
@@ -55,7 +51,7 @@ export default (state = INITIAL_STATE, action) => {
     case CATEGORY_ERROR:
       return {
         ...state,
-        error: action.payload.data ? action.payload.data.message : action.payload.data.error
+        error: action.payload.message ? action.payload.message : action.payload.error
       };
     default:
       return state;

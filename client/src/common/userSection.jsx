@@ -29,7 +29,7 @@ class UserSection extends React.Component {
     }).isRequired,
     categoryList: PropTypes.arrayOf(PropTypes.object).isRequired,
     status: PropTypes.string.isRequired,
-    errorMessage: PropTypes.string.isRequired,
+    errorMessage: PropTypes.string,
     categories: PropTypes.arrayOf(PropTypes.object)
   };
 
@@ -392,7 +392,8 @@ class UserSection extends React.Component {
 }
 
 UserSection.defaultProps = {
-  categories: []
+  categories: [],
+  errorMessage: ''
 };
 
 const mapStateToProps = state => ({

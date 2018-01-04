@@ -31,7 +31,7 @@ class ManageRecipe extends React.Component {
     uploadImage: PropTypes.func.isRequired,
     deleteRecipe: PropTypes.func.isRequired,
     getRecipe: PropTypes.func.isRequired,
-    errorMessage: PropTypes.string.isRequired,
+    errorMessage: PropTypes.string,
     recipe: PropTypes.shape({
       id: PropTypes.number,
       recipeName: PropTypes.string,
@@ -49,7 +49,6 @@ class ManageRecipe extends React.Component {
       recipeDetail: '',
       ingredients: '',
       directions: '',
-      recipeId: '',
       imageUrl: '',
       hasErrored: false,
       errorMessage: '',
@@ -145,7 +144,7 @@ class ManageRecipe extends React.Component {
    */
   handleDeleteRecipe(event) {
     event.preventDefault();
-    this.props.deleteRecipe(this.state.recipeId);
+    this.props.deleteRecipe(this.props.recipe.id);
   }
 
   /**
@@ -295,6 +294,7 @@ class ManageRecipe extends React.Component {
                                 name="recipeDetail"
                                 rows="2"
                                 placeholder="Enter Recipe Detail"
+                                maxLength="250"
                                 value={this.state.recipeDetail}
                                 onChange={this.handleChange}
                               />
@@ -353,6 +353,10 @@ class ManageRecipe extends React.Component {
     );
   }
 }
+
+ManageRecipe.defaultProps = {
+  errorMessage: ''
+};
 
 const mapStateToProps = state => ({
   userData: state.auth.userData,

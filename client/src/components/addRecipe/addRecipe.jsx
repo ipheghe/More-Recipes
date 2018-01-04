@@ -21,7 +21,7 @@ class AddRecipe extends React.Component {
   static propTypes = {
     addRecipe: PropTypes.func.isRequired,
     uploadImage: PropTypes.func.isRequired,
-    errorMessage: PropTypes.string.isRequired
+    errorMessage: PropTypes.string
   };
 
   /**
@@ -228,6 +228,7 @@ class AddRecipe extends React.Component {
                             className="form-control"
                             name="recipeDetail"
                             placeholder="Enter Recipe Detail"
+                            maxLength="250"
                             value={this.state.recipeDescription}
                             onChange={this.handleChange}
                             required
@@ -290,6 +291,10 @@ class AddRecipe extends React.Component {
     );
   }
 }
+
+AddRecipe.defaultProps = {
+  errorMessage: ''
+};
 
 const mapStateToProps = state => ({
   errorMessage: state.recipe.error,
