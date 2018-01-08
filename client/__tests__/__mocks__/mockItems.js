@@ -54,7 +54,7 @@ export default {
       description: 'This recipe is very popular in the south south part of Nigeria',
       ingredients: 'palm kernel, assorted meat, maggi, palm oil',
       directions: 'pour palm oil in pot, blanch oil for 10mins',
-      imageUrl: 'dist/image1',
+      imageUrl: 'assets/images/pizza1.jpg',
       userId: 1
     }
   ],
@@ -64,7 +64,7 @@ export default {
     description: 'This recipe is very popular in the south south part of Nigeria',
     ingredients: 'palm kernel, assorted meat, maggi, palm oil',
     directions: 'pour palm oil in pot, blanch oil for 10mins',
-    imageUrl: 'dist/image1'
+    imageUrl: 'assets/images/pizza1.jpg'
   },
 
   // review

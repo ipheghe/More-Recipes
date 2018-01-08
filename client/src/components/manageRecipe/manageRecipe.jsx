@@ -20,7 +20,9 @@ import { uploadImage } from '../../actions/uploadImageActions';
 
 /**
  * ManageRecipe component
+ *
  * @class ManageRecipe
+ *
  * @extends {React.Component}
  */
 @connect(state => ({ state, }))
@@ -32,14 +34,17 @@ class ManageRecipe extends React.Component {
     deleteRecipe: PropTypes.func.isRequired,
     getRecipe: PropTypes.func.isRequired,
     errorMessage: PropTypes.string,
+    userRecipes: PropTypes.arrayOf(PropTypes.object),
     recipe: PropTypes.shape({
       id: PropTypes.number,
-      recipeName: PropTypes.string,
+      name: PropTypes.string,
+      imageUrl: PropTypes.string,
     }).isRequired
   };
 
   /**
    * constructor
+   *
    * @param {object} props
    */
   constructor(props) {
@@ -62,7 +67,8 @@ class ManageRecipe extends React.Component {
   }
 
   /**
-   * @memberOf MyRecipe
+   * @memberOf ManageRecipe
+   *
    * @returns {*} void
    */
   componentDidMount() {
@@ -71,12 +77,14 @@ class ManageRecipe extends React.Component {
 
   /**
    * @param {any} nextprops
-   * @memberOf MyRecipe
+   *
+   * @memberOf ManageRecipe
+   *
    * @returns {*} void
    */
   componentWillReceiveProps(nextprops) {
-    if (nextprops.state.recipe) {
-      const { userRecipes } = nextprops.state.recipe;
+    if (nextprops.userRecipes) {
+      const { userRecipes } = nextprops;
       this.setState({
         recipes: Object.assign([], this.state.recipes, userRecipes),
         isLoading: false,
@@ -96,7 +104,9 @@ class ManageRecipe extends React.Component {
 
   /**
    * handle change form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {object} state
    */
   handleChange(event) {
@@ -107,7 +117,9 @@ class ManageRecipe extends React.Component {
 
   /**
    * handle image change form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {object} state
    */
   handleImageChange(event) {
@@ -120,16 +132,32 @@ class ManageRecipe extends React.Component {
 
   /**
    * handle load recipe event
+   *
    * @param {number} recipeId
+   *
    * @returns {*} void
    */
   handleLoadRecipe(recipeId) {
-    this.props.getRecipe(recipeId);
+    if (!recipeId || recipeId === '') {
+      return this.setState({
+        hasErrored: false,
+        errorMessage: '',
+        recipeDetail: '',
+        ingredients: '',
+        directions: '',
+      });
+    }
+    this.setState({
+      hasErrored: false
+    });
+    return this.props.getRecipe(recipeId);
   }
 
   /**
    * handle update recipe event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handleUpdateRecipe(event) {
@@ -139,16 +167,43 @@ class ManageRecipe extends React.Component {
 
   /**
    * handle delete recipe event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handleDeleteRecipe(event) {
     event.preventDefault();
-    this.props.deleteRecipe(this.props.recipe.id);
+    if (!this.props.recipe.id || this.props.recipe.id === '' || !this.recipeId.value) {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: '',
+          recipeDetail: '',
+          ingredients: '',
+          directions: '',
+          imageUrl: '',
+        });
+      }, 3000);
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Please select a recipe'
+      });
+    }
+    this.setState({
+      hasErrored: false,
+      errorMessage: '',
+      recipeDetail: '',
+      ingredients: '',
+      directions: '',
+      imageUrl: '',
+    });
+    return this.props.deleteRecipe(this.props.recipe.id);
   }
 
   /**
    * validateFormField
+   *
    * @returns {string} errorMessage
    */
   validateFormField() {
@@ -156,54 +211,63 @@ class ManageRecipe extends React.Component {
       recipeDetail,
       ingredients,
       directions,
-      imageUrl,
-      hasErrored
+      imageUrl
     } = this.state;
     if (recipeDetail === '') {
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'Recipe Detail field cannot be empty'
-      });
-    }
-    if (ingredients === '') {
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'ingredients field cannot be empty'
-      });
-    }
-    if (directions === '') {
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'directions field cannot be empty'
-      });
-    }
-    if (imageUrl === '') {
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'Recipe image field cannot be empty'
-      });
-    }
-    if (hasErrored === true) {
       setTimeout(() => {
         this.setState({
           hasErrored: false,
           errorMessage: ''
         });
       }, 3000);
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Recipe Detail field cannot be empty'
+      });
     }
-    this.setState({
-      recipeDetail: '',
-      ingredients: '',
-      directions: '',
-      imageUrl: ''
-    });
+    if (ingredients === '') {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'ingredients field cannot be empty'
+      });
+    }
+    if (directions === '') {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'directions field cannot be empty'
+      });
+    }
+    if (!this.props.recipe.id || this.props.recipe.id === '' || !this.recipeId.value) {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
+      return this.setState({
+        hasErrored: true,
+        errorMessage: 'Please select a recipe'
+      });
+    }
     return this.props.updateRecipe(
       this.props.recipe.id,
-      this.props.recipe.recipeName,
+      this.props.recipe.name,
       recipeDetail,
       ingredients,
       directions,
-      imageUrl
+      imageUrl !== '' ? imageUrl : this.props.recipe.imageUrl
     );
   }
 
@@ -236,6 +300,7 @@ class ManageRecipe extends React.Component {
 
   /**
    * render
+   *
    * @return {ReactElement} markup
    */
   render() {
@@ -272,9 +337,10 @@ class ManageRecipe extends React.Component {
                                 ref={node => this.recipeId = node}
                                 onChange={() => this.handleLoadRecipe(this.recipeId.value)}
                               >
+                                <option value="">== Select Recipe ==</option>
                                 {
                               (this.state.recipes && this.state.recipes.length > 0) ?
-                                this.state.recipes.map(userRecipe =>
+                                this.props.userRecipes.map(userRecipe =>
                                   (
                                     <option
                                       name="recipeId"
@@ -334,11 +400,18 @@ class ManageRecipe extends React.Component {
                               <small id="fileHelp" className="form-text text-muted">Please attach an image file.</small>
                             </div>
                             <div className="edit-profile-button">
-                              <button type="submit" className="btn btn-success" onClick={this.handleUpdateRecipe}>Update Recipe</button>
-                              <button type="submit" className="btn btn-danger" onClick={this.handleDeleteRecipe}>Delete Recipe</button>
+                              <button
+                                className="btn btn-success"
+                                onClick={this.handleUpdateRecipe}
+                              >Update Recipe
+                              </button>
+                              <button
+                                className="btn btn-danger"
+                                onClick={this.handleDeleteRecipe}
+                              >Delete Recipe
+                              </button>
                             </div>
                           </form> : <h3 style={{ textAlign: 'center' }}>Sorry! You have not added any recipe</h3>
-
                       }
                     </div>
                     <br />
@@ -355,7 +428,8 @@ class ManageRecipe extends React.Component {
 }
 
 ManageRecipe.defaultProps = {
-  errorMessage: ''
+  errorMessage: '',
+  userRecipes: []
 };
 
 const mapStateToProps = state => ({

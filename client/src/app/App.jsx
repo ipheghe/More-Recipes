@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Switch,
   HashRouter as Router, Route, hashHistory
 } from 'react-router-dom';
 import {
@@ -16,15 +17,16 @@ import {
   Search,
   ResetPassword
 } from '../components';
-import RequireAuth from '../auth/requireAuth';
+import RequireAuth from '../auth/RequireAuth.jsx';
+import IsToken from '../auth/IsToken.jsx';
 
 const App = () =>
   (
     <Router history={hashHistory}>
-      <div>
-        <Route exact name="app" path="/" component={Landing} />
-        <Route path="/signup" component={SignUp} />
-        <Route path="/login" component={Login} />
+      <Switch>
+        <Route exact name="app" path="/" component={IsToken(Landing)} />
+        <Route path="/signup" component={IsToken(SignUp)} />
+        <Route path="/login" component={IsToken(Login)} />
         <Route path="/reset-password/:token" component={ResetPassword} />
         <Route path="/dashboard" component={RequireAuth(Dashboard)} />
         <Route path="/recipes/:id" component={RequireAuth(ViewRecipe)} />
@@ -34,7 +36,7 @@ const App = () =>
         <Route path="/addRecipe" component={RequireAuth(AddRecipe)} />
         <Route path="/manageRecipe" component={RequireAuth(ManageRecipe)} />
         <Route path="/editProfile" component={RequireAuth(EditProfile)} />
-      </div>
+      </Switch>
     </Router>
   );
 

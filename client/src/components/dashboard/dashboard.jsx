@@ -10,7 +10,7 @@ import {
   Footer,
   Pagination
 } from '../../common';
-import RecipeList from '../recipeList/recipeList.jsx';
+import RecipeList from '../recipeList/RecipeList.jsx';
 import { getTopRecipes } from '../../actions/recipeActions';
 
 
@@ -34,7 +34,7 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       recipes: [],
-      message: '',
+      message: 'Sorry! You do not have any favorite recipe',
       pages: 1,
       currentPaginatePage: 1,
       isLoading: true
@@ -62,7 +62,6 @@ class Dashboard extends React.Component {
       const { recipeList } = nextprops.state.recipe;
       this.setState({
         recipes: Object.assign([], this.state.recipes, recipeList),
-        message: nextprops.state.recipe.message,
         pages: nextprops.state.recipe.pages,
         isLoading: false,
       });
@@ -76,7 +75,7 @@ class Dashboard extends React.Component {
    *
    * @return { object } currentPaginatePage
    */
-  onPaginateClick(page) {
+  onPaginateClick = (page) => {
     this.setState({ currentPaginatePage: page }, () => {
       this.getRecipes();
     });
@@ -86,7 +85,7 @@ class Dashboard extends React.Component {
    * get top recipes
    * @returns {array} recipes
    */
-  getRecipes() {
+  getRecipes = () => {
     const offset = 6 * (this.state.currentPaginatePage - 1);
     this.props.getTopRecipes(offset);
   }
@@ -149,7 +148,6 @@ Dashboard.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  userData: state.auth.userData,
   recipes: state.recipe.recipeList,
   pages: state.recipe.pages
 });

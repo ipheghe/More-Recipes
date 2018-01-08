@@ -3,7 +3,6 @@ import moxios from 'moxios';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import mockAuthCheck from '../__mocks__/mockAuthCheck';
-import mockItems from '../__mocks__/mockItems';
 import { upvoteRecipe, downvoteRecipe } from '../../src/actions/voteActions';
 
 let store = null;

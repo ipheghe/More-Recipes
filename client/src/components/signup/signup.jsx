@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MainHeader, Footer } from '../../common';
 import { registerUser } from '../../actions/authActions';
+import SignupForm from './SignupForm.jsx';
 
 /**
  * signUp form commponent
+ *
  * @class SignUp
+ *
  * @extends {React.Component}
  */
 class SignUp extends React.Component {
@@ -17,6 +20,7 @@ class SignUp extends React.Component {
 
   /**
    * constructor
+   *
    * @param {object} props
    */
   constructor(props) {
@@ -36,7 +40,9 @@ class SignUp extends React.Component {
 
   /**
    * handle change form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {object} state
    */
   handleChange(event) {
@@ -48,7 +54,9 @@ class SignUp extends React.Component {
 
   /**
    * handle signUp form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handleSignup(event) {
@@ -58,6 +66,7 @@ class SignUp extends React.Component {
 
   /**
    * validateFormField
+   *
    * @returns {string} errorMessage
    */
   validateFormField() {
@@ -128,6 +137,7 @@ class SignUp extends React.Component {
 
   /**
    * handle signUp form event error
+   *
    * @returns {string} errorMessage
    */
   renderAlert() {
@@ -154,6 +164,7 @@ class SignUp extends React.Component {
 
   /**
    * render
+   *
    * @return {ReactElement} markup
    */
   render() {
@@ -168,119 +179,21 @@ class SignUp extends React.Component {
                 <h4>Share your recipe ideas with the world</h4>
                 <br />
                 <br />
-                <h2><em><i>Sign Up and start sharing recipes</i></em></h2>
+                <h2>Sign Up and start sharing recipes</h2>
               </section>
               <section className="col-md-5 account">
-                <div>
-                  <form className="reg-form">
-                    {this.renderAlert()}
-                    <h3 className="login-form-boxx">Registration Form</h3>
-                    <br />
-                    <div className="form-group">
-                      <label htmlFor="enterUsername">Username:</label>
-                      <div className="input-group">
-                        <span className="input-group-addon">
-                          <i className="fa fa-user" />
-                        </span>
-                        <input
-                          name="username"
-                          type="text"
-                          className="form-control"
-                          value={this.state.username}
-                          onChange={this.handleChange}
-                          placeholder="e.g john112"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="enterFullName">Full Name:</label>
-                      <div className="input-group">
-                        <span className="input-group-addon">
-                          <i className="fa fa-user-o" />
-                        </span>
-                        <input
-                          name="fullName"
-                          type="text"
-                          className="form-control"
-                          value={this.state.fullName}
-                          onChange={this.handleChange}
-                          placeholder="e.g John James"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="enterMobile">Mobile:</label>
-                      <div className="input-group">
-                        <span className="input-group-addon">
-                          <i className="fa fa-mobile" />
-                        </span>
-                        <input
-                          name="mobileNumber"
-                          type="number"
-                          className="form-control"
-                          value={this.state.mobileNumber}
-                          onChange={this.handleChange}
-                          placeholder="e.g 08034562838"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="enterEmail">Email address:</label>
-                      <div className="input-group">
-                        <span className="input-group-addon">
-                          <i className="fa fa-envelope" />
-                        </span>
-                        <input
-                          name="email"
-                          type="email"
-                          className="form-control"
-                          value={this.state.email}
-                          onChange={this.handleChange}
-                          placeholder="e.g john@yahoo.com"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="enterPassword">Password:</label>
-                      <div className="input-group">
-                        <span className="input-group-addon">
-                          <i className="fa fa-unlock-alt" />
-                        </span>
-                        <input
-                          name="password"
-                          type="password"
-                          className="form-control"
-                          value={this.state.password}
-                          onChange={this.handleChange}
-                          placeholder=""
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <a href="#login">Already have an account?</a>
-                      </div>
-                    </div>
-                    <div className="login-buttons">
-                      <div>
-                        <a href="#login">
-                          <button
-                            className="btn btn-block btn-success"
-                            onClick={this.handleSignup}
-                          >Sign Up
-                          </button>
-                        </a>
-                      </div>
-                    </div>
-                  </form>
-                  <br />
-                </div>
+                <SignupForm
+                  username={this.state.username}
+                  password={this.state.password}
+                  fullName={this.state.fullName}
+                  mobileNumber={this.state.mobileNumber}
+                  email={this.state.email}
+                  signup={this.handleSignup}
+                  error={this.renderAlert()}
+                  onChange={this.handleChange}
+                />
               </section>
+              <br />
             </div>
           </div>
         </div>

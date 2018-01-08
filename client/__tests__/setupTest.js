@@ -7,10 +7,6 @@ $.prototype.sideNav = () => { };
 $.prototype.material_select = () => { };
 $.prototype.modal = () => { };
 
-global.Materialize = {
-  toast: () => { }
-};
-
 global.CLOUDINARY_IMG_URL_STUB = 'cloudinary-stub';
 
 configure({ adapter: new Adapter() });

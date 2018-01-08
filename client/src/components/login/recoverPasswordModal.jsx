@@ -2,10 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 
+const customStyles = {
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(144, 144, 144, 0.75)'
+  },
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    color: 'white'
+  }
+};
+
 const RecoverPasswordModal = ({
   isOpen,
   onClose,
-  customStyles,
   error,
   email,
   onChange,
@@ -15,7 +35,7 @@ const RecoverPasswordModal = ({
     isOpen={isOpen}
     onRequestClose={onClose}
     style={customStyles}
-    contentLabel="Example Modal"
+    contentLabel="Recover Password Modal"
   >
     <div className="modal-header">
       <h4 className="modal-title" id="myModalLabel">Recover Password</h4>
@@ -25,7 +45,7 @@ const RecoverPasswordModal = ({
         aria-label="Close"
         onClick={onClose}
       >
-        <span aria-hidden="true">&times;</span>
+        <span aria-hidden="true" style={{ color: 'white' }}>&times;</span>
       </button>
     </div>
     <div className="modal-body">
@@ -35,7 +55,7 @@ const RecoverPasswordModal = ({
         }
         <div className="form-group">
           <label htmlFor="email">Email Address:</label>
-          <div className="input-group input-group-lg">
+          <div className="input-group input-group">
             <span className="input-group-addon">
               <i className="fa fa-envelope" />
             </span>
@@ -75,7 +95,6 @@ RecoverPasswordModal.defaultProps = {
 RecoverPasswordModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  customStyles: PropTypes.objectOf(PropTypes.object).isRequired,
   email: PropTypes.string.isRequired,
   error: PropTypes.element,
   onChange: PropTypes.func.isRequired,

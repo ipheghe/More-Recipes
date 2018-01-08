@@ -12,6 +12,7 @@ import {
 
 /**
  * @description update recipe action
+ *
  * @type {function} updateRecipe
  *
  * @param {string} username
@@ -47,6 +48,7 @@ const updateUserRecord = (username, fullName, mobileNumber, email) => {
 
 /**
  * @description action to change password
+ *
  * @type {function} changePassword
  *
  * @param {string} password
@@ -78,6 +80,7 @@ const changePassword = (password, newPassword) => {
 
 /**
  * @description action to reset password
+ *
  * @type {function} resetPassword
  *
  * @param {string} email
@@ -108,6 +111,7 @@ const resetPassword = (email) => {
 
 /**
  * @description action to verify password token for user to put new password
+ *
  * @type {function} verifyTokenPassword
  *
  * @param {string} password

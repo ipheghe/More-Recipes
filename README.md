@@ -54,23 +54,23 @@ sequelize db:migrate
 The server will now be running at `http://localhost:8000`
 
 ## Endpoints
-- **<code>POST:</code>/api/users/signup**
+- **<code>POST:</code>/api/v1/user/signup**
   - Creates user account
-- **<code>POST:</code>/api/users/signin**
+- **<code>POST:</code>/api/v1/user/signin**
   - Creates user login session
-- **<code>POST:</code>/api/recipes**
+- **<code>POST:</code>/api/v1/recipe**
   - Creates recipe record
-- **<code>PUT:</code>/api/recipes/{recipeId}**
+- **<code>PUT:</code>/api/v1/recipe/{recipeId}**
   - Updates an existing recipe record
-- **<code>DELETE:</code>/api/recipes/{recipeId}**
+- **<code>DELETE:</code>/api/v1/recipe/{recipeId}**
   - Deletes an existing recipe record
-- **<code>GET:</code>/api/recipes**
+- **<code>GET:</code>/api/v1/recipes**
   - Retrieves list of all existing recipes
-- **<code>POST:</code>/api/recipes/{recipeId}/reviews**
+- **<code>POST:</code>/api/v1/recipe/{recipeId}/review**
   - Adds a post review for an existing recipe
-- **<code>POST:</code>/api/users/categories**
+- **<code>POST:</code>/api/v1/user/category**
   - Create category for user favorite recipes
-- **<code>POST:</code>/api/recipes/{recipeId}/{categoryId}/favorites**
+- **<code>POST:</code>/api/v1/recipe/{recipeId}/{categoryId}/favorite**
   - Adds a recipe to user favorites
 - **<code>GET:</code>/api/recipes?sort=upvotes&order=descending**
   - Retrieves list of all existing recipes by highest number of upvotes in descending order

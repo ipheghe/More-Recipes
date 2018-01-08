@@ -8,11 +8,25 @@ import {
   Redirect
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import decodeToken from '../helpers/decodeToken';
+
+let checkToken = false;
+const token = window.localStorage.getItem('token');
+
+if (token) {
+  const decodedToken = decodeToken(token);
+  if (decodedToken.exp < Math.floor(Date.now() / 1000)) {
+    checkToken = false;
+  } else {
+    checkToken = true;
+  }
+}
 
 export default (ComposedComponent) => {
 /**
  * ProfileHeader Authentication
  * @class Authentication
+ *
  * @extends {Component}
  */
   class Authentication extends Component {
@@ -29,11 +43,11 @@ export default (ComposedComponent) => {
       return (
         <div>
           {
-          this.props.authenticated ?
+          !checkToken && (this.props.location.pathname !== '/login' || this.props.location.pathname !== '/signup' || this.props.location.pathname !== '/') ?
             <ComposedComponent {...this.props} /> :
             <Redirect
               to={{
-                pathname: '/login',
+                pathname: '/dashboard',
                 state: {
                   from: this.props.location
                 }

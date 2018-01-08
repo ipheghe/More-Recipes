@@ -13,6 +13,7 @@ import {
 
 /**
  * @description favorite recipe action
+ *
  * @type {function} favoriteRecipe
  *
  * @param {integer} recipeId
@@ -44,6 +45,7 @@ const favoriteRecipe = (recipeId, categoryId) => {
 
 /**
  * @description favorite recipe action
+ *
  * @type {function} favoriteRecipe
  *
  * @param {integer} recipeId
@@ -70,6 +72,7 @@ const unfavoriteRecipe = (recipeId) => {
 
 /**
  * @description action to get user favorite recipe
+ *
  * @type {function} getFavoriteRecipe
  *
  * @param {integer} recipeId
@@ -83,6 +86,7 @@ const getFavoriteRecipe = (recipeId) => {
 
 /**
  * @description action to get user favorite recipes
+ *
  * @type {function} getFavoriteRecipes
  *
  * @param {integer} offset

@@ -161,7 +161,7 @@ label {
 
 .headline {
   color: $color_1;
-  h1 {
+  h1, h2, h4 {
     font-weight: 700;
   }
   a {
@@ -177,6 +177,7 @@ label {
   padding: 40px 30px;
   border-radius: 3px;
   z-index: 0;
+  margin-bottom: 20px;
   >div {
     display: block;
     margin: 30px auto;
@@ -308,6 +309,7 @@ a {
 .profile-category-button {
   >button {
     margin-bottom: 5px;
+    margin-right: 5px;
   }
 }
 
@@ -578,6 +580,39 @@ button.close {
 @media (max-width: 767px) {
   .landing {
     text-align: center;
+  }
+}
+
+@media ( max-width: 440px) {
+  .card-blocks {
+    display: inline-block;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    .card {
+      display: inline-block;
+      width: 300px;
+      margin-bottom: 15px;
+      margin-right: 10px;
+      img {
+        width: 300px;
+        height: 300px;
+      }
+    }
+    .card-title {
+      text-align: left;
+      height: 60px;
+    }
+    .card-text {
+      height: 200px;
+      text-align: left;
+    }
+    .card-footer {
+      text-align: left;
+      padding: 0px;
+      font-size: 18px;
+      font-weight: 50%;
+    }
   }
 }
 

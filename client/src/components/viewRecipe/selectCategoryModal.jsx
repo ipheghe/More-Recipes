@@ -2,10 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 
+const customStyles = {
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(144, 144, 144, 0.75)'
+  },
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    color: 'white'
+  }
+};
+
 const SelectCategoryModal = ({
   isOpen,
   onClose,
-  customStyles,
   categories,
   categoryInput,
   favoriteRecipe
@@ -24,7 +44,7 @@ const SelectCategoryModal = ({
         aria-label="Close"
         onClick={onClose}
       >
-        <span aria-hidden="true">&times;</span>
+        <span aria-hidden="true" style={{ color: 'white' }}>&times;</span>
       </button>
     </div>
     <div className="modal-body">
@@ -65,7 +85,6 @@ const SelectCategoryModal = ({
 SelectCategoryModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  customStyles: PropTypes.objectOf(PropTypes.object).isRequired,
   categoryInput: PropTypes.func.isRequired,
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   favoriteRecipe: PropTypes.func.isRequired,

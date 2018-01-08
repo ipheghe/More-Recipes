@@ -12,11 +12,13 @@ import {
   getFavoriteRecipe
 } from '../../actions/favoriteActions';
 import { addCategory } from '../../actions/categoryActions';
-import SelectCategoryModal from './selectCategoryModal.jsx';
+import SelectCategoryModal from './SelectCategoryModal.jsx';
 
 /**
  * ViewRecipe component
+ *
  * @class ViewRecipe
+ *
  * @extends {React.Component}
  */
 @connect(state => ({ state, }))
@@ -50,6 +52,7 @@ class ViewRecipe extends React.Component {
 
   /**
    * constructor
+   *
    * @param {object} props
    */
   constructor(props) {
@@ -77,6 +80,7 @@ class ViewRecipe extends React.Component {
 
   /**
    * @memberOf Favorite
+   *
    * @returns {*} void
    */
   componentDidMount() {
@@ -88,7 +92,9 @@ class ViewRecipe extends React.Component {
 
   /**
    * @param {any} nextprops
+   *
    * @memberOf UserNavHeader
+   *
    * @returns {*} void
    */
   componentWillReceiveProps(nextprops) {
@@ -118,7 +124,9 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle change form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {object} state
    */
   handleChange(event) {
@@ -129,7 +137,9 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle post review form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handlePostReview(event) {
@@ -144,7 +154,9 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle upvote event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handleUpvote = (event) => {
@@ -159,7 +171,9 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle downvote event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handleDownvote = (event) => {
@@ -173,8 +187,10 @@ class ViewRecipe extends React.Component {
   }
 
   /**
-   * handle favorite event
+   * handle favorite Recipe event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handleFavoriteRecipe(event) {
@@ -188,8 +204,10 @@ class ViewRecipe extends React.Component {
   }
 
   /**
-   * handle unfavorite event
+   * handle unfavorite recipe event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handleUnfavoriteRecipe(event) {
@@ -203,6 +221,7 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle handleVote event
+   *
    * @returns {*} void
    */
   handleUpVote() {
@@ -214,6 +233,7 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle handleVote event
+   *
    * @returns {*} void
    */
   handleDownVote() {
@@ -225,6 +245,7 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle open modal event
+   *
    * @returns {*} void
    */
   openModal() {
@@ -239,6 +260,7 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle close modal event
+   *
    * @returns {*} void
    */
   closeModal() {
@@ -249,7 +271,9 @@ class ViewRecipe extends React.Component {
 
   /**
    * handle close modal event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   loadMore(event) {
@@ -261,29 +285,12 @@ class ViewRecipe extends React.Component {
 
   /**
    * render
+   *
    * @return {ReactElement} markup
    */
   render() {
     if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
     const reviewFields = this.state.reviews;
-    const customStyles = {
-      overlay: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(255, 255, 255, 0.75)'
-      },
-      content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)'
-      }
-    };
     return (
       <div>
         <UserNavHeader />
@@ -398,7 +405,12 @@ class ViewRecipe extends React.Component {
                   </div>
                   <br />
                   <div>
-                    <button type="button" className="btn btn-success" onClick={this.handlePostReview}>Add Review</button>
+                    <button
+                      type="button"
+                      className="btn btn-success"
+                      onClick={this.handlePostReview}
+                    >Add Review
+                    </button>
                   </div>
                 </section>
               </div>
@@ -429,7 +441,6 @@ class ViewRecipe extends React.Component {
         <SelectCategoryModal
           isOpen={this.state.modalIsOpen}
           onClose={this.closeModal}
-          customStyles={customStyles}
           categories={this.props.categories}
           categoryInput={node => this.categoryInput = node}
           favoriteRecipe={this.handleFavoriteRecipe}

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FavoriteRecipeCard from './favoriteRecipeCard.jsx';
+import FavoriteRecipeCard from './FavoriteRecipeCard.jsx';
 
 const FavoriteRecipeList = ({ recipes }) => (
   <div>

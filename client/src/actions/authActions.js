@@ -19,7 +19,9 @@ import decodeToken from '../../../server/helpers/decodeToken';
 
 /**
  * @description signup user action
+ *
  * @type {function} registerUser
+ *
  * @export registerUser
  *
  * @param {str} username
@@ -64,20 +66,22 @@ export const registerUser = ({
       }
     })
     .catch((error) => {
-      console.log(error.response, '----------------__>');
       errorHandler(dispatch, error, AUTH_ERROR);
     });
 
 /**
  * @description add recipe action
+ *
  * @type {function} loginUser
+ *
  * @export loginUser
  *
  * @param {str} username
+ *
  * @param {str} password
  *
  * @returns {action} response
- * @callback {object}
+ *
  */
 export const loginUser = ({
   username,
@@ -114,9 +118,11 @@ export const loginUser = ({
 
 /**
  * @description logoutUser user action
+ *
  * @type {function} logoutUser
  *
  * @export logoutUser
+ *
  * @param {object} error
  *
  * @returns {action} dispatch
@@ -133,6 +139,7 @@ export const logoutUser = error =>
 
 /**
  * @export fetchUsername
+ *
  * @returns {array} response
  */
 export const fetchUsername = () =>

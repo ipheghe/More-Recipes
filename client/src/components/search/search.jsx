@@ -10,12 +10,14 @@ import {
   Pagination,
   Footer
 } from '../../common';
-import RecipeList from '../recipeList/recipeList.jsx';
+import RecipeList from '../recipeList/RecipeList.jsx';
 import { getRecipesBySearch } from '../../actions/recipeActions';
 
 /**
  * Search component
+ *
  * @class Search
+ *
  * @extends {React.Component}
  */
 @connect(state => ({ state, }))
@@ -29,6 +31,7 @@ class Search extends React.Component {
 
   /**
    * constructor
+   *
    * @param {object} props
    */
   constructor(props) {
@@ -43,7 +46,9 @@ class Search extends React.Component {
 
   /**
    * @param {any} nextprops
+   *
    * @memberOf Search
+   *
    * @returns {*} void
    */
   componentWillReceiveProps(nextprops) {
@@ -70,11 +75,12 @@ class Search extends React.Component {
 
   /**
    * get top recipes
+   *
    * @returns {array} recipes
    */
   getRecipes() {
     const offset = 6 * (this.state.currentPaginatePage - 1);
-    const { search } = this.props.location; // could be '?foo=bar'
+    const { search } = this.props.location;
     const url = new URLSearchParams(search);
     const keyword = url.get('sort');
     this.props.getRecipesBySearch(keyword, offset);
@@ -82,6 +88,7 @@ class Search extends React.Component {
 
   /**
    * render
+   *
    * @return {ReactElement} markup
    */
   render() {
@@ -108,7 +115,8 @@ class Search extends React.Component {
                       <div className="card-blocks" >
                         {
                           (this.props.searchResult.length < 1) ?
-                            <h2>{this.props.message}</h2> : <RecipeList recipes={this.props.searchResult} />
+                            <h2>{this.props.message}</h2> :
+                            <RecipeList recipes={this.props.searchResult} />
                         }
                       </div>
                       <br />

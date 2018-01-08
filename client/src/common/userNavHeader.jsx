@@ -93,7 +93,7 @@ class UserNavHeader extends React.Component {
             >
               <span className="navbar-toggler-icon" />
             </button>
-            <a className="navbar-brand">
+            <a className="navbar-brand" href="#dashboard">
               <img
                 src={Logo}
                 width="30"

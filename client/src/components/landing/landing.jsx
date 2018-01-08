@@ -2,14 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MainHeader, Footer } from '../../common';
-import LandingRecipeList from './landingRecipeList.jsx';
+import LandingRecipeList from './LandingRecipeList.jsx';
 import { getTopRecipesLanding } from '../../actions/recipeActions';
 
 /**
  * Landing page commponent
+ *
  * @param {function} onComponentDidMount - callback on ComponentDidMount
  */
-class Landing extends React.Component {
+export class Landing extends React.Component {
   static propTypes = {
     getTopRecipesLanding: PropTypes.func.isRequired,
     recipeList: PropTypes.arrayOf(PropTypes.object).isRequired
@@ -17,6 +18,7 @@ class Landing extends React.Component {
 
   /**
    * @memberOf Landing
+   *
    * @returns {*} void
    */
   componentDidMount() {
@@ -24,7 +26,22 @@ class Landing extends React.Component {
   }
 
   /**
+   * scrolls down to show top recipes
+   *
+   * @param {SytheticEvent} event
+   *
+   * @returns {*} void
+   */
+  showTopRecipies = (event) => {
+    event.preventDefault();
+    $('html, body').animate({
+      scrollTop: 700
+    }, 'slow');
+  }
+
+  /**
    * render
+   *
    * @return {ReactElement} markup
    */
   render() {
@@ -39,9 +56,12 @@ class Landing extends React.Component {
                 <h4>Share your recipe ideas with the world</h4>
                 <br />
                 <br />
-                <a href="#top-recipes">
-                  <button className="btn btn-success">View top recipes</button>
-                </a>
+                <button
+                  onClick={this.showTopRecipies}
+                  className="btn btn-success"
+                  style={{ width: '300px' }}
+                >View top recipes
+                </button>
                 <p className="arrow-key">
                   <i className="fa fa-arrow-down" aria-hidden="true" />
                   <i className="fa fa-arrow-down" aria-hidden="true" />
@@ -55,8 +75,6 @@ class Landing extends React.Component {
                       type="button"
                       className="btn btn-success"
                       id="login"
-                      data-toggle="modal"
-                      data-target="#myModal"
                     >Login
                     </button>
                     <p className="brief">Login to your account and start sharing</p>
@@ -72,7 +90,7 @@ class Landing extends React.Component {
             </div>
           </div>
         </div>
-        <section id="top-recipes">
+        <section className="top-recipes" id="top-recipes">
           <div className="heading">
             <h3>Welcome to the top recipes of the week</h3>
           </div>

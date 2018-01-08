@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ManageCategoryModal, ChangePasswordModal } from './index';
+import { ManageCategoryModal, ChangePasswordModal } from '../index';
 import {
   addCategory,
   updateCategory,
   deleteCategory,
   getUserCategory
-} from './../actions/categoryActions';
-import { changePassword } from './../actions/userActions';
+} from '../../actions/categoryActions';
+import { changePassword } from '../../actions/userActions';
 
 /**
  * UserSection component
@@ -23,6 +23,8 @@ class UserSection extends React.Component {
     deleteCategory: PropTypes.func.isRequired,
     getUserCategory: PropTypes.func.isRequired,
     changePassword: PropTypes.func.isRequired,
+    modalOpen: PropTypes.func,
+    modalClosed: PropTypes.func,
     userData: PropTypes.shape({
       id: PropTypes.number,
       username: PropTypes.string,
@@ -57,7 +59,6 @@ class UserSection extends React.Component {
     this.handleDeleteCategory = this.handleDeleteCategory.bind(this);
     this.getCategory = this.getCategory.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
@@ -86,6 +87,7 @@ class UserSection extends React.Component {
    */
   getCategory(categoryId) {
     this.props.getUserCategory(categoryId);
+    this.props.modalOpen();
     this.setState({ modalIsOpen: true });
   }
 
@@ -147,18 +149,11 @@ class UserSection extends React.Component {
   }
 
   /**
-   * handle after open modal event
-   * @returns {*} void
-   */
-  afterOpenModal() {
-    this.subtitle.style.color = '#252A2D';
-  }
-
-  /**
    * handle close modal event
    * @returns {*} void
    */
   closeModal() {
+    this.props.modalClosed();
     this.setState({
       modalIsOpen: false,
       passwordModalIsOpen: false,
@@ -258,24 +253,6 @@ class UserSection extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    const customStyles = {
-      overlay: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(255, 255, 255, 0.75)'
-      },
-      content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)'
-      }
-    };
     return (
       <main>
         <div className="div-profile">
@@ -300,6 +277,7 @@ class UserSection extends React.Component {
             className="invisible-button"
             style={{ color: '#0275d8', textAlign: 'center' }}
             onClick={() => {
+              this.props.modalOpen();
               this.setState({
                 passwordModalIsOpen: true,
                 status: ''
@@ -357,15 +335,12 @@ class UserSection extends React.Component {
           this.props.categoryList.length > 0 ?
             <ManageCategoryModal
               isOpen={this.state.modalIsOpen}
-              afterOpen={this.afterOpenModal}
               onClose={this.closeModal}
               closeModal={this.closeModal}
-              customStyles={customStyles}
               value={this.state.modalCategoryName}
               onChange={this.handleChange}
               onUpdate={this.handleUpdateCategory}
               onDelete={this.handleDeleteCategory}
-              refName={subtitle => this.subtitle = subtitle}
             /> : ''
         }
         {
@@ -376,7 +351,6 @@ class UserSection extends React.Component {
                 isOpen={this.state.passwordModalIsOpen}
                 onClose={this.closeModal}
                 closeModal={this.closeModal}
-                customStyles={customStyles}
                 oldPasswordValue={this.state.oldPassword}
                 newPasswordValue={this.state.newPassword}
                 confirmPasswordValue={this.state.confirmPassword}
@@ -393,7 +367,9 @@ class UserSection extends React.Component {
 
 UserSection.defaultProps = {
   categories: [],
-  errorMessage: ''
+  errorMessage: '',
+  modalOpen: () => {},
+  modalClosed: () => {}
 };
 
 const mapStateToProps = state => ({

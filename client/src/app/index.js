@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import ReduxToastr from 'react-redux-toastr';
 import 'font-awesome-sass-loader';
-import App from './App';
+import App from './App.jsx';
 import configureStore from '../store';
 import '../../public/style.scss';
 import { AUTH_USER } from '../actions/types';
@@ -39,5 +39,5 @@ ReactDOM.render(<Provider store={store}>
       progressBar
     />
   </div>
-                </Provider>, app);
+</Provider>, app);
 

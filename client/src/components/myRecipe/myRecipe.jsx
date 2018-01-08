@@ -10,7 +10,7 @@ import {
   Footer,
   Pagination
 } from '../../common';
-import RecipeList from '../recipeList/recipeList.jsx';
+import RecipeList from '../recipeList/RecipeList.jsx';
 import { getUserRecipes } from '../../actions/recipeActions';
 
 /**

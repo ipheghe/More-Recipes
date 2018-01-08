@@ -93,7 +93,7 @@ export const postData = (
       }
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, errorType);
+      errorHandler(dispatch, error, errorType);
     });
 };
 
@@ -127,7 +127,7 @@ export const getData = (action, errorType, isAuthReq, url, dispatch) => {
       });
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, errorType);
+      errorHandler(dispatch, error, errorType);
     });
 };
 
@@ -191,7 +191,7 @@ export const putData = (
       }
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, errorType);
+      errorHandler(dispatch, error, errorType);
     });
 };
 
@@ -253,6 +253,6 @@ export const deleteData = (
       }
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, errorType);
+      errorHandler(dispatch, error, errorType);
     });
 };

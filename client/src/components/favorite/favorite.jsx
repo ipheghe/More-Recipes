@@ -11,7 +11,7 @@ import {
   Pagination
 } from '../../common';
 import { getFavoriteRecipes } from '../../actions/favoriteActions';
-import FavoriteRecipeList from './favoriteRecipeList.jsx';
+import FavoriteRecipeList from './FavoriteRecipeList.jsx';
 
 /**
  * Favorite component
@@ -33,7 +33,7 @@ class Favorite extends React.Component {
     super(props);
     this.state = {
       userFavorites: [],
-      message: 'Sorry! You have do not have any favorite recipe',
+      message: 'Sorry! You do not have any favorite recipe',
       pages: 1,
       currentPaginatePage: 1,
       isLoading: true

@@ -49,7 +49,7 @@ const recipesController = {
               error: error.message
             }));
         } else {
-          return res.send({
+          return res.status(409).send({
             message: 'Recipe name exists!',
           });
         }
@@ -154,7 +154,7 @@ const recipesController = {
       // retrieve all recipes for that particular user
       .then((recipes) => {
         if (recipes) {
-          if (recipes.rows === []) {
+          if (recipes.rows.length === 0) {
             res.status(404).send({
               message: 'No recipe found for user'
             });

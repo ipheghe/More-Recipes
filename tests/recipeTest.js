@@ -435,7 +435,7 @@ describe('Get Recipe', () => {
         done();
       });
   });
-  it('should return 200 status for retrieving user recipe', (done) => {
+  it('should return 404 status when user tries to retrieve non-existent recipes', (done) => {
     server
       .post('/api/v1/recipes/users')
       .set('Connection', 'keep alive')

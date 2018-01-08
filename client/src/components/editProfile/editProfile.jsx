@@ -8,6 +8,7 @@ import {
   Footer
 } from '../../common';
 import { updateUserRecord } from '../../actions/userActions';
+import EditProfileForm from './EditProfileForm.jsx';
 
 /**
  * EditProfile component
@@ -30,13 +31,15 @@ class EditProfile extends React.Component {
       this.state = {
         username: '',
         fullName: '',
-        mobileNumber: 0,
+        mobileNumber: '',
         email: '',
         hasErrored: false,
         errorMessage: ''
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleUpdate = this.handleUpdate.bind(this);
+      this.toggleModalState = this.toggleModalState.bind(this);
+      this.toggleModalStateOff = this.toggleModalStateOff.bind(this);
     }
 
   /**
@@ -141,15 +144,45 @@ class EditProfile extends React.Component {
       );
     }
 
+
+  /**
+   * handle editProfile toggleModalState
+   * @returns {string} errorMessage
+   */
+    toggleModalState() {
+      this.setState({
+        modalIsOpen: true
+      });
+    }
+
+  /**
+   * handle editProfile toggleModalStateOff
+   * @returns {object} state
+   */
+    toggleModalStateOff() {
+      this.setState({
+        modalIsOpen: false
+      });
+    }
+
   /**
    * handle editProfile form event error
    * @returns {string} errorMessage
    */
     renderAlert() {
-      if (this.props.errorMessage) {
+      if (this.state.hasErrored) {
         return (
           <div>
-            <p className="alert error-alert">
+            <p className="alert error-alert" style={{ color: 'white' }}>
+              <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
+              {this.state.errorMessage}
+            </p>
+          </div>
+        );
+      } else if (this.props.errorMessage) {
+        return (
+          <div>
+            <p className="alert error-alert" style={{ color: 'white' }}>
               <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
               {this.props.errorMessage}
             </p>
@@ -173,98 +206,29 @@ class EditProfile extends React.Component {
                 <br />
                 <div className="row profile-landing">
                   <section className="col-md-3 profile-details">
-                    <UserSection />
+                    <UserSection
+                      modalOpen={this.toggleModalState}
+                      modalClosed={this.toggleModalStateOff}
+                    />
                   </section>
                   <section className="col-md-9 profile-tabs" >
                     <div className="edit-profile-div-section">
                       <br />
                       <h3><b>Edit Profile</b></h3>
                       <br />
-                      {this.renderAlert()}
-                      <form className="reg-form" onSubmit={this.handleUpdate}>
-                        <div className="form-group">
-                          <label htmlFor="enterFirstName">Username:</label>
-                          <div className="input-group input-group-lg">
-                            <span className="input-group-addon">
-                              <i className="fa fa-user" />
-                            </span>
-                            <input
-                              name="username"
-                              type="text"
-                              className="form-control"
-                              id="username"
-                              value={this.state.username}
-                              onChange={this.handleChange}
-                              required
-                              formNoValidate
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor="enterFirstName">Full Name:</label>
-                          <div className="input-group input-group-lg">
-                            <span className="input-group-addon">
-                              <i className="fa fa-user-o" />
-                            </span>
-                            <input
-                              name="fullName"
-                              type="text"
-                              className="form-control"
-                              id="fullName"
-                              value={this.state.fullName}
-                              onChange={this.handleChange}
-                              required
-                              formNoValidate
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor="enterMobile">Mobile:</label>
-                          <div className="input-group input-group-lg">
-                            <span className="input-group-addon">
-                              <i className="fa fa-mobile" />
-                            </span>
-                            <input
-                              name="mobileNumber"
-                              type="number"
-                              className="form-control"
-                              id="mobileNumber"
-                              value={this.state.mobileNumber}
-                              onChange={this.handleChange}
-                              required
-                              formNoValidate
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor="enterEmail">Email address:</label>
-                          <div className="input-group input-group-lg">
-                            <span className="input-group-addon">
-                              <i className="fa fa-envelope" />
-                            </span>
-                            <input
-                              name="email"
-                              type="email"
-                              className="form-control"
-                              id="email"
-                              value={this.state.email}
-                              onChange={this.handleChange}
-                              required
-                              formNoValidate
-                            />
-                          </div>
-                        </div>
-                        <div className="edit-profile-button">
-                          <button type="submit" className="btn btn-success" >Update</button>
-                          <a href="#dashboard"><button type="button" className="btn btn-danger">Cancel</button></a>
-                        </div>
-                      </form>
-                      {this.state.hasErrored ?
-                        <p className="alert error-alert">
-                          <i className="fa fa-exclamation-triangle" />
-                          {this.state.errorMessage}
-                        </p> : ''
-                                        }
+                      {
+                        !this.state.modalIsOpen &&
+                          <EditProfileForm
+                            username={this.state.username}
+                            password={this.state.password}
+                            fullName={this.state.fullName}
+                            mobileNumber={this.state.mobileNumber}
+                            email={this.state.email}
+                            updateProfile={this.handleUpdate}
+                            error={this.renderAlert()}
+                            onChange={this.handleChange}
+                          />
+                      }
                       <br />
                     </div>
                   </section>
@@ -278,7 +242,7 @@ class EditProfile extends React.Component {
     }
 }
 const mapStateToProps = state => ({
-  errorMessage: state.auth.error,
+  errorMessage: state.user.error,
   userData: state.auth.userData,
 });
 

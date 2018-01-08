@@ -6,7 +6,8 @@
    },
    "test": {
      "plugins": [
-       "istanbul"
+       "istanbul",
+       "transform-decorators-legacy"
      ]
    }
  }

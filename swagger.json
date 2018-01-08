@@ -3,37 +3,34 @@
   "info": {
     "description": "More-Recipes provides a platform for users to share the awesome and exciting recipe ideas they have invented or learnt.Suppose a user comes up with a recipe, he/she can post it on More-Recipes and get feedback in form of reviews and votes from other users who explore that recipe. Users can also keep a list of their favorite recipes on application.",
     "version": "1.0.0",
-    "title": "More Recipes",
-    "contact": {
-      "email": "iphegheovie@gmail.com"
-    }
+    "title": "More Recipes"
   },
   "host": "more-recipes-ovie.herokuapp.com",
   "basePath": "/api/v1",
   "tags": [
     {
       "name": "User",
-      "description": "Everything about your Users"
+      "description": "User Endpoints"
     },
     {
       "name": "Recipe",
-      "description": "Access to Recipes"
+      "description": "Recipe Endpoints"
     },
     {
       "name": "Review",
-      "description": "Operations about Review"
+      "description": "Review Endpoints"
     },
     {
       "name": "Category",
-      "description": "Operations about Review"
+      "description": "Category Endpoints"
     },
     {
       "name": "Favorite",
-      "description": "Operations about Review"
+      "description": "Favorite Endpoints"
     },
     {
       "name": "Vote",
-      "description": "Operations about Review"
+      "description": "Vote Endpoints"
     }
   ],
   "schemes": [
@@ -41,7 +38,7 @@
     "https"
   ],
   "paths": {
-    "/users/signup": {
+    "/user/signup": {
       "post": {
         "tags": [
           "User"
@@ -79,7 +76,7 @@
         }
       }
     },
-    "/users/signin": {
+    "/user/signin": {
       "post": {
         "tags": [
           "User"
@@ -121,8 +118,165 @@
         }
       }
     },
-    "/recipes": {
+    "/user/{username}": {
       "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user record",
+        "description": "",
+        "operationId": "getUserRecord",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The username containg the record to be fetched",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Record retrieved successfully!",
+            "schema": {
+              "$ref": "#/definitions/GetUserRecord"
+            }
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "User doesnt exist"
+          }
+        }
+      }
+    },
+    "/user": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update user record",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUserRecord",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Record Updated SuccessFullly!y!",
+            "schema": {
+              "$ref": "#/definitions/UpdateUserRecord"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "User Not Found!",
+            "schema": {
+              "$ref": "#/definitions/UserNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/user/changePassword": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Change user password",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "changeUserPassword",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "changePassword object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserChangePassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Password Changed SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/ChangeUserPassword"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "User Not Found!",
+            "schema": {
+              "$ref": "#/definitions/UserNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "post": {
         "tags": [
           "Recipe"
         ],
@@ -142,6 +296,15 @@
             "description": "Token Authentication",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "limit and offset field",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PaginationFields"
+            }
           }
         ],
         "responses": {
@@ -151,7 +314,7 @@
               "$ref": "#/definitions/RetrieveRecipe"
             }
           },
-          "400": {
+          "401": {
             "description": "Invalid recipeId supplied"
           },
           "403": {
@@ -161,7 +324,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/recipe": {
       "post": {
         "tags": [
           "Recipe"
@@ -216,12 +381,12 @@
         }
       }
     },
-    "/recipes/{recipeId}": {
+    "/recipe/{recipeId}": {
       "get": {
         "tags": [
           "Recipe"
         ],
-        "summary": "Get recipe by recipdId",
+        "summary": "Get recipe by recipeId",
         "description": "",
         "operationId": "getRecipeByRecipeId",
         "produces": [
@@ -250,7 +415,7 @@
               "$ref": "#/definitions/GetRecipeById"
             }
           },
-          "400": {
+          "401": {
             "description": "Invalid Input"
           },
           "403": {
@@ -359,8 +524,8 @@
               "$ref": "#/definitions/DeleteRecipe"
             }
           },
-          "400": {
-            "description": "Invalid Input"
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "No token provided!",
@@ -378,11 +543,11 @@
       }
     },
     "/recipes/users": {
-      "get": {
+      "post": {
         "tags": [
           "Recipe"
         ],
-        "summary": "Get user recipe",
+        "summary": "Get user recipes",
         "description": "",
         "operationId": "getRecipeByUser",
         "produces": [
@@ -395,6 +560,15 @@
             "description": "Token Authentication",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "limit and offset field",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PaginationFields"
+            }
           }
         ],
         "responses": {
@@ -404,8 +578,8 @@
               "$ref": "#/definitions/GetUserRecipe"
             }
           },
-          "400": {
-            "description": "Invalid Input"
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "No token provided!",
@@ -422,7 +596,7 @@
         }
       }
     },
-    "/recipes/{recipeId}/reviews": {
+    "/recipe/{recipeId}/review": {
       "post": {
         "tags": [
           "Review"
@@ -465,8 +639,8 @@
               "$ref": "#/definitions/PostRecipeReview"
             }
           },
-          "400": {
-            "description": "Invalid Input"
+          "401": {
+            "description": "Invalid RecipeId Input"
           },
           "403": {
             "description": "No token provided!",
@@ -510,8 +684,8 @@
               "$ref": "#/definitions/RetrieveRecipeReviews"
             }
           },
-          "400": {
-            "description": "Invalid Input"
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "No token provided!",
@@ -547,6 +721,15 @@
             "description": "The id of the recipe that needs to be fetched ",
             "required": true,
             "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "limit and offset field",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PaginationFields"
+            }
           }
         ],
         "responses": {
@@ -556,8 +739,8 @@
               "$ref": "#/definitions/RetrieveReviewsByRecipe"
             }
           },
-          "400": {
-            "description": "Invalid Input"
+          "401": {
+            "description": "Invalid RecipeId Input"
           },
           "403": {
             "description": "No token provided!",
@@ -574,7 +757,7 @@
         }
       }
     },
-    "/users/categories": {
+    "/user/category": {
       "post": {
         "tags": [
           "Category"
@@ -610,8 +793,8 @@
               "$ref": "#/definitions/CreateUserCategory"
             }
           },
-          "400": {
-            "description": "Invalid Input"
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "No token provided!",
@@ -628,7 +811,170 @@
         }
       }
     },
-    "/recipes/{recipeId}/{categoryId}/favorites": {
+    "/user/category/{categoryId}": {
+      "put": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Update category",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateCategory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "recipe that needs to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated category object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "category name changed SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/UpdateCategory"
+            }
+          },
+          "400": {
+            "description": "null category name field"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "Category Not Found!",
+            "schema": {
+              "$ref": "#/definitions/CategoryNotFound"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Delete category",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteCategory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "The category that needs to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category deleted SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/DeleteCategory"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "Category Not Found!",
+            "schema": {
+              "$ref": "#/definitions/CategoryNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/category/user/{categoryId}": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Get category by categoryId",
+        "description": "",
+        "operationId": "getCategoryByCategoryId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "The category that needs to be fetched.",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Category Retrieved SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/GetCategoryById"
+            }
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "No category found for user",
+            "schema": {
+              "$ref": "#/definitions/CategoryNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/recipe/{recipeId}/{categoryId}/favorite": {
       "post": {
         "tags": [
           "Favorite"
@@ -678,8 +1024,8 @@
               "$ref": "#/definitions/FavoriteRecipe"
             }
           },
-          "400": {
-            "description": "Invalid Input"
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "No token provided!",
@@ -701,7 +1047,7 @@
         "tags": [
           "Favorite"
         ],
-        "summary": "Get user favorite",
+        "summary": "Get user favorites",
         "description": "",
         "operationId": "getUserFavoriteRecipes",
         "produces": [
@@ -723,8 +1069,8 @@
               "$ref": "#/definitions/RetrieveFavoriteRecipe"
             }
           },
-          "400": {
-            "description": "Invalid Input"
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "No token provided!",
@@ -741,8 +1087,60 @@
         }
       }
     },
-    "/recipes/{recipeId}/votes": {
-      "post": {
+    "/favorite/{favoriteId}": {
+      "delete": {
+        "tags": [
+          "Favorite"
+        ],
+        "summary": "UnFavorite recipe",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "unFavoriteRecipe",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "favoriteId",
+            "in": "path",
+            "description": "The recipe that needs to be unfavorited",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe Unfavorited SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/unFavoriteRecipe"
+            }
+          },
+          "401": {
+            "description": "Invalid FavoriteId Input"
+          },
+          "403": {
+            "description": "No token provided!",
+            "schema": {
+              "$ref": "#/definitions/NoTokenProvided"
+            }
+          },
+          "404": {
+            "description": "Recipe Not Found!",
+            "schema": {
+              "$ref": "#/definitions/RecipeNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/recipe/{recipeId}/vote": {
+      "put": {
         "tags": [
           "Vote"
         ],
@@ -784,8 +1182,8 @@
               "$ref": "#/definitions/VoteRecipe"
             }
           },
-          "400": {
-            "description": "Invalid Input"
+          "401": {
+            "description": "Invalid RecipeId Input"
           },
           "403": {
             "description": "No token provided!",
@@ -815,13 +1213,9 @@
           "type": "string",
           "example": "abcde"
         },
-        "firstName": {
+        "fullName": {
           "type": "string",
-          "example": "Jane"
-        },
-        "lastName": {
-          "type": "string",
-          "example": "Kent"
+          "example": "Jane Kemi"
         },
         "mobileNumber": {
           "type": "integer",
@@ -843,17 +1237,43 @@
         },
         "password": {
           "type": "string",
+          "example": "abcde'"
+        }
+      }
+    },
+    "UserChangePassword": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string",
           "example": "abcde"
+        },
+        "newPassword": {
+          "type": "string",
+          "example": "abcdef"
+        }
+      }
+    },
+    "PaginationFields": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "example": 6
+        },
+        "offset": {
+          "type": "integer",
+          "example": 0
         }
       }
     },
     "Recipe": {
       "type": "object",
       "properties": {
-        "recipeName": {
+        "name": {
           "type": "string"
         },
-        "recipeDescription": {
+        "description": {
           "type": "string"
         },
         "ingredients": {
@@ -875,10 +1295,7 @@
           "type": "integer"
         },
         "notification": {
-          "type": "integer"
-        },
-        "reviews": {
-          "type": "array",
+          "type": "integer",
           "items": {
             "$ref": "#/definitions/Review"
           }
@@ -955,6 +1372,42 @@
         "message": {
           "type": "string",
           "example": "Authentication & Login successful"
+        }
+      }
+    },
+    "GetUserRecord": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User Record retrieved successfully"
+        }
+      }
+    },
+    "UpdateUserRecord": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User Record Updated SuccessFullly!"
+        }
+      }
+    },
+    "ChangeUserPassword": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User Password Changed SuccessFullly!"
         }
       }
     },
@@ -1107,6 +1560,59 @@
         }
       }
     },
+    "UpdateCategory": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "category name changed SuccessFullly!"
+        }
+      }
+    },
+    "DeleteCategory": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Category deleted SuccessFullly!"
+        }
+      }
+    },
+    "GetCategoryById": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User Category Retrieved SuccessFullly!"
+        }
+      }
+    },
+    "CategoryNotFound": {
+      "type": "object",
+      "required": [
+        "status",
+        "message"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "fail"
+        },
+        "message": {
+          "type": "string",
+          "example": "Category Not Found!"
+        }
+      }
+    },
     "FavoriteRecipe": {
       "type": "object",
       "required": [
@@ -1116,6 +1622,18 @@
         "message": {
           "type": "string",
           "example": "Recipe added to favorites Successfully"
+        }
+      }
+    },
+    "unFavoriteRecipe": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Recipe Unfavorited SuccessFullly!"
         }
       }
     },
@@ -1158,6 +1676,6 @@
   },
   "externalDocs": {
     "description": "Find out more about More Recipes",
-    "url": "http://swagger.io"
+    "url": "http://more-recipes-ovie.herokuapp.com"
   }
 }
