@@ -15,20 +15,29 @@ const categoriesController = {
  * @param {Object} next - Express next middleware function
  * @return {*} void
  */
-  addUncategorized(req, res, next) {
+  addUncategorized(req, res) {
     Category.findOne({
       where: {
-        userId: req.decoded.user.id, name: 'uncategorized'
+        userId: req.body.userId, name: 'uncategorized'
       }
     })
       .then((category) => {
         if (!category) {
           Category.create({
             name: 'uncategorized',
-            userId: req.decoded.user.id,
+            userId: req.body.userId,
+          })
+            .then(() => res.status(201).send({
+              message: 'Category created Successfully',
+            }))
+            .catch((error) => {
+              res.status(401).send({ error: error.message });
+            });
+        } else {
+          return res.status(409).send({
+            message: 'Category name exists!',
           });
         }
-        next();
       })
       .catch((error) => { res.status(401).send({ error: error.message }); });
   },
@@ -42,16 +51,32 @@ const categoriesController = {
  * @return {object} message categoryData
  */
   addCategory(req, res) {
-    Category.create({
-      name: req.body.name,
-      userId: req.decoded.user.id,
+    // find if category name exists
+    Category.find({
+      where: {
+        userId: req.decoded.user.id,
+        name: req.body.name
+      }
     })
-      .then(category => res.status(201).send({
-        message: 'Category created Successfully',
-        category
-      }))
-      .catch((error) => {
-        res.status(401).send({ error: error.message });
+      .then((existingCategoryName) => {
+        if (!existingCategoryName) {
+        // logged-in user can add category
+          Category.create({
+            name: req.body.name,
+            userId: req.decoded.user.id,
+          })
+            .then(category => res.status(201).send({
+              message: 'Category created Successfully',
+              category
+            }))
+            .catch((error) => {
+              res.status(401).send({ error: error.message });
+            });
+        } else {
+          return res.status(409).send({
+            message: 'Category name exists!',
+          });
+        }
       });
   },
 

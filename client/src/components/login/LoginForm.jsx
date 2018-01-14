@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const LoginForm = ({
   username,
@@ -20,7 +21,7 @@ const LoginForm = ({
         <label htmlFor="enterEmail">Username:</label>
         <div className="input-group">
           <span className="input-group-addon">
-            <i className="fa fa-envelope" />
+            <i className="fa fa-user-secret" />
           </span>
           <input
             id="username"
@@ -78,13 +79,7 @@ const LoginForm = ({
         </div>
         <br />
         <div>
-          <a href="#signup">
-            <button
-              type="button"
-              className="btn btn-block btn-success"
-            >Sign Up
-            </button>
-          </a>
+          <Link to="/signup"className="btn btn-block btn-success home" >Sign Up</Link>
         </div>
       </div>
     </form>

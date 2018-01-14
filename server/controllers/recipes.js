@@ -19,7 +19,7 @@ const recipesController = {
    * @return {object} message recipe
    */
   addRecipe(req, res) {
-    // find if recipe Name
+    // find if recipe Name exists
     Recipe.find({
       where: {
         userId: req.decoded.user.id,
@@ -155,7 +155,7 @@ const recipesController = {
       .then((recipes) => {
         if (recipes) {
           if (recipes.rows.length === 0) {
-            res.status(404).send({
+            res.send({
               message: 'No recipe found for user'
             });
           } else {

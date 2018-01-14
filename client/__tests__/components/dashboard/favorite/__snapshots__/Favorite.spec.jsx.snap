@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Favorite should match component snapshot 1`] = `
+<div
+  className="loader loader-undefined loader-active"
+  style={undefined}
+>
+  <div
+    className="loader-inner ball-scale-ripple-multiple"
+  >
+    <div
+      style={Object {}}
+    />
+    <div
+      style={Object {}}
+    />
+    <div
+      style={Object {}}
+    />
+  </div>
+</div>
+`;

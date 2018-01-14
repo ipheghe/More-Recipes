@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  UserNavHeader,
-  ProfileHeader,
-  UserSection,
-  Footer
-} from '../../common';
+import { ProfileHeader, UserSection } from '../../commonViews';
 import { updateUserRecord } from '../../actions/userActions';
 import EditProfileForm from './EditProfileForm.jsx';
+import renderErrorAlert from '../../utils/errorAlert';
+import validateEditProfileField from '../../utils/validator/editProfileValidator';
 
 /**
  * EditProfile component
@@ -87,55 +84,26 @@ class EditProfile extends React.Component {
       const {
         username, fullName, mobileNumber, email
       } = this.state;
-      const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-      const numericExpression = /^[0-9]+$/;
-      const regExpression = /^[A-Za-z][A-Za-z0-9-]+$/i;
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      if (!username.match(regExpression)) {
+
+      const error = validateEditProfileField(
+        username,
+        fullName,
+        mobileNumber,
+        email
+      );
+
+      if (error.status === true) {
+        setTimeout(() => {
+          this.setState({
+            hasErrored: false,
+            errorMessage: ''
+          });
+        }, 3000);
         return this.setState({
-          hasErrored: true,
-          errorMessage: 'Username must start with a letter and have no spaces.'
+          hasErrored: error.status,
+          errorMessage: error.message
         });
       }
-      if (fullName.length < 4) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'fullName must contain more than 3 chareacters'
-        });
-      }
-      if (fullName.match(numericExpression)) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'firstName must contain only alphabets'
-        });
-      }
-      if (!mobileNumber.match(numericExpression)) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'mobile number must contain only numbers'
-        });
-      }
-      if (!mobileNumber === '') {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'mobile numberfield cannot be empty'
-        });
-      }
-      if (reg.test(email) === false) {
-        return this.setState({
-          hasErrored: true,
-          errorMessage: 'Invalid Email Address'
-        });
-      }
-      this.setState({
-        hasErrored: false,
-        errorMessage: ''
-      });
       return this.props.updateUserRecord(
         username,
         fullName,
@@ -166,39 +134,12 @@ class EditProfile extends React.Component {
     }
 
   /**
-   * handle editProfile form event error
-   * @returns {string} errorMessage
-   */
-    renderAlert() {
-      if (this.state.hasErrored) {
-        return (
-          <div>
-            <p className="alert error-alert" style={{ color: 'white' }}>
-              <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-              {this.state.errorMessage}
-            </p>
-          </div>
-        );
-      } else if (this.props.errorMessage) {
-        return (
-          <div>
-            <p className="alert error-alert" style={{ color: 'white' }}>
-              <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-              {this.props.errorMessage}
-            </p>
-          </div>
-        );
-      }
-    }
-
-  /**
    * render
    * @return {ReactElement} markup
    */
     render() {
       return (
         <div>
-          <UserNavHeader />
           <div className="banner-background">
             <div className="profile-background">
               <div className="container">
@@ -225,7 +166,10 @@ class EditProfile extends React.Component {
                             mobileNumber={this.state.mobileNumber}
                             email={this.state.email}
                             updateProfile={this.handleUpdate}
-                            error={this.renderAlert()}
+                            signup={this.handleSignup}
+                            error={
+                              renderErrorAlert(this.state.hasErrored, this.props.errorMessage, this.state.errorMessage, 'black')
+                            }
                             onChange={this.handleChange}
                           />
                       }
@@ -236,7 +180,6 @@ class EditProfile extends React.Component {
               </div>
             </div>
           </div>
-          <Footer />
         </div>
       );
     }

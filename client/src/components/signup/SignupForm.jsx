@@ -22,7 +22,7 @@ const SignupForm = ({
         <label htmlFor="enterUsername">Username:</label>
         <div className="input-group">
           <span className="input-group-addon">
-            <i className="fa fa-user" />
+            <i className="fa fa-user-secret" />
           </span>
           <input
             id="username"
@@ -40,7 +40,7 @@ const SignupForm = ({
         <label htmlFor="enterFullName">Full Name:</label>
         <div className="input-group">
           <span className="input-group-addon">
-            <i className="fa fa-user-o" />
+            <i className="fa fa-user" />
           </span>
           <input
             id="fullName"
@@ -115,7 +115,7 @@ const SignupForm = ({
       </div>
       <div className="login-buttons">
         <div>
-          <a href="#login">
+          <a>
             <button
               className="btn btn-block btn-success"
               id="signup"

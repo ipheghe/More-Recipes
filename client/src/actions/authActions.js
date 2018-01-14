@@ -49,20 +49,21 @@ export const registerUser = ({
     .then((response) => {
       const toastr = bindActionCreators(toastrActions, dispatch);
       if (response.status >= 200 && response.status < 300) {
-        dispatch({
-          type: AUTH_USER
-        });
-        window.location.hash = '#login';
-        toastr.add({
-          id: 'USER_REGISTERED',
-          type: 'success',
-          title: 'Success',
-          message: 'Registration Successful.',
-          timeout: 5000,
-        });
-        setTimeout(() => {
-          toastr.remove('USER_REGISTERED');
-        }, 3500);
+        const userId = response.data.userData.id;
+        axios.post(`${BASE_URL}/user/unCategorized`, { userId })
+          .then(() => {
+            window.location.hash = '#login';
+            toastr.add({
+              id: 'USER_REGISTERED',
+              type: 'success',
+              title: 'Success',
+              message: 'Registration Successful.',
+              timeout: 5000,
+            });
+            setTimeout(() => {
+              toastr.remove('USER_REGISTERED');
+            }, 3500);
+          });
       }
     })
     .catch((error) => {
@@ -98,7 +99,7 @@ export const loginUser = ({
         dispatch({
           type: AUTH_USER
         });
-        window.location.hash = '#dashboard';
+        window.location.hash = '/dashboard/top-recipes';
         toastr.add({
           id: 'USER_SIGNEDIN',
           type: 'success',
@@ -130,7 +131,7 @@ export const loginUser = ({
 export const logoutUser = error =>
   (dispatch) => {
     window.localStorage.clear();
-    window.location.hash = '#';
+    window.location.hash = '#login';
     dispatch({
       type: UNAUTH_USER,
       payload: error || ''

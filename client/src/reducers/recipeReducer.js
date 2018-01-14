@@ -50,7 +50,7 @@ export default (state = INITIAL_STATE, action) => {
     case FETCH_RECIPE:
       return {
         ...state,
-        recipeData: action.payload.recipe,
+        recipeData: action.payload.recipe ? action.payload.recipe : {},
         message: action.payload.message
       };
     case UPDATE_RECIPE:

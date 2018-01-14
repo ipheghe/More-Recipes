@@ -1,0 +1,185 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Landing should match component snapshot 1`] = `
+<div>
+  <div
+    className="landing-background"
+    id="landing-background"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row landing"
+      >
+        <section
+          className="col-md-7 headline"
+        >
+          <h1>
+            Welcome to More recipes
+          </h1>
+          <h4>
+            Share your recipe ideas with the world
+          </h4>
+          <br />
+          <br />
+          <button
+            className="btn btn-success"
+            onClick={[Function]}
+            style={
+              Object {
+                "width": "300px",
+              }
+            }
+          >
+            View top recipes
+          </button>
+          <p
+            className="arrow-key"
+          >
+            <i
+              aria-hidden="true"
+              className="fa fa-arrow-down"
+            />
+            <i
+              aria-hidden="true"
+              className="fa fa-arrow-down"
+            />
+            <i
+              aria-hidden="true"
+              className="fa fa-arrow-down"
+            />
+          </p>
+        </section>
+        <section
+          className="col-md-5 account"
+        >
+          <div>
+            <a
+              className="btn btn-success home"
+              href="#/login"
+              id="login"
+              onClick={[Function]}
+            >
+              Login
+            </a>
+            <p
+              className="brief"
+            >
+              Login to your account and start sharing
+            </p>
+          </div>
+          <div>
+            <a
+              className="btn btn-success home"
+              href="#/signup"
+              id="signup"
+              onClick={[Function]}
+            >
+              Signup
+            </a>
+            <p
+              className="brief"
+            >
+              Register now to enjoy all of More recipes
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <section
+    className="top-recipes"
+    id="top-recipes"
+  >
+    <div
+      className="heading"
+    >
+      <h3>
+        Welcome to the top recipes of the week
+      </h3>
+    </div>
+    <div
+      className="card-blocks-home"
+    >
+      <div>
+        <div
+          className="card"
+        >
+          <img
+            alt="recipe"
+            className="card-img-top"
+            src="assets/images/pizza1.jpg"
+          />
+          <div
+            className="card-block"
+          >
+            <h4
+              className="card-title"
+            >
+              Banga Soup
+            </h4>
+            <p
+              className="card-text"
+            >
+              This recipe is very popular in the south south part of Nigeria
+            </p>
+          </div>
+          <div
+            className="card-footer"
+          >
+            <small
+              className="text-muted"
+            >
+              <div
+                className="landing-card-footer"
+              >
+                <span
+                  className="views"
+                >
+                  <i
+                    aria-hidden="true"
+                    className="fa fa-eye"
+                    style={
+                      Object {
+                        "color": "green",
+                      }
+                    }
+                  />
+                </span>
+                <span
+                  className="upvote"
+                >
+                  <i
+                    aria-hidden="true"
+                    className="fa fa-thumbs-up"
+                    style={
+                      Object {
+                        "color": "red",
+                      }
+                    }
+                  />
+                </span>
+                <span
+                  className="downvote"
+                >
+                  <i
+                    aria-hidden="true"
+                    className="fa fa-thumbs-down"
+                    style={
+                      Object {
+                        "color": "orange",
+                      }
+                    }
+                  />
+                </span>
+              </div>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <br />
+</div>
+`;

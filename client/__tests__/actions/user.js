@@ -36,22 +36,12 @@ describe('>>>A C T I O N --- authActions', () => {
       moxios.stubRequest('/api/v1/user/signup', {
         status: 201,
         response: {
-          message: 'User account successfully created.',
-          user: mockItems.user
+          message: 'Category created Successfully'
         }
       });
 
       const expectedActions = [
-        { type: 'AUTH_USER' }, {
-          payload: {
-            id: 'USER_REGISTERED',
-            message: 'Registration Successful.',
-            timeout: 5000,
-            title: 'Success',
-            type: 'success'
-          },
-          type: '@ReduxToastr/toastr/ADD'
-        }
+        { type: 'AUTH_USER' }
       ];
       store.dispatch(registerUser(mockItems.user))
         .then(() => {

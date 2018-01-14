@@ -61,6 +61,18 @@ label {
   background-position: 50%;
   min-height: 700px;
   overflow: hidden;
+  .headline-home {
+    color: $color_1;
+  }
+  .account {
+    display: block;
+    justify-content: center;
+    background-color: $background_color_2;
+    padding-top: 50px;
+    border-radius: 3px;
+    z-index: 0;
+    margin-bottom: 10px;
+  }
 }
 
 .banner-background {
@@ -77,7 +89,7 @@ label {
   -moz-background-position: 50%;
   -webkit-background-position: 50%;
   background-position: 50%;
-  min-height: 850px;
+  min-height: 94vh;
   overflow: hidden;
   background-size: cover;
   background-repeat: no-repeat;
@@ -103,6 +115,10 @@ label {
   margin: 30px auto;
   .recipe-button {
     text-align: center;
+    button {
+      margin-right: 10px;
+      min-width: 150px;
+    }
   }
 }
 
@@ -126,6 +142,7 @@ label {
     width: 100%;
     padding: auto 0px;
     margin: auto 0px;
+    min-height: 700px;
     >.navbar {
       background-color: $background_color_1;
       margin-top: 30px;
@@ -160,7 +177,13 @@ label {
 }
 
 .headline {
+  background-color: $background_color_2;
+  border-radius: 3px;
+  z-index: 0;
+  height: 250px;
   color: $color_1;
+  padding-top: 30px;
+  margin-bottom: 20px;
   h1, h2, h4 {
     font-weight: 700;
   }
@@ -174,10 +197,10 @@ label {
 
 .account {
   background-color: $background_color_2;
-  padding: 40px 30px;
+  padding: 5px 20px;
   border-radius: 3px;
   z-index: 0;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   >div {
     display: block;
     margin: 30px auto;
@@ -244,13 +267,6 @@ label {
   }
 }
 
-.recipe-button {
-  >button {
-    min-width: 150px;
-    margin-right: 10px;
-  }
-}
-
 .recipe-ingredients {
   ul {
     float: left;
@@ -273,7 +289,7 @@ label {
 
 .form-rounded {
   border-radius: 1rem;
-  min-height: 250px;
+  min-height: 150px;
 }
 
 a {
@@ -367,9 +383,10 @@ a {
     text-align: left;
     height: 60px;
   }
+
   .card-text {
-    height: 200px;
     text-align: left;
+    max-width: 200px;
   }
   .card-footer {
     text-align: left;
@@ -434,7 +451,7 @@ input.active {
 }
 
 .panel-white {
-  border: 1px solid #dddddd;
+  border: 1px solid #928888;
   background-color: $background_color_4;
   .panel-heading {
     color: $color_5;
@@ -449,14 +466,8 @@ input.active {
 
 .post {
   .post-heading {
-    height: 95px;
+    height: 70px;
     padding: 20px 15px;
-    .avatar {
-      width: 60px;
-      height: 60px;
-      display: block;
-      margin-right: 15px;
-    }
     .meta {
       .title {
         margin-bottom: 0;
@@ -467,16 +478,10 @@ input.active {
           }
         }
       }
-      .time {
+      .date {
         margin-top: 8px;
         color: $color_8;
       }
-    }
-  }
-  .post-image {
-    .image {
-      width: 100%;
-      height: auto;
     }
   }
   .post-description {
@@ -577,6 +582,34 @@ button.close {
 	color: $primary-color;
 }
 
+.btn.btn-success.home {
+  min-width: 100%;
+}
+
+.notFound-background {
+  width: 100%;
+  height: 90vh;
+  background-color: $background_color_2;
+  display: flex;
+  justify-content: center;
+  .notFound-body {
+    margin:auto;
+    height: 300px;
+    width: 500px;
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    text-align: center;
+    color: $color_1;
+    h1 {
+      font-weight: 700;
+      font-size: 100px;
+    }
+  }
+}
+
 @media (max-width: 767px) {
   .landing {
     text-align: center;
@@ -604,7 +637,7 @@ button.close {
       height: 60px;
     }
     .card-text {
-      height: 200px;
+      height: 70px;
       text-align: left;
     }
     .card-footer {
@@ -613,6 +646,35 @@ button.close {
       font-size: 18px;
       font-weight: 50%;
     }
+  }
+
+  .headline {
+    background-color: $background_color_2;
+    padding-top: 10px;
+    border-radius: 3px;
+    z-index: 0;
+    height: 300px;
+    margin-bottom: 10px;
+  }
+
+  .recipe-background {
+    .recipe-button {
+      text-align: center;
+      button {
+        margin-right: 5px;
+        min-width: 100px;
+        width: 100px;
+        padding-left: 5px;
+      }
+    }
+  }
+
+  button#favorite {
+    padding-left: 13px;
+  }
+
+  button#upvote {
+    padding-left: 16px;
   }
 }
 
@@ -629,6 +691,17 @@ button.close {
   .nav-link {
     i {
       margin-right: 5px;
+    }
+  }
+
+  @media (max-width: 1026px) {
+    .headline {
+      background-color: $background_color_2;
+      padding-top: 30px;
+      border-radius: 3px;
+      z-index: 0;
+      height: 300px;
+      margin-bottom: 10px;
     }
   }
   

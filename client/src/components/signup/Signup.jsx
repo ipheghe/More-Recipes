@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MainHeader, Footer } from '../../common';
 import { registerUser } from '../../actions/authActions';
 import SignupForm from './SignupForm.jsx';
+import renderErrorAlert from '../../utils/errorAlert';
+import validateSignupField from '../../utils/validator/signupValidator';
 
 /**
  * signUp form commponent
@@ -12,7 +13,7 @@ import SignupForm from './SignupForm.jsx';
  *
  * @extends {React.Component}
  */
-class SignUp extends React.Component {
+export class SignUp extends React.Component {
   static propTypes = {
     registerUser: PropTypes.func.isRequired,
     errorMessage: PropTypes.string
@@ -77,55 +78,27 @@ class SignUp extends React.Component {
       email,
       password
     } = this.state;
-    const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-    const numericExpression = /^[0-9]+$/;
-    const regExpression = /^[A-Za-z][A-Za-z0-9-]+$/i;
-    setTimeout(() => {
-      this.setState({
-        hasErrored: false,
-        errorMessage: ''
-      });
-    }, 3000);
-    if (!username.match(regExpression)) {
+
+    const error = validateSignupField(
+      username,
+      fullName,
+      mobileNumber,
+      email,
+      password
+    );
+
+    if (error.status === true) {
+      setTimeout(() => {
+        this.setState({
+          hasErrored: false,
+          errorMessage: ''
+        });
+      }, 3000);
       return this.setState({
-        hasErrored: true,
-        errorMessage: 'Username must start with a letter and have no spaces.'
+        hasErrored: error.status,
+        errorMessage: error.message
       });
     }
-    if (fullName.length < 4) {
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'fullname must contain more than 3 chareacters'
-      });
-    }
-    if (!mobileNumber.match(numericExpression)) {
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'mobile number must contain only numbers'
-      });
-    }
-    if (!mobileNumber === '') {
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'mobile numberfield cannot be empty'
-      });
-    }
-    if (reg.test(email) === false) {
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'Invalid Email Address'
-      });
-    }
-    if (password < 8) {
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'password must contain more than 7 chareacters'
-      });
-    }
-    this.setState({
-      hasErrored: false,
-      errorMessage: ''
-    });
     return this.props.registerUser({
       username,
       password,
@@ -136,33 +109,6 @@ class SignUp extends React.Component {
   }
 
   /**
-   * handle signUp form event error
-   *
-   * @returns {string} errorMessage
-   */
-  renderAlert() {
-    if (this.state.hasErrored) {
-      return (
-        <div>
-          <p className="alert error-alert" style={{ color: 'white' }}>
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.state.errorMessage}
-          </p>
-        </div>
-      );
-    } else if (this.props.errorMessage) {
-      return (
-        <div>
-          <p className="alert error-alert" style={{ color: 'white' }}>
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.props.errorMessage}
-          </p>
-        </div>
-      );
-    }
-  }
-
-  /**
    * render
    *
    * @return {ReactElement} markup
@@ -170,17 +116,17 @@ class SignUp extends React.Component {
   render() {
     return (
       <div>
-        <MainHeader />
         <div className="login-background">
           <div className="container">
             <div className="row landing">
-              <section className="col-md-7 headline">
+              <section className="col-md-6 headline">
                 <h1>Welcome to More recipes</h1>
                 <h4>Share your recipe ideas with the world</h4>
                 <br />
                 <br />
                 <h2>Sign Up and start sharing recipes</h2>
               </section>
+              <section className="col-md-1" />
               <section className="col-md-5 account">
                 <SignupForm
                   username={this.state.username}
@@ -189,7 +135,9 @@ class SignUp extends React.Component {
                   mobileNumber={this.state.mobileNumber}
                   email={this.state.email}
                   signup={this.handleSignup}
-                  error={this.renderAlert()}
+                  error={
+                    renderErrorAlert(this.state.hasErrored, this.props.errorMessage, this.state.errorMessage, 'white')
+                  }
                   onChange={this.handleChange}
                 />
               </section>
@@ -197,7 +145,6 @@ class SignUp extends React.Component {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }

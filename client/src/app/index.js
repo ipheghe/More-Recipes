@@ -6,7 +6,7 @@ import 'font-awesome-sass-loader';
 import App from './App.jsx';
 import configureStore from '../store';
 import '../../public/style.scss';
-import { AUTH_USER } from '../actions/types';
+import { UNAUTH_USER, AUTH_USER } from '../actions/types';
 import { logoutUser } from '../actions/authActions';
 import decodeToken from '../helpers/decodeToken';
 
@@ -15,14 +15,14 @@ const app = document.getElementById('app');
 const token = window.localStorage.getItem('token');
 
 if (token) {
+  store.dispatch({ type: AUTH_USER });
   const decodedToken = decodeToken(token);
   if (decodedToken.exp < Math.floor(Date.now() / 1000)) {
     // log user out
     store.dispatch(logoutUser());
-  } else {
-    // add user data and token to auth store
-    store.dispatch({ type: AUTH_USER });
   }
+} else {
+  store.dispatch({ type: UNAUTH_USER });
 }
 
 ReactDOM.render(<Provider store={store}>

@@ -37,6 +37,7 @@ const usersController = {
     })
       .then((user) => {
         const userData = {
+          id: user.id,
           username: user.username,
           firstName: user.firstName,
           lastName: user.lastName,
@@ -265,27 +266,27 @@ const usersController = {
             }
           })
             .then(() => {
-              const message = `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-              'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-              'http://'}${req.headers.host}/#/reset-password/${resetToken}\n\n` +
+              const message = 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+              'Please click on the button below to complete the process.\n\n' +
               'If you did not request this, please ignore this email and your password will remain unchanged.';
               const name = existingUser.fullName;
 
               const mailOptions = {
-                from: '"MoreRecipes Admin" <iphegheovie@gmail.com>',
+                from: '"MoreRecipes Admin" <iphegheapp@gmail.com>',
                 to: existingUser.email,
                 subject: 'You have a new notification',
-                html: emailTemplate(name, 'see recipe', message, `${req.headers.host}/#/reset-password/${resetToken}`)
+                html: emailTemplate(name, 'Reset Password', message, `https://${req.headers.host}/reset-password/${resetToken}`, 'fa fa-unlock-alt fa-5x')
               };
               // Otherwise, send user email via nodemailer
               // transporter.sendMail(mailOptions);
               transporter.sendMail(mailOptions, (err, info) => {
                 if (err) {
-                  res.status(400).json({
+                  res.status(422).json({
                     error: err.message
                   });
                 } else {
                   return res.status(200).json({
+                    status: 'Success',
                     message: 'Please check your email for the link to reset your password.',
                     info
                   });
@@ -351,7 +352,7 @@ const usersController = {
                 // transporter.sendMail(mailOptions);
                 transporter.sendMail(mailOptions, (err) => {
                   if (err) {
-                    res.status(400).send({
+                    res.status(422).send({
                       error: err.message
                     });
                   } else {

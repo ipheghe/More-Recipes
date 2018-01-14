@@ -5,7 +5,7 @@ module.exports = {
   verbose: true,
   collectCoverage: true,
   setupTestFrameworkScriptFile: './client/__tests__/setupTest.js',
-  testPathIgnorePatterns: ['client/__tests__/__mocks__', 'client/__tests__/setupTest.js'],
+  testPathIgnorePatterns: ['client/__tests__/__mocks__', 'client/__tests__/setupTest.js', './node_modules/'],
   collectCoverageFrom: [
     'client/__tests__/**/*.{js,jsx}',
     '!client/src/app/index.jsx',

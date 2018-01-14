@@ -23,17 +23,9 @@ module.exports = {
       .pause(1000)
       .assert
       .containsText('p.alert', 'Username must start with a letter and have no spaces.')
-      .pause(1000)
-      .end();
-  },
-  'it should show an error if user enters an invalid email': (client) => {
-    client
-      .resizeWindow(1280, 800)
-      .url('http://localhost:8000/')
-      .waitForElementVisible('body', 1000)
       .pause(3000)
-      .url('http://localhost:8000/#/signup')
-      .pause(3000)
+
+      // test for invalid email
       .assert.elementPresent('input#username')
       .assert.elementPresent('input#fullName')
       .assert.elementPresent('input#mobileNumber')
@@ -49,18 +41,9 @@ module.exports = {
       .pause(1000)
       .assert
       .containsText('p.alert', 'Invalid Email Address')
-      .pause(1000)
-      .end();
-  },
-  'it should successfully signup user and redirect to the login  page':
-  (client) => {
-    client
-      .resizeWindow(1280, 800)
-      .url('http://localhost:8000/')
-      .waitForElementVisible('body', 1000)
       .pause(3000)
-      .url('http://localhost:8000/#/signup')
-      .pause(3000)
+
+      // signup user successfully and redirect to login page
       .assert.elementPresent('input#username')
       .assert.elementPresent('input#fullName')
       .assert.elementPresent('input#mobileNumber')
@@ -75,15 +58,9 @@ module.exports = {
       .click('button#signup')
       .pause(1000)
       .assert.urlEquals('http://localhost:8000/#/login')
-      .pause(1000)
-      .end();
-  },
-  'it should show signup another user': (client) => {
-    client
-      .resizeWindow(1280, 800)
-      .url('http://localhost:8000/')
-      .waitForElementVisible('body', 1000)
       .pause(3000)
+
+      // signup another user
       .url('http://localhost:8000/#/signup')
       .pause(3000)
       .assert.elementPresent('input#username')

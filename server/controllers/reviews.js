@@ -85,7 +85,7 @@ const reviewsController = {
       },
       {
         model: User,
-        attributes: ['username'],
+        attributes: ['fullName'],
       }
       ],
       attributes: keys,
@@ -95,7 +95,7 @@ const reviewsController = {
       limit: limit || 6,
       offset: offset || 0
     })
-      // retrieve all recipes for that particular user
+      // retrieve all recipe reviews for that particular user
       .then((reviews) => {
         if (reviews) {
           if (reviews.rows.length === 0) {

@@ -22,15 +22,15 @@ const favoriteExists = (req, res, next) => {
     .findOne({ where: { userId: req.decoded.user.id, recipeId: req.params.id } })
     .then((favorite) => {
       if (favorite) {
-        // if category doesnt exist, assign to uncategorized
-        return res.status(400).send({
+        // if user has alreeady favorited recipe
+        return res.status(404).send({
           status: 'fail',
           message: 'Recipe already favorited by user!'
         });
       }
       next();
     })
-    .catch(error => res.status(400).send(error));
+    .catch(error => res.status(401).send(error));
 };
 
 export default favoriteExists;

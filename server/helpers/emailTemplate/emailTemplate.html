@@ -1,89 +1,164 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <style type="text/css">
-      * { margin: 0; padding: 0; font-size: 100%; font-family: 'Avenir Next', "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; line-height: 1.65; }
-      img { max-width: 100%; margin: 0 auto; display: block; }
-      body, .body-wrap { width: 100% !important; height: 100%; background: #f8f8f8; }
-      a { color: #7D9D5A; text-decoration: none; }
-      a:hover { text-decoration: underline; }
-      .text-center { text-align: center; }
-      .text-right { text-align: right; }
-      .text-left { text-align: left; }
-      .button { text-transform: capitalize; display: inline-block; color: white; background: #7D9D5A; border: solid #7D9D5A; border-width: 10px 20px 8px; font-weight: bold; border-radius: 4px; }
-      .button:hover { text-decoration: none; }
-      h1, h2, h3, h4, h5, h6 { margin-bottom: 20px; line-height: 1.25; }
-      h1 { font-size: 32px; }
-      h2 { font-size: 28px; }
-      h3 { font-size: 24px; }
-      h4 { font-size: 20px; }
-      h5 { font-size: 16px; }
-      p, ul, ol { font-size: 16px; font-weight: normal; margin-bottom: 20px; }
-      .container { display: block !important; clear: both !important; margin: 0 auto !important; max-width: 580px !important; }
-      .container table { width: 100% !important; border-collapse: collapse; }
-      .container .masthead { padding: 80px 0; background: #311b02; color: white; }
-      .container .masthead h1 { margin: 0 auto !important; max-width: 90%; text-transform: uppercase; }
-      .container .content { background: white; padding: 30px 35px; }
-      .container .content.footer { background: none; }
-      .container .content.footer p { margin-bottom: 0; color: #888; text-align: center; font-size: 14px; }
-      .container .content.footer a { color: #888; text-decoration: none; font-weight: bold; }
-      .container .content.footer a:hover { text-decoration: underline; }
-    </style>
+  <style type="text/css">
+    @import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
+    img {
+      max-width: 100%;
+      margin: 0 auto;
+      display: block;
+    }
+
+    body {
+      background-color: #292b2c;
+      height: 100vh;
+    }
+
+    table {
+      width: 400px;
+      height: 50px;
+      text-align: center;
+      margin: auto;
+      background-color: #5cb85c;
+      padding: 0 20px;
+    }
+
+    a {
+      color: #5cb85c;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    i {
+      color: white;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: white;
+    }
+
+    h6 {
+      font-size: 24px;
+      color: white;
+      margin: 30px auto;
+    }
+
+    h5 {
+      font-size: 16px;
+      color: white;
+      line-height: 1.25;
+    }
+
+    p {
+      font-size: 14px;
+      color: white;
+    }
+
+    tr {
+      height: 10px;
+    }
+
+    .btn {
+      border-radius: 5px;
+      padding-left: 30px;
+      padding-right: 30px;
+      font-weight: bold;
+      height: 50px;
+      width: 250px;
+      font-family: Helvetica, Arial, sans-serif;
+      color: #5cb85c;
+      text-transform: uppercase;
+      background-color: rgb(255, 255, 255);
+    }
+
+    .body-wrap {
+      border-radius: 5px;
+      background-color: #292b2c;
+      margin-bottom: 10px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
+
 <body>
-<table class="body-wrap">
-    <tr>
-        <td class="container">
-
-            <!-- Message start -->
-            <table>
-                <tr>
-                    <td align="center" class="masthead">
-
-                        <h1>More Recipes</h1>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="content">
-
-                        <h2>Hi ${name},</h2>
-
-                        <p>${message}</p>
-
-                        <table>
-                            <tr>
-                                <td align="center">
-                                    <p>
-                                        <td> <a href=${link} target="_blank" class="button">${buttonText}</a> </td>
-                                      </p>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-
-        </td>
-    </tr>
-    <tr>
-        <td class="container">
-
-            <!-- Message start -->
-            <table>
-                <tr>
-                    <td class="content footer" align="center">
-                        <p>Sent by <a href="#">MoreRecipes.com</a>, 235, Ikorodu Road, Ilupeju, Lagos, Nigeria</p>
-                        <p><a href="mailto:">more.recipes.app@gmail.com</p>
-                    </td>
-                </tr>
-            </table>
-
-        </td>
-    </tr>
-</table>
+  <div style="background-color: #292b2c; height: 100vh;">
+    <table class="body-wrap">
+      <tbody>
+        <tr>
+          <td>
+            <h2>
+              <i>MORE RECIPES</i>
+            </h2>
+            </h2>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <tbody>
+        <tr>
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                    <i class="fa fa-unlock-alt fa-5x" aria-hidden="true" width="72px"/>
+                    <i class=${icon} aria-hidden="true" width="72px"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h6> Hello, ${name}</h6>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>${message}</h5>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </tr>
+        <tr>
+          <table>
+            <tbody>
+              <tr>
+                <td style=" height: 20px;"></td>
+              </tr>
+              <tr>
+                <td>
+                  <button class="btn" href=${link} target="_blank">${buttonText}</button>
+                </td>
+              </tr>
+              <tr>
+                <td style=" height: 30px;"></td>
+              </tr>
+            </tbody>
+          </table>
+        </tr>
+      </tbody>
+    </table>
+    <table class="body-wrap">
+      <tbody>
+        <tr>
+          <td>
+            <p>Sent by
+              <a href="#">more-recipes-ovie.herokuapp.com</a>, 235, Ikorodu Road, Ilupeju, Lagos, Nigeria</p>
+            <p>
+              <a href="mailto:">iphegheapp@gmail.com</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </body>
+
 </html>

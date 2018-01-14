@@ -72,7 +72,8 @@ export default {
     id: 1,
     message: 'Lovely meal',
     recipeId: 1,
-    userId: 1
+    userId: 1,
+    createdAt: '2019-01-12 00:00'
   },
 
   // category

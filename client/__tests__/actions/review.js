@@ -34,7 +34,11 @@ describe('>>>A C T I O N --- reviewActions', () => {
           payload: {
             message: 'Review Posted Successfully',
             review: {
-              id: 1, message: 'Lovely meal', recipeId: 1, userId: 1
+              createdAt: '2019-01-12 00:00',
+              id: 1,
+              message: 'Lovely meal',
+              recipeId: 1,
+              userId: 1
             }
           },
           type: 'REVIEW_RECIPE'
@@ -65,7 +69,11 @@ describe('>>>A C T I O N --- reviewActions', () => {
           payload: {
             message: 'All Reviews Retrieved SuccessFullly!',
             reviews: [{
-              id: 1, message: 'Lovely meal', recipeId: 1, userId: 1
+              createdAt: '2019-01-12 00:00',
+              id: 1,
+              message: 'Lovely meal',
+              recipeId: 1,
+              userId: 1
             }]
           },
           type: 'RETRIEVE_RECIPE_REVIEWS'

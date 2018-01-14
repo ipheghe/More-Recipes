@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MainHeader, Footer } from '../../common';
 import { loginUser } from '../../actions/authActions';
 import { resetPassword } from '../../actions/userActions';
 import LoginForm from './LoginForm.jsx';
 import RecoverPasswordModal from './RecoverPasswordModal.jsx';
+import renderErrorAlert from '../../utils/errorAlert';
 
 /**
  * Login form commponent
@@ -14,13 +15,14 @@ import RecoverPasswordModal from './RecoverPasswordModal.jsx';
  *
  * @extends {React.Component}
  */
-@connect(state => ({ state, }))
-class Login extends React.Component {
+export class Login extends React.Component {
   static propTypes = {
+    isAuthenticated: PropTypes.bool.isRequired,
     loginUser: PropTypes.func.isRequired,
     resetPassword: PropTypes.func.isRequired,
     errorMessage: PropTypes.string,
-    modalErrorMessage: PropTypes.string
+    modalErrorMessage: PropTypes.string,
+    status: PropTypes.string
   };
 
   /**
@@ -54,7 +56,7 @@ class Login extends React.Component {
    * @returns {*} void
    */
   componentWillReceiveProps(nextprops) {
-    if (nextprops.state.user.status.length > 0) {
+    if (nextprops.status.length > 0) {
       this.setState({
         status: nextprops.state.user.status
       });
@@ -182,33 +184,6 @@ class Login extends React.Component {
   }
 
   /**
-   * handle login form event error
-   *
-   * @returns {string} errorMessage
-   */
-  renderAlert() {
-    if (this.state.hasErrored) {
-      return (
-        <div>
-          <p className="alert error-alert" style={{ color: 'white' }}>
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.state.errorMessage}
-          </p>
-        </div>
-      );
-    } else if (this.props.errorMessage) {
-      return (
-        <div>
-          <p className="alert error-alert" style={{ color: 'white' }}>
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.props.errorMessage}
-          </p>
-        </div>
-      );
-    }
-  }
-
-  /**
    * handle recover password form event error
    *
    * @returns {string} errorMessage
@@ -241,26 +216,29 @@ class Login extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
+    if (this.props.isAuthenticated) return (<Redirect to="/dashboard/top-recipes" />);
     return (
       <div>
-        <MainHeader />
         <div className="login-background">
           <div className="container">
             <div className="row landing">
-              <section className="col-md-7 headline">
+              <section className="col-md-6 headline">
                 <h1>Welcome to More recipes</h1>
                 <h4>Share your recipe ideas with the world</h4>
                 <br />
                 <br />
                 <h2>Login and start sharing recipes</h2>
               </section>
+              <section className="col-md-1" />
               <section className="col-md-5 account">
                 <LoginForm
                   username={this.state.username}
                   password={this.state.password}
                   openModal={this.openModal}
                   login={this.handleLogin}
-                  error={this.renderAlert()}
+                  error={
+                    renderErrorAlert(this.state.hasErrored, this.props.errorMessage, this.state.errorMessage, 'white')
+                  }
                   onChange={this.handleChange}
                 />
               </section>
@@ -279,7 +257,6 @@ class Login extends React.Component {
                 errorMessage={this.state.errorMessage}
               /> : ''
           }
-        <Footer />
       </div>
     );
   }
@@ -287,13 +264,15 @@ class Login extends React.Component {
 
 Login.defaultProps = {
   errorMessage: '',
-  modalErrorMessage: ''
+  modalErrorMessage: '',
+  status: ''
 };
 
 const mapStateToProps = state => ({
   errorMessage: state.auth.error,
   modalErrorMessage: state.user.error,
+  isAuthenticated: state.auth.authenticated,
+  status: state.user.status
 });
 
-// export { Login as DumbLogin };
 export default connect(mapStateToProps, { loginUser, resetPassword })(Login);

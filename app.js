@@ -70,6 +70,11 @@ app.get('/*', (req, res, next) => {
   next();
 });
 
+app.get('/api', (req, res) => res.status(200).send({
+  status: 'success',
+  message: 'Status connected ok',
+}));
+
 // Default catch-all route that sends a message on all more recipes hit.
 const indexPath = path.join(__dirname, '/client/public/index.html');
 const imagePath =
@@ -79,13 +84,7 @@ express.static(path.join(__dirname, '/client/public/dist'));
 
 app.use('/assets', imagePath);
 app.use('/dist', publicPath);
-app.get('/', (req, res) => { res.sendFile(indexPath); });
-
-
-app.get('/api', (req, res) => res.status(200).send({
-  status: 'success',
-  message: 'Status connected ok',
-}));
+app.get('/*', (req, res) => { res.sendFile(indexPath); });
 
 app.all('*', (req, res) => res.status(404).send({
   message: 'Oops! 404. Page not Found',

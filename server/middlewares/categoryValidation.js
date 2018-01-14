@@ -39,19 +39,17 @@ const categoryExists = (req, res, next) => {
     });
   }
   Category
-    .find({ where: { id: req.params.categoryId } })
+    .find({
+      where: {
+        id: req.params.categoryId,
+      }
+    })
     .then((category) => {
-      // if category doesnt exist
       if (!category) {
-        // find the id for uncategorized and place the favorite recipe under it
-        Category.findOne({
-          where: {
-            userId: req.decoded.user.id, name: 'uncategorized'
-          }
-        })
-          .then((newCategory) => {
-            req.params.categoryId = newCategory.id;
-          });
+        return res.status(404).send({
+          status: 'fail',
+          message: 'Access Denied!'
+        });
       }
       next();
     })

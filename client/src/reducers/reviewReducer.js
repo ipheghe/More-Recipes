@@ -10,7 +10,8 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         message: action.payload.message,
-        reviewList: [...state.reviewList, action.payload.review]
+        reviewList: [...state.reviewList, action.payload.review],
+        count: state.count + 1
       };
     case RETRIEVE_RECIPE_REVIEWS:
       return {

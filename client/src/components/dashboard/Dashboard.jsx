@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Loader from 'react-loaders';
+import { Route, Redirect } from 'react-router-dom';
 import {
-  UserNavHeader,
   ProfileHeader,
   UserSection,
   UserNavMenu,
-  Footer,
-  Pagination
-} from '../../common';
-import RecipeList from '../recipeList/RecipeList.jsx';
-import { getTopRecipes } from '../../actions/recipeActions';
+} from '../../commonViews';
+import ConnectedFavorite from './favorite/Favorite.jsx';
+import ConnectedAddRecipe from './addRecipe/AddRecipe.jsx';
+import ConnectedTopRecipes from './TopRecipes.jsx';
+import ConnectedMyRecipes from './MyRecipes.jsx';
+import ManageRecipe from './manageRecipe/ManageRecipe.jsx';
+import ConnectedSearch from './Search.jsx';
 
 
 /**
@@ -19,86 +20,19 @@ import { getTopRecipes } from '../../actions/recipeActions';
  * @class Dashboard
  * @extends {React.Component}
  */
-@connect(state => ({ state, }))
-class Dashboard extends React.Component {
+export class Dashboard extends React.Component {
   static propTypes = {
-    getTopRecipes: PropTypes.func.isRequired,
-    recipes: PropTypes.arrayOf(PropTypes.object)
+    isAuthenticated: PropTypes.bool.isRequired
   };
-
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props) {
-    super(props);
-    this.state = {
-      recipes: [],
-      message: 'Sorry! You do not have any favorite recipe',
-      pages: 1,
-      currentPaginatePage: 1,
-      isLoading: true
-    };
-    this.onPaginateClick = this.onPaginateClick.bind(this);
-    this.getRecipes = this.getRecipes.bind(this);
-  }
-
-  /**
-   * @memberOf Favorite
-   * @returns {*} void
-   */
-  componentDidMount() {
-    const offset = 6 * (this.state.currentPaginatePage - 1);
-    this.props.getTopRecipes(offset);
-  }
-
-  /**
-   * @param {any} nextprops
-   * @memberOf UserNavHeader
-   * @returns {*} void
-   */
-  componentWillReceiveProps(nextprops) {
-    if (nextprops.state.recipe) {
-      const { recipeList } = nextprops.state.recipe;
-      this.setState({
-        recipes: Object.assign([], this.state.recipes, recipeList),
-        pages: nextprops.state.recipe.pages,
-        isLoading: false,
-      });
-    }
-  }
-
-  /**
-   * @description handles click event with pagination
-   *
-   * @param {integer } page
-   *
-   * @return { object } currentPaginatePage
-   */
-  onPaginateClick = (page) => {
-    this.setState({ currentPaginatePage: page }, () => {
-      this.getRecipes();
-    });
-  }
-
-  /**
-   * get top recipes
-   * @returns {array} recipes
-   */
-  getRecipes = () => {
-    const offset = 6 * (this.state.currentPaginatePage - 1);
-    this.props.getTopRecipes(offset);
-  }
 
   /**
    * render
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
+    const auth = this.props.isAuthenticated;
     return (
       <div>
-        <UserNavHeader />
         <div className="banner-background">
           <div className="profile-background">
             <div className="container">
@@ -112,44 +46,107 @@ class Dashboard extends React.Component {
                   <div className="div-section">
                     <UserNavMenu />
                     <br />
-                    <div className="add-padding">
-                      <h3><b>Top Recipes</b></h3>
-                      <br />
-                      <div className="card-blocks" >
-                        {
-                          this.state.recipes.length === 0 ?
-                            <h5>{this.state.message}</h5>
-                            : <RecipeList recipes={this.props.recipes} />
-                        }
-                      </div>
-                      <br />
+                    <div>
+                      <Route
+                        exact
+                        path="/dashboard/top-recipes"
+                        render={() => (
+                          !auth ? (
+                            <Redirect to="/login" />
+                          ) : (
+                            <ConnectedTopRecipes />
+                          )
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/dashboard/favorites"
+                        render={() => (
+                          !auth ? (
+                            <Redirect to="/login" />
+                          ) : (
+                            <ConnectedFavorite />
+                          )
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/dashboard/add-recipe"
+                        render={() => (
+                          !auth ? (
+                            <Redirect to="/login" />
+                          ) : (
+                            <ConnectedAddRecipe />
+                          )
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/dashboard/my-recipes"
+                        render={() => (
+                          !auth ? (
+                            <Redirect to="/login" />
+                          ) : (
+                            <ConnectedMyRecipes />
+                          )
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/dashboard/manage-recipes"
+                        render={() => (
+                          !auth ? (
+                            <Redirect to="/login" />
+                          ) : (
+                            <ManageRecipe />
+                          )
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/dashboard/search"
+                        render={() => (
+                          !auth ? (
+                            <Redirect to="/login" />
+                          ) : (
+                            <ConnectedSearch />
+                          )
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/dashboard/"
+                        render={() => (<Redirect to="/*" />)}
+                      />
+                      <Route
+                        exact
+                        path="/dashboard/top-recipes/*"
+                        render={() => (<Redirect to="/*" />)}
+                      />
+                      <Route
+                        exact
+                        path="/dashboard/favorites/*"
+                        render={() => (<Redirect to="/*" />)}
+                      />
+                      <Route
+                        exact
+                        path="/dashboard/manage-recipes/*"
+                        render={() => (<Redirect to="/*" />)}
+                      />
                     </div>
                   </div>
                 </section>
               </div>
-              {
-                (this.state.recipes && this.state.recipes.length > 0) ?
-                  <Pagination
-                    pageNumber={this.state.pages}
-                    currentPaginatePage={this.state.currentPaginatePage}
-                    onPaginateClick={this.onPaginateClick}
-                  /> : '' }
             </div>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }
 }
 
-Dashboard.defaultProps = {
-  recipes: []
-};
-
 const mapStateToProps = state => ({
-  recipes: state.recipe.recipeList,
-  pages: state.recipe.pages
+  isAuthenticated: state.auth.authenticated
 });
 
-export default connect(mapStateToProps, { getTopRecipes })(Dashboard);
+export default connect(mapStateToProps)(Dashboard);
