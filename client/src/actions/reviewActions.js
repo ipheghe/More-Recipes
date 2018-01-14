@@ -2,7 +2,8 @@ import { postData } from './index';
 import { REVIEW_RECIPE, RETRIEVE_RECIPE_REVIEWS, REVIEW_ERROR } from './types';
 
 /**
-* @description post review action
+ * @description post review action
+ *
  * @type {function} postReview
  *
  * @param {string} message
@@ -30,7 +31,8 @@ const postReview = (message, recipeId) => {
 };
 
 /**
-* @description get reviews action
+ * @description get reviews action
+ *
  * @type {function} getReviews
  *
  * @param {integer} recipeId

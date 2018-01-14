@@ -10,6 +10,7 @@ import {
 
 /**
  * @description add category action
+ *
  * @type {function} addCategory
  *
  * @param {string} name
@@ -38,6 +39,7 @@ const addCategory = (name) => {
 /**
  * modify category name
  * @description update catergory action
+ *
  * @type {function} updateCategory
  *
  * @param {number} categoryId
@@ -66,6 +68,7 @@ const updateCategory = (categoryId, name) => {
 
 /**
  * @description delete category action
+ *
  * @type {function} deleteCategory
  *
  * @param {number} categoryId
@@ -103,6 +106,7 @@ const getUserCategories = () => {
 
 /**
  * @description action to get user category
+ *
  * @type {function} getUserCategory
  *
  * @param {number} categoryId

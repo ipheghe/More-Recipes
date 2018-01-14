@@ -12,6 +12,7 @@ import {
 
 /**
  * @description add recipe action
+ *
  * @type {function} addRecipe
  *
  * @param {string} name
@@ -46,6 +47,7 @@ const addRecipe = (name, description, imageUrl, ingredients, directions) => {
 /**
  * Update Recipe
  * @description update recipe action
+ *
  * @type {function} updateRecipe
  *
  * @param {integer} recipeId
@@ -91,6 +93,7 @@ const updateRecipe = (
 
 /**
  * @description delete recipe action
+ *
  * @type {function} deleteRecipe
  *
  * @param {integer} recipeId
@@ -116,6 +119,7 @@ const deleteRecipe = (recipeId) => {
 
 /**
  * @description action to get top recipes
+ *
  * @type {function} getTopRecipes
  *
  * @returns {action} dispatch
@@ -127,6 +131,7 @@ const getTopRecipesLanding = () => {
 
 /**
  * @description action to get top recipes
+ *
  * @type {function} getTopRecipes
  *
  * @param {integer} offset
@@ -156,6 +161,7 @@ const getTopRecipes = (offset) => {
 
 /**
  * @description action to get user recipes
+ *
  * @type {function} getUserRecipes
  *
  * @param {integer} offset
@@ -185,6 +191,7 @@ const getUserRecipes = (offset) => {
 
 /**
  * @description action to get a recipe
+ *
  * @type {function} getRecipe
  *
  * @param {integer} id
@@ -198,6 +205,7 @@ const getRecipe = (id) => {
 
 /**
  * @description action to get searched recipes
+ *
  * @type {function} getRecipesBySearch
  *
  * @param {string} keyword

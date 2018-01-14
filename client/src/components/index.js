@@ -1,16 +1,16 @@
-import Landing from './landing/landing.jsx';
-import Login from './login/login.jsx';
-import SignUp from './signup/signup.jsx';
-import Dashboard from './dashboard/dashboard.jsx';
-import ViewRecipe from './viewRecipe/viewRecipe.jsx';
-import Favorite from './favorite/favorite.jsx';
-import MyRecipe from './myRecipe/myRecipe.jsx';
-import AddRecipe from './addRecipe/addRecipe.jsx';
-import ManageRecipe from './manageRecipe/manageRecipe.jsx';
-import EditProfile from './editProfile/editProfile.jsx';
-import Search from './search/search.jsx';
-import ResetPassword from './resetPassword/resetPassword.jsx';
-import NotFoundPage from './notFound';
+import Landing from './landing/Landing.jsx';
+import Login from './login/Login.jsx';
+import SignUp from './signup/Signup.jsx';
+import Dashboard from './dashboard/Dashboard.jsx';
+import ViewRecipe from './viewRecipe/ViewRecipe.jsx';
+import Favorite from './favorite/Favorite.jsx';
+import MyRecipe from './myRecipe/MyRecipe.jsx';
+import AddRecipe from './addRecipe/AddRecipe.jsx';
+import ManageRecipe from './manageRecipe/ManageRecipe.jsx';
+import EditProfile from './editProfile/EditProfile.jsx';
+import Search from './search/Search.jsx';
+import ResetPassword from './resetPassword/ResetPassword.jsx';
+import NotFoundPage from './NotFound.jsx';
 
 export {
   Landing,

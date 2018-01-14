@@ -1,36 +1,38 @@
-
-import webpack from 'webpack';
-import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import ModuleScopePlugin from 'react-dev-utils/ModuleScopePlugin';
-import eslintFormatter from 'react-dev-utils/eslintFormatter';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+const webpack = require('webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const eslintFormatter = require('react-dev-utils/eslintFormatter');
 
 const dotenv = require('dotenv');
 
 dotenv.config();
 
 module.exports = {
-  devtool: 'inline-source-map',
   entry: [
     path.resolve(__dirname, './client/src/app/index.js')
   ],
-  target: 'web', // bundle the code so that a web browser can understand
   output: {
     path: `${__dirname}/client/public/dist`,
     filename: 'bundle.js',
     publicPath: '/dist/'
   },
+  devtool: 'inline-source-map',
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
       Hammer: 'hammerjs/hammer'
     }),
-    new UglifyJsPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new ModuleScopePlugin('client/src'),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      comments: false,
+      minimize: true,
+    }),
     new HtmlWebpackPlugin({
       inject: true,
       template: 'client/public/index.html',
@@ -46,14 +48,13 @@ module.exports = {
         minifyJS: true,
         minifyCSS: true,
         minifyURLs: true,
-      },
+      }
     }),
+    new ExtractTextPlugin({
+      filename: 'css/style.css',
+    }),
+    new webpack.optimize.AggressiveMergingPlugin()
   ],
-  node: {
-    net: 'empty',
-    tls: 'empty',
-    dns: 'empty'
-  },
   module: {
     loaders: [
       // First, run the linter.
@@ -151,18 +152,36 @@ module.exports = {
         }
       },
       {
-        test: /\.scss/,
-        loader: 'style-loader!css-loader!sass-loader'
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader'],
+        }),
       },
-      // { test: /\.scss$/, loaders: ['style-loader', 'css-loader', 'sass-loader'] },
       {
-        test: /\.css$/,
-        loaders: [
-          'style-loader',
-          'css-loader?importLoaders=1',
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              mimetype: 'application/font-woff'
+            }
+          }
         ]
       },
-    ]
-  }
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [
+          { loader: 'file-loader' }
+        ]
+      }
+    ],
+  },
+  node: {
+    net: 'empty',
+    tls: 'empty',
+    dns: 'empty',
+    fs: 'empty'
+  },
 };
-

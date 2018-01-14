@@ -3,6 +3,7 @@ import { UPVOTE_RECIPE, DOWNVOTE_RECIPE, VOTE_ERROR } from './types';
 
 /**
  * @description action to upvote recipe
+ *
  * @type {function} upvoteRecipe
  *
  * @param {number} recipeId
@@ -30,6 +31,7 @@ const upvoteRecipe = (recipeId) => {
 
 /**
  * @description action to downvote recipe
+ *
  * @type {function} upvoteRecipe
  *
  * @param {number} recipeId

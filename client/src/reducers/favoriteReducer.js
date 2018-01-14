@@ -12,7 +12,6 @@ const INITIAL_STATE = {
   pages: 1,
   userFavorites: [],
   favoriteData: {},
-  text: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -34,12 +33,15 @@ export default (state = INITIAL_STATE, action) => {
     case RETRIEVE_USER_FAVORITE_RECIPES:
       return {
         ...state,
-        userFavorites: action.payload.userFavorites,
+        userFavorites: action.payload.userFavorites ? action.payload.userFavorites.rows : [],
         message: action.payload.message,
         pages: action.payload.pages
       };
     case FAVORITE_ERROR:
-      return { ...state, error: action.payload };
+      return {
+        ...state,
+        error: action.payload.message ? action.payload.message : action.payload.error
+      };
     default:
       return state;
   }

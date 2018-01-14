@@ -2,14 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import ReduxToastr from 'react-redux-toastr';
-import App from './App';
+import 'font-awesome-sass-loader';
+import App from './App.jsx';
 import configureStore from '../store';
 import '../../public/style.scss';
-import '../../../node_modules/font-awesome/css/font-awesome.min.css';
 import { AUTH_USER } from '../actions/types';
 import { logoutUser } from '../actions/authActions';
 import decodeToken from '../helpers/decodeToken';
-
 
 const store = configureStore({});
 const app = document.getElementById('app');

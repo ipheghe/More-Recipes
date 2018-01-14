@@ -49,7 +49,7 @@ const recipesController = {
               error: error.message
             }));
         } else {
-          return res.send({
+          return res.status(409).send({
             message: 'Recipe name exists!',
           });
         }

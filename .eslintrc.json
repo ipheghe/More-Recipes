@@ -62,6 +62,7 @@
   "globals": {
     "window": false,
     "document": false,
-    "isNaN": false
+    "isNaN": false,
+    "$": false
   }
 }

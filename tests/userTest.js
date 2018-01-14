@@ -224,7 +224,7 @@ describe('User signup', () => {
         done();
       });
   });
-  it('should return a 401 status for entering an existing username', (done) => {
+  it('should return 401 status for entering an existing username', (done) => {
     testData = Object.assign({}, testValidUsers[0]);
     testData.email = 'jack@yahoo.com';
     server
@@ -351,7 +351,7 @@ describe('User signin', () => {
   });
 });
 describe('Check If User Exists', () => {
-  it('return a 404 if user not found', (done) => {
+  it('should return a 404 status code if user not found', (done) => {
     server
       .get(`${usersUrl}/bimbo`)
       .set('Connection', 'keep alive')
@@ -366,7 +366,7 @@ describe('Check If User Exists', () => {
         done();
       });
   });
-  it('return a 200 if user exists', (done) => {
+  it('should return 200 status after fetching user record successfully', (done) => {
     server
       .get(`${usersUrl}/okon`)
       .set('Connection', 'keep alive')
@@ -376,14 +376,14 @@ describe('Check If User Exists', () => {
       })
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
-        expect(res.body.message).to.equal('User Exists!');
+        expect(res.body.message).to.equal('User Record retrieved successfully');
         if (err) return done(err);
         done();
       });
   });
 });
 describe('Update User Records', () => {
-  it('should return 200 status for successful updating user record', (done) => {
+  it('should return 200 status for successfully updating user record', (done) => {
     testData = Object.assign({}, testValidUsers[0]);
     testData.fullName = 'Chima Ejiofor';
     server

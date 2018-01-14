@@ -31,13 +31,12 @@ export default (state = INITIAL_STATE, action) => {
     case AUTH_ERROR:
       return {
         ...state,
-        error: action.payload.data ? action.payload.data.message : action.payload.data.error
+        error: action.payload.message ? action.payload.message : action.payload.error
       };
     case FETCH_USER:
       return {
         ...state,
-        userData: action.payload,
-        categories: action.payload.categories
+        userData: action.payload
       };
     default:
       return state;

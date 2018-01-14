@@ -3,8 +3,10 @@ import superagent from 'superagent';
 import { IMAGE_FILE_FAILURE, IMAGE_FILE_REQUEST, IMAGE_FILE_SUCCESSFUL } from './types';
 
 /**
-* @description upload image request action
+ * @description upload image request action
+ *
  * @type {function} uploadImageRequest
+ *
  * @export uploadImageRequest
  *
  * @param {object} imageData
@@ -17,8 +19,10 @@ export const uploadImageRequest = imageData => ({
 });
 
 /**
-* @description upload image request action
+ * @description upload image request action
+ *
  * @type {function} uploadImageRequest
+ *
  * @export uploadImageRequest
  *
  * @param {object} response

@@ -1,10 +1,11 @@
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import path from 'path';
 import webpack from 'webpack';
-import config from './webpack.config';
+import config from './webpack.config.dev';
 import {
   userRoute,
   recipeRoute,
@@ -14,23 +15,31 @@ import {
   voteRoute
 } from './server/routes';
 
+dotenv.config();
+
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+
 // set up the express app
 const app = express();
-const compiler = webpack(config);
 
 // Enable All CORS Requests
 app.use(cors());
 
 // log requests to console
 app.use(logger('dev'));
-app.use(require('webpack-dev-middleware')(compiler, {
-  noInfo: true,
-  publicPath: config.output.publicPath
-}));
-app.use(require('webpack-hot-middleware')(compiler));
+
+if (process.env.NODE_ENV === 'development') {
+  const compiler = webpack(config);
+  app.use(webpackDevMiddleware(compiler, {
+    noInfo: true,
+    publicPath: config.output.publicPath
+  }));
+  app.use(webpackHotMiddleware(compiler));
+}
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());
@@ -63,9 +72,12 @@ app.get('/*', (req, res, next) => {
 
 // Default catch-all route that sends a message on all more recipes hit.
 const indexPath = path.join(__dirname, '/client/public/index.html');
+const imagePath =
+express.static(path.join(__dirname, '/client/public/assets'));
 const publicPath =
 express.static(path.join(__dirname, '/client/public/dist'));
 
+app.use('/assets', imagePath);
 app.use('/dist', publicPath);
 app.get('/', (req, res) => { res.sendFile(indexPath); });
 

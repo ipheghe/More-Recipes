@@ -2,6 +2,7 @@ import isOnline from 'is-online';
 import dotenv from 'dotenv';
 import db from '../models/index';
 import transporter from '../helpers/mailTransporter';
+import emailTemplate from '../helpers/emailTemplate/emailTemplate';
 
 dotenv.load();
 const { User, Recipe } = db;
@@ -28,11 +29,13 @@ const reviewNotification = (req, res, next) => {
       })
         .then((recipe) => {
           recipe.increment('notification').then((recipes) => {
+            const message = `${req.decoded.user.username} commented on your recipe post for ${recipes.recipeName}`;
+            const name = req.decoded.user.fullName;
             const mailOptions = {
-              from: '"MoreRecipes Admin" <iphegheovie@gmail.com>',
+              from: '"MoreRecipes Admin" <iphegheapp@gmail.com>',
               to: recipes.User.email,
               subject: 'You have a new notification',
-              text: `${req.decoded.user.username} commented on your recipe post for ${recipes.recipeName}`,
+              html: emailTemplate(name, 'see recipe', message, `${req.headers.host}/#/recipe/${recipes.id}`)
             };
             transporter.sendMail(mailOptions, (err, info) => {
               if (err) {

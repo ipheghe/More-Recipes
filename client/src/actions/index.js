@@ -23,7 +23,8 @@ export const errorHandler = (dispatch, error, type) => {
   });
   let errorData = {};
   errorData = Object.assign({}, errorMessage);
-  errorData.data.message = '';
+  errorData.message = '';
+  errorData.error = '';
 
   setTimeout(() => {
     dispatch({
@@ -68,7 +69,7 @@ export const postData = (
       }
     };
   }
-  axios.post(requestUrl, data, headers)
+  return axios.post(requestUrl, data, headers)
     .then((response) => {
       dispatch({
         type: action,
@@ -92,7 +93,7 @@ export const postData = (
       }
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, errorType);
+      errorHandler(dispatch, error, errorType);
     });
 };
 
@@ -118,7 +119,7 @@ export const getData = (action, errorType, isAuthReq, url, dispatch) => {
     };
   }
 
-  axios.get(requestUrl, headers)
+  return axios.get(requestUrl, headers)
     .then((response) => {
       dispatch({
         type: action,
@@ -126,7 +127,7 @@ export const getData = (action, errorType, isAuthReq, url, dispatch) => {
       });
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, errorType);
+      errorHandler(dispatch, error, errorType);
     });
 };
 
@@ -166,7 +167,7 @@ export const putData = (
     };
   }
 
-  axios.put(requestUrl, data, headers)
+  return axios.put(requestUrl, data, headers)
     .then((response) => {
       const toastr = bindActionCreators(toastrActions, dispatch);
       dispatch({
@@ -190,7 +191,7 @@ export const putData = (
       }
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, errorType);
+      errorHandler(dispatch, error, errorType);
     });
 };
 
@@ -228,7 +229,7 @@ export const deleteData = (
     };
   }
 
-  axios.delete(requestUrl, headers)
+  return axios.delete(requestUrl, headers)
     .then((response) => {
       dispatch({
         type: action,
@@ -252,6 +253,6 @@ export const deleteData = (
       }
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, errorType);
+      errorHandler(dispatch, error, errorType);
     });
 };
