@@ -28,7 +28,7 @@ const addRecipe = (name, description, imageUrl, ingredients, directions) => {
     name, description, imageUrl, ingredients, directions
   };
   const url = '/recipe';
-  const directTo = '#myRecipe';
+  const directTo = '#dashboard/my-recipes';
   const message = 'Recipe added Successfully';
   const constant = 'RECIPE_ADDED';
   return dispatch => postData(
@@ -75,7 +75,7 @@ const updateRecipe = (
     imageUrl
   };
   const url = `/recipe/${recipeId}`;
-  const directTo = '#myRecipe';
+  const directTo = '#dashboard/my-recipes';
   const message = 'Recipe updated Successfully';
   const constant = 'RECIPE_UPDATED';
   return dispatch => putData(
