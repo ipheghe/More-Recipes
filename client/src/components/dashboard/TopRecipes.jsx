@@ -8,9 +8,9 @@ import { getTopRecipes } from '../../actions/recipeActions';
 
 
 /**
- * Dashboard component
+ * TopRecipes component
  *
- * @class Dashboard
+ * @class TopRecipes
  *
  * @extends {React.Component}
  */
@@ -28,7 +28,7 @@ export class TopRecipes extends React.Component {
     super(props);
     this.state = {
       recipes: [],
-      message: 'Sorry! You do not have any favorite recipe',
+      message: 'Sorry! No Recipe available yet',
       pages: 1,
       currentPaginatePage: 1,
       isLoading: true
@@ -38,7 +38,7 @@ export class TopRecipes extends React.Component {
   }
 
   /**
-   * @memberOf Favorite
+   * @memberOf TopRecipes
    * @returns {*} void
    */
   componentDidMount() {
@@ -48,7 +48,7 @@ export class TopRecipes extends React.Component {
 
   /**
    * @param {any} nextprops
-   * @memberOf Dashboard
+   * @memberOf TopRecipes
    * @returns {*} void
    */
   componentWillReceiveProps(nextprops) {
@@ -60,6 +60,17 @@ export class TopRecipes extends React.Component {
         isLoading: false,
       });
     }
+  }
+
+
+  /**
+   * @memberOf TopRecipes
+   * @returns {*} void
+   */
+  componentWillUnmount() {
+    this.setState({
+      isLoading: false
+    });
   }
 
   /**
@@ -141,7 +152,7 @@ export class TopRecipes extends React.Component {
           <div className="card-blocks" >
             {
               this.state.recipes.length === 0 ?
-                <h5>{this.state.message}</h5>
+                (<h3>{this.state.message}</h3>)
                 : <RecipeList recipes={this.props.recipes} />
             }
           </div>

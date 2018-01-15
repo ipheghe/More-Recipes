@@ -1,13 +1,13 @@
 import React from 'react';
 import { Switch, HashRouter as Router, hashHistory, Route } from 'react-router-dom';
 import {
-  Landing,
-  Login,
-  SignUp,
-  Dashboard,
-  ViewRecipe,
-  EditProfile,
-  ResetPassword,
+  ConnectedLanding,
+  ConnectedLogin,
+  ConnectedSignUp,
+  ConnectedDashboard,
+  ConnectedViewRecipe,
+  ConnectedEditProfile,
+  ConnectedResetPassword,
   NotFoundPage
 } from '../components';
 import { NavHeader, Footer } from '../commonViews';
@@ -19,13 +19,13 @@ const App = () =>
       <div>
         <NavHeader />
         <Switch>
-          <Route exact name="app" path="/" component={Landing} />
-          <Route exact path="/signup" component={SignUp} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/reset-password/:token" component={ResetPassword} />
-          <Route exact path="/recipes/:id" component={RequireAuth(ViewRecipe)} />
-          <Route exact path="/editProfile" component={RequireAuth(EditProfile)} />
-          <Route path="/dashboard" component={Dashboard} />
+          <Route exact name="app" path="/" component={ConnectedLanding} />
+          <Route exact path="/signup" component={ConnectedSignUp} />
+          <Route exact path="/login" component={ConnectedLogin} />
+          <Route exact path="/reset-password/:token" component={ConnectedResetPassword} />
+          <Route exact path="/recipes/:id" component={RequireAuth(ConnectedViewRecipe)} />
+          <Route exact path="/editProfile" component={RequireAuth(ConnectedEditProfile)} />
+          <Route path="/dashboard" component={ConnectedDashboard} />
           <Route exact path="*" component={NotFoundPage} />
         </Switch>
         <Footer />

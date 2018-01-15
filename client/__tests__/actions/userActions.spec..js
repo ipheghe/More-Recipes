@@ -23,7 +23,7 @@ let store = null;
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
 
-describe('>>>A C T I O N --- authActions', () => {
+describe('>>>A C T I O N --- userActions', () => {
   beforeEach(() => {
     moxios.install();
     store = mockStore({});
@@ -41,7 +41,7 @@ describe('>>>A C T I O N --- authActions', () => {
       });
 
       const expectedActions = [
-        { type: 'AUTH_USER' }
+        { type: 'AUTH_ERROR' }
       ];
       store.dispatch(registerUser(mockItems.user))
         .then(() => {

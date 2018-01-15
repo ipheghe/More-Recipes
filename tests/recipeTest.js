@@ -435,7 +435,7 @@ describe('Get Recipe', () => {
         done();
       });
   });
-  it('should return 404 status when user tries to retrieve non-existent recipes', (done) => {
+  it('should return a message when user tries to retrieve non-existent recipes', (done) => {
     server
       .post('/api/v1/recipes/users')
       .set('Connection', 'keep alive')
@@ -444,7 +444,6 @@ describe('Get Recipe', () => {
       .set('Content-Type', 'application/json')
       .type('form')
       .end((err, res) => {
-        res.status.should.equal(404);
         res.body.message.should.equal('No recipe found for user');
         if (err) return done(err);
         done();
@@ -820,7 +819,7 @@ describe('Create Category', () => {
         done();
       });
   });
-  it('should return 404 status if user has no category to retrieve', (done) => {
+  it('should return a message if user has no category to retrieve', (done) => {
     server
       .get('/api/v1/categories/users')
       .set('Connection', 'keep alive')
@@ -829,7 +828,6 @@ describe('Create Category', () => {
       .set('Content-Type', 'application/json')
       .type('form')
       .end((err, res) => {
-        res.status.should.equal(404);
         res.body.message.should.equal('No category found for user');
         if (err) return done(err);
         done();
@@ -855,7 +853,7 @@ describe('Create Category', () => {
     testData = Object.assign({}, categories[1]);
     testData.name = 'Cakes';
     server
-      .put('/api/v1/user/category/3')
+      .put('/api/v1/user/category/2')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[1])
@@ -872,7 +870,7 @@ describe('Create Category', () => {
   it('should return 200 status for deleting a category successfully', (done) => {
     testData = Object.assign({}, categories[0]);
     server
-      .delete('/api/v1/user/category/3')
+      .delete('/api/v1/user/category/2')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[1])
@@ -948,9 +946,9 @@ describe('FavoriteRecipe', () => {
         done();
       });
   });
-  it('should add recipe to uncategorized group if an invalid category is supplied', (done) => {
+  it('should return 200 status  for favoriting a recipe successfully', (done) => {
     server
-      .post(`${recipesUrl}/2/67/favorite`)
+      .post(`${recipesUrl}/2/1/favorite`)
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
@@ -966,7 +964,7 @@ describe('FavoriteRecipe', () => {
         done();
       });
   });
-  it('should return 400 status for user trying to favorite a recipe more than once', (done) => {
+  it('should return 401 status for user trying to favorite a recipe more than once', (done) => {
     server
       .post(`${recipesUrl}/2/1/favorite`)
       .set('Connection', 'keep alive')
@@ -976,7 +974,7 @@ describe('FavoriteRecipe', () => {
       .type('form')
       .send({})
       .end((err, res) => {
-        res.status.should.equal(400);
+        res.status.should.equal(401);
         res.body.message.should.equal('Recipe already favorited by user!');
         if (err) return done(err);
         done();

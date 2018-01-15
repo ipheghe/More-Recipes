@@ -13,7 +13,7 @@ exports[`<Landing should match component snapshot 1`] = `
         className="row landing"
       >
         <section
-          className="col-md-7 headline"
+          className="col-md-7 headline-home"
         >
           <h1>
             Welcome to More recipes

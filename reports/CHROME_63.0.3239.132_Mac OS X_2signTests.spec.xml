@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="2signTests.spec"
+    errors="0" failures="0" hostname="" id="" package="2signTests.spec" skipped="0"
+    tests="1" time="17.25" timestamp="Sun, 14 Jan 2018 15:41:27 GMT">
+  
+    <testcase name="it should show the complete workflow for login in a user" classname="2signTests.spec" time="17.25" assertions="7">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

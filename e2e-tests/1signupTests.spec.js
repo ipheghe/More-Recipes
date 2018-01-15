@@ -1,5 +1,5 @@
 module.exports = {
-  'it should throw an error if username field is empty':
+  'it should show the complete workflow for registering a user':
   (client) => {
     client
       .resizeWindow(1280, 800)
@@ -14,26 +14,18 @@ module.exports = {
       .assert.elementPresent('input#email')
       .assert.elementPresent('input#password')
       .assert.elementPresent('button#signup')
+
+      // throws an error for null username field
       .setValue('input#username', '')
       .setValue('input#fullName', 'Emeka Obiora')
-      .setValue('input#mobileNumber', 2347035221782)
-      .setValue('input#email', 'shaolin@yahoo.com')
-      .setValue('input#password', 'abcde')
       .click('button#signup')
       .pause(1000)
       .assert
       .containsText('p.alert', 'Username must start with a letter and have no spaces.')
       .pause(3000)
 
-      // test for invalid email
-      .assert.elementPresent('input#username')
-      .assert.elementPresent('input#fullName')
-      .assert.elementPresent('input#mobileNumber')
-      .assert.elementPresent('input#email')
-      .assert.elementPresent('input#password')
-      .assert.elementPresent('button#signup')
-      .setValue('input#username', 'okon')
-      .setValue('input#fullName', 'Emeka Obiora')
+      // throws an error for invalid email
+      .setValue('input#username', 'shaolin')
       .setValue('input#mobileNumber', 2347035221782)
       .setValue('input#email', 'shaolin@yahoo')
       .setValue('input#password', 'abcde')
@@ -44,17 +36,7 @@ module.exports = {
       .pause(3000)
 
       // signup user successfully and redirect to login page
-      .assert.elementPresent('input#username')
-      .assert.elementPresent('input#fullName')
-      .assert.elementPresent('input#mobileNumber')
-      .assert.elementPresent('input#email')
-      .assert.elementPresent('input#password')
-      .assert.elementPresent('button#signup')
-      .setValue('input#username', 'shaolin')
-      .setValue('input#fullName', 'Emeka Obiora')
-      .setValue('input#mobileNumber', 2347035221782)
-      .setValue('input#email', 'shaolin@yahoo.com')
-      .setValue('input#password', 'abcde')
+      .setValue('input#email', '.com')
       .click('button#signup')
       .pause(1000)
       .assert.urlEquals('http://localhost:8000/#/login')

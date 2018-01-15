@@ -35,7 +35,9 @@ const state = {
 
 const props = {
   errorMessage: '',
-  registerUser: jest.fn(() => Promise.resolve())
+  registerUser: jest.fn(() => Promise.resolve()),
+  isAuthenticated: false
+
 };
 
 const event = {
@@ -51,11 +53,14 @@ const event = {
 };
 
 /**
- *@description  function to mount component
+ *@description  setup function to mount component
+ *
+ * @param { boolean } isAuthenticated
  *
  * @return { * } null
  */
-const setup = () => {
+const setup = (isAuthenticated) => {
+  props.isAuthenticated = isAuthenticated;
   const mountedWrapper = mount(<Router><ConnectedSignupPage {...props} store={store} /></Router>);
   const shallowWrapper = shallow(<SignUp {...props} />);
   return {
@@ -118,5 +123,10 @@ describe('<Login', () => {
     shallowWrapper.instance().validateFormField();
     expect(SignUp.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().password).toEqual('abcde');
+  });
+
+  it('redirects to dashboard page if user is authenticated', () => {
+    const { shallowWrapper } = setup(true);
+    expect(shallowWrapper).toBeDefined();
   });
 });

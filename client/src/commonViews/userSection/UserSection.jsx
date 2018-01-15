@@ -9,10 +9,15 @@ import {
   getUserCategory
 } from '../../actions/categoryActions';
 import { changePassword } from '../../actions/userActions';
+import renderErrorAlert from '../../utils/errorAlert';
+import validateChangePasswordField from '../../utils/validator/changePasswordValidator';
+import { logoutUser } from '../../actions/authActions';
 
 /**
  * UserSection component
+ *
  * @class UserSection
+ *
  * @extends {React.Component}
  */
 export class UserSection extends React.Component {
@@ -29,13 +34,13 @@ export class UserSection extends React.Component {
       username: PropTypes.string,
     }).isRequired,
     categoryList: PropTypes.arrayOf(PropTypes.object).isRequired,
-    status: PropTypes.string.isRequired,
     errorMessage: PropTypes.string,
     categories: PropTypes.arrayOf(PropTypes.object)
   };
 
   /**
    * constructor
+   *
    * @param {object} props
    */
   constructor(props) {
@@ -63,7 +68,9 @@ export class UserSection extends React.Component {
 
   /**
    * @param {any} nextprops
+   *
    * @memberOf UserSection
+   *
    * @returns {*} void
    */
   componentWillReceiveProps(nextprops) {
@@ -77,11 +84,16 @@ export class UserSection extends React.Component {
         status: nextprops.status
       });
     }
+    if (nextprops.status === 'Success') {
+      nextprops.logoutUser();
+    }
   }
 
   /**
    * handle get category  event
+   *
    * @param {number} categoryId
+   *
    * @returns {*} void
    */
   getCategory(categoryId) {
@@ -92,7 +104,9 @@ export class UserSection extends React.Component {
 
   /**
    * handle add category form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handleAddCategory(event) {
@@ -103,11 +117,14 @@ export class UserSection extends React.Component {
 
   /**
    * handle update category form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handleUpdateCategory(event) {
     event.preventDefault();
+    this.props.modalClosed();
     const categoryId = this.props.categoryList[0].id;
     this.props.updateCategory(categoryId, this.state.modalCategoryName);
     this.setState({ modalIsOpen: false });
@@ -115,11 +132,14 @@ export class UserSection extends React.Component {
 
   /**
    * handle delete category form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handleDeleteCategory(event) {
     event.preventDefault();
+    this.props.modalClosed();
     const categoryId = this.props.categoryList[0].id;
     this.props.deleteCategory(categoryId);
     this.setState({ modalIsOpen: false });
@@ -127,7 +147,9 @@ export class UserSection extends React.Component {
 
   /**
    * handle change form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {object} state
    */
   handleChange(event) {
@@ -139,7 +161,9 @@ export class UserSection extends React.Component {
 
   /**
    * handle change password event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handleChangePassword(event) {
@@ -148,7 +172,8 @@ export class UserSection extends React.Component {
   }
 
   /**
-   * handle close modal event
+   * handle close modal function
+   *
    * @returns {*} void
    */
   closeModal() {
@@ -162,6 +187,7 @@ export class UserSection extends React.Component {
 
   /**
    * validateFormField
+   *
    * @returns {string} errorMessage
    */
   validateFormField() {
@@ -170,7 +196,14 @@ export class UserSection extends React.Component {
       newPassword,
       confirmPassword,
     } = this.state;
-    if (oldPassword === '') {
+
+    const error = validateChangePasswordField(
+      oldPassword,
+      newPassword,
+      confirmPassword,
+    );
+
+    if (error.status === true) {
       setTimeout(() => {
         this.setState({
           hasErrored: false,
@@ -178,77 +211,16 @@ export class UserSection extends React.Component {
         });
       }, 3000);
       return this.setState({
-        hasErrored: true,
-        errorMessage: 'old password field cannot be empty'
-      });
-    }
-    if (newPassword === '') {
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'new password field cannot be empty'
-      });
-    }
-    if (confirmPassword === '') {
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'confirm password field cannot be empty'
-      });
-    }
-    if (newPassword !== confirmPassword) {
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'Password mismatch!'
+        hasErrored: error.status,
+        errorMessage: error.message
       });
     }
     return this.props.changePassword(oldPassword, newPassword);
   }
 
   /**
-   * handle form event error
-   * @returns {string} errorMessage
-   */
-  renderAlert() {
-    if (this.state.hasErrored) {
-      return (
-        <div>
-          <p className="alert error-alert">
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.state.errorMessage}
-          </p>
-        </div>
-      );
-    } else if (this.props.errorMessage) {
-      return (
-        <div>
-          <p className="alert error-alert">
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.props.errorMessage}
-          </p>
-        </div>
-      );
-    }
-  }
-
-  /**
    * render
+   *
    * @return {ReactElement} markup
    */
   render() {
@@ -346,7 +318,9 @@ export class UserSection extends React.Component {
           this.state.status === '' || this.state.status === 'Fail' ?
             <div>
               <ChangePasswordModal
-                error={this.renderAlert()}
+                error={
+                    renderErrorAlert(this.state.hasErrored, this.props.errorMessage, this.state.errorMessage, 'white')
+                  }
                 isOpen={this.state.passwordModalIsOpen}
                 onClose={this.closeModal}
                 closeModal={this.closeModal}
@@ -384,6 +358,7 @@ export default connect(mapStateToProps, {
   updateCategory,
   deleteCategory,
   getUserCategory,
-  changePassword
+  changePassword,
+  logoutUser
 })(UserSection);
 

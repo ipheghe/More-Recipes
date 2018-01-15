@@ -298,7 +298,7 @@ const recipesController = {
       })
       .then((recipes) => {
         if (recipes.rows.length === 0) {
-          res.status(404).send({ message: 'No recipe available' });
+          res.send({ message: 'No recipe available' });
         } else {
           pageNumber = parseInt(recipes.count, 10) / parseInt(limit || 6, 10);
           return res.status(200).send({

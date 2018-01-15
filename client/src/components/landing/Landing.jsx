@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LandingRecipeList from './LandingRecipeList.jsx';
 import { getTopRecipesLanding } from '../../actions/recipeActions';
@@ -13,7 +13,8 @@ import { getTopRecipesLanding } from '../../actions/recipeActions';
 export class Landing extends React.Component {
   static propTypes = {
     getTopRecipesLanding: PropTypes.func.isRequired,
-    recipeList: PropTypes.arrayOf(PropTypes.object).isRequired
+    recipeList: PropTypes.arrayOf(PropTypes.object).isRequired,
+    isAuthenticated: PropTypes.bool.isRequired,
   };
 
   /**
@@ -45,6 +46,7 @@ export class Landing extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
+    if (this.props.isAuthenticated) return (<Redirect to="/dashboard/top-recipes" />);
     return (
       <div>
         <div className="landing-background" id="landing-background">
@@ -95,6 +97,7 @@ export class Landing extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  isAuthenticated: state.auth.authenticated,
   recipeList: state.recipe.recipeList
 });
 

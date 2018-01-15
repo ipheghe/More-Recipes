@@ -5,6 +5,7 @@ import {
 import {
   bindActionCreators
 } from 'redux';
+import { logoutUser } from './authActions';
 
 export const BASE_URL = '/api/v1';
 

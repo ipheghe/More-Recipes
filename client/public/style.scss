@@ -80,7 +80,7 @@ label {
   -moz-background-position: 50%;
   -webkit-background-position: 50%;
   background-position: 50%;
-  min-height: 1000px;
+  min-height: 90vh;
   overflow: hidden;
 }
 
@@ -142,7 +142,7 @@ label {
     width: 100%;
     padding: auto 0px;
     margin: auto 0px;
-    min-height: 700px;
+    min-height: 600px;
     >.navbar {
       background-color: $background_color_1;
       margin-top: 30px;

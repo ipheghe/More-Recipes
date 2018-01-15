@@ -6,6 +6,8 @@ import { Pagination } from '../../commonViews';
 import RecipeList from '../recipeList/RecipeList.jsx';
 import { getRecipesBySearch } from '../../actions/recipeActions';
 
+const URLSearchParams = require('url-search-params');
+
 /**
  * Search component
  *

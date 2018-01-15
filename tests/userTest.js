@@ -45,7 +45,7 @@ describe('Test Server Connection', () => {
 describe('Catch invalid routes', () => {
   it('should return a 404 if route not found', (done) => {
     server
-      .get('/kkkkmn/jjdjjd')
+      .get('/****kkkkmn/jjdjjd')
       .set('Connection', 'keep alive')
       .set('Content-Type', 'application/json')
       .end((err, res) => {
@@ -422,7 +422,7 @@ describe('Change User Password', () => {
       newPassword: 'abcdef'
     };
     server
-      .put('/api/v1/user/changePassword/user')
+      .put('/api/v1/user/changePassword')
       .set('Connection', 'keep alive')
       .set('Content-Type', 'application/json')
       .set('x-access-token', userToken[0])
@@ -440,7 +440,7 @@ describe('Change User Password', () => {
       newPassword: 'abcdef'
     };
     server
-      .put('/api/v1/user/changePassword/user')
+      .put('/api/v1/user/changePassword')
       .set('Connection', 'keep alive')
       .set('Content-Type', 'application/json')
       .set('x-access-token', userToken[0])

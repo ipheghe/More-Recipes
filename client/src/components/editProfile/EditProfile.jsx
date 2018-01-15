@@ -12,11 +12,16 @@ import validateEditProfileField from '../../utils/validator/editProfileValidator
  * @class ViewRecipe
  * @extends {React.Component}
  */
-@connect(state => ({ state, }))
-class EditProfile extends React.Component {
+export class EditProfile extends React.Component {
     static propTypes = {
       updateUserRecord: PropTypes.func.isRequired,
-      errorMessage: PropTypes.string.isRequired
+      errorMessage: PropTypes.string.isRequired,
+      userData: PropTypes.shape({
+        username: PropTypes.string,
+        fullName: PropTypes.string,
+        mobileNumber: PropTypes.number,
+        email: PropTypes.string,
+      }).isRequired
     };
 
   /**
@@ -26,10 +31,10 @@ class EditProfile extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        username: '',
-        fullName: '',
-        mobileNumber: '',
-        email: '',
+        username: props.userData.username,
+        fullName: props.userData.fullName,
+        mobileNumber: props.userData.mobileNumber.toString(),
+        email: props.userData.email,
         hasErrored: false,
         errorMessage: ''
       };

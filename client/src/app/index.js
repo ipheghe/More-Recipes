@@ -17,7 +17,7 @@ const token = window.localStorage.getItem('token');
 if (token) {
   store.dispatch({ type: AUTH_USER });
   const decodedToken = decodeToken(token);
-  if (decodedToken.exp < Math.floor(Date.now() / 1000)) {
+  if (decodedToken === 'Invalid Token' || decodedToken.exp < Math.floor(Date.now() / 1000)) {
     // log user out
     store.dispatch(logoutUser());
   }

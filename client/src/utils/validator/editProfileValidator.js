@@ -29,9 +29,9 @@ const validateEditProfileField = (
     error.message = 'mobile number must contain only numbers';
     return error;
   }
-  if (!mobileNumber === '') {
+  if (mobileNumber === '' || null) {
     error.status = true;
-    error.message = 'mobile numberfield cannot be empty';
+    error.message = 'mobile number field cannot be empty';
     return error;
   }
   if (reg.test(email) === false) {

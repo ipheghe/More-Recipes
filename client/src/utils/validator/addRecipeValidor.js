@@ -38,7 +38,6 @@ const validateAddRecipeField = (
     error.message = 'Recipe image field cannot be empty';
     return error;
   }
-
   return error;
 };
 

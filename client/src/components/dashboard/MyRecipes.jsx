@@ -7,8 +7,8 @@ import RecipeList from '../recipeList/RecipeList.jsx';
 import { getUserRecipes } from '../../actions/recipeActions';
 
 /**
- * MyRecipe component
- * @class MyRecipe
+ * MyRecipes component
+ * @class MyRecipes
  * @extends {React.Component}
  */
 export class MyRecipes extends React.Component {
@@ -34,7 +34,7 @@ export class MyRecipes extends React.Component {
   }
 
   /**
-   * @memberOf MyRecipe
+   * @memberOf MyRecipes
    * @returns {*} void
    */
   componentDidMount() {
@@ -56,6 +56,16 @@ export class MyRecipes extends React.Component {
         isLoading: false,
       });
     }
+  }
+
+  /**
+   * @memberOf MyRecipes
+   * @returns {*} void
+   */
+  componentWillUnmount() {
+    this.setState({
+      isLoading: false
+    });
   }
 
   /**

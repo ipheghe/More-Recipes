@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { verifyTokenPassword } from '../../actions/userActions';
 import ResetPasswordForm from './ResetPasswordForm.jsx';
 import renderErrorAlert from '../../utils/errorAlert';
+import validateResetPasswordField from '../../utils/validator/resetPasswordValidator';
 
 /**
  * Reset password form commponent
+ *
  * @class ResetPassword
+ *
  * @extends {React.Component}
  */
 export class ResetPassword extends React.Component {
@@ -16,11 +20,13 @@ export class ResetPassword extends React.Component {
     errorMessage: PropTypes.string,
     match: PropTypes.shape({
       params: PropTypes.objectOf(PropTypes.string),
-    }).isRequired
+    }).isRequired,
+    isAuthenticated: PropTypes.bool.isRequired,
   };
 
   /**
    * constructor
+   *
    * @param {object} props
    */
   constructor(props) {
@@ -37,7 +43,9 @@ export class ResetPassword extends React.Component {
 
   /**
    * handle change form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {object} state
    */
   handleChange(event) {
@@ -49,7 +57,9 @@ export class ResetPassword extends React.Component {
 
   /**
    * handle resetPassword form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
   handleResetPassword(event) {
@@ -59,12 +69,16 @@ export class ResetPassword extends React.Component {
 
   /**
    * validateFormField
-   * @returns {string} errorMessage
+   *
+   * @returns {*} void
    */
   validateFormField() {
     const { newPassword, confirmPassword } = this.state;
     const { token } = this.props.match.params;
-    if (newPassword === '') {
+
+    const error = validateResetPasswordField(newPassword, confirmPassword);
+
+    if (error.status === true) {
       setTimeout(() => {
         this.setState({
           hasErrored: false,
@@ -72,32 +86,8 @@ export class ResetPassword extends React.Component {
         });
       }, 3000);
       return this.setState({
-        hasErrored: true,
-        errorMessage: 'new password field cannot be empty'
-      });
-    }
-    if (confirmPassword === '') {
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'confirm password field cannot be empty'
-      });
-    }
-    if (newPassword !== confirmPassword) {
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'Password mismatch!'
+        hasErrored: error.status,
+        errorMessage: error.message
       });
     }
     return this.props.verifyTokenPassword(newPassword, token);
@@ -105,21 +95,24 @@ export class ResetPassword extends React.Component {
 
   /**
    * render
+   *
    * @return {ReactElement} markup
    */
   render() {
+    if (this.props.isAuthenticated) return (<Redirect to="/dashboard/top-recipes" />);
     return (
       <div>
         <div className="login-background">
           <div className="container">
             <div className="row landing">
-              <section className="col-md-7 headline">
+              <section className="col-md-6 headline">
                 <h1>Welcome to More recipes</h1>
                 <h4>Share your recipe ideas with the world</h4>
                 <br />
                 <br />
-                <h2><em><i>Please input your new password</i></em></h2>
+                <h2>Please input your new password</h2>
               </section>
+              <section className="col-md-1" />
               <section className="col-md-5 account">
                 <ResetPasswordForm
                   newPassword={this.state.newPassword}
@@ -145,7 +138,8 @@ ResetPassword.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  errorMessage: state.user.error
+  errorMessage: state.user.error,
+  isAuthenticated: state.auth.authenticated,
 });
 
 export default connect(mapStateToProps, { verifyTokenPassword })(ResetPassword);

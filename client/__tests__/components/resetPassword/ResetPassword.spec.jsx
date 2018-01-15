@@ -13,6 +13,13 @@ import mockItems from '../../__mocks__/mockItems';
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
 const initialState = {
+  auth: {
+    error: 'Invalid username',
+    message: '',
+    userData: {},
+    authenticated: false,
+    categories: []
+  },
   user: {
     status: '',
     error: '',
@@ -37,7 +44,8 @@ const props = {
     params: {
       id: 'hhhbhbjbjbk8hbjkjnklkl'
     }
-  }
+  },
+  isAuthenticated: false
 };
 
 const event = {
@@ -52,9 +60,12 @@ const event = {
 /**
  *@description  setup function to mount component
  *
+ * @param { boolean } isAuthenticated
+ *
  * @return { * } null
  */
-const setup = () => {
+const setup = (isAuthenticated) => {
+  props.isAuthenticated = isAuthenticated;
   const mountedWrapper = mount(<Provider store={store} ><ConnectedResetPassword {...props} store={store} /></Provider>);
   const shallowWrapper = shallow(<ResetPassword {...props} />);
   return {
@@ -65,7 +76,7 @@ const setup = () => {
 
 describe('<ResetPassword', () => {
   it('renders ResetPassword component without crashing', () => {
-    const { mountedWrapper } = setup();
+    const { mountedWrapper } = setup(false);
     expect(mountedWrapper).toBeDefined();
     expect(mountedWrapper.find('ResetPasswordForm').length).toBe(1);
     expect(mountedWrapper.exists()).toBe(true);
@@ -78,21 +89,21 @@ describe('<ResetPassword', () => {
 
   it('calls handleChange event', () => {
     sinon.spy(ResetPassword.prototype, 'handleChange');
-    const { shallowWrapper } = setup();
+    const { shallowWrapper } = setup(false);
     shallowWrapper.instance().handleChange(event);
     expect(ResetPassword.prototype.handleChange.calledOnce).toEqual(true);
   });
 
   it('calls handleResetPassword event after change password button is clicked', () => {
     sinon.spy(ResetPassword.prototype, 'handleResetPassword');
-    const { shallowWrapper } = setup();
+    const { shallowWrapper } = setup(false);
     shallowWrapper.instance().handleResetPassword(event);
     expect(ResetPassword.prototype.handleResetPassword.calledOnce).toEqual(true);
   });
 
   it('calls returns error for null confirm password field', () => {
     sinon.spy(ResetPassword.prototype, 'validateFormField');
-    const { shallowWrapper } = setup();
+    const { shallowWrapper } = setup(false);
     state.confirmPassword = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
@@ -101,7 +112,7 @@ describe('<ResetPassword', () => {
   });
 
   it('calls returns error for null new password field', () => {
-    const { shallowWrapper } = setup();
+    const { shallowWrapper } = setup(false);
     state.newPassword = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
@@ -110,7 +121,7 @@ describe('<ResetPassword', () => {
   });
 
   it('calls returns error for null password missmatch', () => {
-    const { shallowWrapper } = setup();
+    const { shallowWrapper } = setup(false);
     state.newPassword = 'abcde';
     state.confirmPassword = 'abcdhhhhe';
     shallowWrapper.setState(state);
@@ -120,12 +131,17 @@ describe('<ResetPassword', () => {
   });
 
   it(' dispatches resetPassword action after validatiing fields', () => {
-    const { shallowWrapper } = setup();
+    const { shallowWrapper } = setup(false);
     state.newPassword = 'abcde';
     state.confirmPassword = 'abcde';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
     expect(ResetPassword.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().confirmPassword).toEqual('abcde');
+  });
+
+  it('redirects to dashboard page if user is authenticated', () => {
+    const { shallowWrapper } = setup(true);
+    expect(shallowWrapper).toBeDefined();
   });
 });

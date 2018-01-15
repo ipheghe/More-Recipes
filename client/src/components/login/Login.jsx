@@ -21,8 +21,7 @@ export class Login extends React.Component {
     loginUser: PropTypes.func.isRequired,
     resetPassword: PropTypes.func.isRequired,
     errorMessage: PropTypes.string,
-    modalErrorMessage: PropTypes.string,
-    status: PropTypes.string
+    modalErrorMessage: PropTypes.string
   };
 
   /**
@@ -58,7 +57,7 @@ export class Login extends React.Component {
   componentWillReceiveProps(nextprops) {
     if (nextprops.status.length > 0) {
       this.setState({
-        status: nextprops.state.user.status
+        status: nextprops.status
       });
     }
   }
@@ -80,7 +79,7 @@ export class Login extends React.Component {
   /**
    * handle login form event
    *
-   * @param {SytheticEvent} event
+   * @param {sythenticElement} event
    *
    * @returns {*} void
    */
@@ -164,7 +163,6 @@ export class Login extends React.Component {
       });
     }
 
-
     return this.props.loginUser({ username, password });
   }
 
@@ -181,33 +179,6 @@ export class Login extends React.Component {
       errorMessage: '',
       status: ''
     });
-  }
-
-  /**
-   * handle recover password form event error
-   *
-   * @returns {string} errorMessage
-   */
-  renderModalAlert() {
-    if (this.state.hasErrored) {
-      return (
-        <div>
-          <p className="alert error-alert" style={{ color: 'white' }}>
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.state.errorMessage}
-          </p>
-        </div>
-      );
-    } else if (this.props.modalErrorMessage) {
-      return (
-        <div>
-          <p className="alert error-alert" style={{ color: 'white' }}>
-            <i className="fa fa-exclamation-triangle" style={{ color: 'red' }} />
-            &nbsp;{this.props.modalErrorMessage}
-          </p>
-        </div>
-      );
-    }
   }
 
   /**
@@ -248,7 +219,9 @@ export class Login extends React.Component {
         {
             this.state.status === '' || this.state.status === 'Fail' ?
               <RecoverPasswordModal
-                error={this.renderModalAlert()}
+                error={
+                renderErrorAlert(this.state.hasErrored, this.props.modalErrorMessage, this.state.errorMessage, 'white')
+              }
                 isOpen={this.state.modalIsOpen}
                 onClose={this.closeModal}
                 email={this.state.email}

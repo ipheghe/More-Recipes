@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import EllipsisText from 'react-ellipsis-text';
 
 
 const FavoriteRecipeCard = ({ recipe }) => (
   <div className="card">
     <img className="card-img-top" src={(recipe.Recipe.imageUrl === null || recipe.Recipe.imageUrl === 'no-image') ? 'assets/images/pizza1.jpg' : recipe.Recipe.imageUrl} alt="recipe" />
     <div className="card-block">
-      <h4 className="card-title">{recipe.Recipe.name}</h4>
-      <p className="card-text">{recipe.Recipe.description}</p>
+      <h4 className="card-title"><EllipsisText text={recipe.Recipe.name} length={15} /></h4>
+      <p className="card-text "><EllipsisText text={recipe.Recipe.description} length={30} /></p>
     </div>
     <div className="card-footer">
       <small className="text-muted">

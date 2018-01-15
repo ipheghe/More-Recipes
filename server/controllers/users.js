@@ -275,7 +275,7 @@ const usersController = {
                 from: '"MoreRecipes Admin" <iphegheapp@gmail.com>',
                 to: existingUser.email,
                 subject: 'You have a new notification',
-                html: emailTemplate(name, 'Reset Password', message, `https://${req.headers.host}/reset-password/${resetToken}`, 'fa fa-unlock-alt fa-5x')
+                html: emailTemplate(name, 'Reset Password', message, `https://${req.headers.host}/#/reset-password/${resetToken}`)
               };
               // Otherwise, send user email via nodemailer
               // transporter.sendMail(mailOptions);
@@ -343,10 +343,10 @@ const usersController = {
                 'If you did not request this change, please contact us immediately.';
                 const name = existingUser.fullName;
                 const mailOptions = {
-                  from: '"MoreRecipes Admin" <iphegheovie@gmail.com>',
+                  from: '"MoreRecipes Admin" <iphegheapp@gmail.com>',
                   to: existingUser.email,
                   subject: 'Password Changed',
-                  html: emailTemplate(name, 'see recipe', message, '')
+                  html: emailTemplate(name, 'Go to App', message, `https://${req.headers.host}/#/login`)
                 };
                 // Otherwise, send user email via nodemailer
                 // transporter.sendMail(mailOptions);

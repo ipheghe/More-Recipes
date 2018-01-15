@@ -20,7 +20,7 @@ describe('<ReviewBox', () => {
   it('renders ReviewBox component without crashing', () => {
     const wrapper = setup();
     expect(wrapper).toBeDefined();
-    expect(wrapper.find('img').length).toBe(1);
+    expect(wrapper.find('img').length).toBe(0);
     expect(wrapper.exists()).toBe(true);
   });
 });

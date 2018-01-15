@@ -13,6 +13,13 @@ import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
 const initialState = {
+  auth: {
+    error: 'Invalid username',
+    message: '',
+    userData: {},
+    authenticated: false,
+    categories: []
+  },
   recipe: {
     message: '',
     error: '',
@@ -29,14 +36,18 @@ const store = mockStore(initialState);
 const props = {
   recipeList: mockItems.recipeArray,
   getTopRecipesLanding: jest.fn(() => Promise.resolve()),
+  isAuthenticated: false
 };
 
 /**
  *@description  setup function to mount component
  *
+ * @param { boolean } isAuthenticated
+ *
  * @return { * } null
  */
-const setup = () => {
+const setup = (isAuthenticated) => {
+  props.isAuthenticated = isAuthenticated;
   const mountedWrapper = mount(<Router><ConnectedLandingPage {...props} store={store} /></Router>);
   const shallowWrapper = shallow(<Landing {...props} />);
   return {
@@ -51,20 +62,20 @@ describe('<Landing', () => {
   });
 
   it('renders without crashing', () => {
-    const { mountedWrapper } = setup();
+    const { mountedWrapper } = setup(false);
     expect(mountedWrapper.find('LandingRecipeList').length).toBe(1);
     expect(mountedWrapper.exists()).toBe(true);
   });
 
   it('calls componentDidMount', () => {
     sinon.spy(Landing.prototype, 'componentDidMount');
-    const { shallowWrapper } = setup();
+    const { shallowWrapper } = setup(false);
     expect(shallowWrapper.exists()).toBe(true);
     expect(Landing.prototype.componentDidMount.calledOnce).toEqual(false);
   });
 
   it('calls showTopRecipes event ', () => {
-    const { shallowWrapper } = setup();
+    const { shallowWrapper } = setup(false);
     const event = {
       preventDefault: jest.fn()
     };
@@ -74,5 +85,10 @@ describe('<Landing', () => {
   it('should match component snapshot', () => {
     const tree = render.create(<Router ><Landing {...props} /></Router>);
     expect(tree).toMatchSnapshot();
+  });
+
+  it('redirects to dashboard page if user is authenticated', () => {
+    const { shallowWrapper } = setup(true);
+    expect(shallowWrapper).toBeDefined();
   });
 });

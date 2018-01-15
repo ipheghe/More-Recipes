@@ -59,6 +59,16 @@ export class Favorite extends React.Component {
     }
   }
 
+  /**
+   * @memberOf Favorite
+   * @returns {*} void
+   */
+  componentWillUnmount() {
+    this.setState({
+      isLoading: false
+    });
+  }
+
 
   /**
    * @description handles click event with pagination

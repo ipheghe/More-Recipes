@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { registerUser } from '../../actions/authActions';
 import SignupForm from './SignupForm.jsx';
 import renderErrorAlert from '../../utils/errorAlert';
@@ -16,7 +17,8 @@ import validateSignupField from '../../utils/validator/signupValidator';
 export class SignUp extends React.Component {
   static propTypes = {
     registerUser: PropTypes.func.isRequired,
-    errorMessage: PropTypes.string
+    errorMessage: PropTypes.string,
+    isAuthenticated: PropTypes.bool.isRequired,
   };
 
   /**
@@ -114,6 +116,7 @@ export class SignUp extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
+    if (this.props.isAuthenticated) return (<Redirect to="/dashboard/top-recipes" />);
     return (
       <div>
         <div className="login-background">
@@ -155,7 +158,8 @@ SignUp.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  errorMessage: state.auth.error
+  errorMessage: state.auth.error,
+  isAuthenticated: state.auth.authenticated
 });
 
 export default connect(mapStateToProps, { registerUser })(SignUp);

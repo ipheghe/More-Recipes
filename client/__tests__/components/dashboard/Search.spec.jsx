@@ -4,19 +4,17 @@ import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
 import { Provider } from 'react-redux';
 import render from 'react-test-renderer';
-import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedSearch, { Search } from '../../../src/components/dashboard/Search.jsx';
 import mockItems from '../../__mocks__/mockItems';
-import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 
 
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
 const initialState = {
   recipe: {
-    message: '',
+    message: 'spaghetti',
     error: '',
     pages: 2,
     recipeData: {},
@@ -34,18 +32,18 @@ const state = {
   isLoading: false
 };
 
+const event = {
+  preventDefault: jest.fn()
+};
+
 const props = {
   getRecipesBySearch: jest.fn(() => Promise.resolve()),
-  message: '',
+  message: 'spaghetti',
   location: {
-    search: '',
+    search: 'spag',
     pathname: '/'
   },
   searchResult: mockItems.recipeArray
-};
-
-const event = {
-  preventDefault: jest.fn()
 };
 
 /**
@@ -77,7 +75,6 @@ describe('<Search', () => {
     shallowWrapper.setState(state);
     expect(shallowWrapper).toBeDefined();
     expect(shallowWrapper.find('RecipeList').length).toBe(1);
-    expect(shallowWrapper.find('Pagination').length).toBe(1);
     expect(shallowWrapper.exists()).toBe(true);
   });
 
@@ -119,10 +116,7 @@ describe('<Search', () => {
   });
 
   it('calls handleNext event after next button is clicked', () => {
-    sinon.spy(Search.prototype, 'URLSearchParams');
     const { shallowWrapper } = setup();
-    const URLSearchParams = jest.fn();
-    shallowWrapper.instance().URLSearchParams();
     shallowWrapper.setState(state);
     shallowWrapper.instance().handleNext(event);
   });

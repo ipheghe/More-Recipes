@@ -12,7 +12,7 @@ exports[`<Login should match component snapshot 1`] = `
         className="row landing"
       >
         <section
-          className="col-md-7 headline"
+          className="col-md-6 headline"
         >
           <h1>
             Welcome to More recipes
@@ -26,6 +26,9 @@ exports[`<Login should match component snapshot 1`] = `
             Login and start sharing recipes
           </h2>
         </section>
+        <section
+          className="col-md-1"
+        />
         <section
           className="col-md-5 account"
         >
@@ -89,6 +92,7 @@ exports[`<Login should match component snapshot 1`] = `
                   </span>
                   <input
                     className="form-control"
+                    id="password"
                     name="password"
                     onChange={[Function]}
                     placeholder="Enter your password"
@@ -139,6 +143,7 @@ exports[`<Login should match component snapshot 1`] = `
                   >
                     <button
                       className="btn btn-block btn-success"
+                      id="login"
                       onClick={[Function]}
                     >
                       Login

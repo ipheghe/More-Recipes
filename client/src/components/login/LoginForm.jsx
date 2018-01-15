@@ -24,10 +24,10 @@ const LoginForm = ({
             <i className="fa fa-user-secret" />
           </span>
           <input
-            id="username"
             type="text"
             className="form-control"
             name="username"
+            id="username"
             placeholder="Enter your username"
             value={username}
             onChange={onChange}
@@ -45,6 +45,7 @@ const LoginForm = ({
             type="password"
             className="form-control"
             name="password"
+            id="password"
             placeholder="Enter your password"
             value={password}
             onChange={onChange}
@@ -71,6 +72,7 @@ const LoginForm = ({
         <div>
           <a href="#dashboard">
             <button
+              id="login"
               className="btn btn-block btn-success"
               onClick={login}
             >Login

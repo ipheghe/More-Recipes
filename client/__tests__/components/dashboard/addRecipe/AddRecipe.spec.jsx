@@ -140,6 +140,36 @@ describe('<AddRecipe', () => {
     expect(shallowWrapper.state().recipeName).toEqual('');
   });
 
+  it('calls validateFormField method with null ingredients field', () => {
+    const { shallowWrapper } = setup();
+    state.recipeName = 'Banga Rice';
+    state.ingredients = '';
+    shallowWrapper.setState(state);
+    shallowWrapper.instance().validateFormField();
+    expect(AddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
+    expect(shallowWrapper.state().ingredients).toEqual('');
+  });
+
+  it('calls validateFormField method with null description field', () => {
+    const { shallowWrapper } = setup();
+    state.ingredients = 'Rice,meat';
+    state.description = '';
+    shallowWrapper.setState(state);
+    shallowWrapper.instance().validateFormField();
+    expect(AddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
+    expect(shallowWrapper.state().description).toEqual('');
+  });
+
+  it('calls validateFormField method with null image url field', () => {
+    const { shallowWrapper } = setup();
+    state.description = 'Boil Rice, boil meat';
+    state.imageUrl = '';
+    shallowWrapper.setState(state);
+    shallowWrapper.instance().validateFormField();
+    expect(AddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
+    expect(shallowWrapper.state().imageUrl).toEqual('');
+  });
+
   it('dispatches addRecipe action after validatiing fields', () => {
     const { shallowWrapper } = setup();
     state.recipeName = 'Jollof Rice';

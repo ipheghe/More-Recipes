@@ -22,8 +22,8 @@ const favoriteExists = (req, res, next) => {
     .findOne({ where: { userId: req.decoded.user.id, recipeId: req.params.id } })
     .then((favorite) => {
       if (favorite) {
-        // if user has alreeady favorited recipe
-        return res.status(404).send({
+        // if user has already favorited recipe
+        return res.status(401).send({
           status: 'fail',
           message: 'Recipe already favorited by user!'
         });
