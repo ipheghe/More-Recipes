@@ -3,8 +3,6 @@ import Adapter from 'enzyme-adapter-react-15';
 import $ from 'jquery';
 
 global.$ = $;
-$.prototype.sideNav = () => { };
-$.prototype.material_select = () => { };
 $.prototype.modal = () => { };
 global.toString = () => { };
 

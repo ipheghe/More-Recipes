@@ -6,7 +6,8 @@ import render from 'react-test-renderer';
 import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedAddRecipe, { AddRecipe } from '../../../../src/components/dashboard/addRecipe/AddRecipe.jsx';
+import ConnectedAddRecipe, { PureAddRecipe }
+  from '../../../../src/components/dashboard/addRecipe/AddRecipe.jsx';
 
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
@@ -50,7 +51,7 @@ const props = {
 };
 
 const nextProps = {
-  addRecipe: jest.fn(() => Promise.resolve()),
+  PureAddRecipe: jest.fn(() => Promise.resolve()),
   uploadImage: jest.fn(() => Promise.resolve()),
   errorMessage: ''
 };
@@ -67,6 +68,8 @@ const event = {
   }
 };
 
+jest.useFakeTimers();
+
 /**
  * @description function to mount component
  *
@@ -74,7 +77,7 @@ const event = {
  */
 const setup = () => {
   const mountedWrapper = mount(<Router><ConnectedAddRecipe {...props} store={store} /></Router>);
-  const shallowWrapper = shallow(<AddRecipe {...props} />);
+  const shallowWrapper = shallow(<PureAddRecipe {...props} />);
   return {
     mountedWrapper,
     shallowWrapper
@@ -92,51 +95,52 @@ describe('<AddRecipe', () => {
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<Router ><AddRecipe {...props} /></Router>);
+    const tree = render.create(<Router ><PureAddRecipe {...props} /></Router>);
     expect(tree).toMatchSnapshot();
   });
 
   it('calls componentWillReceiveProps if component receives new props for imageUrl', () => {
-    sinon.spy(AddRecipe.prototype, 'componentWillReceiveProps');
+    sinon.spy(PureAddRecipe.prototype, 'componentWillReceiveProps');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(AddRecipe.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
+    expect(PureAddRecipe.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
   });
 
   it('checks new props for imageUrl through componentWillReceiveProps method but finds none', () => {
     const { shallowWrapper } = setup();
     shallowWrapper.instance().componentWillReceiveProps(nextProps);
-    expect(AddRecipe.prototype.componentWillReceiveProps.calledOnce).toEqual(false);
+    expect(PureAddRecipe.prototype.componentWillReceiveProps.calledOnce).toEqual(false);
   });
 
   it('calls handleChange event', () => {
-    sinon.spy(AddRecipe.prototype, 'handleChange');
+    sinon.spy(PureAddRecipe.prototype, 'handleChange');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().handleChange(event);
-    expect(AddRecipe.prototype.handleChange.calledOnce).toEqual(true);
+    expect(PureAddRecipe.prototype.handleChange.calledOnce).toEqual(true);
   });
 
   it('calls handleImageChange event', () => {
-    sinon.spy(AddRecipe.prototype, 'handleImageChange');
+    sinon.spy(PureAddRecipe.prototype, 'handleImageChange');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().handleImageChange(event);
-    expect(AddRecipe.prototype.handleImageChange.calledOnce).toEqual(true);
+    expect(PureAddRecipe.prototype.handleImageChange.calledOnce).toEqual(true);
   });
 
   it('calls handleAddRecipe event after add recipe button is clicked', () => {
-    sinon.spy(AddRecipe.prototype, 'handleAddRecipe');
+    sinon.spy(PureAddRecipe.prototype, 'handleAddRecipe');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().handleAddRecipe(event);
-    expect(AddRecipe.prototype.handleAddRecipe.calledOnce).toEqual(true);
+    expect(PureAddRecipe.prototype.handleAddRecipe.calledOnce).toEqual(true);
   });
 
   it('calls validateFormField method with null recipeName field', () => {
-    sinon.spy(AddRecipe.prototype, 'validateFormField');
+    sinon.spy(PureAddRecipe.prototype, 'validateFormField');
     const { shallowWrapper } = setup();
     state.recipeName = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(AddRecipe.prototype.validateFormField.calledOnce).toEqual(true);
+    jest.runAllTimers();
+    expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(true);
     expect(shallowWrapper.state().recipeName).toEqual('');
   });
 
@@ -146,7 +150,8 @@ describe('<AddRecipe', () => {
     state.ingredients = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(AddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
+    jest.runAllTimers();
+    expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().ingredients).toEqual('');
   });
 
@@ -156,7 +161,8 @@ describe('<AddRecipe', () => {
     state.description = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(AddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
+    jest.runAllTimers();
+    expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().description).toEqual('');
   });
 
@@ -166,16 +172,17 @@ describe('<AddRecipe', () => {
     state.imageUrl = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(AddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
+    jest.runAllTimers();
+    expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().imageUrl).toEqual('');
   });
 
-  it('dispatches addRecipe action after validatiing fields', () => {
+  it('dispatches AddRecipe action after validatiing fields', () => {
     const { shallowWrapper } = setup();
     state.recipeName = 'Jollof Rice';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(AddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
+    expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().recipeName).toEqual('Jollof Rice');
   });
 });

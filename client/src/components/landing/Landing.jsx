@@ -10,7 +10,7 @@ import { getTopRecipesLanding } from '../../actions/recipeActions';
  *
  * @param {function} onComponentDidMount - callback on ComponentDidMount
  */
-export class Landing extends React.Component {
+class Landing extends React.Component {
   static propTypes = {
     getTopRecipesLanding: PropTypes.func.isRequired,
     recipeList: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -46,7 +46,9 @@ export class Landing extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.props.isAuthenticated) return (<Redirect to="/dashboard/top-recipes" />);
+    if (this.props.isAuthenticated) {
+      return (<Redirect to="/dashboard/top-recipes" />);
+    }
     return (
       <div>
         <div className="landing-background" id="landing-background">
@@ -71,12 +73,28 @@ export class Landing extends React.Component {
               </section>
               <section className="col-md-5 account">
                 <div>
-                  <Link to="/login"className="btn btn-success home" id="login" >Login</Link>
-                  <p className="brief">Login to your account and start sharing</p>
+                  <Link
+                    to="/login"
+                    href="#login"
+                    className="btn btn-success home"
+                    id="login"
+                  >Login
+                  </Link>
+                  <p className="brief">
+                  Login to your account and start sharing
+                  </p>
                 </div>
                 <div>
-                  <Link to="/signup"className="btn btn-success home" id="signup" >Signup</Link>
-                  <p className="brief">Register now to enjoy all of More recipes</p>
+                  <Link
+                    to="/signup"
+                    href="#signup"
+                    className="btn btn-success home"
+                    id="signup"
+                  >Signup
+                  </Link>
+                  <p className="brief">
+                  Register now to enjoy all of More recipes
+                  </p>
                 </div>
               </section>
             </div>
@@ -101,4 +119,5 @@ const mapStateToProps = state => ({
   recipeList: state.recipe.recipeList
 });
 
+export { Landing as PureLanding };
 export default connect(mapStateToProps, { getTopRecipesLanding })(Landing);

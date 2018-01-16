@@ -4,8 +4,8 @@ import users from '../server/seeders/userSeeder';
 
 process.env.NODE_ENV = 'test';
 const { expect } = require('chai');
-const should = require('chai').should();
-// This agent refers to PORT where program is runninng.
+require('chai').should();
+
 const server = supertest.agent(app);
 const rootURL = '/api/v1';
 const usersUrl = `${rootURL}/user`;
@@ -37,20 +37,6 @@ describe('Test Server Connection', () => {
       .end((err, res) => {
         expect('Content-Type', /json/);
         expect(res.statusCode).to.equal(200);
-        if (err) return done(err);
-        done();
-      });
-  });
-});
-describe('Catch invalid routes', () => {
-  it('should return a 404 if route not found', (done) => {
-    server
-      .get('/****kkkkmn/jjdjjd')
-      .set('Connection', 'keep alive')
-      .set('Content-Type', 'application/json')
-      .end((err, res) => {
-        expect(res.statusCode).to.equal(404);
-        expect(res.body.message).to.equal('Oops! 404. Page not Found');
         if (err) return done(err);
         done();
       });

@@ -1,7 +1,8 @@
 import expect from 'expect';
 import React from 'react';
 import { mount } from 'enzyme';
-import SelectCategoryModal from '../../../src/components/viewRecipe/SelectCategoryModal.jsx';
+import SelectCategoryModal
+  from '../../../src/components/viewRecipe/SelectCategoryModal.jsx';
 import mockItems from '../../__mocks__/mockItems';
 
 /**

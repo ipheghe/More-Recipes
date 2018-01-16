@@ -1,7 +1,8 @@
 import expect from 'expect';
 import React from 'react';
 import { mount } from 'enzyme';
-import RecoverPasswordModal from '../../../src/components/login/RecoverPasswordModal.jsx';
+import RecoverPasswordModal
+  from '../../../src/components/login/RecoverPasswordModal.jsx';
 
 /**
  *@description setup function to mount component

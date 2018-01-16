@@ -6,7 +6,8 @@ import render from 'react-test-renderer';
 import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedFavorite, { Favorite } from '../../../../src/components/dashboard/favorite/Favorite.jsx';
+import ConnectedFavorite, { PureFavorite }
+  from '../../../../src/components/dashboard/favorite/Favorite.jsx';
 import mockAuthCheck from '../../../__mocks__/mockAuthCheck';
 import mockItems from '../../../__mocks__/mockItems';
 
@@ -28,7 +29,7 @@ const store = mockStore(initialState);
 
 const state = {
   userFavorites: mockItems.recipeArray,
-  message: 'Sorry! You do not have any favorite recipe',
+  message: 'Sorry! You do not have any PureFavorite recipe',
   pages: 2,
   currentPaginatePage: 1,
   isLoading: false
@@ -50,22 +51,22 @@ const event = {
  */
 const setup = () => {
   const mountedWrapper = mount(<Router><ConnectedFavorite {...props} store={store} /></Router>);
-  const shallowWrapper = shallow(<Favorite {...props} />);
+  const shallowWrapper = shallow(<PureFavorite {...props} />);
   return {
     mountedWrapper,
     shallowWrapper
   };
 };
 
-describe('<Favorite', () => {
+describe('<PureFavorite', () => {
   beforeEach(() => {
     mockAuthCheck();
   });
 
-  it('should render a loader component before Favorite component receives props', () => {
+  it('should render a loader component before PureFavorite component receives props', () => {
     props.userFavorites = [];
-    const shallowWrapper = shallow(<Favorite {...props} />);
-    shallowWrapper.setState({ userFavorites: [] });
+    const shallowWrapper = shallow(<PureFavorite {...props} />);
+    shallowWrapper.setState({ userPureFavorites: [] });
     expect(shallowWrapper).toBeDefined();
     expect(shallowWrapper.find('Loader').length).toBe(1);
     expect(shallowWrapper.exists()).toBe(true);
@@ -81,21 +82,21 @@ describe('<Favorite', () => {
   });
 
   it('calls componentDidMount', () => {
-    sinon.spy(Favorite.prototype, 'componentDidMount');
+    sinon.spy(PureFavorite.prototype, 'componentDidMount');
     const { shallowWrapper } = setup();
     expect(shallowWrapper.exists()).toBe(true);
-    expect(Favorite.prototype.componentDidMount.calledOnce).toEqual(false);
+    expect(PureFavorite.prototype.componentDidMount.calledOnce).toEqual(false);
   });
 
   it('calls componentWillReceiveProps if userFavorite recipe from props is available', () => {
-    sinon.spy(Favorite.prototype, 'componentWillReceiveProps');
+    sinon.spy(PureFavorite.prototype, 'componentWillReceiveProps');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(Favorite.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
+    expect(PureFavorite.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<Router ><Favorite {...props} /></Router>);
+    const tree = render.create(<Router ><PureFavorite {...props} /></Router>);
     expect(tree).toMatchSnapshot();
   });
 

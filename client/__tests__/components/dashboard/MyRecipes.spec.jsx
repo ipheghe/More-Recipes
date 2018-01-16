@@ -6,7 +6,8 @@ import render from 'react-test-renderer';
 import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedMyRecipes, { MyRecipes } from '../../../src/components/dashboard/MyRecipes.jsx';
+import ConnectedMyRecipes, { PureMyRecipes }
+  from '../../../src/components/dashboard/MyRecipes.jsx';
 import mockItems from '../../__mocks__/mockItems';
 import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 
@@ -52,7 +53,7 @@ const event = {
  */
 const setup = () => {
   const mountedWrapper = mount(<Router><ConnectedMyRecipes {...props} store={store} /></Router>);
-  const shallowWrapper = shallow(<MyRecipes {...props} />);
+  const shallowWrapper = shallow(<PureMyRecipes {...props} />);
   return {
     mountedWrapper,
     shallowWrapper
@@ -64,9 +65,9 @@ describe('<MyRecipes', () => {
     mockAuthCheck();
   });
 
-  it('should render a loader component before MyRecipes component receives props', () => {
+  it('should render a loader component before PureMyRecipes component receives props', () => {
     props.recipes = [];
-    const shallowWrapper = shallow(<MyRecipes {...props} />);
+    const shallowWrapper = shallow(<PureMyRecipes {...props} />);
     shallowWrapper.setState({ recipes: [] });
     expect(shallowWrapper).toBeDefined();
     expect(shallowWrapper.find('Loader').length).toBe(1);
@@ -83,21 +84,21 @@ describe('<MyRecipes', () => {
   });
 
   it('calls componentDidMount', () => {
-    sinon.spy(MyRecipes.prototype, 'componentDidMount');
+    sinon.spy(PureMyRecipes.prototype, 'componentDidMount');
     const { shallowWrapper } = setup();
     expect(shallowWrapper.exists()).toBe(true);
-    expect(MyRecipes.prototype.componentDidMount.calledOnce).toEqual(false);
+    expect(PureMyRecipes.prototype.componentDidMount.calledOnce).toEqual(false);
   });
 
   it('calls componentWillReceiveProps if recipe from props is available', () => {
-    sinon.spy(MyRecipes.prototype, 'componentWillReceiveProps');
+    sinon.spy(PureMyRecipes.prototype, 'componentWillReceiveProps');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(MyRecipes.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
+    expect(PureMyRecipes.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<Router ><MyRecipes {...props} /></Router>);
+    const tree = render.create(<Router ><PureMyRecipes {...props} /></Router>);
     expect(tree).toMatchSnapshot();
   });
 

@@ -1,10 +1,10 @@
 /**
- * validateChangePasswordField
+ * changePasswordValidator
  *
  * @returns {object} status message
  */
 
-const validateChangePasswordField = (
+const changePasswordValidator = (
   oldPassword,
   newPassword,
   confirmPassword,
@@ -34,4 +34,4 @@ const validateChangePasswordField = (
   return error;
 };
 
-export default validateChangePasswordField;
+export default changePasswordValidator;

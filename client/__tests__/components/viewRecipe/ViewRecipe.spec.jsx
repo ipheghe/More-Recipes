@@ -4,10 +4,10 @@ import { mount, shallow } from 'enzyme';
 import { Provider } from 'react-redux';
 import sinon from 'sinon';
 import render from 'react-test-renderer';
-import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedViewRecipe, { ViewRecipe } from '../../../src/components/viewRecipe/ViewRecipe.jsx';
+import ConnectedViewRecipe, { PureViewRecipe }
+  from '../../../src/components/viewRecipe/ViewRecipe.jsx';
 import mockItems from '../../__mocks__/mockItems';
 import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 
@@ -118,7 +118,7 @@ const event = {
  */
 const setup = () => {
   const mountedWrapper = mount(<Provider store={store}><ConnectedViewRecipe {...props} /></Provider>);
-  const shallowWrapper = shallow(<ViewRecipe {...props} />);
+  const shallowWrapper = shallow(<PureViewRecipe {...props} />);
   return {
     mountedWrapper,
     shallowWrapper
@@ -126,9 +126,13 @@ const setup = () => {
 };
 
 describe('<ViewRecipe', () => {
+  beforeEach(() => {
+    mockAuthCheck();
+  });
+
   it('should render a loader component before ViewRecipe component receives props', () => {
     props.recipe = {};
-    const shallowWrapper = shallow(<ViewRecipe {...props} />);
+    const shallowWrapper = shallow(<PureViewRecipe {...props} />);
     shallowWrapper.setState({ recipes: [] });
     expect(shallowWrapper).toBeDefined();
     expect(shallowWrapper.find('Loader').length).toBe(1);
@@ -144,22 +148,24 @@ describe('<ViewRecipe', () => {
   });
 
   it('calls componentWillReceiveProps if all needed props are available', () => {
-    sinon.spy(ViewRecipe.prototype, 'componentWillReceiveProps');
+    sinon.spy(PureViewRecipe.prototype, 'componentWillReceiveProps');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(ViewRecipe.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
+    expect(PureViewRecipe.prototype.componentWillReceiveProps.calledOnce)
+      .toEqual(true);
   });
 
   it('calls componentWillReceiveProps if all needed props are available', () => {
     props.recipe = null;
-    const shallowWrapper = shallow(<ViewRecipe {...props} />);
+    const shallowWrapper = shallow(<PureViewRecipe {...props} />);
     shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(ViewRecipe.prototype.componentWillReceiveProps.calledOnce).toEqual(false);
+    expect(PureViewRecipe.prototype.componentWillReceiveProps.calledOnce)
+      .toEqual(false);
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<ViewRecipe {...props} />);
+    const tree = render.create(<PureViewRecipe {...props} />);
     expect(tree).toMatchSnapshot();
   });
 
@@ -180,74 +186,77 @@ describe('<ViewRecipe', () => {
   });
 
   it('calls handleChange event', () => {
-    sinon.spy(ViewRecipe.prototype, 'handleChange');
+    sinon.spy(PureViewRecipe.prototype, 'handleChange');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().handleChange(event);
-    expect(ViewRecipe.prototype.handleChange.calledOnce).toEqual(true);
+    expect(PureViewRecipe.prototype.handleChange.calledOnce).toEqual(true);
   });
 
   it('dispatches postReview action', () => {
-    sinon.spy(ViewRecipe.prototype, 'handlePostReview');
+    sinon.spy(PureViewRecipe.prototype, 'handlePostReview');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().handlePostReview(event);
-    expect(ViewRecipe.prototype.handleChange.calledOnce).toEqual(true);
+    expect(PureViewRecipe.prototype.handleChange.calledOnce).toEqual(true);
   });
 
 
   it('dispatches upvote recipe action', () => {
-    sinon.spy(ViewRecipe.prototype, 'handleUpvote');
+    sinon.spy(PureViewRecipe.prototype, 'handleUpvote');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().handleUpvote(event);
-    expect(ViewRecipe.prototype.handleUpvote.calledOnce).toEqual(true);
+    expect(PureViewRecipe.prototype.handleUpvote.calledOnce).toEqual(true);
   });
 
   it('dispatches downvote recipe action', () => {
-    sinon.spy(ViewRecipe.prototype, 'handleDownvote');
+    sinon.spy(PureViewRecipe.prototype, 'handleDownvote');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().handleDownvote(event);
-    expect(ViewRecipe.prototype.handleDownvote.calledOnce).toEqual(true);
+    expect(PureViewRecipe.prototype.handleDownvote.calledOnce).toEqual(true);
   });
 
   it('dispatches favorite recipe action', () => {
-    sinon.spy(ViewRecipe.prototype, 'handleFavoriteRecipe');
+    sinon.spy(PureViewRecipe.prototype, 'handleFavoriteRecipe');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     const categoryInput = { value: 1 };
     shallowWrapper.instance().categoryInput = categoryInput;
     shallowWrapper.instance().handleFavoriteRecipe(event);
-    expect(ViewRecipe.prototype.handleFavoriteRecipe.calledOnce).toEqual(true);
+    expect(PureViewRecipe.prototype.handleFavoriteRecipe.calledOnce)
+      .toEqual(true);
   });
 
   it('dispatches unfavorite recipe action', () => {
-    sinon.spy(ViewRecipe.prototype, 'handleUnfavoriteRecipe');
+    sinon.spy(PureViewRecipe.prototype, 'handleUnfavoriteRecipe');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().handleUnfavoriteRecipe(event);
-    expect(ViewRecipe.prototype.handleUnfavoriteRecipe.calledOnce).toEqual(true);
+    expect(PureViewRecipe.prototype.handleUnfavoriteRecipe.calledOnce)
+      .toEqual(true);
   });
 
   it('calls openModal event when favorite button is clicked', () => {
-    sinon.spy(ViewRecipe.prototype, 'openModal');
+    sinon.spy(PureViewRecipe.prototype, 'openModal');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().openModal(event);
-    expect(ViewRecipe.prototype.openModal.calledOnce).toEqual(true);
+    expect(PureViewRecipe.prototype.openModal.calledOnce)
+      .toEqual(true);
   });
 
   it('calls closeModal event', () => {
-    sinon.spy(ViewRecipe.prototype, 'closeModal');
+    sinon.spy(PureViewRecipe.prototype, 'closeModal');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().closeModal(event);
-    expect(ViewRecipe.prototype.closeModal.calledOnce).toEqual(true);
+    expect(PureViewRecipe.prototype.closeModal.calledOnce).toEqual(true);
   });
 
   it('dispatches get reviews action', () => {
-    sinon.spy(ViewRecipe.prototype, 'loadMore');
+    sinon.spy(PureViewRecipe.prototype, 'loadMore');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().loadMore(event);
-    expect(ViewRecipe.prototype.loadMore.calledOnce).toEqual(true);
+    expect(PureViewRecipe.prototype.loadMore.calledOnce).toEqual(true);
   });
 
   it('shows load more button if number of reviews is less than page count', () => {

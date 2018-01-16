@@ -4,15 +4,17 @@ import { connect } from 'react-redux';
 import { ProfileHeader, UserSection } from '../../commonViews';
 import { updateUserRecord } from '../../actions/userActions';
 import EditProfileForm from './EditProfileForm.jsx';
-import renderErrorAlert from '../../utils/errorAlert';
-import validateEditProfileField from '../../utils/validator/editProfileValidator';
+import renderErrorAlert from '../../utils/renderErrorAlert';
+import editProfileValidator from '../../utils/validator/editProfileValidator';
 
 /**
  * EditProfile component
- * @class ViewRecipe
+ *
+ * @class EditProfile
+ *
  * @extends {React.Component}
  */
-export class EditProfile extends React.Component {
+class EditProfile extends React.Component {
     static propTypes = {
       updateUserRecord: PropTypes.func.isRequired,
       errorMessage: PropTypes.string.isRequired,
@@ -26,6 +28,7 @@ export class EditProfile extends React.Component {
 
   /**
    * constructor
+   *
    * @param {object} props
    */
     constructor(props) {
@@ -46,7 +49,9 @@ export class EditProfile extends React.Component {
 
   /**
    * @param {any} nextprops
+   *
    * @memberOf EditProfile
+   *
    * @returns {*} void
    */
     componentWillReceiveProps(nextprops) {
@@ -62,7 +67,9 @@ export class EditProfile extends React.Component {
 
   /**
    * handle change form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {object} state
    */
     handleChange(event) {
@@ -73,7 +80,9 @@ export class EditProfile extends React.Component {
 
   /**
    * handle signUp form event
+   *
    * @param {SytheticEvent} event
+   *
    * @returns {*} void
    */
     handleUpdate(event) {
@@ -83,6 +92,7 @@ export class EditProfile extends React.Component {
 
   /**
    * validateFormField
+   *
    * @returns {string} errorMessage
    */
     validateFormField() {
@@ -90,7 +100,7 @@ export class EditProfile extends React.Component {
         username, fullName, mobileNumber, email
       } = this.state;
 
-      const error = validateEditProfileField(
+      const error = editProfileValidator(
         username,
         fullName,
         mobileNumber,
@@ -120,7 +130,8 @@ export class EditProfile extends React.Component {
 
   /**
    * handle editProfile toggleModalState
-   * @returns {string} errorMessage
+   *
+   * @returns {object} state
    */
     toggleModalState() {
       this.setState({
@@ -130,6 +141,7 @@ export class EditProfile extends React.Component {
 
   /**
    * handle editProfile toggleModalStateOff
+   *
    * @returns {object} state
    */
     toggleModalStateOff() {
@@ -140,6 +152,7 @@ export class EditProfile extends React.Component {
 
   /**
    * render
+   *
    * @return {ReactElement} markup
    */
     render() {
@@ -173,7 +186,11 @@ export class EditProfile extends React.Component {
                             updateProfile={this.handleUpdate}
                             signup={this.handleSignup}
                             error={
-                              renderErrorAlert(this.state.hasErrored, this.props.errorMessage, this.state.errorMessage, 'black')
+                              renderErrorAlert(
+                                this.state.hasErrored,
+                                this.props.errorMessage,
+                                this.state.errorMessage, 'black'
+                              )
                             }
                             onChange={this.handleChange}
                           />
@@ -194,5 +211,6 @@ const mapStateToProps = state => ({
   userData: state.auth.userData,
 });
 
+export { EditProfile as PureEditProfile };
 export default connect(mapStateToProps, { updateUserRecord })(EditProfile);
 

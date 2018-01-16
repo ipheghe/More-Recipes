@@ -6,7 +6,7 @@ import render from 'react-test-renderer';
 import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedSignupPage, { SignUp } from '../../../src/components/signup/Signup.jsx';
+import ConnectedSignupPage, { PureSignup } from '../../../src/components/signup/Signup.jsx';
 
 
 const middleware = [thunk];
@@ -52,6 +52,8 @@ const event = {
 
 };
 
+jest.useFakeTimers();
+
 /**
  *@description  setup function to mount component
  *
@@ -62,14 +64,14 @@ const event = {
 const setup = (isAuthenticated) => {
   props.isAuthenticated = isAuthenticated;
   const mountedWrapper = mount(<Router><ConnectedSignupPage {...props} store={store} /></Router>);
-  const shallowWrapper = shallow(<SignUp {...props} />);
+  const shallowWrapper = shallow(<PureSignup {...props} />);
   return {
     mountedWrapper,
     shallowWrapper
   };
 };
 
-describe('<Login', () => {
+describe('<Signup', () => {
   it('renders without crashing', () => {
     const { mountedWrapper } = setup(false);
     expect(mountedWrapper).toBeDefined();
@@ -78,30 +80,31 @@ describe('<Login', () => {
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<Router ><SignUp {...props} /></Router>);
+    const tree = render.create(<Router ><PureSignup {...props} /></Router>);
     expect(tree).toMatchSnapshot();
   });
 
   it('calls handleChange event', () => {
-    sinon.spy(SignUp.prototype, 'handleChange');
+    sinon.spy(PureSignup.prototype, 'handleChange');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().handleChange(event);
-    expect(SignUp.prototype.handleChange.calledOnce).toEqual(true);
+    expect(PureSignup.prototype.handleChange.calledOnce).toEqual(true);
   });
 
-  it('calls handleSignup event after signup button is clicked', () => {
-    sinon.spy(SignUp.prototype, 'handleSignup');
+  it('calls handleSignup event after Signup button is clicked', () => {
+    sinon.spy(PureSignup.prototype, 'handleSignup');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().handleSignup(event);
-    expect(SignUp.prototype.handleSignup.calledOnce).toEqual(true);
+    expect(PureSignup.prototype.handleSignup.calledOnce).toEqual(true);
   });
 
   it('calls validateFormField method with null username field', () => {
-    sinon.spy(SignUp.prototype, 'validateFormField');
+    sinon.spy(PureSignup.prototype, 'validateFormField');
     const { shallowWrapper } = setup(false);
     shallowWrapper.setState({ username: '', hasErrored: false, errorMessage: '' });
     shallowWrapper.instance().validateFormField();
-    expect(SignUp.prototype.validateFormField.calledOnce).toEqual(true);
+    jest.runAllTimers();
+    expect(PureSignup.prototype.validateFormField.calledOnce).toEqual(true);
     expect(shallowWrapper.state().username).toEqual('');
   });
 
@@ -113,7 +116,8 @@ describe('<Login', () => {
       username: 'okon', password: '', hasErrored: false, errorMessage: ''
     });
     shallowWrapper.instance().validateFormField();
-    expect(SignUp.prototype.validateFormField.calledOnce).toEqual(false);
+    jest.runAllTimers();
+    expect(PureSignup.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().password).toEqual('');
   });
 
@@ -121,7 +125,7 @@ describe('<Login', () => {
     const { shallowWrapper } = setup(false);
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(SignUp.prototype.validateFormField.calledOnce).toEqual(false);
+    expect(PureSignup.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().password).toEqual('abcde');
   });
 

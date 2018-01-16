@@ -4,17 +4,17 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { registerUser } from '../../actions/authActions';
 import SignupForm from './SignupForm.jsx';
-import renderErrorAlert from '../../utils/errorAlert';
-import validateSignupField from '../../utils/validator/signupValidator';
+import renderErrorAlert from '../../utils/renderErrorAlert';
+import signupValidator from '../../utils/validator/signupValidator';
 
 /**
- * signUp form commponent
+ * signup form commponent
  *
- * @class SignUp
+ * @class Signup
  *
  * @extends {React.Component}
  */
-export class SignUp extends React.Component {
+class Signup extends React.Component {
   static propTypes = {
     registerUser: PropTypes.func.isRequired,
     errorMessage: PropTypes.string,
@@ -81,7 +81,7 @@ export class SignUp extends React.Component {
       password
     } = this.state;
 
-    const error = validateSignupField(
+    const error = signupValidator(
       username,
       fullName,
       mobileNumber,
@@ -101,6 +101,7 @@ export class SignUp extends React.Component {
         errorMessage: error.message
       });
     }
+
     return this.props.registerUser({
       username,
       password,
@@ -116,7 +117,9 @@ export class SignUp extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.props.isAuthenticated) return (<Redirect to="/dashboard/top-recipes" />);
+    if (this.props.isAuthenticated) {
+      return (<Redirect to="/dashboard/top-recipes" />);
+    }
     return (
       <div>
         <div className="login-background">
@@ -139,7 +142,11 @@ export class SignUp extends React.Component {
                   email={this.state.email}
                   signup={this.handleSignup}
                   error={
-                    renderErrorAlert(this.state.hasErrored, this.props.errorMessage, this.state.errorMessage, 'white')
+                    renderErrorAlert(
+                      this.state.hasErrored,
+                      this.props.errorMessage,
+                      this.state.errorMessage, 'white'
+                    )
                   }
                   onChange={this.handleChange}
                 />
@@ -153,7 +160,7 @@ export class SignUp extends React.Component {
   }
 }
 
-SignUp.defaultProps = {
+Signup.defaultProps = {
   errorMessage: ''
 };
 
@@ -162,4 +169,5 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.authenticated
 });
 
-export default connect(mapStateToProps, { registerUser })(SignUp);
+export { Signup as PureSignup };
+export default connect(mapStateToProps, { registerUser })(Signup);

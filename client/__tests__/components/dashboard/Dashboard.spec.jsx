@@ -7,7 +7,8 @@ import render from 'react-test-renderer';
 import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedDashboard, { Dashboard } from '../../../src/components/dashboard/Dashboard.jsx';
+import ConnectedDashboard, { PureDashboard }
+  from '../../../src/components/dashboard/Dashboard.jsx';
 import mockItems from '../../__mocks__/mockItems';
 import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 
@@ -78,15 +79,17 @@ const props = {
  */
 const setup = (isAuthenticated, index) => {
   props.isAuthenticated = isAuthenticated;
-  const mountedWrapper = mount(<Provider store={store}><Router><ConnectedDashboard {...props} /></Router></Provider>);
-  const shallowWrapper = shallow(<Dashboard {...props} />);
+  const mountedWrapper = mount(<Provider store={store}>
+    <Router><ConnectedDashboard {...props} /></Router>
+  </Provider>);
+  const shallowWrapper = shallow(<PureDashboard {...props} />);
   const wrapper = mount(<Provider store={store}>
     <MemoryRouter
       initialEntries={
         [
           '/dashboard/top-recipes',
           '/dashboard/my-recipes',
-          '/dashboard/add-recipe',
+          '/Dashboard/add-recipe',
           '/dashboard/favorites',
           '/dashboard/manage-recipes',
           '/dashboard/',
@@ -99,9 +102,10 @@ const setup = (isAuthenticated, index) => {
       initialIndex={index}
       keyLength={6}
     >
-      <Dashboard {...props} />
+      <PureDashboard {...props} />
     </MemoryRouter>
   </Provider>);
+
   return {
     mountedWrapper,
     shallowWrapper,
@@ -124,7 +128,9 @@ describe('<Dashboard', () => {
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<Provider store={store}><Router ><Dashboard {...props} /></Router></Provider>);
+    const tree = render.create(<Provider store={store}>
+      <Router ><PureDashboard {...props} /></Router>
+    </Provider>);
     expect(tree).toMatchSnapshot();
   });
 

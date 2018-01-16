@@ -1,7 +1,8 @@
 import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
-import AddRecipeForm from '../../../../src/components/dashboard/addRecipe/AddRecipeForm.jsx';
+import AddRecipeForm
+  from '../../../../src/components/dashboard/addRecipe/AddRecipeForm.jsx';
 
 const props = {
   recipeName: '',

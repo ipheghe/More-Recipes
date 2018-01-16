@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Loader from 'react-loaders';
 import { Pagination } from '../../commonViews';
-import RecipeList from '../recipeList/RecipeList.jsx';
+import RecipeList from '../../commonViews/RecipeList.jsx';
 import { getRecipesBySearch } from '../../actions/recipeActions';
 
 const URLSearchParams = require('url-search-params');
@@ -15,7 +15,7 @@ const URLSearchParams = require('url-search-params');
  *
  * @extends {React.Component}
  */
-export class Search extends React.Component {
+class Search extends React.Component {
   static propTypes = {
     getRecipesBySearch: PropTypes.func.isRequired,
     message: PropTypes.string.isRequired,
@@ -128,7 +128,11 @@ export class Search extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
+    if (this.state.isLoading) {
+      return (
+        <Loader type="ball-scale-ripple-multiple" active />
+      );
+    }
     return (
       <div>
         <div className="add-padding">
@@ -169,5 +173,6 @@ const mapStateToProps = state => ({
   pages: state.recipe.pages
 });
 
+export { Search as PureSearch };
 export default connect(mapStateToProps, { getRecipesBySearch })(Search);
 

@@ -6,7 +6,8 @@ import render from 'react-test-renderer';
 import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedLoginPage, { Login } from '../../../src/components/login/Login.jsx';
+import ConnectedLogin, { PureLogin }
+  from '../../../src/components/login/Login.jsx';
 import mockItems from '../../__mocks__/mockItems';
 
 
@@ -69,6 +70,8 @@ const event = {
 
 };
 
+jest.useFakeTimers();
+
 /**
  * @param { boolean } isAuthenticated
  *
@@ -76,8 +79,8 @@ const event = {
  */
 const setup = (isAuthenticated) => {
   props.isAuthenticated = isAuthenticated;
-  const mountedWrapper = mount(<Router><ConnectedLoginPage {...props} store={store} /></Router>);
-  const shallowWrapper = shallow(<Login {...props} />);
+  const mountedWrapper = mount(<Router><ConnectedLogin {...props} store={store} /></Router>);
+  const shallowWrapper = shallow(<PureLogin {...props} />);
   return {
     mountedWrapper,
     shallowWrapper
@@ -94,88 +97,93 @@ describe('<Login', () => {
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<Router ><Login {...props} /></Router>);
+    const tree = render.create(<Router ><PureLogin {...props} /></Router>);
     expect(tree).toMatchSnapshot();
   });
 
   it('calls componentWillReceiveProps if status props length > 0', () => {
-    sinon.spy(Login.prototype, 'componentWillReceiveProps');
+    sinon.spy(PureLogin.prototype, 'componentWillReceiveProps');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(Login.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
+    expect(PureLogin.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
   });
 
   it('calls componentWillReceiveProps if status props length < 0', () => {
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().componentWillReceiveProps(nextProps);
-    expect(Login.prototype.componentWillReceiveProps.calledOnce).toEqual(false);
+    expect(PureLogin.prototype.componentWillReceiveProps.calledOnce).toEqual(false);
   });
 
   it('calls handleChange event', () => {
-    sinon.spy(Login.prototype, 'handleChange');
+    sinon.spy(PureLogin.prototype, 'handleChange');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().handleChange(event);
-    expect(Login.prototype.handleChange.calledOnce).toEqual(true);
+    expect(PureLogin.prototype.handleChange.calledOnce).toEqual(true);
   });
 
-  it('calls handleLogin event after login button is clicked', () => {
-    sinon.spy(Login.prototype, 'handleLogin');
+  it('calls handleLogin event after Login button is clicked', () => {
+    sinon.spy(PureLogin.prototype, 'handleLogin');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().handleLogin(event);
-    expect(Login.prototype.handleLogin.calledOnce).toEqual(true);
+    expect(PureLogin.prototype.handleLogin.calledOnce).toEqual(true);
   });
 
   it('calls validateFormField method with null username field', () => {
-    sinon.spy(Login.prototype, 'validateFormField');
+    sinon.spy(PureLogin.prototype, 'validateFormField');
     const { shallowWrapper } = setup(false);
     shallowWrapper.setState({ username: '', hasErrored: false, errorMessage: '' });
     shallowWrapper.instance().validateFormField();
-    expect(Login.prototype.validateFormField.calledOnce).toEqual(true);
+    jest.runAllTimers();
+    expect(PureLogin.prototype.validateFormField.calledOnce).toEqual(true);
     expect(shallowWrapper.state().username).toEqual('');
+    expect(shallowWrapper.state().hasErrored).toEqual(false);
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
   it('calls validateFormField method with null password field', () => {
     const { shallowWrapper } = setup(false);
-    setTimeout(() => {
-    }, 2000);
     shallowWrapper.setState({
       username: 'okon', password: '', hasErrored: false, errorMessage: ''
     });
     shallowWrapper.instance().validateFormField();
-    expect(Login.prototype.validateFormField.calledOnce).toEqual(false);
+    jest.runAllTimers();
+    expect(PureLogin.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().password).toEqual('');
+    expect(shallowWrapper.state().hasErrored).toEqual(false);
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
-  it(' dispatches loginUser action after validatiing fields', () => {
+  it(' dispatches LoginUser action after validatiing fields', () => {
     const { shallowWrapper } = setup(false);
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(Login.prototype.validateFormField.calledOnce).toEqual(false);
+    expect(PureLogin.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().password).toEqual('abcde');
   });
 
   it('calls openModal event when forgot password link is clicked', () => {
-    sinon.spy(Login.prototype, 'openModal');
+    sinon.spy(PureLogin.prototype, 'openModal');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().openModal(event);
-    expect(Login.prototype.openModal.calledOnce).toEqual(true);
+    expect(PureLogin.prototype.openModal.calledOnce).toEqual(true);
   });
 
   it('calls closeModal event', () => {
-    sinon.spy(Login.prototype, 'closeModal');
+    sinon.spy(PureLogin.prototype, 'closeModal');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().closeModal(event);
-    expect(Login.prototype.closeModal.calledOnce).toEqual(true);
+    expect(PureLogin.prototype.closeModal.calledOnce).toEqual(true);
   });
 
   it('calls handleResetPassword event and displays error for null email', () => {
-    sinon.spy(Login.prototype, 'handleResetPassword');
+    sinon.spy(PureLogin.prototype, 'handleResetPassword');
     const { shallowWrapper } = setup(false);
     shallowWrapper.setState({
       username: 'okon', password: '', email: '', hasErrored: false, errorMessage: ''
     });
     shallowWrapper.instance().handleResetPassword(event);
-    expect(Login.prototype.handleResetPassword.calledOnce).toEqual(true);
+    jest.runAllTimers();
+    expect(PureLogin.prototype.handleResetPassword.calledOnce).toEqual(true);
     expect(shallowWrapper.state().email).toEqual('');
   });
 
@@ -183,13 +191,13 @@ describe('<Login', () => {
     const { shallowWrapper } = setup(false);
     shallowWrapper.setState(state);
     shallowWrapper.instance().handleResetPassword(event);
-    expect(Login.prototype.handleResetPassword.calledOnce).toEqual(false);
+    expect(PureLogin.prototype.handleResetPassword.calledOnce).toEqual(false);
     expect(shallowWrapper.state().email).toEqual('');
   });
 
   it('calls renderModalAlert method when props.errorMessage is true', () => {
     props.modalErrorMessage = 'true';
-    const shallowWrapper = shallow(<Login {...props} />);
+    const shallowWrapper = shallow(<PureLogin {...props} />);
     expect(shallowWrapper).toBeDefined();
   });
 

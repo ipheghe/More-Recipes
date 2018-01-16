@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Loader from 'react-loaders';
 import { Pagination } from '../../commonViews';
-import RecipeList from '../recipeList/RecipeList.jsx';
+import RecipeList from '../../commonViews/RecipeList.jsx';
 import { getUserRecipes } from '../../actions/recipeActions';
 
 /**
  * MyRecipes component
+ *
  * @class MyRecipes
+ *
  * @extends {React.Component}
  */
-export class MyRecipes extends React.Component {
+class MyRecipes extends React.Component {
   static propTypes = {
     getUserRecipes: PropTypes.func.isRequired,
     recipes: PropTypes.arrayOf(PropTypes.object).isRequired
@@ -19,6 +21,7 @@ export class MyRecipes extends React.Component {
 
   /**
    * constructor
+   *
    * @param {object} props
    */
   constructor(props) {
@@ -35,6 +38,7 @@ export class MyRecipes extends React.Component {
 
   /**
    * @memberOf MyRecipes
+   *
    * @returns {*} void
    */
   componentDidMount() {
@@ -44,7 +48,9 @@ export class MyRecipes extends React.Component {
 
   /**
    * @param {any} nextprops
+   *
    * @memberOf MyRecipe
+   *
    * @returns {*} void
    */
   componentWillReceiveProps(nextprops) {
@@ -60,6 +66,7 @@ export class MyRecipes extends React.Component {
 
   /**
    * @memberOf MyRecipes
+   *
    * @returns {*} void
    */
   componentWillUnmount() {
@@ -138,7 +145,11 @@ export class MyRecipes extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
+    if (this.state.isLoading) {
+      return (
+        <Loader type="ball-scale-ripple-multiple" active />
+      );
+    }
     return (
       <div>
         <div className="add-padding">
@@ -154,7 +165,10 @@ export class MyRecipes extends React.Component {
           <br />
         </div>
         {
-          (this.state.recipes && this.state.recipes.length > 0 && this.state.pages > 1) ?
+          (
+            this.state.recipes && this.state.recipes.length > 0
+            && this.state.pages > 1
+          ) ?
             <Pagination
               pageNumber={this.state.pages}
               currentPaginatePage={this.state.currentPaginatePage}
@@ -173,5 +187,6 @@ const mapStateToProps = state => ({
   pages: state.recipe.pages
 });
 
+export { MyRecipes as PureMyRecipes };
 export default connect(mapStateToProps, { getUserRecipes })(MyRecipes);
 

@@ -6,7 +6,7 @@ import { loginUser } from '../../actions/authActions';
 import { resetPassword } from '../../actions/userActions';
 import LoginForm from './LoginForm.jsx';
 import RecoverPasswordModal from './RecoverPasswordModal.jsx';
-import renderErrorAlert from '../../utils/errorAlert';
+import renderErrorAlert from '../../utils/renderErrorAlert';
 
 /**
  * Login form commponent
@@ -15,7 +15,7 @@ import renderErrorAlert from '../../utils/errorAlert';
  *
  * @extends {React.Component}
  */
-export class Login extends React.Component {
+class Login extends React.Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
     loginUser: PropTypes.func.isRequired,
@@ -187,7 +187,9 @@ export class Login extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.props.isAuthenticated) return (<Redirect to="/dashboard/top-recipes" />);
+    if (this.props.isAuthenticated) {
+      return (<Redirect to="/dashboard/top-recipes" />);
+    }
     return (
       <div>
         <div className="login-background">
@@ -208,7 +210,11 @@ export class Login extends React.Component {
                   openModal={this.openModal}
                   login={this.handleLogin}
                   error={
-                    renderErrorAlert(this.state.hasErrored, this.props.errorMessage, this.state.errorMessage, 'white')
+                    renderErrorAlert(
+                      this.state.hasErrored,
+                      this.props.errorMessage,
+                      this.state.errorMessage, 'white'
+                    )
                   }
                   onChange={this.handleChange}
                 />
@@ -220,8 +226,12 @@ export class Login extends React.Component {
             this.state.status === '' || this.state.status === 'Fail' ?
               <RecoverPasswordModal
                 error={
-                renderErrorAlert(this.state.hasErrored, this.props.modalErrorMessage, this.state.errorMessage, 'white')
-              }
+                  renderErrorAlert(
+                    this.state.hasErrored,
+                    this.props.modalErrorMessage,
+                    this.state.errorMessage, 'white'
+                  )
+                }
                 isOpen={this.state.modalIsOpen}
                 onClose={this.closeModal}
                 email={this.state.email}
@@ -237,8 +247,7 @@ export class Login extends React.Component {
 
 Login.defaultProps = {
   errorMessage: '',
-  modalErrorMessage: '',
-  status: ''
+  modalErrorMessage: ''
 };
 
 const mapStateToProps = state => ({
@@ -248,4 +257,5 @@ const mapStateToProps = state => ({
   status: state.user.status
 });
 
+export { Login as PureLogin };
 export default connect(mapStateToProps, { loginUser, resetPassword })(Login);

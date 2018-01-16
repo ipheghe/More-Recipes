@@ -59,7 +59,10 @@ const SelectCategoryModal = ({
           {
         (categories && categories.length > 0) ?
           categories.map(category =>
-            <option value={category.id} key={category.id} >{category.name}</option>)
+            (
+              <option value={category.id} key={category.id} >
+                {category.name}
+              </option>))
           : null
       }
         </select>

@@ -1,10 +1,10 @@
 /**
- * validateEditProfileFormField
+ * editProfileFieldValidator
  *
  * @returns {object} status message
  */
 
-const validateEditProfileField = (
+const editProfileValidator = (
   username,
   fullName,
   mobileNumber,
@@ -43,4 +43,4 @@ const validateEditProfileField = (
   return error;
 };
 
-export default validateEditProfileField;
+export default editProfileValidator;

@@ -7,7 +7,8 @@ import render from 'react-test-renderer';
 import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedEditProfile, { EditProfile } from '../../../src/components/editProfile/EditProfile.jsx';
+import ConnectedEditProfile, { PureEditProfile }
+  from '../../../src/components/editProfile/EditProfile.jsx';
 import mockItems from '../../__mocks__/mockItems';
 
 
@@ -61,8 +62,9 @@ const event = {
     mobile: '234702388888',
     email: 'okon@yahoo.com'
   }
-
 };
+
+jest.useFakeTimers();
 
 /**
  *@description  setup function to mount component
@@ -70,15 +72,17 @@ const event = {
  * @return { * } null
  */
 const setup = () => {
-  const mountedWrapper = mount(<Provider store={store}><Router><ConnectedEditProfile {...props} /></Router></Provider>);
-  const shallowWrapper = shallow(<EditProfile {...props} />);
+  const mountedWrapper = mount(<Provider store={store}>
+    <Router><ConnectedEditProfile {...props} /></Router>
+                               </Provider>);
+  const shallowWrapper = shallow(<PureEditProfile {...props} />);
   return {
     mountedWrapper,
     shallowWrapper
   };
 };
 
-describe('<EditProfile', () => {
+describe('<PureEditProfile', () => {
   it('renders without crashing', () => {
     const { mountedWrapper } = setup();
     mountedWrapper.setState(state);
@@ -88,45 +92,53 @@ describe('<EditProfile', () => {
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<Provider store={store}><Router><ConnectedEditProfile {...props} /></Router></Provider>);
+    const tree = render.create(<Provider store={store}>
+      <Router><ConnectedEditProfile {...props} /></Router>
+                               </Provider>);
     expect(tree).toMatchSnapshot();
   });
 
   it('calls handleChange event', () => {
-    sinon.spy(EditProfile.prototype, 'handleChange');
+    sinon.spy(PureEditProfile.prototype, 'handleChange');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().handleChange(event);
-    expect(EditProfile.prototype.handleChange.calledOnce).toEqual(true);
+    expect(PureEditProfile.prototype.handleChange.calledOnce).toEqual(true);
   });
 
   it('calls componentWillReceiveProps if userData from props is available', () => {
-    sinon.spy(EditProfile.prototype, 'componentWillReceiveProps');
+    sinon.spy(PureEditProfile.prototype, 'componentWillReceiveProps');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(EditProfile.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
+    expect(PureEditProfile.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
   });
 
   it('calls handleUpdate event after update button is clicked', () => {
-    sinon.spy(EditProfile.prototype, 'handleUpdate');
+    sinon.spy(PureEditProfile.prototype, 'handleUpdate');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().handleUpdate(event);
-    expect(EditProfile.prototype.handleUpdate.calledOnce).toEqual(true);
+    expect(PureEditProfile.prototype.handleUpdate.calledOnce).toEqual(true);
   });
 
   it('calls validateFormField method with null username field', () => {
-    sinon.spy(EditProfile.prototype, 'validateFormField');
+    sinon.spy(PureEditProfile.prototype, 'validateFormField');
     const { shallowWrapper } = setup();
-    shallowWrapper.setState({ username: '', hasErrored: false, errorMessage: '' });
+    state.username = '';
+    shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(EditProfile.prototype.validateFormField.calledOnce).toEqual(true);
+    jest.runAllTimers();
+    expect(PureEditProfile.prototype.validateFormField.calledOnce)
+      .toEqual(true);
     expect(shallowWrapper.state().username).toEqual('');
   });
 
   it('calls validateFormField method with null fullName  field', () => {
     const { shallowWrapper } = setup();
-    shallowWrapper.setState({ username: 'okon', hasErrored: false, fullName: '' });
+    state.fullName = '';
+    shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(EditProfile.prototype.validateFormField.calledOnce).toEqual(false);
+    jest.runAllTimers();
+    expect(PureEditProfile.prototype.validateFormField.calledOnce)
+      .toEqual(false);
     expect(shallowWrapper.state().fullName).toEqual('');
   });
 
@@ -138,8 +150,11 @@ describe('<EditProfile', () => {
     state.email = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(EditProfile.prototype.validateFormField.calledOnce).toEqual(false);
+    jest.runAllTimers();
+    expect(PureEditProfile.prototype.validateFormField.calledOnce)
+      .toEqual(false);
     expect(shallowWrapper.state().mobileNumber).toEqual('');
+    expect(shallowWrapper.state().hasErrored).toEqual(false);
   });
 
   it(' dispatches updateUser action after validatiing fields', () => {
@@ -147,23 +162,26 @@ describe('<EditProfile', () => {
     state.email = 'okon@yahoo.com';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(EditProfile.prototype.validateFormField.calledOnce).toEqual(false);
+    expect(PureEditProfile.prototype.validateFormField.calledOnce)
+      .toEqual(false);
     expect(shallowWrapper.state().username).toEqual('okon');
   });
 
   it('calls toggleModalState method', () => {
-    sinon.spy(EditProfile.prototype, 'toggleModalState');
+    sinon.spy(PureEditProfile.prototype, 'toggleModalState');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().toggleModalState();
-    expect(EditProfile.prototype.toggleModalState.calledOnce).toEqual(true);
+    expect(PureEditProfile.prototype.toggleModalState.calledOnce)
+      .toEqual(true);
   });
 
   it('calls toggleModalStateOff method', () => {
-    sinon.spy(EditProfile.prototype, 'toggleModalStateOff');
+    sinon.spy(PureEditProfile.prototype, 'toggleModalStateOff');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().toggleModalStateOff();
-    expect(EditProfile.prototype.toggleModalStateOff.calledOnce).toEqual(true);
+    expect(PureEditProfile.prototype.toggleModalStateOff.calledOnce)
+      .toEqual(true);
   });
 });

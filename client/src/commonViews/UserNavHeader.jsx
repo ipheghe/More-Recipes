@@ -114,7 +114,7 @@ export class UserNavHeader extends React.Component {
                   <button
                     className="nav-link invisible-button nav-name"
                     onClick={() => {
-                    window.location.hash = '#editProfile';
+                    window.location.hash = '#edit-profile';
                   }}
                   >
                     <span>

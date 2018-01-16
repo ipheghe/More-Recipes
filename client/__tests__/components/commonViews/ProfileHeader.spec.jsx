@@ -6,7 +6,7 @@ import sinon from 'sinon';
 import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedUserProfileHeader, { ProfileHeader } from '../../../src/commonViews/ProfileHeader.jsx';
+import ConnectedUserProfileHeader, { PureProfileHeader } from '../../../src/commonViews/ProfileHeader.jsx';
 
 
 const middleware = [thunk];
@@ -37,7 +37,7 @@ const event = {
  */
 const setup = () => {
   const mountedWrapper = mount(<Router><ConnectedUserProfileHeader {...props} store={store} /></Router>);
-  const shallowWrapper = shallow(<ProfileHeader {...props} />);
+  const shallowWrapper = shallow(<PureProfileHeader {...props} />);
   return {
     mountedWrapper,
     shallowWrapper
@@ -56,22 +56,22 @@ describe('<ProfileHeader', () => {
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<Router ><ProfileHeader {...props} /></Router>);
+    const tree = render.create(<Router ><PureProfileHeader {...props} /></Router>);
     expect(tree).toMatchSnapshot();
   });
 
   it('calls handleChange event', () => {
-    sinon.spy(ProfileHeader.prototype, 'handleChange');
+    sinon.spy(PureProfileHeader.prototype, 'handleChange');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().handleChange(event);
-    expect(ProfileHeader.prototype.handleChange.calledOnce).toEqual(true);
+    expect(PureProfileHeader.prototype.handleChange.calledOnce).toEqual(true);
   });
 
   it(' dispatches getRecipesBySearch action when search button is clicked', () => {
-    sinon.spy(ProfileHeader.prototype, 'handleSearch');
+    sinon.spy(PureProfileHeader.prototype, 'handleSearch');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().handleSearch(event);
-    expect(ProfileHeader.prototype.handleSearch.calledOnce).toEqual(true);
+    expect(PureProfileHeader.prototype.handleSearch.calledOnce).toEqual(true);
   });
 });

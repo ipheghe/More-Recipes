@@ -2,7 +2,7 @@ import isOnline from 'is-online';
 import dotenv from 'dotenv';
 import db from '../models/index';
 import transporter from '../helpers/mailTransporter';
-import emailTemplate from '../helpers/emailTemplate/emailTemplate';
+import emailTemplate from '../helpers/emailTemplate';
 
 dotenv.load();
 const { User, Recipe } = db;

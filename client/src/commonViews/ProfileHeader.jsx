@@ -10,7 +10,7 @@ import { getRecipesBySearch } from './../actions/recipeActions';
  * @class ProfileHeader
  * @extends {React.Component}
  */
-export class ProfileHeader extends React.Component {
+class ProfileHeader extends React.Component {
   static propTypes = {
     getRecipesBySearch: PropTypes.func.isRequired
   };
@@ -100,5 +100,6 @@ export class ProfileHeader extends React.Component {
   }
 }
 
+export { ProfileHeader as PureProfileHeader };
 export default connect(null, { getUserCategories, getRecipesBySearch })(ProfileHeader);
 

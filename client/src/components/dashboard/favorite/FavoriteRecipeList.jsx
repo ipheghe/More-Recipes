@@ -6,7 +6,8 @@ const FavoriteRecipeList = ({ recipes }) => (
   <div>
     {
         recipes && recipes.length > 0 ?
-          recipes.map(recipe => <FavoriteRecipeCard recipe={recipe} key={recipe.Recipe.id} />)
+          recipes.map(recipe =>
+            <FavoriteRecipeCard recipe={recipe} key={recipe.Recipe.id} />)
           : null
       }
   </div>

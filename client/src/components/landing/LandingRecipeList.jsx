@@ -6,7 +6,8 @@ const LandingRecipeList = ({ recipes }) => (
   <div>
     {
         recipes && recipes.length > 0 ?
-          recipes.map(recipe => <LandingRecipeCard recipe={recipe} key={recipe.id} />)
+          recipes.map(recipe =>
+            <LandingRecipeCard recipe={recipe} key={recipe.id} />)
           : null
       }
   </div>

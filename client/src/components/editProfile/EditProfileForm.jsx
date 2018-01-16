@@ -89,7 +89,13 @@ const EditProfileForm = ({
           onClick={updateProfile}
         >Update
         </button>
-        <a href="#dashboard"><button type="button" className="btn btn-danger">Cancel</button></a>
+        <a href="#dashboard/top-recipes" >
+          <button
+            type="button"
+            className="btn btn-danger"
+          >Cancel
+          </button>
+        </a>
       </div>
     </form>
   </div>

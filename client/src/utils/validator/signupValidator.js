@@ -1,10 +1,10 @@
 /**
- * validateSignupFormField
+ * signupValidator
  *
  * @returns {object} status message
  */
 
-const validateSignupField = (
+const signupValidator = (
   username,
   fullName,
   mobileNumber,
@@ -49,4 +49,4 @@ const validateSignupField = (
   return error;
 };
 
-export default validateSignupField;
+export default signupValidator;

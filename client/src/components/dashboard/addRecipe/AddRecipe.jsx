@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { addRecipe } from '../../../actions/recipeActions';
 import { uploadImage } from '../../../actions/uploadImageActions';
 import AddRecipeForm from './AddRecipeForm.jsx';
-import validateAddRecipeField from '../../../utils/validator/addRecipeValidor';
-import renderErrorAlert from '../../../utils/errorAlert';
+import addRecipeValidator from '../../../utils/validator/addRecipeValidator';
+import renderErrorAlert from '../../../utils/renderErrorAlert';
 
 /**
  * AddRecipe component
@@ -14,7 +14,7 @@ import renderErrorAlert from '../../../utils/errorAlert';
  *
  * @extends {React.Component}
  */
-export class AddRecipe extends React.Component {
+class AddRecipe extends React.Component {
   static propTypes = {
     addRecipe: PropTypes.func.isRequired,
     uploadImage: PropTypes.func.isRequired,
@@ -111,7 +111,7 @@ export class AddRecipe extends React.Component {
       imageUrl
     } = this.state;
 
-    const error = validateAddRecipeField(
+    const error = addRecipeValidator(
       recipeName,
       recipeDetail,
       ingredients,
@@ -131,6 +131,7 @@ export class AddRecipe extends React.Component {
         errorMessage: error.message
       });
     }
+
     return this.props.addRecipe(
       recipeName,
       recipeDetail,
@@ -158,7 +159,11 @@ export class AddRecipe extends React.Component {
             directions={this.state.directions}
             addRecipe={this.handleAddRecipe}
             error={
-              renderErrorAlert(this.state.hasErrored, this.props.errorMessage, this.state.errorMessage, 'black')
+              renderErrorAlert(
+                this.state.hasErrored,
+                this.props.errorMessage,
+                this.state.errorMessage, 'black'
+              )
             }
             onChange={this.handleChange}
             onImageChange={this.handleImageChange}
@@ -178,5 +183,7 @@ const mapStateToProps = state => ({
   imageFile: state.recipe.imageUrl,
   imageUrl: state.imageUploadReducer[0].response
 });
+
+export { AddRecipe as PureAddRecipe };
 export default connect(mapStateToProps, { addRecipe, uploadImage })(AddRecipe);
 

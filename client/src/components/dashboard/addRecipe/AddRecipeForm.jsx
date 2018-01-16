@@ -74,7 +74,11 @@ const AddRecipeForm = ({
           aria-describedby="fileHelp"
           onChange={onImageChange}
         />
-        <small id="fileHelp" className="form-text text-muted">Please attach an image file.</small>
+        <small
+          id="fileHelp"
+          className="form-text text-muted"
+        >Please attach an image file.
+        </small>
       </div>
       <div className="edit-profile-button">
         <button

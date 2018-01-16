@@ -20,7 +20,7 @@ import SelectCategoryModal from './SelectCategoryModal.jsx';
  *
  * @extends {React.Component}
  */
-export class ViewRecipe extends React.Component {
+class ViewRecipe extends React.Component {
   static propTypes = {
     count: PropTypes.number.isRequired,
     getRecipe: PropTypes.func.isRequired,
@@ -83,7 +83,7 @@ export class ViewRecipe extends React.Component {
   }
 
   /**
-   * @memberOf Favorite
+   * @memberOf ViewRecipe
    *
    * @returns {*} void
    */
@@ -109,12 +109,14 @@ export class ViewRecipe extends React.Component {
         this.setState({
           recipe: Object.assign({}, this.state.recipe, recipeData),
           reviews: Object.assign([], this.state.reviews, reviewList),
-          ingredients: recipeData.ingredients.split(',').map(item => item.trim()),
+          ingredients: recipeData.ingredients
+            .split(',').map(item => item.trim()),
           directions: recipeData.directions.split(',').map(item => item.trim()),
           isLoading: false,
         });
       }
     }
+
     if (nextprops.status) {
       this.setState({
         isFavorite: nextprops.status
@@ -286,7 +288,11 @@ export class ViewRecipe extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
+    if (this.state.isLoading) {
+      return (
+        <Loader type="ball-scale-ripple-multiple" active />
+      );
+    }
     const reviewFields = this.state.reviews;
     return (
       <div>
@@ -314,8 +320,11 @@ export class ViewRecipe extends React.Component {
                 <section className="col-md-6 recipe-image">
                   <img
                     className="img-thumbnail"
-                    src={(this.state.recipe.imageUrl === null || this.state.recipe.imageUrl === 'no-image') ? 'dist/pizza1.jpg'
-                  : this.state.recipe.imageUrl}
+                    src={(
+                      this.state.recipe.imageUrl === null
+                      || this.state.recipe.imageUrl === 'no-image')
+                        ? 'dist/pizza1.jpg'
+                          : this.state.recipe.imageUrl}
                     alt="egusi soup"
                   />
                 </section>
@@ -363,7 +372,12 @@ export class ViewRecipe extends React.Component {
                 <section className="col-md-6">
                   <div>
                     <ul>
-                      {this.state.ingredients.map(item => <li key={item}><i className="fa fa-dot-circle-o" /><span>{item}</span></li>)}
+                      {
+                        this.state.ingredients.map(item =>
+                          (
+                            <li key={item}><i className="fa fa-dot-circle-o" />
+                              <span>{item}</span>
+                            </li>))}
                     </ul>
                   </div>
                 </section>
@@ -377,7 +391,12 @@ export class ViewRecipe extends React.Component {
                 <section className="col-md-12">
                   <div>
                     <ul>
-                      {this.state.directions.map(item => <li key={item}><i className="fa fa-dot-circle-o" /><span>{item}</span></li>)}
+                      {
+                        this.state.directions.map(item =>
+                          (
+                            <li key={item}><i className="fa fa-dot-circle-o" />
+                              <span>{item}</span>
+                            </li>))}
                     </ul>
                   </div>
                 </section>
@@ -415,7 +434,8 @@ export class ViewRecipe extends React.Component {
                     reviewFields.map(review => (
                       <ReviewBox
                         key={review.id}
-                        fullName={review.User ? review.User.fullName : this.props.userData.fullName}
+                        fullName={review.User
+                          ? review.User.fullName : this.props.userData.fullName}
                         createdAt={review.createdAt.substring(0, 10)}
                         message={review.message}
                       />
@@ -464,6 +484,7 @@ const mapStateToProps = state => ({
   count: state.review.count
 });
 
+export { ViewRecipe as PureViewRecipe };
 export default connect(
   mapStateToProps,
   {

@@ -1,7 +1,8 @@
 import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
-import FavoriteRecipeCard from '../../../../src/components/dashboard/favorite/FavoriteRecipeCard.jsx';
+import FavoriteRecipeCard
+  from '../../../../src/components/dashboard/favorite/FavoriteRecipeCard.jsx';
 
 const recipe =
 {

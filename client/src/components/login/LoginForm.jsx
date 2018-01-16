@@ -56,7 +56,8 @@ const LoginForm = ({
       <div className="row">
         <div className="checkbox-primary col-md-6">
           <label>
-            <input type="checkbox" id="login-checkbox" /><span>Remember me</span>
+            <input type="checkbox" id="login-checkbox" />
+            <span>Remember me</span>
           </label>
         </div>
         <div className="text-right col-md-6">
@@ -81,7 +82,12 @@ const LoginForm = ({
         </div>
         <br />
         <div>
-          <Link to="/signup"className="btn btn-block btn-success home" >Sign Up</Link>
+          <Link
+            to="/signup"
+            href="#signup"
+            className="btn btn-block btn-success home"
+          >Sign Up
+          </Link>
         </div>
       </div>
     </form>

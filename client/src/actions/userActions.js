@@ -30,7 +30,7 @@ const updateUserRecord = (username, fullName, mobileNumber, email) => {
     email
   };
   const url = '/user';
-  const directTo = '#dashboard';
+  const directTo = '#dashboard/top-recipes';
   const message = 'User Profile updated Successfully';
   const constant = 'UPDATE_USER';
   return dispatch => putData(

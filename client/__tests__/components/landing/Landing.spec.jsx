@@ -6,7 +6,8 @@ import configureMockStore from 'redux-mock-store';
 import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
 import render from 'react-test-renderer';
-import ConnectedLandingPage, { Landing } from '../../../src/components/landing/Landing.jsx';
+import ConnectedLandingPage, { PureLanding }
+  from '../../../src/components/landing/Landing.jsx';
 import mockItems from '../../__mocks__/mockItems';
 import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 
@@ -49,7 +50,7 @@ const props = {
 const setup = (isAuthenticated) => {
   props.isAuthenticated = isAuthenticated;
   const mountedWrapper = mount(<Router><ConnectedLandingPage {...props} store={store} /></Router>);
-  const shallowWrapper = shallow(<Landing {...props} />);
+  const shallowWrapper = shallow(<PureLanding {...props} />);
   return {
     mountedWrapper,
     shallowWrapper
@@ -68,10 +69,10 @@ describe('<Landing', () => {
   });
 
   it('calls componentDidMount', () => {
-    sinon.spy(Landing.prototype, 'componentDidMount');
+    sinon.spy(PureLanding.prototype, 'componentDidMount');
     const { shallowWrapper } = setup(false);
     expect(shallowWrapper.exists()).toBe(true);
-    expect(Landing.prototype.componentDidMount.calledOnce).toEqual(false);
+    expect(PureLanding.prototype.componentDidMount.calledOnce).toEqual(false);
   });
 
   it('calls showTopRecipes event ', () => {
@@ -83,7 +84,7 @@ describe('<Landing', () => {
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<Router ><Landing {...props} /></Router>);
+    const tree = render.create(<Router ><PureLanding {...props} /></Router>);
     expect(tree).toMatchSnapshot();
   });
 

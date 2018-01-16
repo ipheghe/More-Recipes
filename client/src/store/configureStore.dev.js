@@ -11,6 +11,9 @@ const logger = createLogger({});
  * @func
  * @returns {*} void
  */
-const configureStore = () => composeWithDevTools(applyMiddleware(thunk, logger))(createStore)(rootReducer);
+const configureStore = () => composeWithDevTools(applyMiddleware(
+  thunk,
+  logger
+))(createStore)(rootReducer);
 
 export default configureStore;

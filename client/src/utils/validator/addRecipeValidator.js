@@ -1,10 +1,10 @@
 /**
- * validateAddRecipeFormField
+ * AddRecipeValidator
  *
  * @returns {object} status message
  */
 
-const validateAddRecipeField = (
+const AddRecipeValidator = (
   recipeName,
   recipeDetail,
   ingredients,
@@ -41,5 +41,5 @@ const validateAddRecipeField = (
   return error;
 };
 
-export default validateAddRecipeField;
+export default AddRecipeValidator;
 

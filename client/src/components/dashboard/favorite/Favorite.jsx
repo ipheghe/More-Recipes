@@ -10,10 +10,12 @@ import FavoriteRecipeList from './FavoriteRecipeList.jsx';
 
 /**
  * Favorite component
+ *
  * @class Favorite
+ *
  * @extends {React.Component}
  */
-export class Favorite extends React.Component {
+class Favorite extends React.Component {
   static propTypes = {
     getFavoriteRecipes: PropTypes.func.isRequired,
     userFavorites: PropTypes.arrayOf(PropTypes.object)
@@ -21,6 +23,7 @@ export class Favorite extends React.Component {
 
   /**
    * constructor
+   *
    * @param {object} props
    */
   constructor(props) {
@@ -36,6 +39,7 @@ export class Favorite extends React.Component {
 
   /**
    * @memberOf Favorite
+   *
    * @returns {*} void
    */
   componentDidMount() {
@@ -45,14 +49,20 @@ export class Favorite extends React.Component {
 
   /**
    * @param {any} nextprops
+   *
    * @memberOf Favorite
+   *
    * @returns {*} void
    */
   componentWillReceiveProps(nextprops) {
     if (nextprops.userFavorites) {
       const { userFavorites } = nextprops;
       this.setState({
-        userFavorites: Object.assign([], this.state.userFavorites, userFavorites),
+        userFavorites: Object.assign(
+          [],
+          this.state.userFavorites,
+          userFavorites
+        ),
         pages: nextprops.pages,
         isLoading: false
       });
@@ -61,6 +71,7 @@ export class Favorite extends React.Component {
 
   /**
    * @memberOf Favorite
+   *
    * @returns {*} void
    */
   componentWillUnmount() {
@@ -140,7 +151,11 @@ export class Favorite extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
+    if (this.state.isLoading) {
+      return (
+        <Loader type="ball-scale-ripple-multiple" active />
+      );
+    }
     return (
       <div>
         <div className="add-padding">
@@ -155,14 +170,17 @@ export class Favorite extends React.Component {
           </div>
         </div>
         {
-          (this.state.userFavorites && this.state.userFavorites.length > 0 && this.state.pages > 1) ?
-            <Pagination
-              pageNumber={this.state.pages}
-              currentPaginatePage={this.state.currentPaginatePage}
-              onPaginateClick={this.onPaginateClick}
-              next={this.handleNext}
-              previous={this.handlePrevious}
-            /> : ''
+          (
+            this.state.userFavorites
+            && this.state.userFavorites.length > 0
+            && this.state.pages > 1) ?
+              <Pagination
+                pageNumber={this.state.pages}
+                currentPaginatePage={this.state.currentPaginatePage}
+                onPaginateClick={this.onPaginateClick}
+                next={this.handleNext}
+                previous={this.handlePrevious}
+              /> : ''
         }
       </div>
     );
@@ -179,5 +197,6 @@ const mapStateToProps = state => ({
   pages: state.favorite.pages
 });
 
+export { Favorite as PureFavorite };
 export default connect(mapStateToProps, { getFavoriteRecipes })(Favorite);
 

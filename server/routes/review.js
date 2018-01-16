@@ -1,9 +1,10 @@
 import express from 'express';
 import authorize from '../middlewares/requireAuth';
-import { reviews, reviewNotification } from '../controllers';
+import { reviews } from '../controllers';
 import { recipeExists } from '../middlewares/recipeValidation';
 import { validUser } from '../middlewares/userValidation';
 import validateReview from '../middlewares/reviewValidation';
+import reviewNotification from '../middlewares/reviewNotification';
 
 const router = express.Router();
 

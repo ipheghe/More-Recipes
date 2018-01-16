@@ -1,7 +1,7 @@
 import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
-import RecipeList from '../../../src/components/recipeList/RecipeList.jsx';
+import RecipeList from '../../../src/commonViews/RecipeList.jsx';
 
 /**
  * @description function to mount component

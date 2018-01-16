@@ -7,26 +7,29 @@ import {
   UserSection,
   UserNavMenu,
 } from '../../commonViews';
-import ConnectedFavorite from './favorite/Favorite.jsx';
-import ConnectedAddRecipe from './addRecipe/AddRecipe.jsx';
-import ConnectedTopRecipes from './TopRecipes.jsx';
-import ConnectedMyRecipes from './MyRecipes.jsx';
+import Favorite from './favorite/Favorite.jsx';
+import AddRecipe from './addRecipe/AddRecipe.jsx';
+import TopRecipes from './TopRecipes.jsx';
+import MyRecipes from './MyRecipes.jsx';
 import ManageRecipe from './manageRecipe/ManageRecipe.jsx';
-import ConnectedSearch from './Search.jsx';
+import Search from './Search.jsx';
 
 
 /**
  * Dashboard component
+ *
  * @class Dashboard
+ *
  * @extends {React.Component}
  */
-export class Dashboard extends React.Component {
+class Dashboard extends React.Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool.isRequired
   };
 
   /**
    * render
+   *
    * @return {ReactElement} markup
    */
   render() {
@@ -54,7 +57,7 @@ export class Dashboard extends React.Component {
                           !auth ? (
                             <Redirect to="/login" />
                           ) : (
-                            <ConnectedTopRecipes />
+                            <TopRecipes />
                           )
                         )}
                       />
@@ -65,7 +68,7 @@ export class Dashboard extends React.Component {
                           !auth ? (
                             <Redirect to="/login" />
                           ) : (
-                            <ConnectedFavorite />
+                            <Favorite />
                           )
                         )}
                       />
@@ -76,7 +79,7 @@ export class Dashboard extends React.Component {
                           !auth ? (
                             <Redirect to="/login" />
                           ) : (
-                            <ConnectedAddRecipe />
+                            <AddRecipe />
                           )
                         )}
                       />
@@ -87,7 +90,7 @@ export class Dashboard extends React.Component {
                           !auth ? (
                             <Redirect to="/login" />
                           ) : (
-                            <ConnectedMyRecipes />
+                            <MyRecipes />
                           )
                         )}
                       />
@@ -109,7 +112,7 @@ export class Dashboard extends React.Component {
                           !auth ? (
                             <Redirect to="/login" />
                           ) : (
-                            <ConnectedSearch />
+                            <Search />
                           )
                         )}
                       />
@@ -149,4 +152,5 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.authenticated
 });
 
+export { Dashboard as PureDashboard };
 export default connect(mapStateToProps)(Dashboard);

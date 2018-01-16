@@ -9,8 +9,8 @@ import {
   getUserCategory
 } from '../../actions/categoryActions';
 import { changePassword } from '../../actions/userActions';
-import renderErrorAlert from '../../utils/errorAlert';
-import validateChangePasswordField from '../../utils/validator/changePasswordValidator';
+import renderErrorAlert from '../../utils/renderErrorAlert';
+import changePasswordValidator from '../../utils/validator/changePasswordValidator';
 import { logoutUser } from '../../actions/authActions';
 
 /**
@@ -197,7 +197,7 @@ export class UserSection extends React.Component {
       confirmPassword,
     } = this.state;
 
-    const error = validateChangePasswordField(
+    const error = changePasswordValidator(
       oldPassword,
       newPassword,
       confirmPassword,
@@ -239,7 +239,7 @@ export class UserSection extends React.Component {
             className="invisible-button nav-editProfile"
             style={{ color: '#0275d8', textAlign: 'center' }}
             onClick={() => {
-              window.location.hash = 'editProfile';
+              window.location.hash = 'edit-profile';
           }}
           >
           Edit Profile

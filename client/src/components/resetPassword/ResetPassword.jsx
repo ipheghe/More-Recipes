@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { verifyTokenPassword } from '../../actions/userActions';
 import ResetPasswordForm from './ResetPasswordForm.jsx';
-import renderErrorAlert from '../../utils/errorAlert';
-import validateResetPasswordField from '../../utils/validator/resetPasswordValidator';
+import renderErrorAlert from '../../utils/renderErrorAlert';
+import resetPasswordValidator
+  from '../../utils/validator/resetPasswordValidator';
 
 /**
  * Reset password form commponent
@@ -14,7 +15,7 @@ import validateResetPasswordField from '../../utils/validator/resetPasswordValid
  *
  * @extends {React.Component}
  */
-export class ResetPassword extends React.Component {
+class ResetPassword extends React.Component {
   static propTypes = {
     verifyTokenPassword: PropTypes.func.isRequired,
     errorMessage: PropTypes.string,
@@ -76,7 +77,7 @@ export class ResetPassword extends React.Component {
     const { newPassword, confirmPassword } = this.state;
     const { token } = this.props.match.params;
 
-    const error = validateResetPasswordField(newPassword, confirmPassword);
+    const error = resetPasswordValidator(newPassword, confirmPassword);
 
     if (error.status === true) {
       setTimeout(() => {
@@ -99,7 +100,9 @@ export class ResetPassword extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.props.isAuthenticated) return (<Redirect to="/dashboard/top-recipes" />);
+    if (this.props.isAuthenticated) {
+      return (<Redirect to="/dashboard/top-recipes" />);
+    }
     return (
       <div>
         <div className="login-background">
@@ -120,7 +123,11 @@ export class ResetPassword extends React.Component {
                   openModal={this.openModal}
                   resetPassword={this.handleResetPassword}
                   error={
-                    renderErrorAlert(this.state.hasErrored, this.props.errorMessage, this.state.errorMessage, 'white')
+                    renderErrorAlert(
+                      this.state.hasErrored,
+                      this.props.errorMessage,
+                      this.state.errorMessage, 'white'
+                    )
                   }
                   onChange={this.handleChange}
                 />
@@ -142,5 +149,6 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.authenticated,
 });
 
+export { ResetPassword as PureResetPassword };
 export default connect(mapStateToProps, { verifyTokenPassword })(ResetPassword);
 

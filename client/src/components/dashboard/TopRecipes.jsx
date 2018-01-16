@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Loader from 'react-loaders';
 import { Pagination } from '../../commonViews';
-import RecipeList from '../recipeList/RecipeList.jsx';
+import RecipeList from '../../commonViews/RecipeList.jsx';
 import { getTopRecipes } from '../../actions/recipeActions';
 
 
@@ -14,7 +14,7 @@ import { getTopRecipes } from '../../actions/recipeActions';
  *
  * @extends {React.Component}
  */
-export class TopRecipes extends React.Component {
+class TopRecipes extends React.Component {
   static propTypes = {
     getTopRecipes: PropTypes.func.isRequired,
     recipes: PropTypes.arrayOf(PropTypes.object)
@@ -143,7 +143,11 @@ export class TopRecipes extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
+    if (this.state.isLoading) {
+      return (
+        <Loader type="ball-scale-ripple-multiple" active />
+      );
+    }
     return (
       <div>
         <div className="add-padding">
@@ -182,4 +186,5 @@ const mapStateToProps = state => ({
   pages: state.recipe.pages
 });
 
+export { TopRecipes as PureTopRecipes };
 export default connect(mapStateToProps, { getTopRecipes })(TopRecipes);

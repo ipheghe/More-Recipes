@@ -26,6 +26,7 @@
     "new-cap": 0,
     "no-useless-escape": 0,
     "jsx-a11y/anchor-has-content": "off",
+    "max-len": ["error", { "code": 80 }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/prefer-stateless-function": [0, { "ignorePureComponents": true }],
     "react/jsx-uses-react": 2,

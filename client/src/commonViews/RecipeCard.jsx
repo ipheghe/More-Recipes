@@ -4,26 +4,26 @@ import { Link } from 'react-router-dom';
 import EllipsisText from 'react-ellipsis-text';
 
 
-const FavoriteRecipeCard = ({ recipe }) => (
+const RecipeCard = ({ recipe }) => (
   <div className="card">
     <img
       className="card-img-top"
       src={
         (
-          recipe.Recipe.imageUrl === null
-          || recipe.Recipe.imageUrl === 'no-image'
+          recipe.imageUrl === null
+          || recipe.imageUrl === 'no-image'
         )
       ? 'assets/images/pizza1.jpg'
-      : recipe.Recipe.imageUrl
+      : recipe.imageUrl
     }
       alt="recipe"
     />
     <div className="card-block">
       <h4 className="card-title">
-        <EllipsisText text={recipe.Recipe.name} length={15} />
+        <EllipsisText text={recipe.name} length={15} />
       </h4>
       <p className="card-text ">
-        <EllipsisText text={recipe.Recipe.description} length={30} />
+        <EllipsisText text={recipe.description} length={30} />
       </p>
     </div>
     <div className="card-footer">
@@ -34,26 +34,26 @@ const FavoriteRecipeCard = ({ recipe }) => (
               className="fa fa-eye"
               aria-hidden="true"
               style={{ color: 'green' }}
-            />{recipe.Recipe.views}
+            />{recipe.views}
           </span>
           <span className="upvote">
             <i
               className="fa fa-thumbs-up"
               aria-hidden="true"
               style={{ color: 'red' }}
-            />{recipe.Recipe.upvotes}
+            />{recipe.upvotes}
           </span>
           <span className="downvote">
             <i
               className="fa fa-thumbs-down"
               aria-hidden="true"
               style={{ color: 'orange' }}
-            />{recipe.Recipe.downvotes}
+            />{recipe.downvotes}
           </span>
         </div>
         <Link
-          to={`/recipes/${recipe.Recipe.id}`}
-          href={`#recipes/${recipe.Recipe.id}`}
+          to={`/recipes/${recipe.id}`}
+          href={`#recipes/${recipe.id}`}
           className="btn btn-secondary btn-sm"
         >More
         </Link>
@@ -62,11 +62,12 @@ const FavoriteRecipeCard = ({ recipe }) => (
   </div>
 );
 
-FavoriteRecipeCard.propTypes = {
-  recipe: PropTypes.objectOf(PropTypes.shape({
+RecipeCard.propTypes = {
+  recipe: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-  }).isRequired).isRequired
+  }).isRequired
 };
 
-export default FavoriteRecipeCard;
+export default RecipeCard;

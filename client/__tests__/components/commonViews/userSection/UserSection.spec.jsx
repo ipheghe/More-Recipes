@@ -6,7 +6,8 @@ import render from 'react-test-renderer';
 import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedUserSection, { UserSection } from '../../../../src/commonViews/userSection/UserSection.jsx';
+import ConnectedUserSection, { UserSection }
+  from '../../../../src/commonViews/userSection/UserSection.jsx';
 import mockItems from '../../../__mocks__/mockItems';
 
 
@@ -55,6 +56,7 @@ const props = {
   deleteCategory: jest.fn(() => Promise.resolve()),
   getUserCategory: jest.fn(() => Promise.resolve()),
   changePassword: jest.fn(() => Promise.resolve()),
+  logoutUser: jest.fn(() => Promise.resolve()),
   modalOpen: jest.fn(),
   modalClosed: jest.fn(),
   userData: mockItems.user,
@@ -79,6 +81,8 @@ const event = {
     confirmPassword: 'abcdef',
   }
 };
+
+jest.useFakeTimers();
 
 /**
  *@description  setup function to mount component
@@ -112,13 +116,23 @@ describe('<UserSection', () => {
     sinon.spy(UserSection.prototype, 'componentWillReceiveProps');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(UserSection.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
+    expect(UserSection.prototype.componentWillReceiveProps.calledOnce)
+      .toEqual(true);
+  });
+
+  it('calls componentWillReceiveProps if status props status is Success', () => {
+    props.status = 'Success';
+    const shallowWrapper = shallow(<UserSection {...props} />);
+    shallowWrapper.instance().componentWillReceiveProps(props);
+    expect(UserSection.prototype.componentWillReceiveProps.calledOnce)
+      .toEqual(false);
   });
 
   it('doesnt call componentWillReceiveProps if status props length < 0 and categoryList length < 0', () => {
     const { shallowWrapper } = setup();
     shallowWrapper.instance().componentWillReceiveProps(nextProps);
-    expect(UserSection.prototype.componentWillReceiveProps.calledOnce).toEqual(false);
+    expect(UserSection.prototype.componentWillReceiveProps.calledOnce)
+      .toEqual(false);
   });
 
   it('calls handleChange event', () => {
@@ -141,6 +155,7 @@ describe('<UserSection', () => {
     state.confirmPassword = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    jest.runAllTimers();
     expect(UserSection.prototype.validateFormField.calledOnce).toEqual(true);
     expect(shallowWrapper.state().confirmPassword).toEqual('');
   });
@@ -150,6 +165,7 @@ describe('<UserSection', () => {
     state.newPassword = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    jest.runAllTimers();
     expect(UserSection.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().newPassword).toEqual('');
   });
@@ -159,6 +175,7 @@ describe('<UserSection', () => {
     state.oldPassword = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    jest.runAllTimers();
     expect(UserSection.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().oldPassword).toEqual('');
   });
@@ -170,6 +187,7 @@ describe('<UserSection', () => {
     state.newPassword = 'abcde';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    jest.runAllTimers();
     expect(UserSection.prototype.validateFormField.calledOnce).toEqual(false);
     expect(shallowWrapper.state().newPassword).toEqual('abcde');
     expect(shallowWrapper.state().confirmPassword).toEqual('abhhhcde');
@@ -187,13 +205,15 @@ describe('<UserSection', () => {
   it('renders the editProfile component when edit profile link is clicked', () => {
     const { shallowWrapper } = setup();
     expect(shallowWrapper).toBeDefined();
-    expect(shallowWrapper.find('.invisible-button.nav-editProfile').simulate('click'));
+    expect(shallowWrapper.find('.invisible-button.nav-editProfile')
+      .simulate('click'));
   });
 
   it('renders the change password modal component when change password link is clicked', () => {
     const { shallowWrapper } = setup();
     expect(shallowWrapper).toBeDefined();
-    expect(shallowWrapper.find('.invisible-button.nav-changePassword').simulate('click'));
+    expect(shallowWrapper.find('.invisible-button.nav-changePassword')
+      .simulate('click'));
   });
 
   it('calls the getCategories function when a category is clicked', () => {

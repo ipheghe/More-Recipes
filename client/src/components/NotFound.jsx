@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 
 /**
  * NotFoundPage component
+ *
  * @returns {component} NotFoundPage
  */
-const NotFoundPage = () => (
+const NotFound = () => (
   <div>
     <div className="notFound-background">
       <div className="notFound-body">
@@ -13,7 +14,11 @@ const NotFoundPage = () => (
         <h2>Page Not Found</h2>
         <p>I am sorry, the page you were looking for cannot be found!</p>
         <p>
-          <Link to="/" className="btn btn-success btn-lg">
+          <Link
+            to="/"
+            href="#/"
+            className="btn btn-success btn-lg"
+          >
             <span><i className="fa fa-home" /></span>Back to Home
           </Link>
         </p>
@@ -22,4 +27,4 @@ const NotFoundPage = () => (
   </div>
 );
 
-export default NotFoundPage;
+export default NotFound;

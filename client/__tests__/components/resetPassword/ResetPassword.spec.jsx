@@ -6,7 +6,8 @@ import sinon from 'sinon';
 import render from 'react-test-renderer';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedResetPassword, { ResetPassword } from '../../../src/components/resetPassword/ResetPassword.jsx';
+import ConnectedResetPassword, { PureResetPassword }
+  from '../../../src/components/resetPassword/ResetPassword.jsx';
 import mockItems from '../../__mocks__/mockItems';
 
 
@@ -57,6 +58,8 @@ const event = {
 
 };
 
+jest.useFakeTimers();
+
 /**
  *@description  setup function to mount component
  *
@@ -66,8 +69,10 @@ const event = {
  */
 const setup = (isAuthenticated) => {
   props.isAuthenticated = isAuthenticated;
-  const mountedWrapper = mount(<Provider store={store} ><ConnectedResetPassword {...props} store={store} /></Provider>);
-  const shallowWrapper = shallow(<ResetPassword {...props} />);
+  const mountedWrapper = mount(<Provider store={store} >
+    <ConnectedResetPassword {...props} store={store} />
+  </Provider>);
+  const shallowWrapper = shallow(<PureResetPassword {...props} />);
   return {
     mountedWrapper,
     shallowWrapper
@@ -83,31 +88,34 @@ describe('<ResetPassword', () => {
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<ResetPassword {...props} />);
+    const tree = render.create(<PureResetPassword {...props} />);
     expect(tree).toMatchSnapshot();
   });
 
   it('calls handleChange event', () => {
-    sinon.spy(ResetPassword.prototype, 'handleChange');
+    sinon.spy(PureResetPassword.prototype, 'handleChange');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().handleChange(event);
-    expect(ResetPassword.prototype.handleChange.calledOnce).toEqual(true);
+    expect(PureResetPassword.prototype.handleChange.calledOnce).toEqual(true);
   });
 
   it('calls handleResetPassword event after change password button is clicked', () => {
-    sinon.spy(ResetPassword.prototype, 'handleResetPassword');
+    sinon.spy(PureResetPassword.prototype, 'handleResetPassword');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().handleResetPassword(event);
-    expect(ResetPassword.prototype.handleResetPassword.calledOnce).toEqual(true);
+    expect(PureResetPassword.prototype.handleResetPassword.calledOnce)
+      .toEqual(true);
   });
 
   it('calls returns error for null confirm password field', () => {
-    sinon.spy(ResetPassword.prototype, 'validateFormField');
+    sinon.spy(PureResetPassword.prototype, 'validateFormField');
     const { shallowWrapper } = setup(false);
     state.confirmPassword = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(ResetPassword.prototype.validateFormField.calledOnce).toEqual(true);
+    jest.runAllTimers();
+    expect(PureResetPassword.prototype.validateFormField.calledOnce)
+      .toEqual(true);
     expect(shallowWrapper.state().confirmPassword).toEqual('');
   });
 
@@ -116,7 +124,9 @@ describe('<ResetPassword', () => {
     state.newPassword = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(ResetPassword.prototype.validateFormField.calledOnce).toEqual(false);
+    jest.runAllTimers();
+    expect(PureResetPassword.prototype.validateFormField.calledOnce)
+      .toEqual(false);
     expect(shallowWrapper.state().newPassword).toEqual('');
   });
 
@@ -126,7 +136,9 @@ describe('<ResetPassword', () => {
     state.confirmPassword = 'abcdhhhhe';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(ResetPassword.prototype.validateFormField.calledOnce).toEqual(false);
+    jest.runAllTimers();
+    expect(PureResetPassword.prototype.validateFormField.calledOnce)
+      .toEqual(false);
     expect(shallowWrapper.state().confirmPassword).toEqual('abcdhhhhe');
   });
 
@@ -136,7 +148,8 @@ describe('<ResetPassword', () => {
     state.confirmPassword = 'abcde';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(ResetPassword.prototype.validateFormField.calledOnce).toEqual(false);
+    expect(PureResetPassword.prototype.validateFormField.calledOnce)
+      .toEqual(false);
     expect(shallowWrapper.state().confirmPassword).toEqual('abcde');
   });
 
