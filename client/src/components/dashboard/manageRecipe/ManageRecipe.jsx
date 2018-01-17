@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Loader from 'react-loaders';
-import { fetchUsername } from '../../../actions/authActions';
 import {
   updateRecipe,
   deleteRecipe,
@@ -12,6 +11,8 @@ import {
 import { uploadImage } from '../../../actions/uploadImageActions';
 import ManageRecipeForm from './ManageRecipeForm.jsx';
 import renderErrorAlert from '../../../utils/renderErrorAlert';
+import updateRecipeValidator
+  from '../../../utils/validator/updateRecipeValidator';
 
 /**
  * ManageRecipe component
@@ -20,7 +21,6 @@ import renderErrorAlert from '../../../utils/renderErrorAlert';
  *
  * @extends {React.Component}
  */
-@connect(state => ({ state, }))
 class ManageRecipe extends React.Component {
   static propTypes = {
     getUserRecipes: PropTypes.func.isRequired,
@@ -86,14 +86,20 @@ class ManageRecipe extends React.Component {
       });
     }
 
-    if (nextprops.state.recipe.recipeData) {
-      const { recipeData } = nextprops.state.recipe;
+    if (nextprops.recipe) {
+      const { recipe } = nextprops;
       this.setState({
-        recipeDetail: recipeData.description,
-        ingredients: recipeData.ingredients,
-        directions: recipeData.directions,
-        imageUrl: nextprops.imageUrl,
+        recipeDetail: recipe.description,
+        ingredients: recipe.ingredients,
+        directions: recipe.directions,
+        imageUrl: recipe.imageUrl,
         isLoading: false,
+      });
+    }
+
+    if (nextprops.imageUrl) {
+      this.setState({
+        imageUrl: nextprops.imageUrl
       });
     }
   }
@@ -212,9 +218,17 @@ class ManageRecipe extends React.Component {
       recipeDetail,
       ingredients,
       directions,
-      imageUrl
+      imageUrl,
     } = this.state;
-    if (recipeDetail === '') {
+
+    const error = updateRecipeValidator(
+      ingredients,
+      directions,
+      this.props.recipe.id,
+      this.recipeId.value
+    );
+
+    if (error.status === true) {
       setTimeout(() => {
         this.setState({
           hasErrored: false,
@@ -222,50 +236,11 @@ class ManageRecipe extends React.Component {
         });
       }, 3000);
       return this.setState({
-        hasErrored: true,
-        errorMessage: 'Recipe Detail field cannot be empty'
+        hasErrored: error.status,
+        errorMessage: error.message
       });
     }
-    if (ingredients === '') {
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'ingredients field cannot be empty'
-      });
-    }
-    if (directions === '') {
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'directions field cannot be empty'
-      });
-    }
-    if (
-      !this.props.recipe.id
-      || this.props.recipe.id === ''
-      || !this.recipeId.value
-    ) {
-      setTimeout(() => {
-        this.setState({
-          hasErrored: false,
-          errorMessage: ''
-        });
-      }, 3000);
-      return this.setState({
-        hasErrored: true,
-        errorMessage: 'Please select a recipe'
-      });
-    }
+
     return this.props.updateRecipe(
       this.props.recipe.id,
       this.props.recipe.name,
@@ -329,7 +304,6 @@ ManageRecipe.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  userData: state.auth.userData,
   userRecipes: state.recipe.userRecipes,
   recipe: state.recipe.recipeData,
   errorMessage: state.recipe.error,
@@ -339,7 +313,6 @@ const mapStateToProps = state => ({
 
 export { ManageRecipe as PureManageRecipe };
 export default connect(mapStateToProps, {
-  fetchUsername,
   updateRecipe,
   deleteRecipe,
   getUserRecipes,

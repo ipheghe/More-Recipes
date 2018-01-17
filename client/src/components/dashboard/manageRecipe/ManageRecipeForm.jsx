@@ -25,7 +25,7 @@ const ManageRecipeForm = ({
           <label htmlFor="recipe-name-list">Select recipe</label>
           <select
             type="text"
-            className="form-control"
+            className="form-control click"
             name="recipeId"
             ref={(node) => { recipeId = node; }}
             onChange={() => {

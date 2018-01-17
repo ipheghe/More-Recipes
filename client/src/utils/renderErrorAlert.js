@@ -1,16 +1,21 @@
 import React from 'react';
 
 /**
-   * handle form event error
-   *
-   * @param {bool} stateError
-   * @param {string} propsErrorMessage
-   * @param {string} stateErrorMessage
-   * @param {string} color
-   *
-   * @returns {string} errorMessage
-   */
-const renderErrorAlert = (stateError, propsErrorMessage, stateErrorMessage, color) => {
+ * handle form event error
+ *
+ * @param {bool} stateError
+ * @param {string} propsErrorMessage
+ * @param {string} stateErrorMessage
+ * @param {string} color
+ *
+ * @returns {string} errorMessage
+ */
+const renderErrorAlert = (
+  stateError,
+  propsErrorMessage,
+  stateErrorMessage,
+  color
+) => {
   if (stateError) {
     return (
       <div>

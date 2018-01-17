@@ -33,7 +33,7 @@ describe('<ChangePasswordModal', () => {
   });
 
   it('renders ChangePasswordModal component without crashing if error props is not null', () => {
-    props.error = jest.fn();
+    props.error = <div />;
     const wrapper = shallow(<ChangePasswordModal {...props} />);
     expect(wrapper).toBeDefined();
     expect(wrapper.find('Modal').length).toBe(1);

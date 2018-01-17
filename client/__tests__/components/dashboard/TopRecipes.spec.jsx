@@ -42,10 +42,6 @@ const props = {
   getTopRecipes: jest.fn(() => Promise.resolve()),
 };
 
-const event = {
-  preventDefault: jest.fn()
-};
-
 /**
  *@description  function to mount component
  *
@@ -87,14 +83,16 @@ describe('<TopRecipes', () => {
     sinon.spy(PureTopRecipes.prototype, 'componentDidMount');
     const { shallowWrapper } = setup();
     expect(shallowWrapper.exists()).toBe(true);
-    expect(PureTopRecipes.prototype.componentDidMount.calledOnce).toEqual(false);
+    expect(PureTopRecipes.prototype.componentDidMount.calledOnce)
+      .toEqual(false);
   });
 
   it('calls componentWillReceiveProps if recipe from props is available', () => {
     sinon.spy(PureTopRecipes.prototype, 'componentWillReceiveProps');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(PureTopRecipes.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
+    expect(PureTopRecipes.prototype.componentWillReceiveProps.calledOnce)
+      .toEqual(true);
   });
 
   it('should match component snapshot', () => {
@@ -112,41 +110,24 @@ describe('<TopRecipes', () => {
   it('calls onPaginateClick event', () => {
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
-    const pages = state.currentPaginatePage;
-    shallowWrapper.instance().onPaginateClick(pages);
-    expect(shallowWrapper.state().currentPaginatePage).toEqual(1);
-  });
-
-  it('calls handleNext event after next button is clicked', () => {
-    const { shallowWrapper } = setup();
-    shallowWrapper.setState(state);
-    shallowWrapper.instance().handleNext(event);
-  });
-
-  it('calls handleNext event after next button is clicked on the last page', () => {
-    const { shallowWrapper } = setup();
-    state.currentPaginatePage = 2;
-    shallowWrapper.setState(state);
-    shallowWrapper.instance().handleNext(event);
-  });
-
-  it('calls handlePrevious event after previous button is clicked', () => {
-    const { shallowWrapper } = setup();
-    state.currentPaginatePage = 2;
-    shallowWrapper.setState(state);
-    shallowWrapper.instance().handlePrevious(event);
-  });
-
-  it('calls handlePrevious event after previous button is clicked on the first page', () => {
-    const { shallowWrapper } = setup();
-    state.currentPaginatePage = 1;
-    shallowWrapper.setState(state);
-    shallowWrapper.instance().handlePrevious(event);
+    const data = { selected: 2 };
+    shallowWrapper.instance().onPaginateClick(data);
+    expect(shallowWrapper.state().currentPaginatePage).toEqual(3);
   });
 
   it(' dispatches getRecipes action', () => {
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().getRecipes();
+  });
+
+  it('calls componentWillUnmount when exiting the component', () => {
+    sinon.spy(PureTopRecipes.prototype, 'componentWillUnmount');
+    const { shallowWrapper } = setup();
+    shallowWrapper.setState(state);
+    shallowWrapper.instance().componentWillUnmount(props);
+    expect(PureTopRecipes.prototype.componentWillUnmount.calledOnce)
+      .toEqual(true);
+    expect(shallowWrapper.state().isLoading).toEqual(false);
   });
 });

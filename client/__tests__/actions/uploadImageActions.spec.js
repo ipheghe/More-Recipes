@@ -50,19 +50,21 @@ describe('>>>A C T I O N --- uploadImageActions', () => {
 
   // upload image action
   it('should retrieve image url on request failure', () => {
-    moxios.stubRequest(null, {
-      status: 200,
-      response: {
-        message: 'All Reviews Retrieved SuccessFullly!',
-        reviews: [mockItems.review]
-      }
-    });
+    // moxios.stubRequest(null, {
+    //   status: 200,
+    //   response: {
+    //     message: 'All Reviews Retrieved SuccessFullly!',
+    //     reviews: [mockItems.review]
+    //   }
+    // });
     const imageData = {
-      file: '/assets/images/pizza.jpg'
+      name: 'sharwama.jpg',
+      size: 61387,
+      type: 'image/jpeg'
     };
     const error = 'Something went wrong, please try again';
     const expectedActions = { error: 'Something went wrong, please try again', type: 'IMAGE_FILE_FAILURE' };
-    store.dispatch(uploadImageRequest(imageData))
+    store.dispatch(uploadImage(imageData))
       .then(() => {
         const actions = store.getActions();
         expect(actions).toEqual(expectedActions);

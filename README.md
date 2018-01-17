@@ -40,10 +40,6 @@ git clone https://github.com/ipheghe/More-Recipes.git
 # Install all dependencies
 npm install
 
-# Create database models
-sequelize model:create --name User --attributes username:string,password:boolean
-sequelize model:create --name Recipe --attributes recipeName:string,recipeDescription:boolean
-
 # Run Database migrations
 sequelize db:migrate
 

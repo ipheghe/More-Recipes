@@ -43,6 +43,7 @@ export const uploadImageFailed = error => ({
 export const uploadImage = imageFile =>
   (dispatch) => {
     dispatch(uploadImageRequest(imageFile));
+    console.log(imageFile, '----------------________>');
     const cloudName = 'dd3lv0o93';
     const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
     const timestamp = Date.now() / 1000;

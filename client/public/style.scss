@@ -611,6 +611,10 @@ button.close {
   }
 }
 
+li.page-item.page-link a:hover {
+  text-decoration: none;
+}
+
 @media (max-width: 767px) {
   .landing {
     text-align: center;

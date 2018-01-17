@@ -1,9 +1,9 @@
 import expect from 'expect';
 import React from 'react';
-import sinon from 'sinon';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import ManageRecipeForm
   from '../../../../src/components/dashboard/manageRecipe/ManageRecipeForm.jsx';
+import mockItems from '../../../__mocks__/mockItems';
 
 const props = {
   recipeDetail: '',
@@ -11,7 +11,7 @@ const props = {
   directions: '',
   error: null,
   recipes: [],
-  userRecipes: [],
+  userRecipes: [mockItems.recipe],
   onChange: jest.fn(() => Promise.resolve()),
   onImageChange: jest.fn(() => Promise.resolve()),
   updateRecipe: jest.fn(() => Promise.resolve()),
@@ -25,8 +25,6 @@ const props = {
  */
 const setup = () => shallow(<ManageRecipeForm {...props} />);
 
-const loadRecipe = jest.fn();
-
 describe('<ManageRecipeForm', () => {
   it('renders ManageRecipeForm without crashing if error is not available', () => {
     const wrapper = setup();
@@ -38,25 +36,29 @@ describe('<ManageRecipeForm', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('renders ManageRecipeForm without crashing if error is available', () => {
-    props.error = <div />;
-    const event = {
-      target: {
-        name: 'recipeId',
-        value: 2
-      }
-    };
-    const wrapper = shallow(<ManageRecipeForm {...props} />);
+  it('renders ManageRecipeForm component and loads all recipes on the select tag', () => {
+    props.recipes = mockItems.recipeArray;
+    const wrapper = mount(<ManageRecipeForm {...props} />);
     expect(wrapper).toBeDefined();
-    // const recipeId = { value: 1 };
-    // wrapper.recipeId = recipeId;
-    // // wrapper.loadRecipe = recipeId;
-    // wrapper.ref('recipeId').simulate('change', event);
     expect(wrapper.find('form').length).toBe(1);
     expect(wrapper.find('button').length).toBe(2);
     expect(wrapper.find('input').length).toBe(1);
     expect(wrapper.find('textarea').length).toBe(3);
     expect(wrapper.exists()).toBe(true);
-    // expect(wrapper.loadRecipe()).toBe(true);
+  });
+
+  it('renders ManageRecipeForm without crashing if error is available', () => {
+    props.error = <div />;
+    const wrapper = mount(<ManageRecipeForm {...props} />);
+    const event = { target: { name: 'recipeId', value: 0 } };
+    const recipeIdInput = wrapper.find('.form-control.click');
+    event.target.value = 1;
+    recipeIdInput.simulate('change', event);
+    expect(wrapper).toBeDefined();
+    expect(wrapper.find('form').length).toBe(1);
+    expect(wrapper.find('button').length).toBe(2);
+    expect(wrapper.find('input').length).toBe(1);
+    expect(wrapper.find('textarea').length).toBe(3);
+    expect(wrapper.exists()).toBe(true);
   });
 });

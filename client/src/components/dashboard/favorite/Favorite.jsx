@@ -84,12 +84,13 @@ class Favorite extends React.Component {
   /**
    * @description handles click event with pagination
    *
-   * @param {integer } page
+   * @param {object } data
    *
    * @return { object } currentPaginatePage
    */
-  onPaginateClick(page) {
-    this.setState({ currentPaginatePage: page }, () => {
+  onPaginateClick = (data) => {
+    const { selected } = data;
+    this.setState({ currentPaginatePage: selected + 1 }, () => {
       this.getRecipes();
     });
   }
@@ -102,48 +103,6 @@ class Favorite extends React.Component {
   getRecipes() {
     const offset = 6 * (this.state.currentPaginatePage - 1);
     this.props.getFavoriteRecipes(offset);
-  }
-
-  /**
-   * @description handles next click event with pagination
-   *
-   * @param {SytheticEvent} event
-   *
-   * @return { object } currentPaginatePage
-   */
-  handleNext = (event) => {
-    event.preventDefault();
-    const { currentPaginatePage, pages } = this.state;
-    let nextPage;
-    if ((currentPaginatePage + 1) > pages) {
-      nextPage = 1;
-    } else {
-      nextPage = currentPaginatePage + 1;
-    }
-    this.setState({ currentPaginatePage: nextPage }, () => {
-      this.getRecipes();
-    });
-  }
-
-  /**
-   * @description handles previous click event with pagination
-   *
-   * @param {SytheticEvent} event
-   *
-   * @return { object } currentPaginatePage
-   */
-  handlePrevious = (event) => {
-    event.preventDefault();
-    const { currentPaginatePage, pages } = this.state;
-    let previousPage;
-    if ((currentPaginatePage - 1) === 0) {
-      previousPage = pages;
-    } else {
-      previousPage = currentPaginatePage - 1;
-    }
-    this.setState({ currentPaginatePage: previousPage }, () => {
-      this.getRecipes();
-    });
   }
 
   /**
@@ -176,10 +135,7 @@ class Favorite extends React.Component {
             && this.state.pages > 1) ?
               <Pagination
                 pageNumber={this.state.pages}
-                currentPaginatePage={this.state.currentPaginatePage}
                 onPaginateClick={this.onPaginateClick}
-                next={this.handleNext}
-                previous={this.handlePrevious}
               /> : ''
         }
       </div>
