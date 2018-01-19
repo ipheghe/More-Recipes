@@ -954,6 +954,7 @@ describe('FavoriteRecipe', () => {
         done();
       });
   });
+
   it('should return 200 status  for favoriting a recipe successfully', (done) => {
     server
       .post(`${recipesUrl}/2/1/favorite`)
@@ -972,6 +973,7 @@ describe('FavoriteRecipe', () => {
         done();
       });
   });
+
   it('should return a message for user trying to favorite a recipe more than once', (done) => {
     server
       .post(`${recipesUrl}/2/1/favorite`)
@@ -1001,9 +1003,10 @@ describe('FavoriteRecipe', () => {
         done();
       });
   });
+
   it('should return 200 status for retrieving user favorite recipe', (done) => {
     server
-      .get('/api/v1/favorite/2')
+      .get('/api/v1/favorite/1')
       .set('Connection', 'keep alive')
       .set('Accept', 'application/json')
       .set('x-access-token', userToken[0])
