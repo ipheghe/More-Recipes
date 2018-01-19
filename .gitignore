@@ -60,3 +60,4 @@ typings/
 
 client/public/dist/
 
+.DS_Store
