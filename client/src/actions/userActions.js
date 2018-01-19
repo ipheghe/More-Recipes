@@ -30,7 +30,7 @@ const updateUserRecord = (username, fullName, mobileNumber, email) => {
     email
   };
   const url = '/user';
-  const directTo = '#dashboard';
+  const directTo = '#dashboard/top-recipes';
   const message = 'User Profile updated Successfully';
   const constant = 'UPDATE_USER';
   return dispatch => putData(
@@ -94,7 +94,8 @@ const resetPassword = (email) => {
   const url = '/user/forgotPassword';
   const directTo = '#';
   const message =
-    'Password Reset Successfully! Please check your email to and follow link to create a new password';
+    'Password Reset Successfully! Please check your email to ' +
+    'and follow link to create a new password';
   const constant = 'RESET_PASSWORD';
   return dispatch => postData(
     RESET_PASSWORD,

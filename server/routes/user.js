@@ -24,7 +24,7 @@ router.put('/api/v1/user', authorize.verifyUser, validUser, users.updateUserReco
 
 // API route to change password
 router.put(
-  '/api/v1/user/changePassword/user',
+  '/api/v1/user/changePassword',
   authorize.verifyUser,
   validUser,
   validatePasswordField,

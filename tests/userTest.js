@@ -4,8 +4,8 @@ import users from '../server/seeders/userSeeder';
 
 process.env.NODE_ENV = 'test';
 const { expect } = require('chai');
-const should = require('chai').should();
-// This agent refers to PORT where program is runninng.
+require('chai').should();
+
 const server = supertest.agent(app);
 const rootURL = '/api/v1';
 const usersUrl = `${rootURL}/user`;
@@ -37,20 +37,6 @@ describe('Test Server Connection', () => {
       .end((err, res) => {
         expect('Content-Type', /json/);
         expect(res.statusCode).to.equal(200);
-        if (err) return done(err);
-        done();
-      });
-  });
-});
-describe('Catch invalid routes', () => {
-  it('should return a 404 if route not found', (done) => {
-    server
-      .get('/kkkkmn/jjdjjd')
-      .set('Connection', 'keep alive')
-      .set('Content-Type', 'application/json')
-      .end((err, res) => {
-        expect(res.statusCode).to.equal(404);
-        expect(res.body.message).to.equal('Oops! 404. Page not Found');
         if (err) return done(err);
         done();
       });
@@ -170,7 +156,8 @@ describe('User signup', () => {
       .send(testData)
       .end((err, res) => {
         res.status.should.equal(400);
-        res.body.message.should.equal('username must have more than 3 characters');
+        res.body.message.should
+          .equal('username must have more than 3 characters');
         if (err) return done(err);
         done();
       });
@@ -187,7 +174,8 @@ describe('User signup', () => {
       .send(testData)
       .end((err, res) => {
         res.status.should.equal(400);
-        res.body.message.should.equal('password must have more than 3 characters');
+        res.body.message.should
+          .equal('password must have more than 3 characters');
         if (err) return done(err);
         done();
       });
@@ -204,27 +192,30 @@ describe('User signup', () => {
       .send(testData)
       .end((err, res) => {
         res.status.should.equal(400);
-        res.body.message.should.equal('fullName must have less than 51 characters');
+        res.body.message.should
+          .equal('fullName must have less than 51 characters');
         if (err) return done(err);
         done();
       });
   });
-  it('should return 401 status error for adding spaces inbetween username', (done) => {
-    server
-      .post(signupUrl)
-      .set('Connection', 'keep alive')
-      .set('Accept', 'application/json')
-      .set('Content-Type', 'application/json')
-      .type('form')
-      .send(testValidUsers[3])
-      .end((err, res) => {
-        res.status.should.equal(401);
-        res.body.error.should.equal('Validation error: Username must start with a letter and have no spaces.');
-        if (err) return done(err);
-        done();
-      });
-  });
-  it('should return 401 status for entering an existing username', (done) => {
+  it(`should return 400 status error
+    for adding spaces inbetween username`, (done) => {
+      server
+        .post(signupUrl)
+        .set('Connection', 'keep alive')
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .send(testValidUsers[3])
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.error.should
+            .equal('Validation error: Username must start with a letter and have no spaces.');
+          if (err) return done(err);
+          done();
+        });
+    });
+  it('should return 409 status for entering an existing username', (done) => {
     testData = Object.assign({}, testValidUsers[0]);
     testData.email = 'jack@yahoo.com';
     server
@@ -235,23 +226,8 @@ describe('User signup', () => {
       .type('form')
       .send(testData)
       .end((err, res) => {
-        res.status.should.equal(401);
-        res.body.error.should.equal('Username already exists');
-        if (err) return done(err);
-        done();
-      });
-  });
-  it('should return a 401 status for entering an invalid email', (done) => {
-    server
-      .post(signupUrl)
-      .set('Connection', 'keep alive')
-      .set('Accept', 'application/json')
-      .set('Content-Type', 'application/json')
-      .type('form')
-      .send(testValidUsers[2])
-      .end((err, res) => {
-        res.status.should.equal(401);
-        res.body.error.should.equal('Validation error: Invalid Email');
+        res.status.should.equal(409);
+        res.body.message.should.equal('Username you entered already exist');
         if (err) return done(err);
         done();
       });
@@ -350,6 +326,7 @@ describe('User signin', () => {
       });
   });
 });
+
 describe('Check If User Exists', () => {
   it('should return a 404 status code if user not found', (done) => {
     server
@@ -366,39 +343,43 @@ describe('Check If User Exists', () => {
         done();
       });
   });
-  it('should return 200 status after fetching user record successfully', (done) => {
-    server
-      .get(`${usersUrl}/okon`)
-      .set('Connection', 'keep alive')
-      .set('Content-Type', 'application/json')
-      .send({
-        username: 'okon'
-      })
-      .end((err, res) => {
-        expect(res.statusCode).to.equal(200);
-        expect(res.body.message).to.equal('User Record retrieved successfully');
-        if (err) return done(err);
-        done();
-      });
-  });
+  it(`should return 200 status after
+     fetching user record successfully`, (done) => {
+      server
+        .get(`${usersUrl}/okon`)
+        .set('Connection', 'keep alive')
+        .set('Content-Type', 'application/json')
+        .send({
+          username: 'okon'
+        })
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body.message)
+            .to.equal('User Record retrieved successfully');
+          if (err) return done(err);
+          done();
+        });
+    });
 });
+
 describe('Update User Records', () => {
-  it('should return 200 status for successfully updating user record', (done) => {
-    testData = Object.assign({}, testValidUsers[0]);
-    testData.fullName = 'Chima Ejiofor';
-    server
-      .put('/api/v1/user')
-      .set('Connection', 'keep alive')
-      .set('Content-Type', 'application/json')
-      .set('x-access-token', userToken[0])
-      .send(testData)
-      .end((err, res) => {
-        expect(res.statusCode).to.equal(200);
-        expect(res.body.message).to.equal('User Record Updated SuccessFullly!');
-        if (err) return done(err);
-        done();
-      });
-  });
+  it(`should return 200 status for
+     successfully updating user record`, (done) => {
+      testData = Object.assign({}, testValidUsers[0]);
+      testData.fullName = 'Chima Ejiofor';
+      server
+        .put('/api/v1/user')
+        .set('Connection', 'keep alive')
+        .set('Content-Type', 'application/json')
+        .set('x-access-token', userToken[0])
+        .send(testData)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body.message).to.equal('User Record Updated SuccessFullly!');
+          if (err) return done(err);
+          done();
+        });
+    });
   it('return a 401 if user is unauthorized', (done) => {
     testData = Object.assign({}, testValidUsers[0]);
     testData.fullName = 'Ch';
@@ -416,38 +397,40 @@ describe('Update User Records', () => {
   });
 });
 describe('Change User Password', () => {
-  it('should return 200 status for successful changing user password', (done) => {
-    const passwordData = {
-      password: 'abcdeddddddd',
-      newPassword: 'abcdef'
-    };
-    server
-      .put('/api/v1/user/changePassword/user')
-      .set('Connection', 'keep alive')
-      .set('Content-Type', 'application/json')
-      .set('x-access-token', userToken[0])
-      .send(passwordData)
-      .end((err, res) => {
-        expect(res.statusCode).to.equal(401);
-        expect(res.body.message).to.equal('Incorrect password');
-        if (err) return done(err);
-        done();
-      });
-  });
+  it(`should return 200 status for
+     successful changing user password`, (done) => {
+      const passwordData = {
+        password: 'abcdeddddddd',
+        newPassword: 'abcdef'
+      };
+      server
+        .put('/api/v1/user/changePassword')
+        .set('Connection', 'keep alive')
+        .set('Content-Type', 'application/json')
+        .set('x-access-token', userToken[0])
+        .send(passwordData)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          expect(res.body.message).to.equal('Incorrect password');
+          if (err) return done(err);
+          done();
+        });
+    });
   it('return a 401 if user is unauthorized', (done) => {
     const passwordData = {
       password: 'abcde',
       newPassword: 'abcdef'
     };
     server
-      .put('/api/v1/user/changePassword/user')
+      .put('/api/v1/user/changePassword')
       .set('Connection', 'keep alive')
       .set('Content-Type', 'application/json')
       .set('x-access-token', userToken[0])
       .send(passwordData)
       .end((err, res) => {
         expect(res.statusCode).to.equal(200);
-        expect(res.body.message).to.equal('User Password Changed SuccessFullly!');
+        expect(res.body.message)
+          .to.equal('User Password Changed SuccessFullly!');
         if (err) return done(err);
         done();
       });

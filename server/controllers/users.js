@@ -4,7 +4,7 @@ import isOnline from 'is-online';
 import dotenv from 'dotenv';
 import db from '../models/index';
 import transporter from '../helpers/mailTransporter';
-import emailTemplate from '../helpers/emailTemplate/emailTemplate';
+import emailTemplate from '../helpers/emailTemplate';
 
 dotenv.load();
 const { User, Category } = db;
@@ -12,7 +12,7 @@ const salt = bcrypt.genSaltSync(10);
 const crypto = require('crypto');
 
 const keys = [
-  'id', 'username', 'password', 'fullName',
+  'id', 'username', 'fullName',
   'mobileNumber', 'email'
 ];
 
@@ -28,26 +28,51 @@ const usersController = {
    * @return {object} status message
    */
   signup(req, res) {
-    User.create({
-      username: req.body.username,
-      password: bcrypt.hashSync(req.body.password, salt, null), // hash password
-      fullName: req.body.fullName,
-      mobileNumber: req.body.mobileNumber,
-      email: req.body.email
-    })
-      .then((user) => {
-        const userData = {
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email
-        };
-        return res.status(201).send({
-          message: 'User account successfully created.',
-          userData
+    const {
+      username,
+      fullName,
+      mobileNumber,
+      email,
+      password
+    } = req.body;
+
+    User.findOne({
+      where: { $or: [{ username }, { email }] }
+    }).then((existingUser) => {
+      if (existingUser && existingUser.username === username) {
+        return res.status(409).json({
+          message: 'Username you entered already exist',
         });
+      }
+      if (existingUser && existingUser.email === email) {
+        return res.status(409).json({
+          message: 'Email address you entered already exist',
+        });
+      }
+      User.create({
+        username,
+        password: bcrypt.hashSync(password, salt, null),
+        fullName,
+        mobileNumber,
+        email
       })
-      .catch(error => res.status(401).send({
+        .then((user) => {
+          const userData = {
+            id: user.id,
+            username: user.username,
+            fullName: user.fullName,
+            email: user.email
+          };
+          return res.status(201).send({
+            message: 'User account successfully created.',
+            userData
+          });
+        })
+        .catch(error => res.status(400).send({
+          error: error.message
+        }));
+    })
+      .catch(error => res.status(500).send({
         error: error.message
       }));
   },
@@ -70,7 +95,8 @@ const usersController = {
       .then((user) => {
         if (!user) {
           res.status(404).send({
-            message: 'Authentication failed. Username is incorrect or does not exist'
+            message: 'Authentication failed. ' +
+            'Username is incorrect or does not exist'
           }); // username doesnt exist
         } else if (user) {
           // check if password matches
@@ -149,27 +175,55 @@ const usersController = {
    * @return {object} message userData
    */
   updateUserRecord(req, res) {
-    return User
-      .findOne({
-        where: {
-          id: req.decoded.user.id
-        }
-      })
+    const {
+      username,
+      fullName,
+      mobileNumber,
+      email,
+    } = req.body;
+
+    User.findOne({
+      where: {
+        id: req.decoded.user.id
+      }
+    })
       .then((user) => {
         // if user exists
-        user.update({
-          username: req.body.username || user.username,
-          fullName: req.body.fullName || user.fullName,
-          mobileNumber: req.body.mobileNumber || user.mobileNumber,
-          email: req.body.email || user.email
-        })
-          .then(updatedUser => res.status(200).send({
-            message: 'User Record Updated SuccessFullly!',
-            userData: updatedUser
-          }))
-          .catch(error => res.status(401).send({
-            error: error.message
-          }));
+        User.findOne({
+          where: { $or: [{ username }, { email }] }
+        }).then((existingUser) => {
+          if (
+            existingUser
+            && existingUser.username === username
+            && existingUser.username !== user.username
+          ) {
+            return res.status(409).json({
+              message: 'Username you entered already exist',
+            });
+          }
+          if (
+            existingUser
+            && existingUser.email === email
+            && existingUser.email !== user.email
+          ) {
+            return res.status(409).json({
+              message: 'Email address you entered already exist',
+            });
+          }
+          user.update({
+            username: username || user.username,
+            fullName: fullName || user.fullName,
+            mobileNumber: mobileNumber || user.mobileNumber,
+            email: email || user.email
+          })
+            .then(updatedUser => res.status(200).send({
+              message: 'User Record Updated SuccessFullly!',
+              userData: updatedUser
+            }))
+            .catch(error => res.status(401).send({
+              error: error.message
+            }));
+        });
       })
       .catch(err => res.status(500).send({
         error: err.message
@@ -265,28 +319,37 @@ const usersController = {
             }
           })
             .then(() => {
-              const message = `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-              'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-              'http://'}${req.headers.host}/#/reset-password/${resetToken}\n\n` +
-              'If you did not request this, please ignore this email and your password will remain unchanged.';
+              const message = 'You are receiving this ' +
+              'because you (or someone else) have ' +
+              'requested the reset of the password for your account.\n\n' +
+              'Please click on the button below to complete the process.\n\n' +
+              'If you did not request this, please ignore this email and ' +
+              'your password will remain unchanged.';
               const name = existingUser.fullName;
 
               const mailOptions = {
-                from: '"MoreRecipes Admin" <iphegheovie@gmail.com>',
+                from: '"MoreRecipes Admin" <iphegheapp@gmail.com>',
                 to: existingUser.email,
                 subject: 'You have a new notification',
-                html: emailTemplate(name, 'see recipe', message, `${req.headers.host}/#/reset-password/${resetToken}`)
+                html: emailTemplate(
+                  name,
+                  'Reset Password',
+                  message,
+                  `https://${req.headers.host}/#/reset-password/${resetToken}`
+                )
               };
               // Otherwise, send user email via nodemailer
               // transporter.sendMail(mailOptions);
               transporter.sendMail(mailOptions, (err, info) => {
                 if (err) {
-                  res.status(400).json({
+                  res.status(422).json({
                     error: err.message
                   });
                 } else {
                   return res.status(200).json({
-                    message: 'Please check your email for the link to reset your password.',
+                    status: 'Success',
+                    message: 'Please check your email for ' +
+                    'the link to reset your password.',
                     info
                   });
                 }
@@ -301,7 +364,8 @@ const usersController = {
 
   /**
    * @module verifyTokenPassword
-   * @description controller function that verifies token after reset of user password
+   * @description controller function that verifies token
+   * after reset of user password
    * @function
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
@@ -321,7 +385,8 @@ const usersController = {
       .then((existingUser) => {
         if (!existingUser) {
           res.status(422).json({
-            error: 'Your token has expired. Please attempt to reset your password again.'
+            error: 'Your token has expired. ' +
+            'Please attempt to reset your password again.'
           });
         }
 
@@ -338,25 +403,33 @@ const usersController = {
           .then(() => {
             isOnline().then((online) => {
               if (online) {
-                const message = 'You are receiving this email because you changed your password. \n\n' +
-                'If you did not request this change, please contact us immediately.';
+                const message = 'You are receiving this email because ' +
+                'you changed your password. \n\n' +
+                'If you did not request this change, ' +
+                'please contact us immediately.';
                 const name = existingUser.fullName;
                 const mailOptions = {
-                  from: '"MoreRecipes Admin" <iphegheovie@gmail.com>',
+                  from: '"MoreRecipes Admin" <iphegheapp@gmail.com>',
                   to: existingUser.email,
                   subject: 'Password Changed',
-                  html: emailTemplate(name, 'see recipe', message, '')
+                  html: emailTemplate(
+                    name,
+                    'Go to App',
+                    message,
+                    `https://${req.headers.host}/#/login`
+                  )
                 };
                 // Otherwise, send user email via nodemailer
                 // transporter.sendMail(mailOptions);
                 transporter.sendMail(mailOptions, (err) => {
                   if (err) {
-                    res.status(400).send({
+                    res.status(422).send({
                       error: err.message
                     });
                   } else {
                     return res.status(200).json({
-                      message: 'Password changed successfully. Please login with your new password.'
+                      message: 'Password changed successfully. ' +
+                      'Please login with your new password.'
                     });
                   }
                 });

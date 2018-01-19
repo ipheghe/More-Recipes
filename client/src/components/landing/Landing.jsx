@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MainHeader, Footer } from '../../common';
 import LandingRecipeList from './LandingRecipeList.jsx';
 import { getTopRecipesLanding } from '../../actions/recipeActions';
 
@@ -10,10 +10,11 @@ import { getTopRecipesLanding } from '../../actions/recipeActions';
  *
  * @param {function} onComponentDidMount - callback on ComponentDidMount
  */
-export class Landing extends React.Component {
+class Landing extends React.Component {
   static propTypes = {
     getTopRecipesLanding: PropTypes.func.isRequired,
-    recipeList: PropTypes.arrayOf(PropTypes.object).isRequired
+    recipeList: PropTypes.arrayOf(PropTypes.object).isRequired,
+    isAuthenticated: PropTypes.bool.isRequired,
   };
 
   /**
@@ -45,13 +46,15 @@ export class Landing extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
+    if (this.props.isAuthenticated) {
+      return (<Redirect to="/dashboard/top-recipes" />);
+    }
     return (
       <div>
-        <MainHeader />
-        <div className="landing-background">
+        <div className="landing-background" id="landing-background">
           <div className="container">
             <div className="row landing">
-              <section className="col-md-7 headline">
+              <section className="col-md-7 headline-home">
                 <h1>Welcome to More recipes</h1>
                 <h4>Share your recipe ideas with the world</h4>
                 <br />
@@ -70,21 +73,28 @@ export class Landing extends React.Component {
               </section>
               <section className="col-md-5 account">
                 <div>
-                  <a href="#login">
-                    <button
-                      type="button"
-                      className="btn btn-success"
-                      id="login"
-                    >Login
-                    </button>
-                    <p className="brief">Login to your account and start sharing</p>
-                  </a>
+                  <Link
+                    to="/login"
+                    href="#login"
+                    className="btn btn-success home"
+                    id="login"
+                  >Login
+                  </Link>
+                  <p className="brief">
+                  Login to your account and start sharing
+                  </p>
                 </div>
                 <div>
-                  <a href="#signup">
-                    <button className="btn btn-success" id="signup">Signup</button>
-                    <p className="brief">Register now to enjoy all of More recipes</p>
-                  </a>
+                  <Link
+                    to="/signup"
+                    href="#signup"
+                    className="btn btn-success home"
+                    id="signup"
+                  >Signup
+                  </Link>
+                  <p className="brief">
+                  Register now to enjoy all of More recipes
+                  </p>
                 </div>
               </section>
             </div>
@@ -99,14 +109,15 @@ export class Landing extends React.Component {
           </div>
         </section>
         <br />
-        <Footer />
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
+  isAuthenticated: state.auth.authenticated,
   recipeList: state.recipe.recipeList
 });
 
+export { Landing as PureLanding };
 export default connect(mapStateToProps, { getTopRecipesLanding })(Landing);

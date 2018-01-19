@@ -12,8 +12,13 @@ router.post(
   authorize.verifyUser,
   validUser,
   validateCategoryField,
-  categories.addUncategorized,
   categories.addCategory
+);
+
+// API route for users to create categories
+router.post(
+  '/api/v1/user/unCategorized',
+  categories.addUncategorized,
 );
 
 // API route for users to modify category name

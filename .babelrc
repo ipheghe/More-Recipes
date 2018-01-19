@@ -9,6 +9,11 @@
        "istanbul",
        "transform-decorators-legacy"
      ]
+   },
+   "jsdom": {
+     "plugins": [
+       "transform-decorators-legacy"
+     ]
    }
  }
 }

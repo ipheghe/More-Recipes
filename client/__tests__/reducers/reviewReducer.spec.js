@@ -31,7 +31,7 @@ describe('Review reducer', () => {
     expect(reducer(initialState, reviewRecipeAction)).toEqual({
       message: reviewRecipeAction.payload.message,
       error: '',
-      count: 1,
+      count: 2,
       reviewList: [...initialState, reviewRecipeAction.payload.review]
     });
   });

@@ -136,7 +136,7 @@ const validUser = (req, res, next) => {
   User.findById(req.params.userId || req.decoded.user.id)
     .then((user) => {
       if (!user) {
-        return res.status(401).send({
+        return res.status(404).send({
           message: 'user account not available!'
         });
       }

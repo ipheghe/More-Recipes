@@ -3,14 +3,28 @@ import { Link } from 'react-router-dom';
 
 /**
  * NotFoundPage component
- * @returns {component} NotFoundPage
+ *
+ * @returns {jsx} jsx
  */
-const NotFoundPage = () => (
+const NotFound = () => (
   <div>
-    <h1>404 - Page Not Found</h1>
-    <p>I am sorry, the page you were looking for cannot be found!</p>
-    <p><Link href="/">Back to Home</Link></p>
+    <div className="notFound-background">
+      <div className="notFound-body">
+        <h1><span>4</span><span style={{ color: '#5cb85c' }}>0</span>4</h1>
+        <h2>Page Not Found</h2>
+        <p>I am sorry, the page you were looking for cannot be found!</p>
+        <p>
+          <Link
+            to="/"
+            href="#/"
+            className="btn btn-success btn-lg"
+          >
+            <span><i className="fa fa-home" /></span>Back to Home
+          </Link>
+        </p>
+      </div>
+    </div>
   </div>
 );
 
-export default NotFoundPage;
+export default NotFound;

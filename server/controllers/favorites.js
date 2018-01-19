@@ -74,24 +74,21 @@ const favoritesController = {
    */
   retrieveFavorite(req, res) {
     // find recipe that have the requested userId and recipeId
-    Favorite.findOne({
+    Favorite.findAll({
       where: { userId: req.decoded.user.id, recipeId: req.params.id },
-      include: [{
-        model: Recipe,
-        include: [{
-          model: User,
-          attributes: ['username']
-        }]
-      }],
       attributes: keys
     })
-      // retrieve all recipes for that particular user
+      // retrieve favorite recipe for that particular user
       .then((favorite) => {
         if (favorite) {
-          if (favorite.length === 0) {
-            res.status(404).send({ message: 'User has not favorited this recipe' });
+          if (favorite.length < 1) {
+            res.send({
+              status: false,
+              message: 'User has not favorited this recipe'
+            });
           } else {
             return res.status(200).send({
+              status: true,
               message: 'User Favorite recipe retrieved Successfully',
               userFavorite: favorite
             });
@@ -111,8 +108,8 @@ const favoritesController = {
    */
   retrieveFavorites(req, res) {
     const { limit, offset } = req.body;
-    // find all recipes that have the requested username
-    Favorite.findAll({
+    // find all favotited recipes that have the requested username
+    Favorite.findAndCountAll({
       where: { userId: req.decoded.user.id },
       include: [{
         model: Recipe,
@@ -125,10 +122,10 @@ const favoritesController = {
       limit: limit || 6,
       offset: offset || 0
     })
-      // retrieve all recipes for that particular user
+      // retrieve all favorite recipes for that particular user
       .then((favorites) => {
         if (favorites) {
-          if (favorites.length === 0) {
+          if (favorites.rows.length === 0) {
             res.send({ message: 'There are no favourite recipe for this user' });
           } else {
             pageNumber = parseInt(favorites.count, 10) / parseInt(limit || 6, 10);

@@ -64,14 +64,17 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "User account successfully created.",
+          "201": {
+            "description": "Successful operation.",
             "schema": {
               "$ref": "#/definitions/SignupUser"
             }
           },
           "400": {
-            "description": "Invalid Input"
+            "description": "Invalid field inputs"
+          },
+          "409": {
+            "description": "Conflict issues"
           }
         }
       }
@@ -101,16 +104,19 @@
         ],
         "responses": {
           "200": {
-            "description": "User account successfully created.",
+            "description": "Successful login.",
             "schema": {
               "$ref": "#/definitions/SigninUser"
             }
           },
           "400": {
-            "description": "Invalid Input"
+            "description": "Invalid field inputs"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
-            "description": "Authentication failed",
+            "description": "User not found",
             "schema": {
               "$ref": "#/definitions/UserNotFound"
             }
@@ -150,7 +156,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User Record retrieved successfully!",
+            "description": "successful operation!",
             "schema": {
               "$ref": "#/definitions/GetUserRecord"
             }
@@ -162,7 +168,7 @@
             }
           },
           "404": {
-            "description": "User doesnt exist"
+            "description": "User not found"
           }
         }
       }
@@ -213,10 +219,13 @@
             }
           },
           "404": {
-            "description": "User Not Found!",
+            "description": "User not found",
             "schema": {
               "$ref": "#/definitions/UserNotFound"
             }
+          },
+          "409": {
+            "description": "Conflict issues"
           }
         }
       }
@@ -267,7 +276,7 @@
             }
           },
           "404": {
-            "description": "User Not Found!",
+            "description": "User not found",
             "schema": {
               "$ref": "#/definitions/UserNotFound"
             }
@@ -311,11 +320,11 @@
           "200": {
             "description": "All Recipes Retrieved SuccessFullly!",
             "schema": {
-              "$ref": "#/definitions/RetrieveRecipe"
+              "$ref": "#/definitions/RetrieveRecipes"
             }
           },
           "401": {
-            "description": "Invalid recipeId supplied"
+            "description": "Unauthorized"
           },
           "403": {
             "description": "No token provided!",
@@ -358,7 +367,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Recipe Added SuccessFullly!",
+            "description": "Successful recipe creation",
             "schema": {
               "$ref": "#/definitions/AddRecipe"
             }
@@ -373,7 +382,7 @@
             }
           },
           "404": {
-            "description": "Recipe Not Found!",
+            "description": "Recipe not found",
             "schema": {
               "$ref": "#/definitions/RecipeNotFound"
             }
@@ -415,8 +424,8 @@
               "$ref": "#/definitions/GetRecipeById"
             }
           },
-          "401": {
-            "description": "Invalid Input"
+          "400": {
+            "description": "Invalid recipeId"
           },
           "403": {
             "description": "No token provided!",
@@ -475,7 +484,10 @@
             }
           },
           "400": {
-            "description": "Invalid Input"
+            "description": "Invalid recipeId"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "No token provided!",
@@ -523,6 +535,9 @@
             "schema": {
               "$ref": "#/definitions/DeleteRecipe"
             }
+          },
+          "400": {
+            "description": "Invalid recipeId"
           },
           "401": {
             "description": "Unauthorized"
@@ -575,7 +590,7 @@
           "200": {
             "description": "All User Recipes Retrieved SuccessFullly!",
             "schema": {
-              "$ref": "#/definitions/GetUserRecipe"
+              "$ref": "#/definitions/GetUserRecipes"
             }
           },
           "401": {
@@ -639,8 +654,11 @@
               "$ref": "#/definitions/PostRecipeReview"
             }
           },
+          "400": {
+            "description": "Invalid recipeId"
+          },
           "401": {
-            "description": "Invalid RecipeId Input"
+            "description": "Unauthorized"
           },
           "403": {
             "description": "No token provided!",
@@ -740,7 +758,7 @@
             }
           },
           "401": {
-            "description": "Invalid RecipeId Input"
+            "description": "Unauthorized"
           },
           "403": {
             "description": "No token provided!",
@@ -855,7 +873,7 @@
             }
           },
           "400": {
-            "description": "null category name field"
+            "description": "Invalid category name input"
           },
           "401": {
             "description": "Unauthorized"
@@ -1354,24 +1372,146 @@
     "SignupUser": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "userData"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "User account successfully created."
+        },
+        "userData": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "username": {
+              "type": "string",
+              "example": "vixen2"
+            },
+            "fullName": {
+              "type": "string",
+              "example": "Jane Kemi"
+            },
+            "email": {
+              "type": "string",
+              "example": "vixen@yahoo.com"
+            }
+          }
         }
       }
     },
     "SigninUser": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "aurhToken"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "Authentication & Login successful"
+        },
+        "authToken": {
+          "type": "string",
+          "example": "yggujjghgkgxfg12772y288389393993u3vhnn"
+        }
+      }
+    },
+    "GetUserRecord": {
+      "type": "object",
+      "required": [
+        "message",
+        "userData"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User Record retrieved successfully"
+        },
+        "userData": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "username": {
+              "type": "string",
+              "example": "vixen2"
+            },
+            "fullName": {
+              "type": "string",
+              "example": "Jane Kemi"
+            },
+            "mobileNumber": {
+              "type": "integer",
+              "format": "int64",
+              "example": "08036474733"
+            },
+            "email": {
+              "type": "string",
+              "example": "vixen@yahoo.com"
+            }
+          }
+        }
+      }
+    },
+    "UpdateUserRecord": {
+      "type": "object",
+      "required": [
+        "message",
+        "userData"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User Record Updated SuccessFullly!"
+        },
+        "userData": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "username": {
+              "type": "string",
+              "example": "vixen"
+            },
+            "fullName": {
+              "type": "string",
+              "example": "Jane Kemi"
+            },
+            "mobileNumber": {
+              "type": "integer",
+              "format": "int64",
+              "example": "08036474733"
+            },
+            "email": {
+              "type": "string",
+              "example": "vixen@yahoo.com"
+            }
+          }
+        }
+      }
+    },
+    "ChangeUserPassword": {
+      "type": "object",
+      "required": [
+        "status",
+        "message"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Success"
+        },
+        "message": {
+          "type": "string",
+          "example": "User Password Changed SuccessFullly!"
         }
       }
     },
@@ -1431,24 +1571,98 @@
     "AddRecipe": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "recipe"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "Recipe Added SuccessFullly!"
+        },
+        "recipe": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "ingredients": {
+              "type": "string"
+            },
+            "directions": {
+              "type": "string"
+            },
+            "imageUrl": {
+              "type": "string"
+            },
+            "views": {
+              "type": "integer"
+            },
+            "upvotes": {
+              "type": "integer"
+            },
+            "downvotes": {
+              "type": "integer"
+            },
+            "notification": {
+              "type": "integer"
+            }
+          }
         }
       }
     },
     "UpdateRecipe": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "recipe"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "Recipe Upated SuccessFullly!"
+        },
+        "recipe": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "ingredients": {
+              "type": "string"
+            },
+            "directions": {
+              "type": "string"
+            },
+            "imageUrl": {
+              "type": "string"
+            },
+            "views": {
+              "type": "integer"
+            },
+            "upvotes": {
+              "type": "integer"
+            },
+            "downvotes": {
+              "type": "integer"
+            },
+            "notification": {
+              "type": "integer"
+            }
+          }
         }
       }
     },
@@ -1467,24 +1681,81 @@
     "GetRecipeById": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "recipe"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "Recipe Retrieved SuccessFullly!"
+        },
+        "recipe": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "ingredients": {
+              "type": "string"
+            },
+            "directions": {
+              "type": "string"
+            },
+            "imageUrl": {
+              "type": "string"
+            },
+            "views": {
+              "type": "integer"
+            },
+            "upvotes": {
+              "type": "integer"
+            },
+            "downvotes": {
+              "type": "integer"
+            },
+            "notification": {
+              "type": "integer"
+            }
+          }
         }
       }
     },
-    "GetUserRecipe": {
+    "GetUserRecipes": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "recipes",
+        "pages"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "All User Recipes Retrieved SuccessFullly!"
+        },
+        "recipes": {
+          "properties": {
+            "count": {
+              "type": "integer",
+              "example": 1
+            },
+            "rows": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RecipeData"
+              }
+            }
+          }
+        },
+        "pages": {
+          "type": "integer",
+          "example": 1
         }
       }
     },
@@ -1500,27 +1771,104 @@
         }
       }
     },
-    "RetrieveRecipe": {
+    "RecipeData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "ingredients": {
+          "type": "string"
+        },
+        "directions": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "views": {
+          "type": "integer"
+        },
+        "upvotes": {
+          "type": "integer"
+        },
+        "downvotes": {
+          "type": "integer"
+        },
+        "notification": {
+          "type": "integer"
+        }
+      }
+    },
+    "RetrieveRecipes": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "recipes"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "All Recipes Retrieved SuccessFullly!"
+        },
+        "recipes": {
+          "properties": {
+            "count": {
+              "type": "integer",
+              "example": 1
+            },
+            "rows": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RecipeData"
+              }
+            }
+          }
+        },
+        "pages": {
+          "type": "integer",
+          "example": 1
         }
       }
     },
     "PostRecipeReview": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "review"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "Review Posted Successfully"
+        },
+        "review": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "message": {
+              "type": "string",
+              "example": "nice meal"
+            },
+            "userId": {
+              "type": "integer",
+              "example": 1
+            },
+            "recipeId": {
+              "type": "integer",
+              "example": 1
+            }
+          }
         }
       }
     },

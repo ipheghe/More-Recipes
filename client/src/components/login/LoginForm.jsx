@@ -1,6 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
+/**
+ * LoginForm component
+ *
+ * @param {Object} props
+ *
+ * @return {jsx} jsx
+ */
 const LoginForm = ({
   username,
   password,
@@ -20,13 +28,13 @@ const LoginForm = ({
         <label htmlFor="enterEmail">Username:</label>
         <div className="input-group">
           <span className="input-group-addon">
-            <i className="fa fa-envelope" />
+            <i className="fa fa-user-secret" />
           </span>
           <input
-            id="username"
             type="text"
             className="form-control"
             name="username"
+            id="username"
             placeholder="Enter your username"
             value={username}
             onChange={onChange}
@@ -44,6 +52,7 @@ const LoginForm = ({
             type="password"
             className="form-control"
             name="password"
+            id="password"
             placeholder="Enter your password"
             value={password}
             onChange={onChange}
@@ -54,7 +63,8 @@ const LoginForm = ({
       <div className="row">
         <div className="checkbox-primary col-md-6">
           <label>
-            <input type="checkbox" id="login-checkbox" /><span>Remember me</span>
+            <input type="checkbox" id="login-checkbox" />
+            <span>Remember me</span>
           </label>
         </div>
         <div className="text-right col-md-6">
@@ -62,7 +72,7 @@ const LoginForm = ({
             className="invisible-button"
             style={{ color: '#2F94D2' }}
             onClick={openModal}
-          >Forgot your password?
+          ><p className="forgot-password">Forgot your password?</p>
           </button>
         </div>
       </div>
@@ -70,6 +80,7 @@ const LoginForm = ({
         <div>
           <a href="#dashboard">
             <button
+              id="login"
               className="btn btn-block btn-success"
               onClick={login}
             >Login
@@ -78,13 +89,12 @@ const LoginForm = ({
         </div>
         <br />
         <div>
-          <a href="#signup">
-            <button
-              type="button"
-              className="btn btn-block btn-success"
-            >Sign Up
-            </button>
-          </a>
+          <Link
+            to="/signup"
+            href="#signup"
+            className="btn btn-block btn-success home"
+          >Sign Up
+          </Link>
         </div>
       </div>
     </form>

@@ -20,11 +20,14 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   entry: [
-    'eventsource-polyfill', // necessary for hot reloading with IE
-    'webpack-hot-middleware/client?reload=true', // note that it reloads the page if hot module reloading fails.
+    // necessary for hot reloading with IE
+    'eventsource-polyfill',
+    // note that it reloads the page if hot module reloading fails.
+    'webpack-hot-middleware/client?reload=true',
     path.resolve(__dirname, './client/src/app/index.js')
   ],
-  target: 'web', // bundle the code so that a web browser can understand
+  // bundle the code so that a web browser can understand
+  target: 'web',
   output: {
     path: `${__dirname}/client/public/dist`,
     filename: 'bundle.js',
@@ -68,7 +71,8 @@ module.exports = {
   node: {
     net: 'empty',
     tls: 'empty',
-    dns: 'empty'
+    dns: 'empty',
+    fs: 'empty'
   },
   module: {
     loaders: [
@@ -89,7 +93,8 @@ module.exports = {
       },
       // ** ADDING/UPDATING LOADERS **
       // The "file" loader handles all assets unless explicitly excluded.
-      // The `exclude` list *must* be updated with every change to loader extensions.
+      // The `exclude` list *must* be updated with
+      // every change to loader extensions.
       // When adding a new loader, you must add its `test`
       // as a new entry in the `exclude` list for "file" loader.
 
@@ -166,7 +171,10 @@ module.exports = {
             'transform-class-properties'],
         }
       },
-      { test: /\.scss$/, loaders: ['style-loader', 'css-loader', 'sass-loader'] },
+      {
+        test: /\.scss$/,
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
+      },
       {
         test: /\.css$/,
         loaders: [

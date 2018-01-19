@@ -28,7 +28,7 @@ const addRecipe = (name, description, imageUrl, ingredients, directions) => {
     name, description, imageUrl, ingredients, directions
   };
   const url = '/recipe';
-  const directTo = '#myRecipe';
+  const directTo = '#dashboard/my-recipes';
   const message = 'Recipe added Successfully';
   const constant = 'RECIPE_ADDED';
   return dispatch => postData(
@@ -75,7 +75,7 @@ const updateRecipe = (
     imageUrl
   };
   const url = `/recipe/${recipeId}`;
-  const directTo = '#myRecipe';
+  const directTo = '#dashboard/my-recipes';
   const message = 'Recipe updated Successfully';
   const constant = 'RECIPE_UPDATED';
   return dispatch => putData(
@@ -102,7 +102,6 @@ const updateRecipe = (
  */
 const deleteRecipe = (recipeId) => {
   const url = `/recipe/${recipeId}`;
-  const directTo = '';
   const message = 'Recipe deleted Successfully';
   const constant = 'RECIPE_DELETED';
   return dispatch => deleteData(
@@ -113,7 +112,6 @@ const deleteRecipe = (recipeId) => {
     dispatch,
     message,
     constant,
-    directTo
   );
 };
 
@@ -126,7 +124,13 @@ const deleteRecipe = (recipeId) => {
  */
 const getTopRecipesLanding = () => {
   const url = '/topRecipes?sort=upvotes&order=descending';
-  return dispatch => getData(FETCH_TOP_RECIPES, RECIPE_ERROR, true, url, dispatch);
+  return dispatch => getData(
+    FETCH_TOP_RECIPES,
+    RECIPE_ERROR,
+    true,
+    url,
+    dispatch
+  );
 };
 
 /**

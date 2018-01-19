@@ -54,7 +54,8 @@ describe('Category reducer', () => {
       error: '',
       message: updateCatgeoryAction.payload.message,
       categoryList: [...initialState.categoryList.map(item => (
-        item.id === updateCatgeoryAction.payload.category.id ? updateCatgeoryAction.payload.category : item
+        item.id === updateCatgeoryAction.payload.category.id
+          ? updateCatgeoryAction.payload.category : item
       ))],
       userCategoryList: []
     });
@@ -73,7 +74,8 @@ describe('Category reducer', () => {
       error: '',
       message: deleteCategoryAction.payload.message,
       categoryList: [
-        ...initialState.categoryList.filter(category => category.id !== initialState.userCategoryList[0].id)
+        ...initialState.categoryList.filter(category =>
+          category.id !== initialState.userCategoryList[0].id)
       ],
       userCategoryList: [mockItems.category],
     });

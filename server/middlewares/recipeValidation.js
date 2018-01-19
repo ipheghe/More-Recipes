@@ -107,7 +107,7 @@ const recipeExists = (req, res, next) => {
       }
       next();
     })
-    .catch(error => res.status(400).send(error));
+    .catch(error => res.status(500).send(error));
 };
 
 /**
@@ -141,7 +141,7 @@ const userRecipeExists = (req, res, next) => {
       }
       next();
     })
-    .catch(error => res.status(400).send(error));
+    .catch(error => res.status(500).send(error));
 };
 
 export { validateRecipeFields, recipeExists, userRecipeExists };

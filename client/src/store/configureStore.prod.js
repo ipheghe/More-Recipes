@@ -8,7 +8,8 @@ import rootReducer from '../reducers';
  * @func
  * @returns {*} void
  */
-const configureStore = () => composeWithDevTools(applyMiddleware(thunk))(createStore)(rootReducer);
+const configureStore = () =>
+  composeWithDevTools(applyMiddleware(thunk))(createStore)(rootReducer);
 
 
 export default configureStore;

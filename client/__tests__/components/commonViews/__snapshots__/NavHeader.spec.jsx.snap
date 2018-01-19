@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NavHeader should match component snapshot 1`] = `
+<div>
+  <div>
+    <header>
+      <nav
+        className="navbar navbar-toggleable-md fixed-top navbar-light bg-faded"
+        id="brand-color"
+      >
+        <button
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          className="navbar-toggler navbar-toggler-right"
+          data-target="#navbarSupportedContent"
+          data-toggle="collapse"
+          type="button"
+        >
+          <span
+            className="navbar-toggler-icon"
+          />
+        </button>
+        <a
+          className="navbar-brand"
+          href="/"
+        >
+          <img
+            alt="logo"
+            className="d-inline-block align-top"
+            height="30"
+            src="test-file-stub"
+            width="30"
+          />
+          MoreRecipes
+        </a>
+        <div
+          className="collapse navbar-collapse"
+          id="navbarSupportedContent"
+        >
+          <ul
+            className="navbar-nav mr-auto"
+          >
+            <li
+              className="nav-item nav-home"
+              onClick={[Function]}
+            >
+              <a
+                aria-current="true"
+                className="nav-link active"
+                href="#/"
+                onClick={[Function]}
+                style={Object {}}
+              >
+                Home
+              </a>
+              <span
+                className="sr-only"
+              >
+                (current)
+              </span>
+            </li>
+            <li
+              className="nav-item"
+            >
+              <a
+                aria-current={false}
+                className="nav-link"
+                href="#/login"
+                onClick={[Function]}
+                style={undefined}
+              >
+                Login
+              </a>
+            </li>
+            <li
+              className="nav-item"
+            >
+              <a
+                aria-current={false}
+                className="nav-link"
+                href="#/signup"
+                onClick={[Function]}
+                style={undefined}
+              >
+                SignUp
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+  </div>
+</div>
+`;

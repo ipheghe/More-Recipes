@@ -77,7 +77,6 @@ const updateCategory = (categoryId, name) => {
  */
 const deleteCategory = (categoryId) => {
   const url = `/user/category/${categoryId}`;
-  const directTo = '';
   const toastMessage = '';
   const constant = '';
   return dispatch => deleteData(
@@ -88,7 +87,6 @@ const deleteCategory = (categoryId) => {
     dispatch,
     toastMessage,
     constant,
-    directTo
   );
 };
 
@@ -101,7 +99,13 @@ const deleteCategory = (categoryId) => {
  */
 const getUserCategories = () => {
   const url = '/categories/users';
-  return dispatch => getData(FETCH_USER_CATEGORIES, CATEGORY_ERROR, true, url, dispatch);
+  return dispatch => getData(
+    FETCH_USER_CATEGORIES,
+    CATEGORY_ERROR,
+    true,
+    url,
+    dispatch
+  );
 };
 
 /**
@@ -115,7 +119,13 @@ const getUserCategories = () => {
  */
 const getUserCategory = (categoryId) => {
   const url = `/category/user/${categoryId}`;
-  return dispatch => getData(FETCH_USER_CATEGORY, CATEGORY_ERROR, true, url, dispatch);
+  return dispatch => getData(
+    FETCH_USER_CATEGORY,
+    CATEGORY_ERROR,
+    true,
+    url,
+    dispatch
+  );
 };
 
 export {

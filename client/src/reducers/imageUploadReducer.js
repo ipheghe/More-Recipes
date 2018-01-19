@@ -1,4 +1,8 @@
-import { IMAGE_FILE_FAILURE, IMAGE_FILE_REQUEST, IMAGE_FILE_SUCCESSFUL } from '../actions/types';
+import {
+  IMAGE_FILE_FAILURE,
+  IMAGE_FILE_REQUEST,
+  IMAGE_FILE_SUCCESSFUL
+} from '../actions/types';
 
 
 const initialState = [{

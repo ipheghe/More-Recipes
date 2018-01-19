@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UserSection should match component snapshot 1`] = `
+<main>
+  <div
+    className="div-profile"
+  >
+    <h5>
+      @
+      linda
+    </h5>
+    <p>
+      <span>
+        <i
+          aria-hidden="true"
+          className="fa fa-circle"
+          style={
+            Object {
+              "color": "green",
+            }
+          }
+        />
+      </span>
+      Online
+    </p>
+    <br />
+    <br />
+    <button
+      className="invisible-button nav-editProfile"
+      onClick={[Function]}
+      style={
+        Object {
+          "color": "#0275d8",
+          "textAlign": "center",
+        }
+      }
+    >
+      Edit Profile
+    </button>
+    <button
+      className="invisible-button nav-changePassword"
+      onClick={[Function]}
+      style={
+        Object {
+          "color": "#0275d8",
+          "textAlign": "center",
+        }
+      }
+    >
+      Change Password
+    </button>
+  </div>
+  <br />
+  <div
+    className="div-profile"
+  >
+    <h5>
+      Add Category
+    </h5>
+    <div
+      className="form-group profile-form"
+    >
+      <input
+        className="form-control"
+        id="category-name"
+        name="categoryName"
+        onChange={[Function]}
+        placeholder="Enter Name"
+        type="text"
+        value=""
+      />
+    </div>
+    <div>
+      <button
+        className="btn btn-success"
+        onClick={[Function]}
+        type="button"
+      >
+        Add
+      </button>
+    </div>
+    <br />
+    <div
+      className="profile-category-button"
+    >
+      <button
+        className="btn btn-default btn-sm"
+        name="categoryModalName"
+        onClick={[Function]}
+        type="button"
+        value={1}
+      >
+        Local Dish
+      </button>
+    </div>
+  </div>
+  <div />
+</main>
+`;

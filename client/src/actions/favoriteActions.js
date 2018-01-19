@@ -55,7 +55,6 @@ const favoriteRecipe = (recipeId, categoryId) => {
  */
 const unfavoriteRecipe = (recipeId) => {
   const url = `/favorite/${recipeId}`;
-  const directTo = '';
   const toastMessage = '';
   const constant = '';
   return dispatch => deleteData(
@@ -66,7 +65,6 @@ const unfavoriteRecipe = (recipeId) => {
     dispatch,
     toastMessage,
     constant,
-    directTo
   );
 };
 
@@ -81,7 +79,13 @@ const unfavoriteRecipe = (recipeId) => {
  */
 const getFavoriteRecipe = (recipeId) => {
   const url = `/favorite/${recipeId}`;
-  return dispatch => getData(RETRIEVE_USER_FAVORITE_RECIPE, FAVORITE_ERROR, true, url, dispatch);
+  return dispatch => getData(
+    RETRIEVE_USER_FAVORITE_RECIPE,
+    FAVORITE_ERROR,
+    true,
+    url,
+    dispatch
+  );
 };
 
 /**
