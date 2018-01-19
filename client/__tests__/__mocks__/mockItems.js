@@ -8,6 +8,21 @@ export default {
     mobileNumber: 2348034526172,
     email: 'linda@gmail.com',
   },
+
+  IncorrectUser: {
+    id: 1,
+    username: 'li dd  nda',
+    password: '',
+    fullName: 'Linda George',
+    mobileNumber: 2348034526172,
+    email: 'linda@gmail.com',
+  },
+
+  invalidPassword: {
+    username: 'linda',
+    password: 'b b dnb ',
+  },
+
   fetchUser: {
     userData: {
       id: 1,
@@ -40,7 +55,8 @@ export default {
   recipe: {
     id: 1,
     name: 'Banga Soup',
-    description: 'This recipe is very popular in the south south part of Nigeria',
+    description: 'This recipe is very popular in the ' +
+    'south south part of Nigeria',
     ingredients: 'palm kernel, assorted meat, maggi, palm oil',
     directions: 'pour palm oil in pot, blanch oil for 10mins',
     imageUrl: 'dist/image1',
@@ -51,7 +67,8 @@ export default {
     {
       id: 1,
       name: 'Banga Soup',
-      description: 'This recipe is very popular in the south south part of Nigeria',
+      description: 'This recipe is very popular in the ' +
+      'south south part of Nigeria',
       ingredients: 'palm kernel, assorted meat, maggi, palm oil',
       directions: 'pour palm oil in pot, blanch oil for 10mins',
       imageUrl: 'assets/images/pizza1.jpg',
@@ -61,7 +78,8 @@ export default {
 
   updateRecipe: {
     name: 'Banga Soup',
-    description: 'This recipe is very popular in the south south part of Nigeria',
+    description: 'This recipe is very popular in the ' +
+    'south south part of Nigeria',
     ingredients: 'palm kernel, assorted meat, maggi, palm oil',
     directions: 'pour palm oil in pot, blanch oil for 10mins',
     imageUrl: 'assets/images/pizza1.jpg'

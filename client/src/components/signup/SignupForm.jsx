@@ -1,6 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * SignupForm component
+ *
+ * @param {Object} props
+ *
+ * @return {jsx} jsx
+ */
 const SignupForm = ({
   username,
   password,
@@ -110,7 +117,7 @@ const SignupForm = ({
       </div>
       <div className="row">
         <div className="col-md-6">
-          <a href="#login">Already have an account?</a>
+          <a href="#login" className="have-account">Already have an account?</a>
         </div>
       </div>
       <div className="login-buttons">

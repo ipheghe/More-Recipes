@@ -6,7 +6,8 @@ import { Provider } from 'react-redux';
 import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedNavHeader, { NavHeader } from '../../../src/commonViews/NavHeader.jsx';
+import ConnectedNavHeader, { PureNavHeader }
+  from '../../../src/commonViews/NavHeader.jsx';
 import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 
 
@@ -35,8 +36,10 @@ const props = {
  */
 const setup = (isAuthenticated) => {
   props.authenticated = isAuthenticated;
-  const mountedWrapper = mount(<Provider store={store} ><ConnectedNavHeader {...props} /></Provider>);
-  const shallowWrapper = shallow(<NavHeader {...props} />);
+  const mountedWrapper = mount(<Provider store={store} >
+      <ConnectedNavHeader {...props} />
+    </Provider>);
+  const shallowWrapper = shallow(<PureNavHeader {...props} />);
   return {
     mountedWrapper,
     shallowWrapper
@@ -48,15 +51,17 @@ describe('<NavHeader', () => {
     mockAuthCheck();
   });
 
-  it('renders UserNavHeader component without crashing if user is authenticated ', () => {
-    const { mountedWrapper } = setup(true);
-    expect(mountedWrapper).toBeDefined();
-    expect(mountedWrapper.find('UserNavHeader').length).toBe(1);
-    expect(mountedWrapper.find('MainHeader').length).toBe(0);
-    expect(mountedWrapper.exists()).toBe(true);
-  });
+  it(`renders UserNavHeader component without 
+      crashing if user is authenticated`, () => {
+      const { mountedWrapper } = setup(true);
+      expect(mountedWrapper).toBeDefined();
+      expect(mountedWrapper.find('UserNavHeader').length).toBe(1);
+      expect(mountedWrapper.find('MainHeader').length).toBe(0);
+      expect(mountedWrapper.exists()).toBe(true);
+    });
 
-  it('renders MainHeader component without crashing if user is not authenticated ', () => {
+  it('renders MainHeader component without' +
+  'crashing if user is not authenticated ', () => {
     const { shallowWrapper } = setup(false);
     expect(shallowWrapper).toBeDefined();
     expect(shallowWrapper.find('UserNavHeader').length).toBe(0);
@@ -65,7 +70,7 @@ describe('<NavHeader', () => {
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<Router ><NavHeader {...props} /></Router>);
+    const tree = render.create(<Router ><PureNavHeader {...props} /></Router>);
     expect(tree).toMatchSnapshot();
   });
 });

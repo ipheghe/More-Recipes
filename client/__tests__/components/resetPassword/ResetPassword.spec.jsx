@@ -71,7 +71,7 @@ const setup = (isAuthenticated) => {
   props.isAuthenticated = isAuthenticated;
   const mountedWrapper = mount(<Provider store={store} >
     <ConnectedResetPassword {...props} store={store} />
-  </Provider>);
+                               </Provider>);
   const shallowWrapper = shallow(<PureResetPassword {...props} />);
   return {
     mountedWrapper,
@@ -99,62 +99,70 @@ describe('<ResetPassword', () => {
     expect(PureResetPassword.prototype.handleChange.calledOnce).toEqual(true);
   });
 
-  it('calls handleResetPassword event after change password button is clicked', () => {
-    sinon.spy(PureResetPassword.prototype, 'handleResetPassword');
-    const { shallowWrapper } = setup(false);
-    shallowWrapper.instance().handleResetPassword(event);
-    expect(PureResetPassword.prototype.handleResetPassword.calledOnce)
-      .toEqual(true);
-  });
+  it(`calls handleResetPassword event after 
+     change password button is clicked`, () => {
+      sinon.spy(PureResetPassword.prototype, 'handleResetPassword');
+      const { shallowWrapper } = setup(false);
+      shallowWrapper.instance().handleResetPassword(event);
+      expect(PureResetPassword.prototype.handleResetPassword.calledOnce)
+        .toEqual(true);
+    });
 
-  it('calls returns error for null confirm password field', () => {
+  it('displays error message if user inputs null confirm password', () => {
     sinon.spy(PureResetPassword.prototype, 'validateFormField');
     const { shallowWrapper } = setup(false);
     state.confirmPassword = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    expect(shallowWrapper.state().hasErrored).toEqual(true);
+    expect(shallowWrapper.state().errorMessage)
+      .toEqual('confirm password field cannot be empty');
     jest.runAllTimers();
-    expect(PureResetPassword.prototype.validateFormField.calledOnce)
-      .toEqual(true);
-    expect(shallowWrapper.state().confirmPassword).toEqual('');
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
-  it('calls returns error for null new password field', () => {
+  it('displays error message if user inputs null new password', () => {
     const { shallowWrapper } = setup(false);
     state.newPassword = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    expect(shallowWrapper.state().hasErrored).toEqual(true);
+    expect(shallowWrapper.state().errorMessage)
+      .toEqual('new password field cannot be empty');
     jest.runAllTimers();
-    expect(PureResetPassword.prototype.validateFormField.calledOnce)
-      .toEqual(false);
-    expect(shallowWrapper.state().newPassword).toEqual('');
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
-  it('calls returns error for null password missmatch', () => {
-    const { shallowWrapper } = setup(false);
-    state.newPassword = 'abcde';
-    state.confirmPassword = 'abcdhhhhe';
-    shallowWrapper.setState(state);
-    shallowWrapper.instance().validateFormField();
-    jest.runAllTimers();
-    expect(PureResetPassword.prototype.validateFormField.calledOnce)
-      .toEqual(false);
-    expect(shallowWrapper.state().confirmPassword).toEqual('abcdhhhhe');
-  });
+  it(`displays error message if confirm password value 
+     is different from new password value`, () => {
+      const { shallowWrapper } = setup(false);
+      state.newPassword = 'abcde';
+      state.confirmPassword = 'abcdhhhhe';
+      shallowWrapper.setState(state);
+      shallowWrapper.instance().validateFormField();
+      expect(shallowWrapper.state().hasErrored).toEqual(true);
+      expect(shallowWrapper.state().newPassword).toEqual('abcde');
+      expect(shallowWrapper.state().confirmPassword).toEqual('abcdhhhhe');
+      expect(shallowWrapper.state().errorMessage)
+        .toEqual('Password mismatch!');
+      jest.runAllTimers();
+      expect(shallowWrapper.state().errorMessage).toEqual('');
+    });
 
-  it(' dispatches resetPassword action after validatiing fields', () => {
-    const { shallowWrapper } = setup(false);
-    state.newPassword = 'abcde';
-    state.confirmPassword = 'abcde';
-    shallowWrapper.setState(state);
-    shallowWrapper.instance().validateFormField();
-    expect(PureResetPassword.prototype.validateFormField.calledOnce)
-      .toEqual(false);
-    expect(shallowWrapper.state().confirmPassword).toEqual('abcde');
-  });
+  it(`dispatches resetPassword action after 
+     validatiing form fields successfully`, () => {
+      const { shallowWrapper } = setup(false);
+      state.newPassword = 'abcde';
+      state.confirmPassword = 'abcde';
+      shallowWrapper.setState(state);
+      shallowWrapper.instance().validateFormField();
+      expect(PureResetPassword.prototype.validateFormField.calledOnce)
+        .toEqual(false);
+      expect(shallowWrapper.state().errorMessage).toEqual('');
+    });
 
   it('redirects to dashboard page if user is authenticated', () => {
     const { shallowWrapper } = setup(true);
-    expect(shallowWrapper).toBeDefined();
+    expect(shallowWrapper.instance().props.isAuthenticated).toEqual(true);
   });
 });

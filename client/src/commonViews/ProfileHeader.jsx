@@ -7,7 +7,9 @@ import { getRecipesBySearch } from './../actions/recipeActions';
 
 /**
  * ProfileHeader component
+ *
  * @class ProfileHeader
+ *
  * @extends {React.Component}
  */
 class ProfileHeader extends React.Component {
@@ -17,6 +19,7 @@ class ProfileHeader extends React.Component {
 
   /**
    * constructor
+   *
    * @param {object} props
    */
   constructor(props) {
@@ -30,7 +33,9 @@ class ProfileHeader extends React.Component {
 
   /**
   * handle change form event
+  *
   * @param {SytheticEvent} event
+  *
   * @returns {object} state
   */
   handleChange(event) {
@@ -41,7 +46,9 @@ class ProfileHeader extends React.Component {
 
   /**
   * handle recipe search form event
+  *
   * @param {SytheticEvent} event
+  *
   * @returns {object} state
   */
   handleSearch(event) {
@@ -56,6 +63,7 @@ class ProfileHeader extends React.Component {
 
   /**
    * render
+   *
    * @return {ReactElement} markup
    */
   render() {
@@ -73,7 +81,11 @@ class ProfileHeader extends React.Component {
           <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <Link to="/dashboard/top-recipes" className="navbar-brand invisible-button" >
+          <Link
+            href="#dashboard/top-recipes"
+            to="/dashboard/top-recipes"
+            className="navbar-brand invisible-button"
+          >
             <h2>Profile Page</h2>
           </Link>
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -92,7 +104,11 @@ class ProfileHeader extends React.Component {
               required
               formNoValidate
             />
-            <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.handleSearch}>Search</button>
+            <button
+              className="btn btn-outline-success my-2 my-sm-0"
+              onClick={this.handleSearch}
+            >Search
+            </button>
           </form>
         </div>
       </nav>
@@ -101,5 +117,8 @@ class ProfileHeader extends React.Component {
 }
 
 export { ProfileHeader as PureProfileHeader };
-export default connect(null, { getUserCategories, getRecipesBySearch })(ProfileHeader);
+export default connect(
+  null,
+  { getUserCategories, getRecipesBySearch }
+)(ProfileHeader);
 

@@ -4,7 +4,8 @@ import Logo from '../../public/assets/images/recipe_logo.png';
 
 /**
  * ResetPasswordHeader commponent
- * @returns {component} ResetPasswordHeader
+ *
+ * @returns {jsx} jsx
  */
 const ResetPasswordHeader = () => (
   <div>

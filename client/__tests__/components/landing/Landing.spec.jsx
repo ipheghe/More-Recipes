@@ -49,7 +49,9 @@ const props = {
  */
 const setup = (isAuthenticated) => {
   props.isAuthenticated = isAuthenticated;
-  const mountedWrapper = mount(<Router><ConnectedLandingPage {...props} store={store} /></Router>);
+  const mountedWrapper = mount(<Router>
+      <ConnectedLandingPage {...props} store={store} />
+    </Router>);
   const shallowWrapper = shallow(<PureLanding {...props} />);
   return {
     mountedWrapper,
@@ -75,13 +77,14 @@ describe('<Landing', () => {
     expect(PureLanding.prototype.componentDidMount.calledOnce).toEqual(false);
   });
 
-  it('calls showTopRecipes event ', () => {
-    const { shallowWrapper } = setup(false);
-    const event = {
-      preventDefault: jest.fn()
-    };
-    shallowWrapper.instance().showTopRecipies(event);
-  });
+  it(`calls showTopRecipes event when 
+     view top recipes button is clicked`, () => {
+      const { shallowWrapper } = setup(false);
+      const event = {
+        preventDefault: jest.fn()
+      };
+      shallowWrapper.instance().showTopRecipies(event);
+    });
 
   it('should match component snapshot', () => {
     const tree = render.create(<Router ><PureLanding {...props} /></Router>);
@@ -90,6 +93,6 @@ describe('<Landing', () => {
 
   it('redirects to dashboard page if user is authenticated', () => {
     const { shallowWrapper } = setup(true);
-    expect(shallowWrapper).toBeDefined();
+    expect(shallowWrapper.instance().props.isAuthenticated).toEqual(true);
   });
 });

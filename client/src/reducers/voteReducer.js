@@ -21,7 +21,8 @@ export default (state = INITIAL_STATE, action) => {
     case VOTE_ERROR:
       return {
         ...state,
-        error: action.payload.message ? action.payload.message : action.payload.error
+        error: action.payload.message
+          ? action.payload.message : action.payload.error
       };
     default:
       return state;

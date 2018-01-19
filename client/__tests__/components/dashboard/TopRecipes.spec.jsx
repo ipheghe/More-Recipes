@@ -30,7 +30,7 @@ const store = mockStore(initialState);
 
 const state = {
   recipes: mockItems.recipeArray,
-  message: 'Sorry! You do not have any favorite recipe',
+  message: 'Sorry! No Recipe available yet',
   pages: 2,
   currentPaginatePage: 1,
   isLoading: false
@@ -48,7 +48,9 @@ const props = {
  * @return { * } null
  */
 const setup = () => {
-  const mountedWrapper = mount(<Router><ConnectedTopRecipes {...props} store={store} /></Router>);
+  const mountedWrapper = mount(<Router>
+    <ConnectedTopRecipes {...props} store={store} />
+                               </Router>);
   const shallowWrapper = shallow(<PureTopRecipes {...props} />);
   return {
     mountedWrapper,
@@ -61,14 +63,15 @@ describe('<TopRecipes', () => {
     mockAuthCheck();
   });
 
-  it('should render a loader component before TopRecipes component receives props', () => {
-    props.recipes = [];
-    const shallowWrapper = shallow(<PureTopRecipes {...props} />);
-    shallowWrapper.setState({ recipes: [] });
-    expect(shallowWrapper).toBeDefined();
-    expect(shallowWrapper.find('Loader').length).toBe(1);
-    expect(shallowWrapper.exists()).toBe(true);
-  });
+  it(`should render a loader component before 
+     TopRecipes component receives props`, () => {
+      props.recipes = [];
+      const shallowWrapper = shallow(<PureTopRecipes {...props} />);
+      shallowWrapper.setState({ recipes: [] });
+      expect(shallowWrapper).toBeDefined();
+      expect(shallowWrapper.find('Loader').length).toBe(1);
+      expect(shallowWrapper.exists()).toBe(true);
+    });
 
   it('renders without crashing', () => {
     const { shallowWrapper } = setup();
@@ -87,13 +90,14 @@ describe('<TopRecipes', () => {
       .toEqual(false);
   });
 
-  it('calls componentWillReceiveProps if recipe from props is available', () => {
-    sinon.spy(PureTopRecipes.prototype, 'componentWillReceiveProps');
-    const { shallowWrapper } = setup();
-    shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(PureTopRecipes.prototype.componentWillReceiveProps.calledOnce)
-      .toEqual(true);
-  });
+  it(`calls componentWillReceiveProps if 
+     recipe from props is available`, () => {
+      sinon.spy(PureTopRecipes.prototype, 'componentWillReceiveProps');
+      const { shallowWrapper } = setup();
+      shallowWrapper.instance().componentWillReceiveProps(props);
+      expect(PureTopRecipes.prototype.componentWillReceiveProps.calledOnce)
+        .toEqual(true);
+    });
 
   it('should match component snapshot', () => {
     const tree = render.create(<Router ><PureTopRecipes {...props} /></Router>);
@@ -103,8 +107,8 @@ describe('<TopRecipes', () => {
   it('should display a message if recipe length is 0', () => {
     const { shallowWrapper } = setup();
     shallowWrapper.setState({ recipes: [], isLoading: false });
-    expect(shallowWrapper).toBeDefined();
-    expect(shallowWrapper.exists()).toBe(true);
+    expect(shallowWrapper.state().message)
+      .toEqual('Sorry! No Recipe available yet');
   });
 
   it('calls onPaginateClick event', () => {
@@ -115,7 +119,7 @@ describe('<TopRecipes', () => {
     expect(shallowWrapper.state().currentPaginatePage).toEqual(3);
   });
 
-  it(' dispatches getRecipes action', () => {
+  it('dispatches getRecipes action', () => {
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().getRecipes();

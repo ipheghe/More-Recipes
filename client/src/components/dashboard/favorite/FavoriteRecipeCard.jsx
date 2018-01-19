@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import EllipsisText from 'react-ellipsis-text';
 
-
+/**
+ * FavoriteRecipeCard component
+ *
+ * @param {Object} props
+ *
+ * @return {jsx} jsx
+ */
 const FavoriteRecipeCard = ({ recipe }) => (
   <div className="card">
     <img

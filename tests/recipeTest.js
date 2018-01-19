@@ -369,22 +369,23 @@ describe('Update Recipe', () => {
       });
   });
   // user cannot update another users recipe
-  it('should return 400 status for trying to update another user recipe', (done) => {
-    server
-      .put(`${recipesUrl}/2`)
-      .set('Connection', 'keep alive')
-      .set('Accept', 'application/json')
-      .set('x-access-token', userToken[1])
-      .set('Content-Type', 'application/json')
-      .type('form')
-      .send(updateRecipe[0])
-      .end((err, res) => {
-        res.status.should.equal(404);
-        res.body.message.should.equal('Access Denied!');
-        if (err) return done(err);
-        done();
-      });
-  });
+  it(`should return 400 status for
+     trying to update another user recipe`, (done) => {
+      server
+        .put(`${recipesUrl}/2`)
+        .set('Connection', 'keep alive')
+        .set('Accept', 'application/json')
+        .set('x-access-token', userToken[1])
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .send(updateRecipe[0])
+        .end((err, res) => {
+          res.status.should.equal(404);
+          res.body.message.should.equal('Access Denied!');
+          if (err) return done(err);
+          done();
+        });
+    });
   // Deleting a recipe
   it('return 200 status for SuccessFullly deleting a recipe', (done) => {
     server
@@ -435,20 +436,21 @@ describe('Get Recipe', () => {
         done();
       });
   });
-  it('should return a message when user tries to retrieve non-existent recipes', (done) => {
-    server
-      .post('/api/v1/recipes/users')
-      .set('Connection', 'keep alive')
-      .set('Accept', 'application/json')
-      .set('x-access-token', userToken[2])
-      .set('Content-Type', 'application/json')
-      .type('form')
-      .end((err, res) => {
-        res.body.message.should.equal('No recipe found for user');
-        if (err) return done(err);
-        done();
-      });
-  });
+  it(`should return a message when user
+     tries to retrieve non-existent recipes`, (done) => {
+      server
+        .post('/api/v1/recipes/users')
+        .set('Connection', 'keep alive')
+        .set('Accept', 'application/json')
+        .set('x-access-token', userToken[2])
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          res.body.message.should.equal('No recipe found for user');
+          if (err) return done(err);
+          done();
+        });
+    });
   it('should return 200 status for retrieving a recipe by its id', (done) => {
     server
       .get(`${recipesUrl}/2`)
@@ -504,7 +506,8 @@ describe('Get Recipe', () => {
       .type('form')
       .end((err, res) => {
         res.status.should.equal(200);
-        res.body.message.should.equal('All Top Recipes Retrieved SuccessFullly!');
+        res.body.message.should
+          .equal('All Top Recipes Retrieved SuccessFullly!');
         if (err) return done(err);
         done();
       });
@@ -519,7 +522,8 @@ describe('Get Recipe', () => {
       .type('form')
       .end((err, res) => {
         res.status.should.equal(200);
-        res.body.message.should.equal('Recipes Retrieved SuccessFullly!');
+        res.body.message.should
+          .equal('Recipes Retrieved SuccessFullly!');
         if (err) return done(err);
         done();
       });
@@ -708,35 +712,37 @@ describe('Review a recipe', () => {
         done();
       });
   });
-  it('should return 200 status for retrieving all reviews for a particular recipe', (done) => {
-    server
-      .post(`${reviewsUrl}/2`)
-      .set('Connection', 'keep alive')
-      .set('Accept', 'application/json')
-      .set('x-access-token', userToken[0])
-      .set('Content-Type', 'application/json')
-      .type('form')
-      .end((err, res) => {
-        res.status.should.equal(200);
-        res.body.message.should.equal('Recipe reviews Retrieved SuccessFullly!');
-        if (err) return done(err);
-        done();
-      });
-  });
-  it('should return a message for trying to retrieve a non-existent recipe review', (done) => {
-    server
-      .post(`${reviewsUrl}/6`)
-      .set('Connection', 'keep alive')
-      .set('Accept', 'application/json')
-      .set('x-access-token', userToken[0])
-      .set('Content-Type', 'application/json')
-      .type('form')
-      .end((err, res) => {
-        res.body.message.should.equal('No review for this recipe!');
-        if (err) return done(err);
-        done();
-      });
-  });
+  it(`should return 200 status for retrieving
+     all reviews for a particular recipe`, (done) => {
+      server
+        .post(`${reviewsUrl}/2`)
+        .set('Connection', 'keep alive')
+        .set('Accept', 'application/json')
+        .set('x-access-token', userToken[0])
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.message.should.equal('Recipe reviews Retrieved SuccessFullly!');
+          if (err) return done(err);
+          done();
+        });
+    });
+  it(`should return a message for trying
+     to retrieve a non-existent recipe review`, (done) => {
+      server
+        .post(`${reviewsUrl}/6`)
+        .set('Connection', 'keep alive')
+        .set('Accept', 'application/json')
+        .set('x-access-token', userToken[0])
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          res.body.message.should.equal('No review for this recipe!');
+          if (err) return done(err);
+          done();
+        });
+    });
 });
 describe('Create Category', () => {
   it('should return a invalid token message', (done) => {
@@ -804,21 +810,23 @@ describe('Create Category', () => {
         done();
       });
   });
-  it('should return 200 status for retrieving user category successfully', (done) => {
-    server
-      .get('/api/v1/category/user/1')
-      .set('Connection', 'keep alive')
-      .set('Accept', 'application/json')
-      .set('x-access-token', userToken[0])
-      .set('Content-Type', 'application/json')
-      .type('form')
-      .end((err, res) => {
-        res.status.should.equal(200);
-        res.body.message.should.equal('User Category Retrieved SuccessFullly!');
-        if (err) return done(err);
-        done();
-      });
-  });
+  it(`should return 200 status for
+     retrieving user category successfully`, (done) => {
+      server
+        .get('/api/v1/category/user/1')
+        .set('Connection', 'keep alive')
+        .set('Accept', 'application/json')
+        .set('x-access-token', userToken[0])
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.message.should
+            .equal('User Category Retrieved SuccessFullly!');
+          if (err) return done(err);
+          done();
+        });
+    });
   it('should return a message if user has no category to retrieve', (done) => {
     server
       .get('/api/v1/categories/users')
@@ -964,7 +972,7 @@ describe('FavoriteRecipe', () => {
         done();
       });
   });
-  it('should return 401 status for user trying to favorite a recipe more than once', (done) => {
+  it('should return a message for user trying to favorite a recipe more than once', (done) => {
     server
       .post(`${recipesUrl}/2/1/favorite`)
       .set('Connection', 'keep alive')
@@ -974,7 +982,6 @@ describe('FavoriteRecipe', () => {
       .type('form')
       .send({})
       .end((err, res) => {
-        res.status.should.equal(401);
         res.body.message.should.equal('Recipe already favorited by user!');
         if (err) return done(err);
         done();
@@ -1023,19 +1030,21 @@ describe('FavoriteRecipe', () => {
         done();
       });
   });
-  it('should return a message if user doesnt not have any favorite recipe', (done) => {
-    server
-      .post(favoritesUrl)
-      .set('Connection', 'keep alive')
-      .set('Accept', 'application/json')
-      .set('x-access-token', userToken[1])
-      .set('Content-Type', 'application/json')
-      .end((err, res) => {
-        res.body.message.should.equal('There are no favourite recipe for this user');
-        if (err) return done(err);
-        done();
-      });
-  });
+  it(`should return a message
+     if user doesnt not have any favorite recipe`, (done) => {
+      server
+        .post(favoritesUrl)
+        .set('Connection', 'keep alive')
+        .set('Accept', 'application/json')
+        .set('x-access-token', userToken[1])
+        .set('Content-Type', 'application/json')
+        .end((err, res) => {
+          res.body.message.should
+            .equal('There are no favourite recipe for this user');
+          if (err) return done(err);
+          done();
+        });
+    });
 });
 describe('Vote a recipe', () => {
   it('allows logged in user upvote a posted recipe', (done) => {

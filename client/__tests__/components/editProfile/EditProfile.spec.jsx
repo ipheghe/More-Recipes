@@ -74,7 +74,7 @@ jest.useFakeTimers();
 const setup = () => {
   const mountedWrapper = mount(<Provider store={store}>
     <Router><ConnectedEditProfile {...props} /></Router>
-                               </Provider>);
+  </Provider>);
   const shallowWrapper = shallow(<PureEditProfile {...props} />);
   return {
     mountedWrapper,
@@ -94,7 +94,7 @@ describe('<PureEditProfile', () => {
   it('should match component snapshot', () => {
     const tree = render.create(<Provider store={store}>
       <Router><ConnectedEditProfile {...props} /></Router>
-                               </Provider>);
+    </Provider>);
     expect(tree).toMatchSnapshot();
   });
 
@@ -105,12 +105,14 @@ describe('<PureEditProfile', () => {
     expect(PureEditProfile.prototype.handleChange.calledOnce).toEqual(true);
   });
 
-  it('calls componentWillReceiveProps if userData from props is available', () => {
-    sinon.spy(PureEditProfile.prototype, 'componentWillReceiveProps');
-    const { shallowWrapper } = setup();
-    shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(PureEditProfile.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
-  });
+  it(`calls componentWillReceiveProps if 
+    userData from props is available`, () => {
+      sinon.spy(PureEditProfile.prototype, 'componentWillReceiveProps');
+      const { shallowWrapper } = setup();
+      shallowWrapper.instance().componentWillReceiveProps(props);
+      expect(PureEditProfile.prototype.componentWillReceiveProps.calledOnce)
+        .toEqual(true);
+    });
 
   it('calls handleUpdate event after update button is clicked', () => {
     sinon.spy(PureEditProfile.prototype, 'handleUpdate');
@@ -119,45 +121,59 @@ describe('<PureEditProfile', () => {
     expect(PureEditProfile.prototype.handleUpdate.calledOnce).toEqual(true);
   });
 
-  it('calls validateFormField method with null username field', () => {
+  it('displays error message if user inputs a null username value', () => {
     sinon.spy(PureEditProfile.prototype, 'validateFormField');
-    const { shallowWrapper } = setup();
+    const { shallowWrapper } = setup(false);
     state.username = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    expect(shallowWrapper.state().hasErrored).toEqual(true);
+    expect(shallowWrapper.state().errorMessage)
+      .toEqual('Username must start with a letter and have no spaces.');
     jest.runAllTimers();
-    expect(PureEditProfile.prototype.validateFormField.calledOnce)
-      .toEqual(true);
-    expect(shallowWrapper.state().username).toEqual('');
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
-  it('calls validateFormField method with null fullName  field', () => {
-    const { shallowWrapper } = setup();
-    state.fullName = '';
-    shallowWrapper.setState(state);
-    shallowWrapper.instance().validateFormField();
-    jest.runAllTimers();
-    expect(PureEditProfile.prototype.validateFormField.calledOnce)
-      .toEqual(false);
-    expect(shallowWrapper.state().fullName).toEqual('');
-  });
+  it(`displays error message if user inputs a 
+     fullName value with length less than 4`, () => {
+      const { shallowWrapper } = setup(false);
+      state.username = 'okon';
+      state.fullName = 'oko';
+      shallowWrapper.setState(state);
+      shallowWrapper.instance().validateFormField();
+      expect(shallowWrapper.state().hasErrored).toEqual(true);
+      expect(shallowWrapper.state().errorMessage)
+        .toEqual('fullname must contain more than 3 chareacters');
+      jest.runAllTimers();
+      expect(shallowWrapper.state().errorMessage).toEqual('');
+    });
 
-  it('calls validateFormField method with null mobileNumber field', () => {
-    const { shallowWrapper } = setup();
+  it('displays error message if user inputs an invalid mobile number', () => {
+    const { shallowWrapper } = setup(false);
     state.mobileNumber = '';
-    state.username = 'okon';
-    state.fullName = 'Okon essien';
-    state.email = '';
+    state.fullName = 'okon Akem';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    expect(shallowWrapper.state().hasErrored).toEqual(true);
+    expect(shallowWrapper.state().errorMessage)
+      .toEqual('mobile number must contain only numbers');
     jest.runAllTimers();
-    expect(PureEditProfile.prototype.validateFormField.calledOnce)
-      .toEqual(false);
-    expect(shallowWrapper.state().mobileNumber).toEqual('');
-    expect(shallowWrapper.state().hasErrored).toEqual(false);
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
-  it(' dispatches updateUser action after validatiing fields', () => {
+  it('displays error message if user inputs an invalid email', () => {
+    const { shallowWrapper } = setup(false);
+    state.mobileNumber = '234702388888';
+    state.email = 'okon@ya';
+    shallowWrapper.setState(state);
+    shallowWrapper.instance().validateFormField();
+    expect(shallowWrapper.state().errorMessage)
+      .toEqual('Invalid Email Address');
+    jest.runAllTimers();
+    expect(shallowWrapper.state().errorMessage).toEqual('');
+  });
+
+  it('dispatches updateUser action after validatiing fields', () => {
     const { shallowWrapper } = setup();
     state.email = 'okon@yahoo.com';
     shallowWrapper.setState(state);

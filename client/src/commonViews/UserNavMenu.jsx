@@ -1,6 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+/**
+ * UserNavMenu component
+ *
+ * @return {jsx} jsx
+ */
 const UserNavMenu = () => (
   <div>
     <ul className="nav nav-tabs nav-fill">

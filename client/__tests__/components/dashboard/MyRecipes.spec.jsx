@@ -16,12 +16,12 @@ const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
 const initialState = {
   recipe: {
-    message: '',
+    message: 'Sorry! You have not added any recipe',
     error: '',
     pages: 2,
     recipeData: {},
     recipeList: mockItems.recipeArray,
-    userRecipes: [],
+    userRecipes: mockItems.recipeArray,
     searchResult: []
   }
 };
@@ -30,7 +30,7 @@ const store = mockStore(initialState);
 
 const state = {
   recipes: mockItems.recipeArray,
-  message: 'Sorry! You do not have any favorite recipe',
+  message: 'Sorry! You have not added any recipe',
   pages: 2,
   currentPaginatePage: 1,
   isLoading: false
@@ -42,13 +42,20 @@ const props = {
   getUserRecipes: jest.fn(() => Promise.resolve()),
 };
 
+const nextprops = {
+  recipes: mockItems.recipeArray,
+  pages: 2
+};
+
 /**
  *@description  setup function to mount component
  *
  * @return { * } null
  */
 const setup = () => {
-  const mountedWrapper = mount(<Router><ConnectedMyRecipes {...props} store={store} /></Router>);
+  const mountedWrapper = mount(<Router>
+    <ConnectedMyRecipes {...props} store={store} />
+                               </Router>);
   const shallowWrapper = shallow(<PureMyRecipes {...props} />);
   return {
     mountedWrapper,
@@ -61,14 +68,15 @@ describe('<MyRecipes', () => {
     mockAuthCheck();
   });
 
-  it('should render a loader component before PureMyRecipes component receives props', () => {
-    props.recipes = [];
-    const shallowWrapper = shallow(<PureMyRecipes {...props} />);
-    shallowWrapper.setState({ recipes: [] });
-    expect(shallowWrapper).toBeDefined();
-    expect(shallowWrapper.find('Loader').length).toBe(1);
-    expect(shallowWrapper.exists()).toBe(true);
-  });
+  it(`should render a loader component before 
+     MyRecipes component receives needed props`, () => {
+      props.recipes = [];
+      const shallowWrapper = shallow(<PureMyRecipes {...props} />);
+      shallowWrapper.setState({ recipes: [] });
+      expect(shallowWrapper).toBeDefined();
+      expect(shallowWrapper.find('Loader').length).toBe(1);
+      expect(shallowWrapper.exists()).toBe(true);
+    });
 
   it('renders without crashing', () => {
     const { shallowWrapper } = setup();
@@ -87,13 +95,14 @@ describe('<MyRecipes', () => {
       .toEqual(false);
   });
 
-  it('calls componentWillReceiveProps if recipe from props is available', () => {
-    sinon.spy(PureMyRecipes.prototype, 'componentWillReceiveProps');
-    const { shallowWrapper } = setup();
-    shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(PureMyRecipes.prototype.componentWillReceiveProps.calledOnce)
-      .toEqual(true);
-  });
+  it(`calls componentWillReceiveProps 
+    if recipe from props is available`, () => {
+      sinon.spy(PureMyRecipes.prototype, 'componentWillReceiveProps');
+      const { shallowWrapper } = setup();
+      shallowWrapper.instance().componentWillReceiveProps(nextprops);
+      expect(PureMyRecipes.prototype.componentWillReceiveProps.calledOnce)
+        .toEqual(true);
+    });
 
   it('should match component snapshot', () => {
     const tree = render.create(<Router ><PureMyRecipes {...props} /></Router>);
@@ -105,6 +114,8 @@ describe('<MyRecipes', () => {
     shallowWrapper.setState({ recipes: [], isLoading: false });
     expect(shallowWrapper).toBeDefined();
     expect(shallowWrapper.exists()).toBe(true);
+    expect(shallowWrapper.state().message)
+      .toEqual('Sorry! You have not added any recipe');
   });
 
   it('calls onPaginateClick event', () => {
@@ -115,7 +126,7 @@ describe('<MyRecipes', () => {
     expect(shallowWrapper.state().currentPaginatePage).toEqual(3);
   });
 
-  it(' dispatches getRecipes action', () => {
+  it('dispatches getRecipes action', () => {
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().getRecipes();

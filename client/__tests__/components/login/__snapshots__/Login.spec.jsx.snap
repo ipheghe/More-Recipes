@@ -130,7 +130,11 @@ exports[`<Login should match component snapshot 1`] = `
                       }
                     }
                   >
-                    Forgot your password?
+                    <p
+                      className="forgot-password"
+                    >
+                      Forgot your password?
+                    </p>
                   </button>
                 </div>
               </div>

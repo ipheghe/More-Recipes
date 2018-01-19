@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-
+/**
+ * LandingRecipeCard component
+ *
+ * @param {Object} props
+ *
+ * @return {jsx} jsx
+ */
 const LandingRecipeCard = ({ recipe }) => (
   <div className="card">
     <img

@@ -1,6 +1,13 @@
 import sha1 from 'sha1';
 import superagent from 'superagent';
-import { IMAGE_FILE_FAILURE, IMAGE_FILE_REQUEST, IMAGE_FILE_SUCCESSFUL } from './types';
+import dotenv from 'dotenv';
+import {
+  IMAGE_FILE_FAILURE,
+  IMAGE_FILE_REQUEST,
+  IMAGE_FILE_SUCCESSFUL
+} from './types';
+
+dotenv.load();
 
 /**
  * @description upload image request action
@@ -19,11 +26,11 @@ export const uploadImageRequest = imageData => ({
 });
 
 /**
- * @description upload image request action
+ * @description upload image response action
  *
- * @type {function} uploadImageRequest
+ * @type {function} uploadImageResponse
  *
- * @export uploadImageRequest
+ * @export uploadImageResponse
  *
  * @param {object} response
  *
@@ -34,24 +41,45 @@ export const uploadImageResponse = response => ({
   response
 });
 
+/**
+ * @description upload image failed action
+ *
+ * @type {function} uploadImageFailed
+ *
+ * @export uploadImageFailed
+ *
+ * @param {object} error
+ *
+ * @returns {action} dispatch
+ */
 export const uploadImageFailed = error => ({
   type: IMAGE_FILE_FAILURE,
   error
 
 });
 
+/**
+ * @description uploadImage action
+ *
+ * @type {function} uploadImage
+ *
+ * @export uploadImage
+ *
+ * @param {object} imageFile
+ *
+ * @returns {action} dispatch
+ */
 export const uploadImage = imageFile =>
   (dispatch) => {
     dispatch(uploadImageRequest(imageFile));
-    console.log(imageFile, '----------------________>');
-    const cloudName = 'dd3lv0o93';
-    const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+    const url = process.env.CLOUD_PRESET;
     const timestamp = Date.now() / 1000;
-    const uploadPreset = 'tsoddiyz';
-    const paramsStr = `timestamp=${timestamp}&upload_preset=${uploadPreset}EEHPrMjK3zGh6V34E2zeDl_IXVk`;
+    const uploadPreset = process.env.UPLOAD_PRESET;
+    const paramsStr = `timestamp=${timestamp}&upload_preset=` +
+    `${uploadPreset}EEHPrMjK3zGh6V34E2zeDl_IXVk`;
     const signature = sha1(paramsStr);
     const params = {
-      api_key: '866441834971784',
+      api_key: process.env.API_KEY,
       timestamp,
       upload_preset: uploadPreset,
       signature
@@ -61,7 +89,7 @@ export const uploadImage = imageFile =>
     Object.keys(params).forEach((key) => {
       uploadRequest.field(key, params[key]);
     });
-    uploadRequest.end((error, response) => {
+    return uploadRequest.end((error, response) => {
       if (error) {
         return dispatch(uploadImageFailed(error));
       }

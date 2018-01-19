@@ -81,7 +81,7 @@ const setup = (isAuthenticated, index) => {
   props.isAuthenticated = isAuthenticated;
   const mountedWrapper = mount(<Provider store={store}>
     <Router><ConnectedDashboard {...props} /></Router>
-  </Provider>);
+                               </Provider>);
   const shallowWrapper = shallow(<PureDashboard {...props} />);
   const wrapper = mount(<Provider store={store}>
     <MemoryRouter
@@ -104,7 +104,7 @@ const setup = (isAuthenticated, index) => {
     >
       <PureDashboard {...props} />
     </MemoryRouter>
-  </Provider>);
+                        </Provider>);
 
   return {
     mountedWrapper,
@@ -130,104 +130,115 @@ describe('<Dashboard', () => {
   it('should match component snapshot', () => {
     const tree = render.create(<Provider store={store}>
       <Router ><PureDashboard {...props} /></Router>
-    </Provider>);
+                               </Provider>);
     expect(tree).toMatchSnapshot();
   });
 
-  it('renders Top Recipes componet', () => {
+  it('renders Top Recipes componet if top-recipes route is called', () => {
     const { wrapper } = setup(false, 0);
     expect(wrapper).toBeDefined();
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('redirects from top recipes component to login component', () => {
-    const { wrapper } = setup(true, 0);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.exists()).toBe(true);
-  });
+  it(`redirects from top recipes component to login 
+     component if a non-existent route is called`, () => {
+      const { wrapper } = setup(true, 0);
+      expect(wrapper).toBeDefined();
+      expect(wrapper.exists()).toBe(true);
+    });
 
-  it('renders My Recipes component', () => {
+  it('renders My Recipes component if my-recipes route is called', () => {
     const { wrapper } = setup(false, 1);
     expect(wrapper).toBeDefined();
     expect(wrapper.exists()).toBe(true);
   });
 
 
-  it('redirects from my recipes component to login component', () => {
-    const { wrapper } = setup(true, 1);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.exists()).toBe(true);
-  });
+  it(`redirects from my recipes component to login
+      component if a non-existent route is called`, () => {
+      const { wrapper } = setup(true, 1);
+      expect(wrapper).toBeDefined();
+      expect(wrapper.exists()).toBe(true);
+    });
 
-  it('renders Add Recipe component', () => {
+  it('renders Add Recipe component if add-recipe route is called', () => {
     const { wrapper } = setup(false, 2);
     expect(wrapper).toBeDefined();
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('redirects from add recipe component to login component', () => {
-    const { wrapper } = setup(true, 2);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.exists()).toBe(true);
-  });
+  it(`redirects from add recipe component to login
+      component if a non-existent route is called`, () => {
+      const { wrapper } = setup(true, 2);
+      expect(wrapper).toBeDefined();
+      expect(wrapper.exists()).toBe(true);
+    });
 
-  it('renders Favorite component', () => {
+  it('renders Favorite component if favorite route is called', () => {
     const { wrapper } = setup(false, 3);
     expect(wrapper).toBeDefined();
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('redirects from favorite component to login component', () => {
-    const { wrapper } = setup(true, 3);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.exists()).toBe(true);
-  });
+  it(`redirects from favorite component to login 
+     component if a non-existent route is called`, () => {
+      const { wrapper } = setup(true, 3);
+      expect(wrapper).toBeDefined();
+      expect(wrapper.exists()).toBe(true);
+    });
 
-  it('renders Manage Recipes component', () => {
-    const { wrapper } = setup(false, 4);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.exists()).toBe(true);
-  });
+  it(`renders Manage Recipes component 
+     if manage-recipes route is called`, () => {
+      const { wrapper } = setup(false, 4);
+      expect(wrapper).toBeDefined();
+      expect(wrapper.exists()).toBe(true);
+    });
 
-  it('redirects from manage recipes component to login component', () => {
-    const { wrapper } = setup(true, 4);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.exists()).toBe(true);
-  });
+  it(`redirects from manage recipes component to login 
+     component if a non-existent route is called`, () => {
+      const { wrapper } = setup(true, 4);
+      expect(wrapper).toBeDefined();
+      expect(wrapper.exists()).toBe(true);
+    });
 
-  it('redirects to notFound component', () => {
-    const { wrapper } = setup(true, 5);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.exists()).toBe(true);
-  });
+  it(`redirects to notFound page 
+     if a non-existent route is called`, () => {
+      const { wrapper } = setup(true, 5);
+      expect(wrapper).toBeDefined();
+      expect(wrapper.exists()).toBe(true);
+    });
 
-  it('redirects to notFound component', () => {
-    const { wrapper } = setup(true, 6);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.exists()).toBe(true);
-  });
+  it(`redirects to notFound page 
+     if a non-existent route is called`, () => {
+      const { wrapper } = setup(true, 6);
+      expect(wrapper).toBeDefined();
+      expect(wrapper.exists()).toBe(true);
+    });
 
-  it('redirects to notFound component', () => {
-    const { wrapper } = setup(true, 7);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.exists()).toBe(true);
-  });
+  it(`redirects to notFound page 
+     if a non-existent route is called`, () => {
+      const { wrapper } = setup(true, 7);
+      expect(wrapper).toBeDefined();
+      expect(wrapper.exists()).toBe(true);
+    });
 
-  it('redirects to notFound component', () => {
-    const { wrapper } = setup(true, 8);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.exists()).toBe(true);
-  });
+  it(`redirects to notFound page 
+     if a non-existent route is called`, () => {
+      const { wrapper } = setup(true, 8);
+      expect(wrapper).toBeDefined();
+      expect(wrapper.exists()).toBe(true);
+    });
 
-  it('renders Search component', () => {
+  it('renders Search component if a non-existent route is called', () => {
     const { wrapper } = setup(false, 9);
     expect(wrapper).toBeDefined();
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('redirects from Search component to login component', () => {
-    const { wrapper } = setup(true, 9);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.exists()).toBe(true);
-  });
+  it(`redirects from Search component to login 
+     component if a non-existent route is called`, () => {
+      const { wrapper } = setup(true, 9);
+      expect(wrapper).toBeDefined();
+      expect(wrapper.exists()).toBe(true);
+    });
 });

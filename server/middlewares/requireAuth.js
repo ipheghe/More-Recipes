@@ -5,7 +5,9 @@ dotenv.load();
 
 const authorize = {
   verifyUser(req, res, next) {
-    const token = req.headers['x-access-token'] || req.headers.authorization || req.params.token;
+    const token = req.headers['x-access-token']
+    || req.headers.authorization
+    || req.params.token;
     if (!token) {
       return res.status(403).send({
         message: 'No token provided!'
@@ -17,8 +19,8 @@ const authorize = {
             message: 'Invalid Token'
           });
         }
+
         if (decoded.exp < Math.floor(Date.now() / 1000)) {
-          // log user out
           return res.status(403).send({
             message: 'Expired Token'
           });
@@ -27,7 +29,9 @@ const authorize = {
         return next();
       });
     } else {
-      res.status(403).send({ message: 'Authentication Unsuccessful!! Token not provided' });
+      res.status(403).send({
+        message: 'Authentication Unsuccessful!! Token not provided'
+      });
     }
   }
 };

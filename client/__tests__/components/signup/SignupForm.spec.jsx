@@ -27,10 +27,4 @@ describe('<SignupForm', () => {
     expect(wrapper).toBeDefined();
     expect(wrapper.exists()).toBe(true);
   });
-  it('allows us to set props', () => {
-    const wrapper = setup(false);
-    expect(wrapper.props().username).toEqual('okon');
-    wrapper.setProps({ username: 'okon' });
-    expect(wrapper.props().username).toEqual('okon');
-  });
 });

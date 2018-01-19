@@ -6,6 +6,7 @@ $color_5: #333;
 $color_6: black;
 $color_7: #aaaaaa;
 $color_8: #999;
+$login_signup_link_color: #0275d8;
 $footer_text_color: black;
 $font_family_1: "Open Sans", sans-serif;
 $background_color_1: #e6e6e6;
@@ -93,6 +94,19 @@ label {
   overflow: hidden;
   background-size: cover;
   background-repeat: no-repeat;
+  .have-account {
+    color: $login_signup_link_color
+  }
+  .have-account:hover {
+    color: $color_1
+  }
+
+  .forgot-password {
+    color: $login_signup_link_color
+  }
+  .forgot-password:hover {
+    color: $color_1
+  }
 }
 
 .reg-background {

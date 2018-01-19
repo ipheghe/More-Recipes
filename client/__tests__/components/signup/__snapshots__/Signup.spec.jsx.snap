@@ -199,6 +199,7 @@ exports[`<Signup should match component snapshot 1`] = `
                   className="col-md-6"
                 >
                   <a
+                    className="have-account"
                     href="#login"
                   >
                     Already have an account?

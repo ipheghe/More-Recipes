@@ -64,7 +64,8 @@ describe('Recipe reducer', () => {
       recipeData: {},
       recipeList: [],
       userRecipes: [...initialState.userRecipes.map(item => (
-        item.id === updateRecipeAction.payload.recipe.id ? updateRecipeAction.payload.recipe : item
+        item.id === updateRecipeAction.payload.recipe.id
+          ? updateRecipeAction.payload.recipe : item
       ))],
       searchResult: []
     });
@@ -87,7 +88,8 @@ describe('Recipe reducer', () => {
       recipeData: mockItems.recipe,
       recipeList: [],
       userRecipes: [
-        ...initialState.userRecipes.filter(recipe => recipe.id !== initialState.recipeData.id)
+        ...initialState.userRecipes.filter(recipe =>
+          recipe.id !== initialState.recipeData.id)
       ],
       searchResult: []
     });

@@ -1,6 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * AddRecipeForm component
+ *
+ * @param {Object} props
+ *
+ * @return {jsx} jsx
+ */
 const AddRecipeForm = ({
   recipeName,
   recipeDetail,

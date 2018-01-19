@@ -12,7 +12,7 @@ import Logo from '../../public/assets/images/recipe_logo.png';
  * @class UserNavHeader
  * @extends {React.Component}
  */
-export class UserNavHeader extends React.Component {
+class UserNavHeader extends React.Component {
   static propTypes = {
     fetchUsername: PropTypes.func.isRequired,
     getUserCategories: PropTypes.func.isRequired,
@@ -74,7 +74,11 @@ export class UserNavHeader extends React.Component {
    * @return {ReactElement} markup
    */
   render() {
-    if (this.state.isLoading) return (<Loader type="ball-scale-ripple-multiple" active />);
+    if (this.state.isLoading) {
+      return (
+        <Loader type="ball-scale-ripple-multiple" active />
+      );
+    }
     return (
       <div>
         <header>
@@ -93,7 +97,11 @@ export class UserNavHeader extends React.Component {
             >
               <span className="navbar-toggler-icon" />
             </button>
-            <Link to="/dashboard/top-recipes" className="navbar-brand" href="#dashboard/top-recipes">
+            <Link
+              to="/dashboard/top-recipes"
+              className="navbar-brand"
+              href="#dashboard/top-recipes"
+            >
               <img
                 src={Logo}
                 width="30"
@@ -123,7 +131,10 @@ export class UserNavHeader extends React.Component {
                   </button>
                 </li>
                 <li className="nav-item">
-                  <button className="nav-link invisible-button" onClick={this.handleLogout}>
+                  <button
+                    className="nav-link invisible-button"
+                    onClick={this.handleLogout}
+                  >
                     <span>
                       <i className="fa fa-sign-out" aria-hidden="true" />
                     </span> Logout
@@ -141,6 +152,7 @@ const mapStateToProps = state => ({
   userData: state.auth.userData,
 });
 
+export { UserNavHeader as PureUserNavHeader };
 export default connect(mapStateToProps, {
   fetchUsername,
   logoutUser,

@@ -19,6 +19,8 @@ let store = null;
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
 
+jest.useFakeTimers();
+
 describe('>>>A C T I O N --- recipeActions', () => {
   beforeEach(() => {
     moxios.install();
@@ -44,13 +46,25 @@ describe('>>>A C T I O N --- recipeActions', () => {
           payload: {
             message: 'Recipe Added SuccessFullly!',
             recipe: {
-              description: 'This recipe is very popular in the south south part of Nigeria', directions: 'pour palm oil in pot, blanch oil for 10mins', id: 1, imageUrl: 'dist/image1', ingredients: 'palm kernel, assorted meat, maggi, palm oil', name: 'Banga Soup', userId: 1
+              description: 'This recipe is very popular in ' +
+              'the south south part of Nigeria',
+              directions: 'pour palm oil in pot, blanch oil for 10mins',
+              id: 1,
+              imageUrl: 'dist/image1',
+              ingredients: 'palm kernel, assorted meat, maggi, palm oil',
+              name: 'Banga Soup',
+              userId: 1
             }
           },
           type: 'ADD_RECIPE'
         }, {
           payload: {
-            id: 'RECIPE_ADDED', message: 'Recipe added Successfully', timeout: 5000, title: 'Success', type: 'success'
+            id:
+            'RECIPE_ADDED',
+            message: 'Recipe added Successfully',
+            timeout: 5000,
+            title: 'Success',
+            type: 'success'
           },
           type: '@ReduxToastr/toastr/ADD'
         }
@@ -80,13 +94,24 @@ describe('>>>A C T I O N --- recipeActions', () => {
           payload: {
             message: 'Recipe Updated SuccessFullly!',
             recipe: {
-              description: 'This recipe is very popular in the south south part of Nigeria', directions: 'pour palm oil in pot, blanch oil for 10mins', id: 1, imageUrl: 'dist/image1', ingredients: 'palm kernel, assorted meat, maggi, palm oil', name: 'Banga Soup', userId: 1
+              description: 'This recipe is very popular in the ' +
+              'south south part of Nigeria',
+              directions: 'pour palm oil in pot, blanch oil for 10mins',
+              id: 1,
+              imageUrl: 'dist/image1',
+              ingredients: 'palm kernel, assorted meat, maggi, palm oil',
+              name: 'Banga Soup',
+              userId: 1
             }
           },
           type: 'UPDATE_RECIPE'
         }, {
           payload: {
-            id: 'RECIPE_UPDATED', message: 'Recipe updated Successfully', timeout: 5000, title: 'Success', type: 'success'
+            id: 'RECIPE_UPDATED',
+            message: 'Recipe updated Successfully',
+            timeout: 5000,
+            title: 'Success',
+            type: 'success'
           },
           type: '@ReduxToastr/toastr/ADD'
         }
@@ -119,15 +144,24 @@ describe('>>>A C T I O N --- recipeActions', () => {
       });
 
       const expectedActions = [
-        { payload: { message: 'Recipe Deleted SuccessFullly!' }, type: 'DELETE_RECIPE' }, {
+        {
+          payload: { message: 'Recipe Deleted SuccessFullly!' },
+          type: 'DELETE_RECIPE'
+        }, {
           payload: {
-            id: 'RECIPE_DELETED', message: 'Recipe deleted Successfully', timeout: 5000, title: 'Success', type: 'success'
+            id: 'RECIPE_DELETED',
+            message: 'Recipe deleted Successfully',
+            timeout: 5000,
+            title: 'Success',
+            type: 'success'
           },
           type: '@ReduxToastr/toastr/ADD'
-        }
+        },
+        { payload: 'RECIPE_DELETED', type: '@ReduxToastr/toastr/REMOVE' }
       ];
       await store.dispatch(deleteRecipe(1))
         .then(() => {
+          jest.runAllTimers();
           const actions = store.getActions();
           expect(actions).toEqual(expectedActions);
           done();
@@ -151,7 +185,14 @@ describe('>>>A C T I O N --- recipeActions', () => {
           payload: {
             message: 'All Recipes Retrieved SuccessFullly!',
             recipes: [{
-              description: 'This recipe is very popular in the south south part of Nigeria', directions: 'pour palm oil in pot, blanch oil for 10mins', id: 1, imageUrl: 'dist/image1', ingredients: 'palm kernel, assorted meat, maggi, palm oil', name: 'Banga Soup', userId: 1
+              description: 'This recipe is very popular in the ' +
+              'south south part of Nigeria',
+              directions: 'pour palm oil in pot, blanch oil for 10mins',
+              id: 1,
+              imageUrl: 'dist/image1',
+              ingredients: 'palm kernel, assorted meat, maggi, palm oil',
+              name: 'Banga Soup',
+              userId: 1
             }]
           },
           type: 'FETCH_TOP_RECIPES'
@@ -182,7 +223,14 @@ describe('>>>A C T I O N --- recipeActions', () => {
           payload: {
             message: 'All Recipes Retrieved SuccessFullly!',
             recipes: [{
-              description: 'This recipe is very popular in the south south part of Nigeria', directions: 'pour palm oil in pot, blanch oil for 10mins', id: 1, imageUrl: 'dist/image1', ingredients: 'palm kernel, assorted meat, maggi, palm oil', name: 'Banga Soup', userId: 1
+              description: 'This recipe is very popular in the ' +
+              'south south part of Nigeria',
+              directions: 'pour palm oil in pot, blanch oil for 10mins',
+              id: 1,
+              imageUrl: 'dist/image1',
+              ingredients: 'palm kernel, assorted meat, maggi, palm oil',
+              name: 'Banga Soup',
+              userId: 1
             }]
           },
           type: 'FETCH_TOP_RECIPES'
@@ -215,7 +263,14 @@ describe('>>>A C T I O N --- recipeActions', () => {
             message: 'All User Recipes Retrieved SuccessFullly!',
             pages: 1,
             recipes: [{
-              description: 'This recipe is very popular in the south south part of Nigeria', directions: 'pour palm oil in pot, blanch oil for 10mins', id: 1, imageUrl: 'dist/image1', ingredients: 'palm kernel, assorted meat, maggi, palm oil', name: 'Banga Soup', userId: 1
+              description: 'This recipe is very popular in the ' +
+              'south south part of Nigeria',
+              directions: 'pour palm oil in pot, blanch oil for 10mins',
+              id: 1,
+              imageUrl: 'dist/image1',
+              ingredients: 'palm kernel, assorted meat, maggi, palm oil',
+              name: 'Banga Soup',
+              userId: 1
             }]
           },
           type: 'FETCH_USER_RECIPES'
@@ -246,7 +301,14 @@ describe('>>>A C T I O N --- recipeActions', () => {
           payload: {
             message: 'Recipe Retrieved SuccessFullly!',
             recipe: {
-              description: 'This recipe is very popular in the south south part of Nigeria', directions: 'pour palm oil in pot, blanch oil for 10mins', id: 1, imageUrl: 'dist/image1', ingredients: 'palm kernel, assorted meat, maggi, palm oil', name: 'Banga Soup', userId: 1
+              description: 'This recipe is very popular in the ' +
+              'south south part of Nigeria',
+              directions: 'pour palm oil in pot, blanch oil for 10mins',
+              id: 1,
+              imageUrl: 'dist/image1',
+              ingredients: 'palm kernel, assorted meat, maggi, palm oil',
+              name: 'Banga Soup',
+              userId: 1
             }
           },
           type: 'FETCH_RECIPE'
@@ -279,7 +341,14 @@ describe('>>>A C T I O N --- recipeActions', () => {
             message: 'Search result retrieved successfully!',
             pages: 1,
             recipes: [{
-              description: 'This recipe is very popular in the south south part of Nigeria', directions: 'pour palm oil in pot, blanch oil for 10mins', id: 1, imageUrl: 'dist/image1', ingredients: 'palm kernel, assorted meat, maggi, palm oil', name: 'Banga Soup', userId: 1
+              description: 'This recipe is very popular in the ' +
+              'south south part of Nigeria',
+              directions: 'pour palm oil in pot, blanch oil for 10mins',
+              id: 1,
+              imageUrl: 'dist/image1',
+              ingredients: 'palm kernel, assorted meat, maggi, palm oil',
+              name: 'Banga Soup',
+              userId: 1
             }]
           },
           type: 'SEARCH_RECIPES'

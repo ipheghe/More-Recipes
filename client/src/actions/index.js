@@ -5,7 +5,6 @@ import {
 import {
   bindActionCreators
 } from 'redux';
-import { logoutUser } from './authActions';
 
 export const BASE_URL = '/api/v1';
 
@@ -206,7 +205,6 @@ export const putData = (
  * @param {action} dispatch
  * @param {string} message
  * @param {constant} toastrConstant
- * @param {string} directTo
  * @returns {*} void
  */
 export const deleteData = (
@@ -216,8 +214,7 @@ export const deleteData = (
   url,
   dispatch,
   message,
-  toastrConstant,
-  directTo
+  toastrConstant
 ) => {
   const requestUrl = BASE_URL + url;
   let headers = {};
@@ -236,9 +233,6 @@ export const deleteData = (
         type: action,
         payload: response.data,
       });
-      if (directTo.length > 3) {
-        window.location.hash = directTo;
-      }
       if (toastrConstant.length > 2) {
         const toastr = bindActionCreators(toastrActions, dispatch);
         toastr.add({

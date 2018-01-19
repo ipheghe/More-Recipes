@@ -1,5 +1,5 @@
 module.exports = {
-  'it should show the complete workflow for login in a user':
+  'it should show the complete workflow to login a user':
   (client) => {
     client
       .resizeWindow(1280, 800)
@@ -24,7 +24,10 @@ module.exports = {
       .click('button#login')
       .pause(1000)
       .assert
-      .containsText('p.alert', 'Authentication failed. Username is incorrect or does not exist')
+      .containsText(
+        'p.alert',
+        'Authentication failed. Username is incorrect or does not exist'
+      )
       .pause(3000)
 
       // signin user successfully and redirect to dashboard page
@@ -33,25 +36,6 @@ module.exports = {
       .pause(1000)
       .assert.urlEquals('http://localhost:8000/#/dashboard/top-recipes')
       .pause(3000)
-
-      // // signup another user
-      // .url('http://localhost:8000/#/signup')
-      // .pause(3000)
-      // .assert.elementPresent('input#username')
-      // .assert.elementPresent('input#fullName')
-      // .assert.elementPresent('input#mobileNumber')
-      // .assert.elementPresent('input#email')
-      // .assert.elementPresent('input#password')
-      // .assert.elementPresent('button#signup')
-      // .setValue('input#username', 'vixen')
-      // .setValue('input#fullName', 'Amaka Linda')
-      // .setValue('input#mobileNumber', 2347035221123)
-      // .setValue('input#email', 'amaka@yahoo.com')
-      // .setValue('input#password', 'abcde')
-      // .click('button#signup')
-      // .pause(1000)
-      // .assert.urlEquals('http://localhost:8000/#/login')
-      // .pause(1000)
       .end();
   }
 };

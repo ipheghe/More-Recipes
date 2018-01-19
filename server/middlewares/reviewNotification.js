@@ -29,19 +29,27 @@ const reviewNotification = (req, res, next) => {
       })
         .then((recipe) => {
           recipe.increment('notification').then((recipes) => {
-            const message = `${req.decoded.user.username} commented on your recipe post for ${recipes.name}`;
+            const message = `${req.decoded.user.username} commented on
+            your recipe post for ${recipes.name}`;
             const name = recipes.User.fullName;
             const mailOptions = {
               from: '"MoreRecipes Admin" <iphegheapp@gmail.com>',
               to: recipes.User.email,
               subject: 'You have a new notification',
-              html: emailTemplate(name, 'View Recipe', message, `${req.headers.host}/#/recipe/${recipes.id}`)
+              html: emailTemplate(
+                name,
+                'View Recipe',
+                message,
+                `${req.headers.host}/#/recipe/${recipes.id}`
+              )
             };
             transporter.sendMail(mailOptions, (err, info) => {
               if (err) {
                 next();
               } else {
-                res.status(200).send({ message: 'mail sent successfully', info });
+                res.status(200).send({
+                  message: 'mail sent successfully', info
+                });
               }
             });
           });

@@ -336,18 +336,18 @@ class ViewRecipe extends React.Component {
                     <button
                       type="button"
                       className="btn btn-success btn-lg"
-                      id="favorite"
+                      id="un-favorite"
                       onClick={this.handleUnfavoriteRecipe}
                     >UnFavorite
+                    </button> :
+                    <button
+                      type="button"
+                      className="btn btn-success btn-lg"
+                      id="favorite"
+                      onClick={this.openModal}
+                    >Favorite
                     </button>
-                : <button
-                  type="button"
-                  className="btn btn-success btn-lg"
-                  id="favorite"
-                  onClick={this.openModal}
-                >Favorite
-                  </button>
-                }
+                  }
                 <button
                   type="button"
                   className="btn btn-success btn-lg"

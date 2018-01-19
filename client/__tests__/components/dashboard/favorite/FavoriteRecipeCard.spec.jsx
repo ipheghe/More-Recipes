@@ -6,13 +6,13 @@ import FavoriteRecipeCard
 
 const recipe =
 {
-  name: 'Jollof Rice',
-  description: 'Sweet and Delicious',
-  ingredients: 'rice, maggi, tomato',
-  directions: 'boil rice, fry stew',
-  imageUrl: '/assets/image/pizza1.jpg',
   Recipe: {
-    id: 1
+    id: 1,
+    name: 'Jollof Rice',
+    description: 'Sweet and Delicious',
+    ingredients: 'rice, maggi, tomato',
+    directions: 'boil rice, fry stew',
+    imageUrl: '/assets/image/pizza1.jpg',
   }
 };
 const props = {
@@ -32,10 +32,12 @@ describe('<FavoriteRecipeCard', () => {
     expect(wrapper).toBeDefined();
     expect(wrapper.exists()).toBe(true);
   });
-  it('renders without crashing if imageUrl is null', () => {
-    props.recipe.imageUrl = null;
+  it('assigns a default image if imageUrl is null', () => {
+    props.recipe.Recipe.imageUrl = null;
     const wrapper = shallow(<FavoriteRecipeCard {...props} />);
     expect(wrapper).toBeDefined();
+    expect(wrapper.instance().props.recipe.Recipe.imageUrl)
+      .toEqual(null);
     expect(wrapper.exists()).toBe(true);
   });
 });

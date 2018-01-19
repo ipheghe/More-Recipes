@@ -1,5 +1,12 @@
 import React from 'react';
 
+/**
+ * ReviewBox component
+ *
+ * @param {Object} props
+ *
+ * @return {jsx} jsx
+ */
 const ReviewBox = ({ fullName, createdAt, message }) => (
   <div className="panel panel-white post panel-shadow">
     <div className="post-heading">

@@ -39,7 +39,14 @@ describe('>>>A C T I O N --- categoryActions', () => {
         {
           payload: {
             category: {
-              description: 'This recipe is very popular in the south south part of Nigeria', directions: 'pour palm oil in pot, blanch oil for 10mins', id: 1, imageUrl: 'dist/image1', ingredients: 'palm kernel, assorted meat, maggi, palm oil', name: 'Banga Soup', userId: 1
+              description: 'This recipe is very popular in the ' +
+              'south south part of Nigeria',
+              directions: 'pour palm oil in pot, blanch oil for 10mins',
+              id: 1,
+              imageUrl: 'dist/image1',
+              ingredients: 'palm kernel, assorted meat, maggi, palm oil',
+              name: 'Banga Soup',
+              userId: 1
             },
             message: 'Category created Successfully'
           },
@@ -68,7 +75,14 @@ describe('>>>A C T I O N --- categoryActions', () => {
 
       const expectedActions = [
         {
-          payload: { category: { id: 1, name: 'Local Dish', userId: 1 }, message: 'category name changed SuccessFullly!' },
+          payload: {
+            category: {
+              id: 1,
+              name: 'Local Dish',
+              userId: 1
+            },
+            message: 'category name changed SuccessFullly!'
+          },
           type: 'UPDATE_CATEGORY'
         }
       ];
@@ -92,7 +106,10 @@ describe('>>>A C T I O N --- categoryActions', () => {
       });
 
       const expectedActions = [
-        { payload: { message: 'Category deleted SuccessFullly!' }, type: 'DELETE_CATEGORY' }
+        {
+          payload: { message: 'Category deleted SuccessFullly!' },
+          type: 'DELETE_CATEGORY'
+        }
       ];
       await store.dispatch(deleteCategory(1))
         .then(() => {

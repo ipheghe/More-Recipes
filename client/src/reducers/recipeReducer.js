@@ -29,7 +29,8 @@ export default (state = INITIAL_STATE, action) => {
     case FETCH_TOP_RECIPES:
       return {
         ...state,
-        recipeList: action.payload.recipes ? action.payload.recipes.rows : [],
+        recipeList: action.payload.recipes
+          ? action.payload.recipes.rows : [],
         message: action.payload.message,
         pages: action.payload.pages
       };
@@ -66,13 +67,15 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         message: action.payload.message,
         userRecipes: [
-          ...state.userRecipes.filter(recipe => recipe.id !== state.recipeData.id)
+          ...state.userRecipes.filter(recipe =>
+            recipe.id !== state.recipeData.id)
         ]
       };
     case RECIPE_ERROR:
       return {
         ...state,
-        error: action.payload.message ? action.payload.message : action.payload.error
+        error: action.payload.message
+          ? action.payload.message : action.payload.error
       };
     default:
       return state;

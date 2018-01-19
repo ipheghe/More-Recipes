@@ -53,7 +53,7 @@ const props = {
 const nextProps = {
   PureAddRecipe: jest.fn(() => Promise.resolve()),
   uploadImage: jest.fn(() => Promise.resolve()),
-  errorMessage: ''
+  errorMessage: '',
 };
 
 const event = {
@@ -76,7 +76,9 @@ jest.useFakeTimers();
  * @return { * } null
  */
 const setup = () => {
-  const mountedWrapper = mount(<Router><ConnectedAddRecipe {...props} store={store} /></Router>);
+  const mountedWrapper = mount(<Router>
+    <ConnectedAddRecipe {...props} store={store} />
+  </Router>);
   const shallowWrapper = shallow(<PureAddRecipe {...props} />);
   return {
     mountedWrapper,
@@ -99,18 +101,24 @@ describe('<AddRecipe', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('calls componentWillReceiveProps if component receives new props for imageUrl', () => {
-    sinon.spy(PureAddRecipe.prototype, 'componentWillReceiveProps');
-    const { shallowWrapper } = setup();
-    shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(PureAddRecipe.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
-  });
+  it(`calls componentWillReceiveProps
+      if component receives new props for imageUrl`, () => {
+      sinon.spy(PureAddRecipe.prototype, 'componentWillReceiveProps');
+      const { shallowWrapper } = setup();
+      shallowWrapper.instance().componentWillReceiveProps(props);
+      expect(PureAddRecipe.prototype.componentWillReceiveProps.calledOnce)
+        .toEqual(true);
+      expect(shallowWrapper.instance().props.imageUrl)
+        .toEqual('/assets/images/pizza.jpg');
+    });
 
-  it('checks new props for imageUrl through componentWillReceiveProps method but finds none', () => {
-    const { shallowWrapper } = setup();
-    shallowWrapper.instance().componentWillReceiveProps(nextProps);
-    expect(PureAddRecipe.prototype.componentWillReceiveProps.calledOnce).toEqual(false);
-  });
+  it(`checks new props for imageUrl through
+      componentWillReceiveProps method but finds none`, () => {
+      const { shallowWrapper } = setup();
+      shallowWrapper.instance().componentWillReceiveProps(nextProps);
+      expect(PureAddRecipe.prototype.componentWillReceiveProps.calledOnce)
+        .toEqual(false);
+    });
 
   it('calls handleChange event', () => {
     sinon.spy(PureAddRecipe.prototype, 'handleChange');
@@ -133,56 +141,66 @@ describe('<AddRecipe', () => {
     expect(PureAddRecipe.prototype.handleAddRecipe.calledOnce).toEqual(true);
   });
 
-  it('calls validateFormField method with null recipeName field', () => {
+  it('displays error message if user enters a null recipe name field', () => {
     sinon.spy(PureAddRecipe.prototype, 'validateFormField');
     const { shallowWrapper } = setup();
     state.recipeName = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    expect(shallowWrapper.state().hasErrored).toEqual(true);
+    expect(shallowWrapper.state().errorMessage)
+      .toEqual('Recipe name field cannot be empty');
     jest.runAllTimers();
-    expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(true);
-    expect(shallowWrapper.state().recipeName).toEqual('');
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
-  it('calls validateFormField method with null ingredients field', () => {
+  it('displays error message if user enters a null ingredients field', () => {
     const { shallowWrapper } = setup();
     state.recipeName = 'Banga Rice';
     state.ingredients = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    expect(shallowWrapper.state().hasErrored).toEqual(true);
+    expect(shallowWrapper.state().errorMessage)
+      .toEqual('ingredients field cannot be empty');
     jest.runAllTimers();
-    expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
-    expect(shallowWrapper.state().ingredients).toEqual('');
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
-  it('calls validateFormField method with null description field', () => {
+  it('displays error message if user enters a null directions field', () => {
     const { shallowWrapper } = setup();
     state.ingredients = 'Rice,meat';
-    state.description = '';
+    state.directions = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    expect(shallowWrapper.state().hasErrored).toEqual(true);
+    expect(shallowWrapper.state().errorMessage)
+      .toEqual('directions field cannot be empty');
     jest.runAllTimers();
-    expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
-    expect(shallowWrapper.state().description).toEqual('');
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
-  it('calls validateFormField method with null image url field', () => {
+  it('displays error message if user enters a null imageUrl field', () => {
     const { shallowWrapper } = setup();
-    state.description = 'Boil Rice, boil meat';
+    state.directions = 'Boil Rice, boil meat';
     state.imageUrl = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    expect(shallowWrapper.state().hasErrored).toEqual(true);
+    expect(shallowWrapper.state().errorMessage)
+      .toEqual('Recipe image field cannot be empty');
     jest.runAllTimers();
-    expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
-    expect(shallowWrapper.state().imageUrl).toEqual('');
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
-  it('dispatches AddRecipe action after validatiing fields', () => {
-    const { shallowWrapper } = setup();
-    state.recipeName = 'Jollof Rice';
-    shallowWrapper.setState(state);
-    shallowWrapper.instance().validateFormField();
-    expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
-    expect(shallowWrapper.state().recipeName).toEqual('Jollof Rice');
-  });
+  it(`dispatches AddRecipe action after
+      validatiing form fields successfully`, () => {
+      const { shallowWrapper } = setup();
+      state.imageUrl = '/assets/image/pizza1.jpg';
+      shallowWrapper.setState(state);
+      shallowWrapper.instance().validateFormField();
+      expect(PureAddRecipe.prototype.validateFormField.calledOnce)
+        .toEqual(false);
+      expect(shallowWrapper.state().recipeName).toEqual('Banga Rice');
+    });
 });

@@ -102,7 +102,6 @@ const updateRecipe = (
  */
 const deleteRecipe = (recipeId) => {
   const url = `/recipe/${recipeId}`;
-  const directTo = '';
   const message = 'Recipe deleted Successfully';
   const constant = 'RECIPE_DELETED';
   return dispatch => deleteData(
@@ -113,7 +112,6 @@ const deleteRecipe = (recipeId) => {
     dispatch,
     message,
     constant,
-    directTo
   );
 };
 
@@ -126,7 +124,13 @@ const deleteRecipe = (recipeId) => {
  */
 const getTopRecipesLanding = () => {
   const url = '/topRecipes?sort=upvotes&order=descending';
-  return dispatch => getData(FETCH_TOP_RECIPES, RECIPE_ERROR, true, url, dispatch);
+  return dispatch => getData(
+    FETCH_TOP_RECIPES,
+    RECIPE_ERROR,
+    true,
+    url,
+    dispatch
+  );
 };
 
 /**

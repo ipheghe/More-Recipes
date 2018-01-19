@@ -8,11 +8,12 @@ import {
 
 /**
  * NavHeader component
- * @class ProfileHeader
+ *
+ * @class NavHeader
  *
  * @extends {React.Component}
  */
-export class NavHeader extends React.Component {
+class NavHeader extends React.Component {
   static propTypes = {
     authenticated: PropTypes.bool.isRequired
   };
@@ -36,4 +37,5 @@ const mapStateToProps = state => ({
   authenticated: state.auth.authenticated
 });
 
+export { NavHeader as PureNavHeader };
 export default connect(mapStateToProps)(NavHeader);

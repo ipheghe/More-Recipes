@@ -2,6 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FavoriteRecipeCard from './FavoriteRecipeCard.jsx';
 
+/**
+ * FavoriteRecipeList component
+ *
+ * @param {Object} props
+ *
+ * @return {jsx} jsx
+ */
 const FavoriteRecipeList = ({ recipes }) => (
   <div>
     {

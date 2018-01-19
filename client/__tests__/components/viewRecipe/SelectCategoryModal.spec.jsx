@@ -28,11 +28,4 @@ describe('<SelectCategoryModal', () => {
     expect(wrapper.find('Modal').length).toBe(1);
     expect(wrapper.exists()).toBe(true);
   });
-
-  it('allows us to set props', () => {
-    const wrapper = setup(false);
-    expect(wrapper.props().isOpen).toEqual(true);
-    wrapper.setProps({ categories: [] });
-    expect(wrapper.props().categories).toEqual([]);
-  });
 });

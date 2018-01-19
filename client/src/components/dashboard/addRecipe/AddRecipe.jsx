@@ -113,7 +113,6 @@ class AddRecipe extends React.Component {
 
     const error = addRecipeValidator(
       recipeName,
-      recipeDetail,
       ingredients,
       directions,
       imageUrl

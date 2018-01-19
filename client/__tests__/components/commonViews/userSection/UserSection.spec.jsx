@@ -6,7 +6,7 @@ import render from 'react-test-renderer';
 import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import ConnectedUserSection, { UserSection }
+import ConnectedUserSection, { PureUserSection }
   from '../../../../src/commonViews/userSection/UserSection.jsx';
 import mockItems from '../../../__mocks__/mockItems';
 
@@ -90,8 +90,10 @@ jest.useFakeTimers();
  * @return { object } mountedWrapper, shallowWrapper
  */
 const setup = () => {
-  const mountedWrapper = mount(<Router><ConnectedUserSection {...props} store={store} /></Router>);
-  const shallowWrapper = shallow(<UserSection {...props} />);
+  const mountedWrapper = mount(<Router>
+    <ConnectedUserSection {...props} store={store} />
+                               </Router>);
+  const shallowWrapper = shallow(<PureUserSection {...props} />);
   return {
     mountedWrapper,
     shallowWrapper
@@ -108,55 +110,62 @@ describe('<UserSection', () => {
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<Router ><UserSection {...props} /></Router>);
+    const tree = render.create(<Router >
+      <PureUserSection {...props} />
+    </Router>);
     expect(tree).toMatchSnapshot();
   });
 
-  it('calls componentWillReceiveProps if status props length > 0 or categoryList length > 0', () => {
-    sinon.spy(UserSection.prototype, 'componentWillReceiveProps');
+  it('calls componentWillReceiveProps if status props ' +
+  'length > 0 or categoryList length > 0', () => {
+    sinon.spy(PureUserSection.prototype, 'componentWillReceiveProps');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(UserSection.prototype.componentWillReceiveProps.calledOnce)
+    expect(PureUserSection.prototype.componentWillReceiveProps.calledOnce)
       .toEqual(true);
   });
 
-  it('calls componentWillReceiveProps if status props status is Success', () => {
+  it('calls componentWillReceiveProps if status ' +
+  'props status is Success', () => {
     props.status = 'Success';
-    const shallowWrapper = shallow(<UserSection {...props} />);
+    const shallowWrapper = shallow(<PureUserSection {...props} />);
     shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(UserSection.prototype.componentWillReceiveProps.calledOnce)
+    expect(PureUserSection.prototype.componentWillReceiveProps.calledOnce)
       .toEqual(false);
   });
 
-  it('doesnt call componentWillReceiveProps if status props length < 0 and categoryList length < 0', () => {
+  it('doesnt call componentWillReceiveProps if status props ' +
+  'length < 0 and categoryList length < 0', () => {
     const { shallowWrapper } = setup();
     shallowWrapper.instance().componentWillReceiveProps(nextProps);
-    expect(UserSection.prototype.componentWillReceiveProps.calledOnce)
+    expect(PureUserSection.prototype.componentWillReceiveProps.calledOnce)
       .toEqual(false);
   });
 
   it('calls handleChange event', () => {
-    sinon.spy(UserSection.prototype, 'handleChange');
+    sinon.spy(PureUserSection.prototype, 'handleChange');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().handleChange(event);
-    expect(UserSection.prototype.handleChange.calledOnce).toEqual(true);
+    expect(PureUserSection.prototype.handleChange.calledOnce).toEqual(true);
   });
 
   it('calls handleChangePassword event', () => {
-    sinon.spy(UserSection.prototype, 'handleChangePassword');
+    sinon.spy(PureUserSection.prototype, 'handleChangePassword');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().handleChangePassword(event);
-    expect(UserSection.prototype.handleChangePassword.calledOnce).toEqual(true);
+    expect(PureUserSection.prototype.handleChangePassword.calledOnce)
+      .toEqual(true);
   });
 
   it('calls validateFormField method with null confirm password field', () => {
-    sinon.spy(UserSection.prototype, 'validateFormField');
+    sinon.spy(PureUserSection.prototype, 'validateFormField');
     const { shallowWrapper } = setup();
     state.confirmPassword = '';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
     jest.runAllTimers();
-    expect(UserSection.prototype.validateFormField.calledOnce).toEqual(true);
+    expect(PureUserSection.prototype.validateFormField.calledOnce)
+      .toEqual(true);
     expect(shallowWrapper.state().confirmPassword).toEqual('');
   });
 
@@ -166,7 +175,8 @@ describe('<UserSection', () => {
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
     jest.runAllTimers();
-    expect(UserSection.prototype.validateFormField.calledOnce).toEqual(false);
+    expect(PureUserSection.prototype.validateFormField.calledOnce)
+      .toEqual(false);
     expect(shallowWrapper.state().newPassword).toEqual('');
   });
 
@@ -176,7 +186,8 @@ describe('<UserSection', () => {
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
     jest.runAllTimers();
-    expect(UserSection.prototype.validateFormField.calledOnce).toEqual(false);
+    expect(PureUserSection.prototype.validateFormField.calledOnce)
+      .toEqual(false);
     expect(shallowWrapper.state().oldPassword).toEqual('');
   });
 
@@ -188,7 +199,8 @@ describe('<UserSection', () => {
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
     jest.runAllTimers();
-    expect(UserSection.prototype.validateFormField.calledOnce).toEqual(false);
+    expect(PureUserSection.prototype.validateFormField.calledOnce)
+      .toEqual(false);
     expect(shallowWrapper.state().newPassword).toEqual('abcde');
     expect(shallowWrapper.state().confirmPassword).toEqual('abhhhcde');
   });
@@ -198,18 +210,21 @@ describe('<UserSection', () => {
     state.confirmPassword = 'abcde';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
-    expect(UserSection.prototype.validateFormField.calledOnce).toEqual(false);
+    expect(PureUserSection.prototype.validateFormField.calledOnce)
+      .toEqual(false);
     expect(shallowWrapper.state().confirmPassword).toEqual('abcde');
   });
 
-  it('renders the editProfile component when edit profile link is clicked', () => {
+  it('renders the editProfile component when edit ' +
+  'profile link is clicked', () => {
     const { shallowWrapper } = setup();
     expect(shallowWrapper).toBeDefined();
     expect(shallowWrapper.find('.invisible-button.nav-editProfile')
       .simulate('click'));
   });
 
-  it('renders the change password modal component when change password link is clicked', () => {
+  it('renders the change password modal component ' +
+  'when change password link is clicked', () => {
     const { shallowWrapper } = setup();
     expect(shallowWrapper).toBeDefined();
     expect(shallowWrapper.find('.invisible-button.nav-changePassword')
@@ -223,34 +238,37 @@ describe('<UserSection', () => {
   });
 
   it('calls closeModal event', () => {
-    sinon.spy(UserSection.prototype, 'closeModal');
+    sinon.spy(PureUserSection.prototype, 'closeModal');
     const { shallowWrapper } = setup(false);
     shallowWrapper.instance().closeModal(event);
-    expect(UserSection.prototype.closeModal.calledOnce).toEqual(true);
+    expect(PureUserSection.prototype.closeModal.calledOnce).toEqual(true);
   });
 
   it('calls addCategory action', () => {
-    sinon.spy(UserSection.prototype, 'handleAddCategory');
+    sinon.spy(PureUserSection.prototype, 'handleAddCategory');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().handleAddCategory(event);
-    expect(UserSection.prototype.handleAddCategory.calledOnce).toEqual(true);
+    expect(PureUserSection.prototype.handleAddCategory.calledOnce)
+      .toEqual(true);
   });
 
 
   it('calls updateCategory action', () => {
-    sinon.spy(UserSection.prototype, 'handleUpdateCategory');
+    sinon.spy(PureUserSection.prototype, 'handleUpdateCategory');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().handleUpdateCategory(event);
-    expect(UserSection.prototype.handleUpdateCategory.calledOnce).toEqual(true);
+    expect(PureUserSection.prototype.handleUpdateCategory.calledOnce)
+      .toEqual(true);
   });
 
   it('calls deleteCategory action', () => {
-    sinon.spy(UserSection.prototype, 'handleDeleteCategory');
+    sinon.spy(PureUserSection.prototype, 'handleDeleteCategory');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().handleDeleteCategory(event);
-    expect(UserSection.prototype.handleDeleteCategory.calledOnce).toEqual(true);
+    expect(PureUserSection.prototype.handleDeleteCategory.calledOnce)
+      .toEqual(true);
   });
 });

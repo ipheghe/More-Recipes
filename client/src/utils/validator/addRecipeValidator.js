@@ -6,7 +6,6 @@
 
 const AddRecipeValidator = (
   recipeName,
-  recipeDetail,
   ingredients,
   directions,
   imageUrl
@@ -18,26 +17,25 @@ const AddRecipeValidator = (
     error.message = 'Recipe name field cannot be empty';
     return error;
   }
-  if (recipeDetail === '') {
-    error.status = true;
-    error.message = 'Recipe Details field cannot be empty';
-    return error;
-  }
+
   if (ingredients === '') {
     error.status = true;
     error.message = 'ingredients field cannot be empty';
     return error;
   }
+
   if (directions === '') {
     error.status = true;
     error.message = 'directions field cannot be empty';
     return error;
   }
+
   if (imageUrl === '') {
     error.status = true;
     error.message = 'Recipe image field cannot be empty';
     return error;
   }
+
   return error;
 };
 

@@ -21,7 +21,10 @@ module.exports = {
       .click('button#signup')
       .pause(1000)
       .assert
-      .containsText('p.alert', 'Username must start with a letter and have no spaces.')
+      .containsText(
+        'p.alert',
+        'Username must start with a letter and have no spaces.'
+      )
       .pause(3000)
 
       // throws an error for invalid email

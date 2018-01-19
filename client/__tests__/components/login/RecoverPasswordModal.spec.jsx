@@ -27,20 +27,13 @@ describe('<RecoverPasswordModal', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('allows us to set props', () => {
-    const wrapper = setup(false);
-    expect(wrapper.props().isOpen).toEqual(true);
-    wrapper.setProps({ email: 'okon@yahoo.com' });
-    expect(wrapper.props().email).toEqual('okon@yahoo.com');
-  });
-
-  it('renders RecoverPasswordModal component without crashing if error props is not null', () => {
-    props.error = <div />;
-    const wrapper = shallow(<RecoverPasswordModal {...props} />);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.find('Modal').length).toBe(1);
-    expect(wrapper.find('button').length).toBe(3);
-    expect(wrapper.find('input').length).toBe(1);
-    expect(wrapper.exists()).toBe(true);
-  });
+  it(`renders RecoverPasswordModal component without 
+     crashing if error is not null`, () => {
+      props.error = <div />;
+      const wrapper = shallow(<RecoverPasswordModal {...props} />);
+      expect(wrapper.find('Modal').length).toBe(1);
+      expect(wrapper.find('button').length).toBe(3);
+      expect(wrapper.find('input').length).toBe(1);
+      expect(wrapper.exists()).toBe(true);
+    });
 });

@@ -36,7 +36,10 @@ describe('>>>A C T I O N --- favoriteActions', () => {
 
       const expectedActions = [
         {
-          payload: { favorite: { id: 1, recipeId: 1, userId: 1 }, message: 'Recipe added to favorites Successfully' },
+          payload: {
+            favorite: { id: 1, recipeId: 1, userId: 1 },
+            message: 'Recipe added to favorites Successfully'
+          },
           type: 'FAVORITE_RECIPE'
         }
       ];
@@ -60,9 +63,34 @@ describe('>>>A C T I O N --- favoriteActions', () => {
       });
 
       const expectedActions = [
-        { payload: { message: 'Recipe Unfavorited SuccessFullly!' }, type: 'UNFAVORITE_RECIPE' }
+        {
+          payload: { message: 'Recipe Unfavorited SuccessFullly!' },
+          type: 'UNFAVORITE_RECIPE'
+        }
       ];
       await store.dispatch(unfavoriteRecipe(1))
+        .then(() => {
+          const actions = store.getActions();
+          expect(actions).toEqual(expectedActions);
+          done();
+        });
+    });
+
+    it('should create a FAVORITE_ERROR action', async (done) => {
+      moxios.stubRequest('/api/v1/favorite/18', {
+        status: 404,
+        response: {
+          message: 'Recipe does not exist!'
+        }
+      });
+
+      const expectedActions = [
+        {
+          payload: { message: 'Recipe does not exist!' },
+          type: 'FAVORITE_ERROR'
+        }
+      ];
+      await store.dispatch(unfavoriteRecipe(18))
         .then(() => {
           const actions = store.getActions();
           expect(actions).toEqual(expectedActions);
@@ -73,28 +101,34 @@ describe('>>>A C T I O N --- favoriteActions', () => {
 
   // Get user Favorites
   describe('retrieve user favorites action', () => {
-    it('should create a RETRIEVE_USER_FAVORITE_RECIPES action', async (done) => {
-      moxios.stubRequest('/api/v1/favorites', {
-        status: 200,
-        response: {
-          message: 'User Favorite recipes retrieved Successfully',
-          userFavorites: [mockItems.favorite]
-        }
-      });
-
-      const expectedActions = [
-        {
-          payload: { message: 'User Favorite recipes retrieved Successfully', userFavorites: [{ id: 1, recipeId: 1, userId: 1 }] },
-          type: 'RETRIEVE_USER_FAVORITE_RECIPES'
-        }
-      ];
-      await store.dispatch(getFavoriteRecipes())
-        .then(() => {
-          const actions = store.getActions();
-          expect(actions).toEqual(expectedActions);
-          done();
+    it(
+      'should create a RETRIEVE_USER_FAVORITE_RECIPES action',
+      async (done) => {
+        moxios.stubRequest('/api/v1/favorites', {
+          status: 200,
+          response: {
+            message: 'User Favorite recipes retrieved Successfully',
+            userFavorites: [mockItems.favorite]
+          }
         });
-    });
+
+        const expectedActions = [
+          {
+            payload: {
+              message: 'User Favorite recipes retrieved Successfully',
+              userFavorites: [{ id: 1, recipeId: 1, userId: 1 }]
+            },
+            type: 'RETRIEVE_USER_FAVORITE_RECIPES'
+          }
+        ];
+        await store.dispatch(getFavoriteRecipes())
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions).toEqual(expectedActions);
+            done();
+          });
+      }
+    );
   });
 
   // Get User Favorite recipe
@@ -110,7 +144,10 @@ describe('>>>A C T I O N --- favoriteActions', () => {
 
       const expectedActions = [
         {
-          payload: { message: 'User Favorite recipe retrieved Successfully', userFavorite: { id: 1, name: 'Local Dish', userId: 1 } },
+          payload: {
+            message: 'User Favorite recipe retrieved Successfully',
+            userFavorite: { id: 1, name: 'Local Dish', userId: 1 }
+          },
           type: 'RETRIEVE_USER_FAVORITE_RECIPE'
         }
       ];

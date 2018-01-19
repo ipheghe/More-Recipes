@@ -32,7 +32,7 @@ const initialState = {
     message: '',
     error: '',
     pages: 2,
-    recipeData: {},
+    recipeData: mockItems.recipe,
     recipeList: mockItems.recipeArray,
     userRecipes: [],
     searchResult: []
@@ -104,6 +104,11 @@ const props = {
   status: 'Fail'
 };
 
+const nextprops = {
+  recipe: mockItems.recipe,
+  reviews: [mockItems.review],
+};
+
 const event = {
   preventDefault: jest.fn(),
   target: {
@@ -130,7 +135,8 @@ describe('<ViewRecipe', () => {
     mockAuthCheck();
   });
 
-  it('should render a loader component before ViewRecipe component receives props', () => {
+  it('should render a loader component before ' +
+  'ViewRecipe component receives props', () => {
     props.recipe = {};
     const shallowWrapper = shallow(<PureViewRecipe {...props} />);
     shallowWrapper.setState({ recipes: [] });
@@ -147,16 +153,18 @@ describe('<ViewRecipe', () => {
     expect(shallowWrapper.exists()).toBe(true);
   });
 
-  it('calls componentWillReceiveProps if all needed props are available', () => {
+  it('calls componentWillReceiveProps if all ' +
+  'needed props are available', () => {
     sinon.spy(PureViewRecipe.prototype, 'componentWillReceiveProps');
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
-    shallowWrapper.instance().componentWillReceiveProps(props);
+    shallowWrapper.instance().componentWillReceiveProps(nextprops);
     expect(PureViewRecipe.prototype.componentWillReceiveProps.calledOnce)
       .toEqual(true);
   });
 
-  it('calls componentWillReceiveProps if all needed props are available', () => {
+  it('does not call componentWillReceiveProps if all ' +
+  'needed props are not available', () => {
     props.recipe = null;
     const shallowWrapper = shallow(<PureViewRecipe {...props} />);
     shallowWrapper.instance().componentWillReceiveProps(props);
@@ -174,6 +182,7 @@ describe('<ViewRecipe', () => {
     state.isFavorite = true;
     shallowWrapper.setState(state);
     expect(shallowWrapper).toBeDefined();
+    expect(shallowWrapper.find('button#un-favorite').length).toBe(1);
     expect(shallowWrapper.exists()).toBe(true);
   });
 
@@ -206,7 +215,8 @@ describe('<ViewRecipe', () => {
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().handleUpvote(event);
-    expect(PureViewRecipe.prototype.handleUpvote.calledOnce).toEqual(true);
+    expect(PureViewRecipe.prototype.handleUpvote.calledOnce)
+      .toEqual(true);
   });
 
   it('dispatches downvote recipe action', () => {
@@ -214,7 +224,8 @@ describe('<ViewRecipe', () => {
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().handleDownvote(event);
-    expect(PureViewRecipe.prototype.handleDownvote.calledOnce).toEqual(true);
+    expect(PureViewRecipe.prototype.handleDownvote.calledOnce)
+      .toEqual(true);
   });
 
   it('dispatches favorite recipe action', () => {
@@ -259,7 +270,8 @@ describe('<ViewRecipe', () => {
     expect(PureViewRecipe.prototype.loadMore.calledOnce).toEqual(true);
   });
 
-  it('shows load more button if number of reviews is less than page count', () => {
+  it('shows load more button if number of ' +
+  'reviews is less than page count', () => {
     const { shallowWrapper } = setup(false);
     state.reviews = [];
     shallowWrapper.setState(state);

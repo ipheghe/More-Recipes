@@ -29,9 +29,11 @@ const updateRecipeValidator = (
     || recipeId === ''
     || !recipeIdValue
   ) {
+    error.status = true;
     error.message = 'Please select a recipe';
     return error;
   }
+
   return error;
 };
 

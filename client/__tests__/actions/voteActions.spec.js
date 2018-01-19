@@ -29,7 +29,13 @@ describe('>>>A C T I O N --- voteActions', () => {
       });
 
       const expectedActions = [
-        { payload: { message: 'Your vote has been recorded', status: 'success' }, type: 'UPVOTE_RECIPE' }
+        {
+          payload: {
+            message: 'Your vote has been recorded',
+            status: 'success'
+          },
+          type: 'UPVOTE_RECIPE'
+        }
       ];
       await store.dispatch(upvoteRecipe(1))
         .then(() => {
@@ -52,7 +58,13 @@ describe('>>>A C T I O N --- voteActions', () => {
       });
 
       const expectedActions = [
-        { payload: { message: 'Your vote has been recorded', status: 'success' }, type: 'DOWNVOTE_RECIPE' }
+        {
+          payload: {
+            message: 'Your vote has been recorded',
+            status: 'success'
+          },
+          type: 'DOWNVOTE_RECIPE'
+        }
       ];
       await store.dispatch(downvoteRecipe(1))
         .then(() => {

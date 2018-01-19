@@ -115,18 +115,22 @@ describe('<ManageRecipe', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('calls componentWillReceiveProps if component receives new props for imageUrl', () => {
-    sinon.spy(PureManageRecipe.prototype, 'componentWillReceiveProps');
-    const { shallowWrapper } = setup();
-    shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(PureManageRecipe.prototype.componentWillReceiveProps.calledOnce).toEqual(true);
-  });
+  it(`calls componentWillReceiveProps if
+      component receives new props for imageUrl`, () => {
+      sinon.spy(PureManageRecipe.prototype, 'componentWillReceiveProps');
+      const { shallowWrapper } = setup();
+      shallowWrapper.instance().componentWillReceiveProps(props);
+      expect(PureManageRecipe.prototype.componentWillReceiveProps.calledOnce)
+        .toEqual(true);
+    });
 
-  it('checks new props for imageUrl through componentWillReceiveProps method but finds none', () => {
-    const { shallowWrapper } = setup();
-    shallowWrapper.instance().componentWillReceiveProps(!nextProps);
-    expect(PureManageRecipe.prototype.componentWillReceiveProps.calledOnce).toEqual(false);
-  });
+  it(`checks new props for imageUrl through
+      componentWillReceiveProps method but finds none`, () => {
+      const { shallowWrapper } = setup();
+      shallowWrapper.instance().componentWillReceiveProps(!nextProps);
+      expect(PureManageRecipe.prototype.componentWillReceiveProps.calledOnce)
+        .toEqual(false);
+    });
 
   it('calls handleChange event', () => {
     sinon.spy(PureManageRecipe.prototype, 'handleChange');
@@ -139,77 +143,42 @@ describe('<ManageRecipe', () => {
     sinon.spy(PureManageRecipe.prototype, 'handleImageChange');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().handleImageChange(event);
-    expect(PureManageRecipe.prototype.handleImageChange.calledOnce).toEqual(true);
+    expect(PureManageRecipe.prototype.handleImageChange.calledOnce)
+      .toEqual(true);
   });
 
   it('calls handleLoadRecipe event after add recipe button is clicked', () => {
     sinon.spy(PureManageRecipe.prototype, 'handleLoadRecipe');
     const { shallowWrapper } = setup();
     shallowWrapper.instance().handleLoadRecipe(1);
-    expect(PureManageRecipe.prototype.handleLoadRecipe.calledOnce).toEqual(true);
+    expect(PureManageRecipe.prototype.handleLoadRecipe.calledOnce)
+      .toEqual(true);
   });
 
   it('calls handleLoadRecipe event after add recipe button is clicked', () => {
     const { shallowWrapper } = setup();
     const recipeId = null;
     shallowWrapper.instance().handleLoadRecipe(recipeId);
-    expect(PureManageRecipe.prototype.handleLoadRecipe.calledOnce).toEqual(false);
-  });
-
-  it('dispatches handleUpdateRecipe action after validatiing fields', () => {
-    sinon.spy(PureManageRecipe.prototype, 'handleUpdateRecipe');
-    const { shallowWrapper } = setup();
-    shallowWrapper.setState(state);
-    const recipeId = { value: 1 };
-    shallowWrapper.instance().recipeId = recipeId;
-    shallowWrapper.instance().handleUpdateRecipe(event);
-    expect(PureManageRecipe.prototype.handleUpdateRecipe.calledOnce).toEqual(true);
-  });
-
-  it('calls validateFormField method with null recipeName field', () => {
-    sinon.spy(PureManageRecipe.prototype, 'validateFormField');
-    const { shallowWrapper } = setup();
-    state.recipeDetail = '';
-    const recipeId = { value: 1 };
-    shallowWrapper.instance().recipeId = recipeId;
-    shallowWrapper.setState(state);
-    shallowWrapper.instance().validateFormField();
-    jest.runAllTimers();
-    expect(PureManageRecipe.prototype.validateFormField.calledOnce)
-      .toEqual(true);
-    expect(shallowWrapper.state().recipeDetail).toEqual('');
-  });
-
-
-  it('calls validateFormField method with null recipeName field', () => {
-    const { shallowWrapper } = setup();
-    state.imageUrl = '';
-    const recipeId = { value: 1 };
-    shallowWrapper.instance().recipeId = recipeId;
-    shallowWrapper.setState(state);
-    shallowWrapper.instance().validateFormField();
-    jest.runAllTimers();
-    expect(PureManageRecipe.prototype.validateFormField.calledOnce)
+    expect(PureManageRecipe.prototype.handleLoadRecipe.calledOnce)
       .toEqual(false);
-    expect(shallowWrapper.state().imageUrl).toEqual('');
   });
 
-
-  it('calls validateFormField method with null recipeName field', () => {
+  it('displays error message if user enters a null ingredients field', () => {
     const { shallowWrapper } = setup();
     state.ingredients = '';
     const recipeId = { value: 1 };
     shallowWrapper.instance().recipeId = recipeId;
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    expect(shallowWrapper.state().hasErrored).toEqual(true);
+    expect(shallowWrapper.state().errorMessage)
+      .toEqual('ingredients field cannot be empty');
     jest.runAllTimers();
-    expect(PureManageRecipe.prototype.validateFormField.calledOnce)
-      .toEqual(false);
-    expect(shallowWrapper.state().ingredients).toEqual('');
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
 
-  it('calls validateFormField method with null recipeName field', () => {
+  it('displays error message if user enters a null directions field', () => {
     const { shallowWrapper } = setup();
     state.ingredients = 'nnbjk';
     state.directions = '';
@@ -217,44 +186,63 @@ describe('<ManageRecipe', () => {
     shallowWrapper.instance().recipeId = recipeId;
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    expect(shallowWrapper.state().hasErrored).toEqual(true);
+    expect(shallowWrapper.state().errorMessage)
+      .toEqual('directions field cannot be empty');
     jest.runAllTimers();
-    expect(PureManageRecipe.prototype.validateFormField.calledOnce)
-      .toEqual(false);
-    expect(shallowWrapper.state().directions).toEqual('');
-    expect(shallowWrapper.state().hasErrored).toEqual(false);
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
-  it('calls validateFormField method with null recipeName field', () => {
+  it('displays error message if recipeId is null', () => {
     const { shallowWrapper } = setup();
     const recipeId = { value: null };
     shallowWrapper.instance().recipeId = recipeId;
     state.directions = 'hjknjk';
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
+    expect(shallowWrapper.state().hasErrored).toEqual(true);
+    expect(shallowWrapper.state().errorMessage)
+      .toEqual('Please select a recipe');
     jest.runAllTimers();
-    expect(PureManageRecipe.prototype.validateFormField.calledOnce)
-      .toEqual(false);
+    expect(shallowWrapper.state().errorMessage).toEqual('');
   });
 
-  it('dispatches handleDeleteRecipe action after validatiing fields', () => {
-    sinon.spy(PureManageRecipe.prototype, 'handleDeleteRecipe');
-    const { shallowWrapper } = setup();
-    shallowWrapper.setState(state);
-    const recipeId = { value: 1 };
-    shallowWrapper.instance().recipeId = recipeId;
-    shallowWrapper.instance().handleDeleteRecipe(event);
-    expect(PureManageRecipe.prototype.handleDeleteRecipe.calledOnce).toEqual(true);
-  });
+  it(`dispatches handleUpdateRecipe action
+     after validatiing form fields successfully`, () => {
+      sinon.spy(PureManageRecipe.prototype, 'handleUpdateRecipe');
+      const { shallowWrapper } = setup();
+      const recipeId = { value: 1 };
+      shallowWrapper.instance().recipeId = recipeId;
+      state.directions = 'hjknjk';
+      shallowWrapper.setState(state);
+      shallowWrapper.instance().handleUpdateRecipe(event);
+      expect(PureManageRecipe.prototype.handleUpdateRecipe.calledOnce)
+        .toEqual(true);
+    });
 
-  it('dispatches handleDeleteRecipe action after validatiing fields', () => {
-    const { shallowWrapper } = setup();
-    shallowWrapper.setState(state);
-    const recipeId = { value: null };
-    shallowWrapper.instance().recipeId = recipeId;
-    shallowWrapper.instance().handleDeleteRecipe(event);
-    jest.runAllTimers();
-    expect(PureManageRecipe.prototype.handleDeleteRecipe.calledOnce).toEqual(false);
-  });
+  it(`dispatches handleDeleteRecipe action
+      after validatiing form fields successfully`, () => {
+      sinon.spy(PureManageRecipe.prototype, 'handleDeleteRecipe');
+      const { shallowWrapper } = setup();
+      shallowWrapper.setState(state);
+      const recipeId = { value: 1 };
+      shallowWrapper.instance().recipeId = recipeId;
+      shallowWrapper.instance().handleDeleteRecipe(event);
+      expect(PureManageRecipe.prototype.handleDeleteRecipe.calledOnce)
+        .toEqual(true);
+    });
+
+  it(`displays error when dispatching handleDeleteRecipe
+      action with a null recipeId value`, () => {
+      const { shallowWrapper } = setup();
+      shallowWrapper.setState(state);
+      const recipeId = { value: null };
+      shallowWrapper.instance().recipeId = recipeId;
+      shallowWrapper.instance().handleDeleteRecipe(event);
+      jest.runAllTimers();
+      expect(PureManageRecipe.prototype.handleDeleteRecipe.calledOnce)
+        .toEqual(false);
+    });
 
   it('dispatches handleDeleteRecipe action after validatiing fields', () => {
     const { shallowWrapper } = setup();
@@ -262,39 +250,7 @@ describe('<ManageRecipe', () => {
     shallowWrapper.setState(state);
     const recipeId = { value: 1 };
     shallowWrapper.instance().recipeId = recipeId;
-    expect(PureManageRecipe.prototype.handleDeleteRecipe.calledOnce).toEqual(false);
+    expect(PureManageRecipe.prototype.handleDeleteRecipe.calledOnce)
+      .toEqual(false);
   });
-
-  // it('calls validateFormField method with null ingredients field', () => {
-  //   const { shallowWrapper } = setup();
-  //   state.recipeName = 'Banga Rice';
-  //   state.ingredients = '';
-  //   shallowWrapper.setState(state);
-  //   shallowWrapper.instance().validateFormField();
-  //   jest.runAllTimers();
-  //   expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
-  //   expect(shallowWrapper.state().ingredients).toEqual('');
-  // });
-
-  // it('calls validateFormField method with null description field', () => {
-  //   const { shallowWrapper } = setup();
-  //   state.ingredients = 'Rice,meat';
-  //   state.description = '';
-  //   shallowWrapper.setState(state);
-  //   shallowWrapper.instance().validateFormField();
-  //   jest.runAllTimers();
-  //   expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
-  //   expect(shallowWrapper.state().description).toEqual('');
-  // });
-
-  // it('calls validateFormField method with null image url field', () => {
-  //   const { shallowWrapper } = setup();
-  //   state.description = 'Boil Rice, boil meat';
-  //   state.imageUrl = '';
-  //   shallowWrapper.setState(state);
-  //   shallowWrapper.instance().validateFormField();
-  //   jest.runAllTimers();
-  //   expect(PureAddRecipe.prototype.validateFormField.calledOnce).toEqual(false);
-  //   expect(shallowWrapper.state().imageUrl).toEqual('');
-  // });
 });

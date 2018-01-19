@@ -2,6 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+/**
+ * LoginForm component
+ *
+ * @param {Object} props
+ *
+ * @return {jsx} jsx
+ */
 const LoginForm = ({
   username,
   password,
@@ -65,7 +72,7 @@ const LoginForm = ({
             className="invisible-button"
             style={{ color: '#2F94D2' }}
             onClick={openModal}
-          >Forgot your password?
+          ><p className="forgot-password">Forgot your password?</p>
           </button>
         </div>
       </div>

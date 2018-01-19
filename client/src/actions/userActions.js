@@ -94,7 +94,8 @@ const resetPassword = (email) => {
   const url = '/user/forgotPassword';
   const directTo = '#';
   const message =
-    'Password Reset Successfully! Please check your email to and follow link to create a new password';
+    'Password Reset Successfully! Please check your email to ' +
+    'and follow link to create a new password';
   const constant = 'RESET_PASSWORD';
   return dispatch => postData(
     RESET_PASSWORD,

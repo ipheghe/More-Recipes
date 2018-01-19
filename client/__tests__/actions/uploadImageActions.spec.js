@@ -1,14 +1,21 @@
 import expect from 'expect';
 import moxios from 'moxios';
 import thunk from 'redux-thunk';
+import superagent from 'superagent';
 import configureMockStore from 'redux-mock-store';
 import mockAuthCheck from '../__mocks__/mockAuthCheck';
-import mockItems from '../__mocks__/mockItems';
-import { uploadImageRequest, uploadImageResponse, uploadImage, uploadImageFailed } from '../../src/actions/uploadImageActions';
+import { uploadImage } from '../../src/actions/uploadImageActions';
 
 let store = null;
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
+const imageFile = {
+  name: '/Users/andeladeveloper/Desktop/More-Recipes/' +
+  'template/images/sharwama.jpg',
+  size: 61387,
+  type: 'image/jpeg'
+};
+jest.mock('superagent');
 
 describe('>>>A C T I O N --- uploadImageActions', () => {
   beforeEach(() => {
@@ -18,56 +25,105 @@ describe('>>>A C T I O N --- uploadImageActions', () => {
   });
   afterEach(() => moxios.uninstall());
 
-  // Make Image Request Action
-  describe('Make Image Request action', () => {
-    it('should make an image request action', () => {
-      const imageData = {
-        file: '/assets/images/pizza.jpg'
-      };
-      const expectedActions = {
-        imageData: {
-          file: '/assets/images/pizza.jpg'
-        },
-        type: 'IMAGE_FILE_REQUEST'
-      };
-      expect(uploadImageRequest(imageData)).toEqual(expectedActions);
+  // Make Successful Image Request Action
+  describe('Make Successful Image Request action', () => {
+    it('should call image request action and ' +
+    'dispatch uploadImageResponse action ', () => {
+      superagent.post = () => ({
+        attach: jest.fn(),
+        field: jest.fn(),
+        end: fn => fn(null, {
+          body: {
+            url: 'http://res.cloudinary.com/dd3lv0o93/image/' +
+            'upload/v1516006383/hghev3xifrmlmeqbocmp.png'
+          }
+        })
+      });
+      const expectedActions = [
+        {
+          imageData: {
+            name: '/Users/andeladeveloper/Desktop/More-Recipes/' +
+            'template/images/sharwama.jpg',
+            size: 61387,
+            type: 'image/jpeg'
+          },
+          type: 'IMAGE_FILE_REQUEST'
+        }, {
+          response: 'http://res.cloudinary.com/dd3lv0o93/image/upload/' +
+          'v1516006383/hghev3xifrmlmeqbocmp.png',
+          type: 'IMAGE_FILE_SUCCESSFUL'
+        }];
+      store.dispatch(uploadImage(imageFile));
+      const actions = store.getActions();
+      expect(actions).toEqual(expectedActions);
     });
   });
 
-  // retrieve image url successfully
-  it('should retrieve image url on request success', () => {
-    const response = '/assets/images/sharwama';
-    const expectedActions = { response: '/assets/images/sharwama', type: 'IMAGE_FILE_SUCCESSFUL' };
-    expect(uploadImageResponse(response)).toEqual(expectedActions);
-  });
-
-  // retrieve error when image upload is unsuccessful
-  it('should retrieve image url on request failure', () => {
-    const error = 'Something went wrong, please try again';
-    const expectedActions = { error: 'Something went wrong, please try again', type: 'IMAGE_FILE_FAILURE' };
-    expect(uploadImageFailed(error)).toEqual(expectedActions);
-  });
-
-  // upload image action
-  it('should retrieve image url on request failure', () => {
-    // moxios.stubRequest(null, {
-    //   status: 200,
-    //   response: {
-    //     message: 'All Reviews Retrieved SuccessFullly!',
-    //     reviews: [mockItems.review]
-    //   }
-    // });
-    const imageData = {
-      name: 'sharwama.jpg',
-      size: 61387,
-      type: 'image/jpeg'
-    };
-    const error = 'Something went wrong, please try again';
-    const expectedActions = { error: 'Something went wrong, please try again', type: 'IMAGE_FILE_FAILURE' };
-    store.dispatch(uploadImage(imageData))
-      .then(() => {
-        const actions = store.getActions();
-        expect(actions).toEqual(expectedActions);
+  // Make Failed Image Request Action
+  describe('Make Failed Image Request action', () => {
+    it('should call image request action and ' +
+      'dispatch uploadImageFailed action ', () => {
+      superagent.post = () => ({
+        attach: jest.fn(),
+        field: jest.fn(),
+        end: fn => fn({ message: 'error uploading image' }, {
+          body: {
+            url: 'http://res.cloudinary.com/dd3lv0o93/image/' +
+            'upload/v1516006383/hghev3xifrmlmeqbocmp.png'
+          }
+        })
       });
+      const expectedActions = [
+        {
+          imageData:
+          {
+            name: '/Users/andeladeveloper/Desktop/More-Recipes/' +
+            'template/images/sharwama.jpg',
+            size: 61387,
+            type: 'image/jpeg'
+          },
+          type: 'IMAGE_FILE_REQUEST'
+        }, {
+          error: { message: 'error uploading image' },
+          type: 'IMAGE_FILE_FAILURE'
+        }];
+      store.dispatch(uploadImage(imageFile));
+      const actions = store.getActions();
+      expect(actions).toEqual(expectedActions);
+    });
+  });
+
+  // Make Failed Image Request Action
+  describe('Make Failed Image Request action', () => {
+    it('should call image request action and ' +
+        'dispatch uploadImageFailed action ', () => {
+      superagent.post = () => ({
+        attach: jest.fn(),
+        field: jest.fn(),
+        end: fn => fn({ message: 'error uploading image' }, {
+          body: {
+            url: 'http://res.cloudinary.com/dd3lv0o93/image/' +
+            'upload/v1516006383/hghev3xifrmlmeqbocmp.png'
+          }
+        })
+      });
+      const expectedActions = [
+        {
+          imageData:
+            {
+              name: '/Users/andeladeveloper/Desktop/More-Recipes/' +
+              'template/images/sharwama.jpg',
+              size: 61387,
+              type: 'image/jpeg'
+            },
+          type: 'IMAGE_FILE_REQUEST'
+        }, {
+          error: { message: 'error uploading image' },
+          type: 'IMAGE_FILE_FAILURE'
+        }];
+      store.dispatch(uploadImage(imageFile));
+      const actions = store.getActions();
+      expect(actions).toEqual(expectedActions);
+    });
   });
 });

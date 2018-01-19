@@ -27,7 +27,8 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         message: action.payload.message,
         categoryList: [...state.categoryList.map(item => (
-          item.id === action.payload.category.id ? action.payload.category : item
+          item.id === action.payload.category.id
+            ? action.payload.category : item
         ))]
       };
     case DELETE_CATEGORY:
@@ -35,7 +36,8 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         message: action.payload.message,
         categoryList: [
-          ...state.categoryList.filter(category => category.id !== state.userCategoryList[0].id)
+          ...state.categoryList.filter(category =>
+            category.id !== state.userCategoryList[0].id)
         ]
       };
     case FETCH_USER_CATEGORIES:
@@ -51,7 +53,8 @@ export default (state = INITIAL_STATE, action) => {
     case CATEGORY_ERROR:
       return {
         ...state,
-        error: action.payload.message ? action.payload.message : action.payload.error
+        error: action.payload.message
+          ? action.payload.message : action.payload.error
       };
     default:
       return state;

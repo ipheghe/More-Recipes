@@ -15,7 +15,7 @@ const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
 const initialState = {
   recipe: {
-    message: 'spaghetti',
+    message: 'Sorry. No result found',
     error: '',
     pages: 2,
     recipeData: {},
@@ -35,7 +35,7 @@ const state = {
 
 const props = {
   getRecipesBySearch: jest.fn(() => Promise.resolve()),
-  message: 'spaghetti',
+  message: 'Sorry. No result found',
   location: {
     search: 'spag',
     pathname: '/'
@@ -49,7 +49,9 @@ const props = {
  * @return { * } null
  */
 const setup = () => {
-  const mountedWrapper = mount(<Provider store={store}><ConnectedSearch {...props} /></Provider>);
+  const mountedWrapper = mount(<Provider store={store}>
+    <ConnectedSearch {...props} />
+                               </Provider>);
   const shallowWrapper = shallow(<PureSearch {...props} />);
   return {
     mountedWrapper,
@@ -58,13 +60,14 @@ const setup = () => {
 };
 
 describe('<Search', () => {
-  it('should render a loader component before PureSearch component receives props', () => {
-    props.PureSearchResult = [];
-    const shallowWrapper = shallow(<PureSearch {...props} />);
-    expect(shallowWrapper).toBeDefined();
-    expect(shallowWrapper.find('Loader').length).toBe(1);
-    expect(shallowWrapper.exists()).toBe(true);
-  });
+  it(`should render a loader component before 
+     PureSearch component receives props`, () => {
+      props.PureSearchResult = [];
+      const shallowWrapper = shallow(<PureSearch {...props} />);
+      expect(shallowWrapper).toBeDefined();
+      expect(shallowWrapper.find('Loader').length).toBe(1);
+      expect(shallowWrapper.exists()).toBe(true);
+    });
 
   it('renders without crashing', () => {
     props.PureSearchResult = mockItems.recipeArray;
@@ -82,24 +85,29 @@ describe('<Search', () => {
     expect(shallowWrapper).toBeDefined();
     expect(shallowWrapper.find('RecipeList').length).toBe(0);
     expect(shallowWrapper.find('Pagination').length).toBe(0);
-    expect(shallowWrapper.exists()).toBe(true);
+    expect(shallowWrapper.instance().props.message)
+      .toEqual('Sorry. No result found');
   });
 
-  it('calls componentWillReceiveProps if message from props is available', () => {
-    sinon.spy(PureSearch.prototype, 'componentWillReceiveProps');
-    const { shallowWrapper } = setup();
-    shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(PureSearch.prototype.componentWillReceiveProps.calledOnce)
-      .toEqual(true);
-  });
+  it(`calls componentWillReceiveProps 
+     if message from props is available`, () => {
+      sinon.spy(PureSearch.prototype, 'componentWillReceiveProps');
+      const { shallowWrapper } = setup();
+      shallowWrapper.instance().componentWillReceiveProps(props);
+      expect(PureSearch.prototype.componentWillReceiveProps.calledOnce)
+        .toEqual(true);
+      expect(shallowWrapper.instance().props.message)
+        .toEqual('Sorry. No result found');
+    });
 
-  it('doesnt call componentWillReceiveProps if message from props is unavailable', () => {
-    props.message = null;
-    const { shallowWrapper } = setup();
-    shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(PureSearch.prototype.componentWillReceiveProps.calledOnce)
-      .toEqual(false);
-  });
+  it(`doesnt call componentWillReceiveProps 
+     if message from props is unavailable`, () => {
+      props.message = null;
+      const { shallowWrapper } = setup();
+      shallowWrapper.instance().componentWillReceiveProps(props);
+      expect(shallowWrapper.instance().props.message)
+        .toEqual(null);
+    });
 
   it('should match component snapshot', () => {
     const tree = render.create(<PureSearch {...props} />);

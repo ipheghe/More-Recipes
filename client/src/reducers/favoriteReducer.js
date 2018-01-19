@@ -35,14 +35,16 @@ export default (state = INITIAL_STATE, action) => {
     case RETRIEVE_USER_FAVORITE_RECIPES:
       return {
         ...state,
-        userFavorites: action.payload.userFavorites ? action.payload.userFavorites.rows : [],
+        userFavorites: action.payload.userFavorites
+          ? action.payload.userFavorites.rows : [],
         message: action.payload.message,
         pages: action.payload.pages
       };
     case FAVORITE_ERROR:
       return {
         ...state,
-        error: action.payload.message ? action.payload.message : action.payload.error,
+        error: action.payload.message
+          ? action.payload.message : action.payload.error,
         status: action.payload.status ? action.payload.status : false
       };
     default:

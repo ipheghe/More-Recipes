@@ -1,6 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * ResetPasswordForm component
+ *
+ * @param {Object} props
+ *
+ * @return {jsx} jsx
+ */
 const ResetPasswordForm = ({
   newPassword,
   confirmPassword,

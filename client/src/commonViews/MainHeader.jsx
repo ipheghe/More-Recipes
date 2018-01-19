@@ -4,7 +4,8 @@ import Logo from '../../public/assets/images/recipe_logo.png';
 
 /**
  * MainHeader commponent
- * @returns {component} MainHeader
+ *
+ * @returns {jsx} jsx
  */
 const MainHeader = () => (
   <div>

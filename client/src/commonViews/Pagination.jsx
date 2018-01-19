@@ -6,6 +6,7 @@ import ReactPaginate from 'react-paginate';
  * @description defines Pagination component
  *
  * @param { props } props
+ *
  * @return { jsx } jsx
  */
 const Pagination = ({ pageNumber, onPaginateClick }) =>

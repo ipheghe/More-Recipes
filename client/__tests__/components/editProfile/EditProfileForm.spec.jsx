@@ -28,13 +28,6 @@ describe('<EditProfileForm', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('allows us to set props', () => {
-    const wrapper = setup(false);
-    expect(wrapper.props().username).toEqual('okon');
-    wrapper.setProps({ username: 'okon' });
-    expect(wrapper.props().username).toEqual('okon');
-  });
-
   it('renders EditProfileForm without crashing if error is available', () => {
     props.error = jest.fn();
     const wrapper = shallow(<EditProfileForm {...props} />);

@@ -10,7 +10,8 @@ import {
 } from '../../actions/categoryActions';
 import { changePassword } from '../../actions/userActions';
 import renderErrorAlert from '../../utils/renderErrorAlert';
-import changePasswordValidator from '../../utils/validator/changePasswordValidator';
+import changePasswordValidator
+  from '../../utils/validator/changePasswordValidator';
 import { logoutUser } from '../../actions/authActions';
 
 /**
@@ -20,7 +21,7 @@ import { logoutUser } from '../../actions/authActions';
  *
  * @extends {React.Component}
  */
-export class UserSection extends React.Component {
+class UserSection extends React.Component {
   static propTypes = {
     addCategory: PropTypes.func.isRequired,
     updateCategory: PropTypes.func.isRequired,
@@ -230,7 +231,11 @@ export class UserSection extends React.Component {
           <h5>@{this.props.userData.username}</h5>
           <p>
             <span>
-              <i className="fa fa-circle" aria-hidden="true" style={{ color: 'green' }} />
+              <i
+                className="fa fa-circle"
+                aria-hidden="true"
+                style={{ color: 'green' }}
+              />
             </span>Online
           </p>
           <br />
@@ -319,7 +324,12 @@ export class UserSection extends React.Component {
             <div>
               <ChangePasswordModal
                 error={
-                    renderErrorAlert(this.state.hasErrored, this.props.errorMessage, this.state.errorMessage, 'white')
+                    renderErrorAlert(
+                      this.state.hasErrored,
+                      this.props.errorMessage,
+                      this.state.errorMessage,
+                      'white'
+                    )
                   }
                 isOpen={this.state.passwordModalIsOpen}
                 onClose={this.closeModal}
@@ -353,6 +363,7 @@ const mapStateToProps = state => ({
   status: state.user.status
 });
 
+export { UserSection as PureUserSection };
 export default connect(mapStateToProps, {
   addCategory,
   updateCategory,

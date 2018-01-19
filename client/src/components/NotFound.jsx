@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 /**
  * NotFoundPage component
  *
- * @returns {component} NotFoundPage
+ * @returns {jsx} jsx
  */
 const NotFound = () => (
   <div>

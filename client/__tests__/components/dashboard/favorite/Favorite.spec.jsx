@@ -29,7 +29,7 @@ const store = mockStore(initialState);
 
 const state = {
   userFavorites: mockItems.recipeArray,
-  message: 'Sorry! You do not have any PureFavorite recipe',
+  message: 'Sorry! You do not have any Favorite recipe',
   pages: 2,
   currentPaginatePage: 1,
   isLoading: false
@@ -46,7 +46,9 @@ const props = {
  * @return { * } null
  */
 const setup = () => {
-  const mountedWrapper = mount(<Router><ConnectedFavorite {...props} store={store} /></Router>);
+  const mountedWrapper = mount(<Router>
+    <ConnectedFavorite {...props} store={store} />
+  </Router>);
   const shallowWrapper = shallow(<PureFavorite {...props} />);
   return {
     mountedWrapper,
@@ -59,14 +61,15 @@ describe('<Favorite', () => {
     mockAuthCheck();
   });
 
-  it('should render a loader component before PureFavorite component receives props', () => {
-    props.userFavorites = [];
-    const shallowWrapper = shallow(<PureFavorite {...props} />);
-    shallowWrapper.setState({ userPureFavorites: [] });
-    expect(shallowWrapper).toBeDefined();
-    expect(shallowWrapper.find('Loader').length).toBe(1);
-    expect(shallowWrapper.exists()).toBe(true);
-  });
+  it(`should render a loader component before
+     Favorite component receives props`, () => {
+      props.userFavorites = [];
+      const shallowWrapper = shallow(<PureFavorite {...props} />);
+      shallowWrapper.setState({ userPureFavorites: [] });
+      expect(shallowWrapper).toBeDefined();
+      expect(shallowWrapper.find('Loader').length).toBe(1);
+      expect(shallowWrapper.exists()).toBe(true);
+    });
 
   it('renders without crashing', () => {
     const { shallowWrapper } = setup();
@@ -84,15 +87,16 @@ describe('<Favorite', () => {
     expect(PureFavorite.prototype.componentDidMount.calledOnce).toEqual(false);
   });
 
-  it('calls componentWillReceiveProps if userFavorite recipe from props is available', () => {
-    sinon.spy(PureFavorite.prototype, 'componentWillReceiveProps');
-    const { shallowWrapper } = setup();
-    shallowWrapper.instance().componentWillReceiveProps(props);
-    expect(PureFavorite.prototype.componentWillReceiveProps.calledOnce)
-      .toEqual(true);
-  });
+  it(`calls componentWillReceiveProps if userFavorite
+      recipe from props is available`, () => {
+      sinon.spy(PureFavorite.prototype, 'componentWillReceiveProps');
+      const { shallowWrapper } = setup();
+      shallowWrapper.instance().componentWillReceiveProps(props);
+      expect(PureFavorite.prototype.componentWillReceiveProps.calledOnce)
+        .toEqual(true);
+    });
 
-  it('doesnt call componentWillReceiveProps if userFavorites is null', () => {
+  it('does not call componentWillReceiveProps if userFavorites is null', () => {
     const { shallowWrapper } = setup();
     props.userFavorites = null;
     shallowWrapper.instance().componentWillReceiveProps(props);
@@ -109,7 +113,8 @@ describe('<Favorite', () => {
     const { shallowWrapper } = setup();
     shallowWrapper.setState({ recipes: [], isLoading: false });
     expect(shallowWrapper).toBeDefined();
-    expect(shallowWrapper.exists()).toBe(true);
+    expect(shallowWrapper.state().message)
+      .toEqual('Sorry! You do not have any favorite recipe');
   });
 
   it('calls onPaginateClick event', () => {
@@ -120,7 +125,7 @@ describe('<Favorite', () => {
     expect(shallowWrapper.state().currentPaginatePage).toEqual(3);
   });
 
-  it(' dispatches getRecipes action', () => {
+  it('dispatches getRecipes action', () => {
     const { shallowWrapper } = setup();
     shallowWrapper.setState(state);
     shallowWrapper.instance().getRecipes();
