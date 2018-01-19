@@ -6,7 +6,7 @@
   "scripts": {
     "wp": "webpack-dev-server --hot --history-api-fallback --open",
     "test:server": "sequelize db:migrate:undo:all --env=test&&sequelize db:migrate --env=test  && cross-env NODE_ENV=test nyc mocha --timeout 15000 tests",
-    "test": "npm run test:server && npm test:client",
+    "test": "npm run test:server && npm run test:client",
     "heroku-postbuild": "sequelize db:migrate && npm run build:client:prod",
     "build:client:prod": "webpack -p --config webpack.config.prod.js",
     "migrate": "sequelize db:migrate:undo:all&&sequelize db:migrate",
