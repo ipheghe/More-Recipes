@@ -40,5 +40,5 @@ ReactDOM.render(<Provider store={store}>
       progressBar
     />
   </div>
-                </Provider>, app);
+</Provider>, app);
 

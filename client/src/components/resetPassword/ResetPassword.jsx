@@ -151,4 +151,3 @@ const mapStateToProps = state => ({
 
 export { ResetPassword as PureResetPassword };
 export default connect(mapStateToProps, { verifyTokenPassword })(ResetPassword);
-

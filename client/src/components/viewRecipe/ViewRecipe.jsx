@@ -498,4 +498,3 @@ export default connect(
     unfavoriteRecipe
   }
 )(ViewRecipe);
-

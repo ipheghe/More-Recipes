@@ -213,4 +213,3 @@ const mapStateToProps = state => ({
 
 export { EditProfile as PureEditProfile };
 export default connect(mapStateToProps, { updateUserRecord })(EditProfile);
-

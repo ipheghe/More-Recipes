@@ -1515,6 +1515,42 @@
         }
       }
     },
+    "GetUserRecord": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User Record retrieved successfully"
+        }
+      }
+    },
+    "UpdateUserRecord": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User Record Updated SuccessFullly!"
+        }
+      }
+    },
+    "ChangeUserPassword": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User Password Changed SuccessFullly!"
+        }
+      }
+    },
     "RecipeNotFound": {
       "type": "object",
       "required": [
