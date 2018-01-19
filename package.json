@@ -6,7 +6,7 @@
   "scripts": {
     "wp": "webpack-dev-server --hot --history-api-fallback --open",
     "test:server": "sequelize db:migrate:undo:all --env=test&&sequelize db:migrate --env=test  && cross-env NODE_ENV=test nyc mocha --timeout 15000 tests",
-    "test": "npm run test:server && npm run test:client",
+    "test": "npm run test:client && npm run test:server",
     "heroku-postbuild": "sequelize db:migrate && npm run build:client:prod",
     "build:client:prod": "webpack -p --config webpack.config.prod.js",
     "migrate": "sequelize db:migrate:undo:all&&sequelize db:migrate",
@@ -16,7 +16,7 @@
     "shc": "start coverage/lcov-report/index.html",
     "copy:images": "cp assets/images/* client/public/dist",
     "webpack": "webpack-dev-server && npm run copy:images",
-    "test:client": "jest .client/__tests__/* --watch",
+    "test:client": "jest .client/__tests__/* --coverage",
     "test:watch": "npm test:client -- --watch",
     "test:e2e": "cross-env NODE_ENV=development sequelize db:migrate:undo:all && sequelize db:migrate && nightwatch",
     "e2e-setup": "selenium-standalone install",

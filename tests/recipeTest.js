@@ -1001,6 +1001,20 @@ describe('FavoriteRecipe', () => {
         done();
       });
   });
+  it('should return 200 status for retrieving user favorite recipe', (done) => {
+    server
+      .get('/api/v1/favorite/2')
+      .set('Connection', 'keep alive')
+      .set('Accept', 'application/json')
+      .set('x-access-token', userToken[0])
+      .set('Content-Type', 'application/json')
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.message.should.equal('User Favorite recipe retrieved Successfully');
+        if (err) return done(err);
+        done();
+      });
+  });
   it('should return 200 status for unfavoriting a recipe successfully', (done) => {
     server
       .delete('/api/v1/favorite/2')
