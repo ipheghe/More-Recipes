@@ -1,10 +1,10 @@
-import db from '../models/index';
+import db from '../models';
 
 // Assign variable to the database model
 const { Category } = db;
 const keys = ['id', 'name'];
 
-const categoriesController = {
+export default {
 
 /**
  * @module addUncategorized
@@ -211,4 +211,3 @@ const categoriesController = {
   }
 };
 
-export default categoriesController;

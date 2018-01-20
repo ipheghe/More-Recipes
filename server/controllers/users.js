@@ -1,9 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import isOnline from 'is-online';
 import dotenv from 'dotenv';
-import db from '../models/index';
-import transporter from '../helpers/mailTransporter';
+import db from '../models';
+import mailTransporter from '../helpers/mailTransporter';
 import emailTemplate from '../helpers/emailTemplate';
 
 dotenv.load();
@@ -17,7 +16,7 @@ const keys = [
 ];
 
 // user signup & signin controller
-const usersController = {
+export default {
 
   /**
    * @module signup
@@ -94,7 +93,7 @@ const usersController = {
     })
       .then((user) => {
         if (!user) {
-          res.status(404).send({
+          res.status(401).send({
             message: 'Authentication failed. ' +
             'Username is incorrect or does not exist'
           }); // username doesnt exist
@@ -220,7 +219,7 @@ const usersController = {
               message: 'User Record Updated SuccessFullly!',
               userData: updatedUser
             }))
-            .catch(error => res.status(401).send({
+            .catch(error => res.status(400).send({
               error: error.message
             }));
         });
@@ -305,7 +304,6 @@ const usersController = {
           if (err) {
             return next(err);
           }
-
           existingUser.resetPasswordToken = resetToken;
           existingUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
@@ -314,7 +312,7 @@ const usersController = {
             // If error in saving token, return it
             if (err) {
               return res.status(400).json({
-                err
+                error: err.message
               });
             }
           })
@@ -339,21 +337,16 @@ const usersController = {
                 )
               };
               // Otherwise, send user email via nodemailer
-              // transporter.sendMail(mailOptions);
-              transporter.sendMail(mailOptions, (err, info) => {
-                if (err) {
-                  res.status(422).json({
-                    error: err.message
-                  });
-                } else {
-                  return res.status(200).json({
-                    status: 'Success',
-                    message: 'Please check your email for ' +
-                    'the link to reset your password.',
-                    info
-                  });
-                }
-              });
+              mailTransporter.sendMail(mailOptions)
+                .then(() => res.status(200).json({
+                  status: 'Success',
+                  message: 'Please check your email for ' +
+                    'the link to reset your password.'
+                }))
+                .catch(err => res.status(500).json({
+                  status: 'Fail',
+                  error: err
+                }));
             });
         });
       })
@@ -384,7 +377,7 @@ const usersController = {
     })
       .then((existingUser) => {
         if (!existingUser) {
-          res.status(422).json({
+          return res.status(422).json({
             error: 'Your token has expired. ' +
             'Please attempt to reset your password again.'
           });
@@ -401,52 +394,37 @@ const usersController = {
           }
         })
           .then(() => {
-            isOnline().then((online) => {
-              if (online) {
-                const message = 'You are receiving this email because ' +
+            const message = 'You are receiving this email because ' +
                 'you changed your password. \n\n' +
                 'If you did not request this change, ' +
                 'please contact us immediately.';
-                const name = existingUser.fullName;
-                const mailOptions = {
-                  from: '"MoreRecipes Admin" <iphegheapp@gmail.com>',
-                  to: existingUser.email,
-                  subject: 'Password Changed',
-                  html: emailTemplate(
-                    name,
-                    'Go to App',
-                    message,
-                    `https://${req.headers.host}/#/login`
-                  )
-                };
-                // Otherwise, send user email via nodemailer
-                // transporter.sendMail(mailOptions);
-                transporter.sendMail(mailOptions, (err) => {
-                  if (err) {
-                    res.status(422).send({
-                      error: err.message
-                    });
-                  } else {
-                    return res.status(200).json({
-                      message: 'Password changed successfully. ' +
-                      'Please login with your new password.'
-                    });
-                  }
-                });
-              } else {
-                return res.status(400).send({
-                  message: 'no internet connectivity'
-                });
-              }
-            })
-              .catch(error => res.status(401).send({
-                error: error.message
+            const name = existingUser.fullName;
+            const mailOptions = {
+              from: '"MoreRecipes Admin" <iphegheapp@gmail.com>',
+              to: existingUser.email,
+              subject: 'Password Changed',
+              html: emailTemplate(
+                name,
+                'Go to App',
+                message,
+                `https://${req.headers.host}/#/login`
+              )
+            };
+            // Otherwise, send user email via nodemailer
+            mailTransporter.sendMail(mailOptions)
+              .then(() => res.status(200).json({
+                status: 'Success',
+                message: 'Please check your email for ' +
+                    'the link to reset your password.'
+              }))
+              .catch(err => res.status(500).json({
+                status: 'Fail',
+                error: err
               }));
-          })
-          .catch(error => res.status(500).send({
-            error: error.message
-          }));
-      });
+          });
+      })
+      .catch(error => res.status(500).send({
+        error: error.message
+      }));
   }
 };
-export default usersController;

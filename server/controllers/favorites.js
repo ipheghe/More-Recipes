@@ -1,11 +1,11 @@
-import db from '../models/index';
+import db from '../models';
 
 // Assign variable to the database model
 const { User, Recipe, Favorite } = db;
 const keys = [];
 let pageNumber;
 
-const favoritesController = {
+export default {
 
 /**
  * @module addFavorites
@@ -126,9 +126,12 @@ const favoritesController = {
       .then((favorites) => {
         if (favorites) {
           if (favorites.rows.length === 0) {
-            res.send({ message: 'There are no favourite recipe for this user' });
+            res.send({
+              message: 'There are no favourite recipe for this user'
+            });
           } else {
-            pageNumber = parseInt(favorites.count, 10) / parseInt(limit || 6, 10);
+            pageNumber = parseInt(favorites.count, 10) / parseInt(limit
+              || 6, 10);
             return res.status(200).send({
               message: 'User Favorite recipes retrieved Successfully',
               userFavorites: favorites,
@@ -140,4 +143,4 @@ const favoritesController = {
       .catch(error => res.status(500).send({ error: error.message }));
   }
 };
-export default favoritesController;
+

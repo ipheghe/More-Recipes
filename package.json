@@ -6,6 +6,7 @@
   "scripts": {
     "wp": "webpack-dev-server --hot --history-api-fallback --open",
     "test:server": "sequelize db:migrate:undo:all --env=test&&sequelize db:migrate --env=test  && cross-env NODE_ENV=test nyc mocha --timeout 15000 tests",
+    "test:server2": "sequelize db:migrate:undo:all --env=test&&sequelize db:migrate --env=test  && cross-env NODE_ENV=test nyc mocha --timeout 80000 server/tests/test.js",
     "test": "npm run test:client && npm run test:server",
     "heroku-postbuild": "sequelize db:migrate && npm run build:client:prod",
     "build:client:prod": "webpack -p --config webpack.config.prod.js",
@@ -171,6 +172,7 @@
     "mocha": "^3.5.0",
     "mocha-lcov-reporter": "^1.3.0",
     "nightwatch": "^0.9.19",
+    "nodemailer-mock": "^1.3.12",
     "nyc": "^11.1.0",
     "path": "^0.12.7",
     "redux-mock-provider": "^1.0.0",

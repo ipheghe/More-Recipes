@@ -1,4 +1,4 @@
-import db from '../models/index';
+import db from '../models';
 
 const { Recipe } = db;
 
@@ -70,14 +70,7 @@ const validateRecipeFields = (req, res, next) => {
         recipeData: req.body
       });
   }
-  // check if notification contains a negative value
-  if (parseInt(req.body.notification, 10) < 0) {
-    return res.status(400)
-      .send({
-        message: 'notification cannot be a negative number',
-        recipeData: req.body
-      });
-  }
+
   return next();
 };
 
@@ -112,7 +105,7 @@ const recipeExists = (req, res, next) => {
 
 /**
  * @module userRecipeExists
- * @description middleware function to check if recipe exists
+ * @description middleware function to check if user recipe exists
  * @function
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
@@ -134,7 +127,7 @@ const userRecipeExists = (req, res, next) => {
     })
     .then((recipe) => {
       if (!recipe) {
-        return res.status(404).send({
+        return res.status(401).send({
           status: 'fail',
           message: 'Access Denied!'
         });

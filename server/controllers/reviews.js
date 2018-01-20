@@ -1,11 +1,11 @@
-import db from '../models/index';
+import db from '../models';
 
 // Assign variable to the database model
 const { User, Recipe, Review } = db;
 const keys = ['id', 'message', 'createdAt'];
 let pageNumber;
 
-const reviewsController = {
+export default {
 
   /**
    * @module postReview
@@ -117,4 +117,4 @@ const reviewsController = {
       }));
   }
 };
-export default reviewsController;
+

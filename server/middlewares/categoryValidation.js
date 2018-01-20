@@ -1,4 +1,4 @@
-import db from '../models/index';
+import db from '../models';
 
 // Assign variable to the database model
 const { Category } = db;
@@ -33,7 +33,7 @@ const validateCategoryField = (req, res, next) => {
  * @return {*} void
  */
 const categoryExists = (req, res, next) => {
-  if (Number.isNaN(parseInt(req.params.categoryId, 10))) {
+  if (Number.isNaN(parseInt(req.params.categoryId || req.params.id, 10))) {
     return res.status(400).send({
       message: 'Invalid Id!'
     });
@@ -41,14 +41,14 @@ const categoryExists = (req, res, next) => {
   Category
     .find({
       where: {
-        id: req.params.categoryId,
+        id: req.params.categoryId || req.params.id,
       }
     })
     .then((category) => {
       if (!category) {
         return res.status(404).send({
           status: 'fail',
-          message: 'Access Denied!'
+          message: 'Category Not Found!'
         });
       }
       next();
@@ -56,4 +56,38 @@ const categoryExists = (req, res, next) => {
     .catch(error => res.status(400).send(error));
 };
 
-export { validateCategoryField, categoryExists };
+/**
+ * @module userCategoryExists
+ * @description middleware function to check if user category exists
+ * @function
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Object} next - Express next middleware function
+ * @return {*} void
+ */
+const userCategoryExists = (req, res, next) => {
+  if (Number.isNaN(parseInt(req.params.id, 10))) {
+    return res.status(400).send({
+      message: 'Invalid Id!'
+    });
+  }
+  Category
+    .find({
+      where: {
+        id: req.params.id,
+        userId: req.decoded.user.id
+      }
+    })
+    .then((category) => {
+      if (!category) {
+        return res.status(401).send({
+          status: 'fail',
+          message: 'Access Denied!'
+        });
+      }
+      next();
+    })
+    .catch(error => res.status(500).send(error));
+};
+
+export { validateCategoryField, categoryExists, userCategoryExists };

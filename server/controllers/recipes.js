@@ -1,4 +1,4 @@
-import db from '../models/index';
+import db from '../models';
 
 // Reference database models
 const { User, Recipe, Review } = db;
@@ -8,7 +8,7 @@ const keys = [
 ];
 let pageNumber;
 
-const recipesController = {
+export default {
 
   /**
    * @module addRecipe
@@ -436,4 +436,4 @@ const recipesController = {
       }));
   }
 };
-export default recipesController;
+

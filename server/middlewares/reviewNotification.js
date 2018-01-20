@@ -1,7 +1,7 @@
 import isOnline from 'is-online';
 import dotenv from 'dotenv';
-import db from '../models/index';
-import transporter from '../helpers/mailTransporter';
+import db from '../models';
+import mailTransporter from '../helpers/mailTransporter';
 import emailTemplate from '../helpers/emailTemplate';
 
 dotenv.load();
@@ -43,7 +43,7 @@ const reviewNotification = (req, res, next) => {
                 `${req.headers.host}/#/recipe/${recipes.id}`
               )
             };
-            transporter.sendMail(mailOptions, (err, info) => {
+            mailTransporter.sendMail(mailOptions, (err, info) => {
               if (err) {
                 next();
               } else {
