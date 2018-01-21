@@ -10,6 +10,7 @@ import configureMockStore from 'redux-mock-store';
 import ConnectedEditProfile, { PureEditProfile }
   from '../../../src/components/editProfile/EditProfile.jsx';
 import mockItems from '../../__mocks__/mockItems';
+import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 
 
 const middleware = [thunk];
@@ -41,16 +42,18 @@ const store = mockStore(initialState);
 const props = {
   errorMessage: '',
   updateUserRecord: jest.fn(() => Promise.resolve()),
+  fetchUsername: jest.fn(() => Promise.resolve()),
   userData: mockItems.user
 };
 
 const state = {
-  username: props.username,
-  fullName: props.fullName,
-  mobileNumber: props.mobileNumber,
-  email: props.email,
+  username: 'okon',
+  fullName: 'abcde',
+  mobileNumber: '234702388888',
+  email: 'okon@yahoo.com',
   hasErrored: false,
-  errorMessage: ''
+  errorMessage: '',
+  isLoading: false
 };
 
 const event = {
@@ -72,29 +75,40 @@ jest.useFakeTimers();
  * @return { * } null
  */
 const setup = () => {
-  const mountedWrapper = mount(<Provider store={store}>
-    <Router><ConnectedEditProfile {...props} /></Router>
-  </Provider>);
   const shallowWrapper = shallow(<PureEditProfile {...props} />);
   return {
-    mountedWrapper,
     shallowWrapper
   };
 };
 
 describe('<PureEditProfile', () => {
+  beforeEach(() => {
+    mockAuthCheck();
+  });
+
+  it(`should render a loader component before 
+  MyRecipes component receives needed props`, () => {
+      props.userData = null;
+      const shallowWrapper = shallow(<PureEditProfile {...props} />);
+      shallowWrapper.setState({ isLoading: true });
+      expect(shallowWrapper).toBeDefined();
+      expect(shallowWrapper.find('Loader').length).toBe(1);
+      expect(shallowWrapper.exists()).toBe(true);
+    });
+
   it('renders without crashing', () => {
-    const { mountedWrapper } = setup();
-    mountedWrapper.setState(state);
-    expect(mountedWrapper).toBeDefined();
-    expect(mountedWrapper.find('EditProfileForm').length).toBe(1);
-    expect(true).toBe(true);
+    const { shallowWrapper } = setup();
+    shallowWrapper.setState(state);
+    expect(shallowWrapper).toBeDefined();
+    expect(shallowWrapper.find('EditProfileForm').length).toBe(1);
+    expect(shallowWrapper.exists()).toBe(true);
   });
 
   it('should match component snapshot', () => {
-    const tree = render.create(<Provider store={store}>
-      <Router><ConnectedEditProfile {...props} /></Router>
-    </Provider>);
+    const tree = render
+      .create(<Provider store={store}>
+        <Router><ConnectedEditProfile {...props} /></Router>
+      </Provider>);
     expect(tree).toMatchSnapshot();
   });
 

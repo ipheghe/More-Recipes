@@ -82,7 +82,7 @@ const state = {
 
 const props = {
   count: 1,
-  getRecipe: jest.fn(() => Promise.resolve()),
+  viewRecipe: jest.fn(() => Promise.resolve()),
   postReview: jest.fn(() => Promise.resolve()),
   getReviews: jest.fn(() => Promise.resolve()),
   upvoteRecipe: jest.fn(() => Promise.resolve()),
@@ -122,7 +122,8 @@ const event = {
  * @return { * } null
  */
 const setup = () => {
-  const mountedWrapper = mount(<Provider store={store}><ConnectedViewRecipe {...props} /></Provider>);
+  const mountedWrapper =
+  mount(<Provider store={store}><ConnectedViewRecipe {...props} /></Provider>);
   const shallowWrapper = shallow(<PureViewRecipe {...props} />);
   return {
     mountedWrapper,

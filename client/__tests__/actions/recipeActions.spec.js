@@ -12,7 +12,8 @@ import {
   getUserRecipes,
   getRecipe,
   getRecipesBySearch,
-  getTopRecipesLanding
+  getTopRecipesLanding,
+  viewRecipe
 } from '../../src/actions/recipeActions';
 
 let store = null;
@@ -208,7 +209,7 @@ describe('>>>A C T I O N --- recipeActions', () => {
   });
 
   // Get top Recipes
-  describe('retrieve recipe action', () => {
+  describe('retrieve recipes action', () => {
     it('should create a FETCH_TOP_RECIPES action', async (done) => {
       moxios.stubRequest('/api/v1/recipes?sort=upvotes&order=descending', {
         status: 200,
@@ -285,7 +286,7 @@ describe('>>>A C T I O N --- recipeActions', () => {
     });
   });
 
-  // Get Recipe
+  // View Recipe
   describe('retrieve recipe action', () => {
     it('should create a FETCH_RECIPE action', async (done) => {
       moxios.stubRequest('/api/v1/view-recipe/1', {
@@ -314,6 +315,44 @@ describe('>>>A C T I O N --- recipeActions', () => {
           type: 'FETCH_RECIPE'
         }
       ];
+      await store.dispatch(viewRecipe(1))
+        .then(() => {
+          const actions = store.getActions();
+          expect(actions).toEqual(expectedActions);
+          done();
+        });
+    });
+  });
+
+  // Get Recipe
+  describe('retrieve recipe action', () => {
+    it('should create a FETCH_RECIPE action', async (done) => {
+      moxios.stubRequest('/api/v1/recipe/1', {
+        status: 200,
+        response: {
+          message: 'Recipe Retrieved SuccessFullly!',
+          recipe: mockItems.recipe
+        }
+      });
+
+      const expectedActions = [
+        {
+          payload: {
+            message: 'Recipe Retrieved SuccessFullly!',
+            recipe: {
+              description: 'This recipe is very popular in the ' +
+                'south south part of Nigeria',
+              directions: 'pour palm oil in pot, blanch oil for 10mins',
+              id: 1,
+              imageUrl: 'dist/image1',
+              ingredients: 'palm kernel, assorted meat, maggi, palm oil',
+              name: 'Banga Soup',
+              userId: 1
+            }
+          },
+          type: 'FETCH_RECIPE'
+        }
+      ];
       await store.dispatch(getRecipe(1))
         .then(() => {
           const actions = store.getActions();
@@ -322,6 +361,7 @@ describe('>>>A C T I O N --- recipeActions', () => {
         });
     });
   });
+
 
   // Search Recipes
   describe('search result action', () => {

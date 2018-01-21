@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Loader from 'react-loaders';
 import { ReviewBox } from '../../commonViews';
-import { getRecipe } from '../../actions/recipeActions';
+import { viewRecipe } from '../../actions/recipeActions';
 import { postReview, getReviews } from '../../actions/reviewActions';
 import { upvoteRecipe, downvoteRecipe } from '../../actions/voteActions';
 import {
@@ -23,7 +23,7 @@ import SelectCategoryModal from './SelectCategoryModal.jsx';
 class ViewRecipe extends React.Component {
   static propTypes = {
     count: PropTypes.number.isRequired,
-    getRecipe: PropTypes.func.isRequired,
+    viewRecipe: PropTypes.func.isRequired,
     postReview: PropTypes.func.isRequired,
     getReviews: PropTypes.func.isRequired,
     upvoteRecipe: PropTypes.func.isRequired,
@@ -89,7 +89,7 @@ class ViewRecipe extends React.Component {
    */
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.getRecipe(id);
+    this.props.viewRecipe(id);
     this.props.getFavoriteRecipe(id);
     this.props.getReviews(id);
   }
@@ -488,7 +488,7 @@ export { ViewRecipe as PureViewRecipe };
 export default connect(
   mapStateToProps,
   {
-    getRecipe,
+    viewRecipe,
     getFavoriteRecipe,
     postReview,
     getReviews,

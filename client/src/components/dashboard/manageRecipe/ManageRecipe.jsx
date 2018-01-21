@@ -46,6 +46,7 @@ class ManageRecipe extends React.Component {
     super(props);
     this.state = {
       recipes: [],
+      recipeId: '',
       recipeDetail: '',
       ingredients: '',
       directions: '',
@@ -150,7 +151,8 @@ class ManageRecipe extends React.Component {
       });
     }
     this.setState({
-      hasErrored: false
+      hasErrored: false,
+      recipeId
     });
     return this.props.getRecipe(recipeId);
   }
@@ -179,7 +181,7 @@ class ManageRecipe extends React.Component {
     if (
       !this.props.recipe.id
       || this.props.recipe.id === ''
-      || !this.recipeId.value
+      || !this.state.recipeId
     ) {
       setTimeout(() => {
         this.setState({
@@ -225,7 +227,7 @@ class ManageRecipe extends React.Component {
       ingredients,
       directions,
       this.props.recipe.id,
-      this.recipeId.value
+      this.state.recipeId
     );
 
     if (error.status === true) {
@@ -287,10 +289,10 @@ class ManageRecipe extends React.Component {
                 }
                 onChange={this.handleChange}
                 onImageChange={this.handleImageChange}
-              />
-              : <h3 style={{ textAlign: 'center' }}>
+              /> :
+              <h3 style={{ textAlign: 'center' }}>
                   Sorry! You have not added any recipe
-                </h3>
+              </h3>
           }
         </div>
       </div>

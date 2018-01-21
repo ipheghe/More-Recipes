@@ -1,6 +1,6 @@
 env:
   global:
-    - CC_TEST_REPORTER_ID: "$CODECLIMATE_REPO_TOKEN"
+    - CC_TEST_REPORTER_ID: 48324b7ea4eae0b62d711db31093f793ddfa5d4e4a424bc17a66d94fb771b35f
 language: node_js
 node_js:
   - "stable"
@@ -18,5 +18,5 @@ after_script:
 services:
   - postgresql
 after_success: 
-  - CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN codeclimate-test-reporter < coverage/lcov.info
+  - CODECLIMATE_REPO_TOKEN=48324b7ea4eae0b62d711db31093f793ddfa5d4e4a424bc17a66d94fb771b35f codeclimate-test-reporter < coverage/lcov.info
   - npm run coverage

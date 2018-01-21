@@ -203,6 +203,20 @@ const getUserRecipes = (offset) => {
  * @returns {action} dispatch
  */
 const getRecipe = (id) => {
+  const url = `/recipe/${id}`;
+  return dispatch => getData(FETCH_RECIPE, RECIPE_ERROR, true, url, dispatch);
+};
+
+/**
+ * @description action to get a recipe
+ *
+ * @type {function} viewRecipe
+ *
+ * @param {integer} id
+ *
+ * @returns {action} dispatch
+ */
+const viewRecipe = (id) => {
   const url = `/view-recipe/${id}`;
   return dispatch => getData(FETCH_RECIPE, RECIPE_ERROR, true, url, dispatch);
 };
@@ -245,6 +259,7 @@ export {
   getTopRecipes,
   getUserRecipes,
   getRecipe,
+  viewRecipe,
   getRecipesBySearch,
   getTopRecipesLanding
 };
