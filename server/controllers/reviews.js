@@ -29,8 +29,8 @@ export default {
         });
         next();
       })
-      .catch(error => res.status(401).send({
-        error: error.message
+      .catch(err => res.status(500).send({
+        error: err
       }));
   },
 
@@ -60,8 +60,8 @@ export default {
         message: 'All Reviews Retrieved SuccessFullly!',
         reviews
       }))
-      .catch(error => res.status(400).send({
-        error: error.message
+      .catch(() => res.status(500).send({
+        error: 'Internal server error'
       }));
   },
 
@@ -112,8 +112,8 @@ export default {
           }
         }
       })
-      .catch(error => res.status(500).send({
-        error: error.message
+      .catch(err => res.status(500).send({
+        error: err
       }));
   }
 };

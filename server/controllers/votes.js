@@ -54,7 +54,7 @@ export default {
                   recipe.reload();
                 }).then(() => res.status(200).send({
                   status: 'success',
-                  message: 'Your vote has been recorded',
+                  message: 'Your vote has been updated',
                   upvote: recipe.upvotes,
                   downvote: recipe.downvotes,
                   recipe
@@ -130,7 +130,7 @@ export default {
                     recipe.reload();
                   }).then(() => res.status(200).send({
                     status: 'success',
-                    message: 'Your vote has been recorded',
+                    message: 'Your vote has been updated',
                     upvote: recipe.upvotes,
                     downvote: recipe.downvotes,
                     recipe

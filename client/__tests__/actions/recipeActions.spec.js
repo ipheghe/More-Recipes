@@ -288,7 +288,7 @@ describe('>>>A C T I O N --- recipeActions', () => {
   // Get Recipe
   describe('retrieve recipe action', () => {
     it('should create a FETCH_RECIPE action', async (done) => {
-      moxios.stubRequest('/api/v1/recipe/1', {
+      moxios.stubRequest('/api/v1/view-recipe/1', {
         status: 200,
         response: {
           message: 'Recipe Retrieved SuccessFullly!',

@@ -21,8 +21,12 @@ router.post(
   usersController.signin
 );
 
-// API route to check if user exists
-router.get('/api/v1/user/:username', usersController.getUserDetails);
+// API route to get user record
+router.get(
+  '/api/v1/user/:username',
+  authorize.verifyUser,
+  usersController.getUserDetails
+);
 
 // API route to update user record
 router.put(

@@ -203,7 +203,7 @@ const getUserRecipes = (offset) => {
  * @returns {action} dispatch
  */
 const getRecipe = (id) => {
-  const url = `/recipe/${id}`;
+  const url = `/view-recipe/${id}`;
   return dispatch => getData(FETCH_RECIPE, RECIPE_ERROR, true, url, dispatch);
 };
 

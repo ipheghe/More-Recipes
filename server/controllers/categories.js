@@ -29,10 +29,7 @@ export default {
           })
             .then(() => res.status(201).send({
               message: 'Category created Successfully',
-            }))
-            .catch((error) => {
-              res.status(401).send({ error: error.message });
-            });
+            }));
         } else {
           return res.status(409).send({
             message: 'Category name exists!',
@@ -68,10 +65,7 @@ export default {
             .then(category => res.status(201).send({
               message: 'Category created Successfully',
               category
-            }))
-            .catch((error) => {
-              res.status(401).send({ error: error.message });
-            });
+            }));
         } else {
           return res.status(409).send({
             message: 'Category name exists!',
@@ -103,9 +97,6 @@ export default {
           .then(updatedCategory => res.status(200).send({
             message: 'category name changed SuccessFullly!',
             category: updatedCategory
-          }))
-          .catch(error => res.status(401).send({
-            error: error.message
           }));
       })
       .catch(err => res.status(500).send({
@@ -135,9 +126,6 @@ export default {
           .destroy()
           .then(() => res.status(200).send({
             message: 'Category deleted SuccessFullly!',
-          }))
-          .catch(error => res.status(401).send({
-            error: error.message
           }));
       })
       .catch(error => res.status(500).send({
@@ -197,14 +185,10 @@ export default {
       // retrieve category for that particular user
       .then((userCategory) => {
         if (userCategory) {
-          if (userCategory.length === 0) {
-            res.status(404).send({ message: 'No category found for user' });
-          } else {
-            return res.status(200).send({
-              message: 'User Category Retrieved SuccessFullly!',
-              userCategory
-            });
-          }
+          return res.status(200).send({
+            message: 'User Category Retrieved SuccessFullly!',
+            userCategory
+          });
         }
       })
       .catch(error => res.status(500).send({ error: error.message }));

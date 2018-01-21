@@ -71,8 +71,8 @@ export default {
           error: error.message
         }));
     })
-      .catch(error => res.status(500).send({
-        error: error.message
+      .catch(err => res.status(500).send({
+        error: err
       }));
   },
 
@@ -123,8 +123,8 @@ export default {
           }
         }
       })
-      .catch(() => res.status(500).send({
-        message: 'Login Failed, Please re-confirm details'
+      .catch(err => res.status(500).send({
+        error: err
       }));
   },
 
@@ -160,8 +160,8 @@ export default {
           userData: user
         });
       })
-      .catch(error => res.status(500).send({
-        error: error.message
+      .catch(err => res.status(500).send({
+        error: err
       }));
   },
 
@@ -184,7 +184,8 @@ export default {
     User.findOne({
       where: {
         id: req.decoded.user.id
-      }
+      },
+      attributes: keys,
     })
       .then((user) => {
         // if user exists
@@ -225,7 +226,7 @@ export default {
         });
       })
       .catch(err => res.status(500).send({
-        error: err.message
+        error: err
       }));
   },
 
@@ -270,7 +271,7 @@ export default {
       })
       .catch(err => res.status(500).send({
         status: 'Fail',
-        error: err.message
+        error: err
       }));
   },
 
@@ -351,7 +352,7 @@ export default {
         });
       })
       .catch(err => res.status(500).json({
-        error: err.message
+        error: err
       }));
   },
 
@@ -423,8 +424,8 @@ export default {
               }));
           });
       })
-      .catch(error => res.status(500).send({
-        error: error.message
+      .catch(err => res.status(500).send({
+        error: err
       }));
   }
 };

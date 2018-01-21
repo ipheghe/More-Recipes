@@ -16,8 +16,7 @@ describe('User model', () => {
       email: 'testing1@example.com'
     })
       .then((user) => {
-        // expect(user).toExist;
-        // expect(user.id).toExist().to.be.a('number');
+        expect(user.id).to.be.a('number');
         expect(user.username).to.equal('testuser');
         expect(user.email).to.equal('testing1@example.com');
         done();
@@ -33,8 +32,6 @@ describe('User model', () => {
       email: 'testing2@example.com'
     })
       .then((user) => {
-        console.log('hserbjbbb');
-        // expect(user).to.Exist;
         expect(user instanceof User).to.equal(true);
         done();
       }).catch(err => done(err));

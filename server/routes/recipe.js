@@ -24,7 +24,6 @@ router.put(
   validUser,
   recipeExists,
   userRecipeExists,
-  validateRecipeFields,
   recipesController.updateRecipe
 );
 
@@ -58,16 +57,16 @@ router.post(
 // API route to retrieve recipes by recipeId and
 // it increments the views column each time recipe is viewed
 router.get(
-  '/api/v1/recipe/:id',
+  '/api/v1/view-recipe/:id',
   authorize.verifyUser,
   validUser,
   recipeExists,
   recipesController.viewRecipe
 );
 
-// API route to retrieve recipe by recipeId
+// API route to retrieve recipe by recipe
 router.get(
-  '/api/v1/recipe/:recipeName',
+  '/api/v1/recipe/:id',
   authorize.verifyUser,
   validUser,
   recipeExists,

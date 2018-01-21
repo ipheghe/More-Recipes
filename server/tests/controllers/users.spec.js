@@ -285,6 +285,31 @@ describe('<<< Users Controller: ', () => {
             done();
           });
       });
+
+    // it('responds with status 500 for server failure', (done) => {
+    //   User.prototype.create = () => Promise.reject(error);
+    //   server
+    //     .post('/api/v1/user/signup')
+    //     .set('Connection', 'keep alive')
+    //     .set('Accept', 'application/json')
+    //     .set('Content-Type', 'application/json')
+    //     .set('x-access-token', authToken)
+    //     .type('form')
+    //     .send({
+    //       username: 'u s e r 2',
+    //       password: 'abcde',
+    //       fullName: 'User Test',
+    //       mobileNumber: 2348023451212,
+    //       email: 'usertest3@yahoo.com',
+    //     })
+    //     .end((err, res) => {
+    //       res.status.should.equal(500);
+    //       res.body.error.should
+    //         .equal('Internal Server Error');
+    //       if (err) return done(err);
+    //       done();
+    //     });
+    // });
   });
 
   describe('Change Password: ', () => {
@@ -407,8 +432,8 @@ describe('<<< Users Controller: ', () => {
         const token = tokens[1];
         mailTransporter.sendMail = () => Promise.resolve(1);
         server
-          .post('/api/v1/user/reset-password/87a3ffadc0ed4379657e4050a254fc486475c78' +
-         '3b69916de087135d68070fe0b894a8a735d523054b28b86763f33293f7')
+          .post('/api/v1/user/reset-password/87a3ffadc0ed4379657e4050a254fc' +
+         '486475c783b69916de087135d68070fe0b894a8a735d523054b28b86763f33293f7')
           .set('Connection', 'keep alive')
           .set('Accept', 'application/json')
           .set('Content-Type', 'application/json')
@@ -429,8 +454,8 @@ describe('<<< Users Controller: ', () => {
     it(`displays error message if
       reset password token has expired`, (done) => {
         server
-          .post('/api/v1/user/reset-password/7a3ffadc0ed4379657e4050a254fc486475c78' +
-         '3b69916de087135d68070fe0b894a8a735d523054b28b86763f33293f7')
+          .post('/api/v1/user/reset-password/7a3ffadc0ed4379657e4050a254fc' +
+         '486475c783b69916de087135d68070fe0b894a8a735d523054b28b86763f33293f7')
           .set('Connection', 'keep alive')
           .set('Accept', 'application/json')
           .set('Content-Type', 'application/json')
@@ -446,47 +471,5 @@ describe('<<< Users Controller: ', () => {
             done();
           });
       });
-
-    // it(`responds with status 500 if recovery email
-    //   is not sent successfully`, (done) => {
-    //     const err = 'Error sending recovery mail. Please try again later';
-    //     mailTransporter.sendMail = () => Promise.reject(err);
-    //     server
-    //       .post('/api/v1/user/forgotPassword')
-    //       .set('Connection', 'keep alive')
-    //       .set('Accept', 'application/json')
-    //       .set('Content-Type', 'application/json')
-    //       .set('x-access-token', authToken)
-    //       .type('form')
-    //       .send({ email: 'iphegheovie@yahoo.com' })
-    //       .end((err, res) => {
-    //         res.status.should.equal(500);
-    //         res.body.error.should
-    //           .equal('Error sending recovery mail. Please try again later');
-    //         res.body.status.should.equal('Fail');
-    //         if (err) return done(err);
-    //         done();
-    //       });
-    //   });
-
-    // it(`displays error message if
-    //   email doesnt exist`, (done) => {
-    //     server
-    //       .post('/api/v1/user/forgotPassword')
-    //       .set('Connection', 'keep alive')
-    //       .set('Accept', 'application/json')
-    //       .set('Content-Type', 'application/json')
-    //       .set('x-access-token', authToken)
-    //       .type('form')
-    //       .send({ email: 'iwrongemail@yahoo.com' })
-    //       .end((err, res) => {
-    //         res.status.should.equal(404);
-    //         res.body.message.should
-    //           .equal('user email does not exist!');
-    //         res.body.status.should.equal('Fail');
-    //         if (err) return done(err);
-    //         done();
-    //       });
-    //   });
   });
 });

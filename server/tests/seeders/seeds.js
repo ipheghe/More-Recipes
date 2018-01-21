@@ -17,12 +17,6 @@ export const invalidToken = jwt.sign(
   'jsjsjjj', { expiresIn: '10s' }
 ).toString();
 
-export const expiredToken = jwt.sign(
-  { user: { id: 120, username: 'justin' } },
-  process.env.TOKEN_SECRET, { expiresIn: '0.5s' }
-).toString();
-
-
 export const seedUsers = {
   registered: [
     {
@@ -53,7 +47,15 @@ export const seedUsers = {
       password: bcrypt.hashSync(password, salt, null),
       fullName: 'Akpan Joshua',
       mobileNumber: 2348032121234,
-      email: 'okonyahoo.com',
+      email: 'okon@yahoo.com',
+    },
+    {
+      id: 104,
+      username: 'mark',
+      password: bcrypt.hashSync(password, salt, null),
+      fullName: 'Mark Gabriel',
+      mobileNumber: 2348032121194,
+      email: 'mark@yahoo.com',
     }
   ],
 
@@ -78,10 +80,12 @@ export const seedRecipes = [
   {
     id: 101,
     name: 'Banga Soup',
-    description: 'This recipe is very popular in the south south part of Nigeria',
+    description: 'This recipe is very popular ' +
+    'in the south south part of Nigeria',
     ingredients: 'palm kernel, assorted meat, maggi, palm oil',
     directions: 'pour palm oil in pot, blanch oil for 10mins',
     imageUrl: 'dist/image1',
+    upvotes: 2,
     userId: 101
   },
   {
@@ -91,12 +95,14 @@ export const seedRecipes = [
     ingredients: 'rice, onions, fresh tomatoes, assorted meat, maggi, turkey',
     directions: 'parboil rice for 15mins, prepare stew in a separte pot',
     imageUrl: 'dist/image2',
+    upvotes: 3,
     userId: 102
   },
   {
     id: 103,
     name: 'Pepper Soup',
-    description: 'This recipe is very popular in the south south part of Nigeria',
+    description: 'This recipe is very popular in ' +
+    'the south south part of Nigeria',
     ingredients: 'palm kernel, assorted meat, maggi, palm oil',
     directions: 'pour palm oil in pot, blanch oil for 10mins',
     imageUrl: 'dist/image1',
@@ -109,6 +115,7 @@ export const seedRecipes = [
     ingredients: 'rice, onions, fresh tomatoes, assorted meat, maggi, turkey',
     directions: 'parboil rice for 15mins, prepare stew in a separte pot',
     imageUrl: 'dist/image2',
+    upvotes: 1,
     userId: 102
   },
 ];
@@ -147,4 +154,5 @@ export const tokens = [
   generateToken(seedUsers.registered[2].id),
   generateToken(seedUsers.unregistered[0].id),
   generateToken('stringToken'),
+  generateToken(seedUsers.registered[3].id),
 ];

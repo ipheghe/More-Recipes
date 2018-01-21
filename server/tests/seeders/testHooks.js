@@ -65,7 +65,6 @@ export const doBeforeAll = () => {
     populateUsers();
     populateRecipes();
     populateCategories();
-    //populateFavorites();
 
     done();
   });

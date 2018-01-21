@@ -147,7 +147,12 @@ export const fetchUsername = () =>
   (dispatch) => {
     const decodedToken = decodeToken(window.localStorage.getItem('token'));
     const { username } = decodedToken.user;
-    return axios.get(`${BASE_URL}/user/${username}`)
+    const headers = {
+      headers: {
+        'x-access-token': window.localStorage.getItem('token')
+      }
+    };
+    return axios.get(`${BASE_URL}/user/${username}`, headers)
       .then((response) => {
         dispatch({
           type: FETCH_USER,

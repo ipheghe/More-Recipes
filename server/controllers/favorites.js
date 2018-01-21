@@ -2,7 +2,7 @@ import db from '../models';
 
 // Assign variable to the database model
 const { User, Recipe, Favorite } = db;
-const keys = [];
+const keys = ['id'];
 let pageNumber;
 
 export default {
@@ -27,7 +27,7 @@ export default {
         favorite
       }))
       .catch((error) => {
-        res.status(401).send({ error: error.message });
+        res.status(500).send({ error: error.message });
       });
   },
 
@@ -54,9 +54,6 @@ export default {
           .destroy()
           .then(() => res.status(200).send({
             message: 'Recipe Unfavorited SuccessFullly!',
-          }))
-          .catch(error => res.status(401).send({
-            error: error.message
           }));
       })
       .catch(error => res.status(500).send({

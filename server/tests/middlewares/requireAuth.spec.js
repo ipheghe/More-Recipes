@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import app from '../../../app';
-import { invalidToken, expiredToken } from '../seeders/seeds';
+import { invalidToken } from '../seeders/seeds';
 
 require('chai').should();
 
@@ -53,26 +53,6 @@ describe('<<< RequireAuth Middleware: ', () => {
             if (err) return done(err);
             done();
           });
-      });
-
-    it(`should deny route access to unauthenticated
-      users with expired token`, (done) => {
-        setTimeout(() => {
-          server
-            .post('/api/v1/recipe')
-            .set('Connection', 'keep alive')
-            .set('Accept', 'application/json')
-            .set('Content-Type', 'application/json')
-            .set('x-access-token', expiredToken)
-            .type('form')
-            .send({ message: 'nice recipe' })
-            .end((err, res) => {
-              res.status.should.equal(401);
-              res.body.message.should.equal('Expired Token');
-              if (err) return done(err);
-              done();
-            });
-        }, 2000);
       });
   });
 });
