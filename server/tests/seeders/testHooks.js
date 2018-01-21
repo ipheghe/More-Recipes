@@ -1,8 +1,18 @@
 
 import db from '../../models';
-import { seedUsers, seedRecipes, seedCategories, seedFavorites }
-  from './seeds';
-const { User, Recipe, Category, Favorite, Vote } = db;
+import {
+  seedUsers,
+  seedRecipes,
+  seedCategories,
+  seedFavorites 
+} from './seeds';
+const {
+  User,
+  Recipe,
+  Category,
+  Favorite,
+  Vote
+} = db;
 
 export const populateUsers = () => {
   User.bulkCreate(seedUsers.registered).then(() => {
