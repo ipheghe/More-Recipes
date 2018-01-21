@@ -36,6 +36,7 @@ plugins:
 ratings:
   paths:
   - "server/**/*.js"
+  - "client/**/*.{js,jsx}"
 exclude_patterns:
   - "node_modules/"
   - "template/*"

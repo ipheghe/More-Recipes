@@ -1,11 +1,11 @@
-import db from '../models/index';
+import db from '../models';
 
 // Assign variable to the database model
 const { User, Recipe, Review } = db;
 const keys = ['id', 'message', 'createdAt'];
 let pageNumber;
 
-const reviewsController = {
+export default {
 
   /**
    * @module postReview
@@ -29,8 +29,8 @@ const reviewsController = {
         });
         next();
       })
-      .catch(error => res.status(401).send({
-        error: error.message
+      .catch(err => res.status(500).send({
+        error: err
       }));
   },
 
@@ -60,8 +60,8 @@ const reviewsController = {
         message: 'All Reviews Retrieved SuccessFullly!',
         reviews
       }))
-      .catch(error => res.status(400).send({
-        error: error.message
+      .catch(() => res.status(500).send({
+        error: 'Internal server error'
       }));
   },
 
@@ -112,9 +112,9 @@ const reviewsController = {
           }
         }
       })
-      .catch(error => res.status(500).send({
-        error: error.message
+      .catch(err => res.status(500).send({
+        error: err
       }));
   }
 };
-export default reviewsController;
+

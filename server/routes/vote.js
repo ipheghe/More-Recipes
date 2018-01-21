@@ -4,6 +4,7 @@ import { votes } from '../controllers';
 import { recipeExists } from '../middlewares/recipeValidation';
 import { validUser } from '../middlewares/userValidation';
 
+const votesController = votes;
 const router = express.Router();
 
 // API route for registered users to favorite recipes
@@ -12,8 +13,8 @@ router.put(
   authorize.verifyUser,
   validUser,
   recipeExists,
-  votes.upvoteRecipe,
-  votes.downvoteRecipe
+  votesController.upvoteRecipe,
+  votesController.downvoteRecipe
 );
 
 export default router;

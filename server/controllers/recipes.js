@@ -1,4 +1,4 @@
-import db from '../models/index';
+import db from '../models';
 
 // Reference database models
 const { User, Recipe, Review } = db;
@@ -8,7 +8,7 @@ const keys = [
 ];
 let pageNumber;
 
-const recipesController = {
+export default {
 
   /**
    * @module addRecipe
@@ -45,7 +45,7 @@ const recipesController = {
               message: 'Recipe Added SuccessFullly!',
               recipe
             }))
-            .catch(error => res.status(401).send({
+            .catch(error => res.status(400).send({
               error: error.message
             }));
         } else {
@@ -78,18 +78,17 @@ const recipesController = {
       .then((recipe) => {
         // if recipe exists
         recipe.update({
-          recipeName: req.body.recipeName || recipe.recipeName,
-          recipeDesc: req.body.recipeDesc || recipe.recipeDesc,
+          name: req.body.name || recipe.name,
+          description: req.body.description || recipe.description,
           ingredients: req.body.ingredients || recipe.ingredients,
           directions: req.body.directions || recipe.directions,
           imageUrl: req.body.imageUrl || recipe.imageUrl,
-          notification: req.body.notification || recipe.notification,
         })
           .then(updatedRecipe => res.status(200).send({
             message: 'Recipe Updated SuccessFullly!',
             recipe: updatedRecipe
           }))
-          .catch(error => res.status(401).send({
+          .catch(error => res.status(400).send({
             error: error.message
           }));
       })
@@ -121,9 +120,6 @@ const recipesController = {
           .destroy()
           .then(() => res.status(200).send({
             message: 'Recipe Deleted SuccessFullly!'
-          }))
-          .catch(error => res.status(401).send({
-            error: error.message
           }));
       })
       .catch(error => res.status(500).send({
@@ -227,8 +223,8 @@ const recipesController = {
     return Recipe
       .findOne({
         where: {
-          recipeName: req.params.recipeName
-        }
+          id: req.params.id
+        },
       })
       .then((recipe) => {
         res.status(200).send({
@@ -272,7 +268,8 @@ const recipesController = {
 
   /**
    * @module getTopRecipes
-   * @description controller function that gets all recipes and sorts them by highest upvotes
+   * @description controller function that gets all
+   * recipes and sorts them by highest upvotes
    * @function
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
@@ -331,8 +328,11 @@ const recipesController = {
     // if multiple ingredients are present, split by the comma
     const ingredients = req.query.ingredients.split(',');
 
-    // If multiple ingredients are present, map each keyword to an object and use
-    // the $or and $iLike for case insensitivity sequelize complex query to perform search
+    /**
+     * If multiple ingredients are present, map each keyword to an
+     * object and use the $or and $iLike for case insensitivity
+     * sequelize complex query to perform search
+     */
     const query = ingredients.map(keyword => ({
       ingredients: {
         $iLike: `%${keyword}%`
@@ -349,12 +349,12 @@ const recipesController = {
       })
       .then((recipes) => {
         if (recipes.rows.length === 0) {
-          return res.status(200).send({
+          return res.send({
             message: 'No recipe matches your search'
           });
         }
         pageNumber = parseInt(recipes.count, 10) / parseInt(limit || 6, 10);
-        return res.status(200).send({
+        return res.send({
           message: 'Recipes Retrieved SuccessFullly!',
           recipes,
           pages: Math.ceil(pageNumber)
@@ -367,7 +367,8 @@ const recipesController = {
 
   /**
    * @module searchRecipes
-   * @description controller function that searches for recipes by keyword inputed
+   * @description controller function that searches for
+   * recipes by keyword inputed
    * @function
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
@@ -420,7 +421,7 @@ const recipesController = {
       })
       .then((recipes) => {
         if (recipes.rows.length === 0) {
-          return res.status(200).send({
+          return res.send({
             message: 'Sorry!!! No recipe matches your search'
           });
         }
@@ -436,4 +437,4 @@ const recipesController = {
       }));
   }
 };
-export default recipesController;
+

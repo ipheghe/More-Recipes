@@ -1,4 +1,4 @@
-import db from '../models/index';
+import db from '../models';
 
 // Assign variable to the database model
 const { Favorite } = db;
@@ -13,11 +13,6 @@ const { Favorite } = db;
  * @return {*} void
  */
 const favoriteExists = (req, res, next) => {
-  if (Number.isNaN(parseInt(req.params.id, 10))) {
-    return res.status(400).send({
-      message: 'Invalid Id!'
-    });
-  }
   Favorite
     .findOne({
       where: {

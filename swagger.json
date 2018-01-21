@@ -161,11 +161,8 @@
               "$ref": "#/definitions/GetUserRecord"
             }
           },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "User not found"
@@ -211,12 +208,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
           },
           "404": {
             "description": "User not found",
@@ -269,12 +260,6 @@
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
-          },
           "404": {
             "description": "User not found",
             "schema": {
@@ -325,12 +310,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
           }
         }
       }
@@ -375,11 +354,8 @@
           "400": {
             "description": "Invalid Input"
           },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Recipe not found",
@@ -427,11 +403,8 @@
           "400": {
             "description": "Invalid recipeId"
           },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Recipe Not Found!",
@@ -489,12 +462,6 @@
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
-          },
           "404": {
             "description": "Recipe Not Found!",
             "schema": {
@@ -541,12 +508,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
           },
           "404": {
             "description": "Recipe Not Found!",
@@ -595,12 +556,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
           },
           "404": {
             "description": "No recipe found for user",
@@ -660,12 +615,6 @@
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
-          },
           "404": {
             "description": "Recipe Not Found!",
             "schema": {
@@ -704,12 +653,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
           }
         }
       }
@@ -760,12 +703,6 @@
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
-          },
           "404": {
             "description": "Recipe Not Found!",
             "schema": {
@@ -813,12 +750,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
           },
           "404": {
             "description": "user account not available!",
@@ -878,12 +809,6 @@
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
-          },
           "404": {
             "description": "Category Not Found!",
             "schema": {
@@ -928,12 +853,6 @@
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
-          },
           "404": {
             "description": "Category Not Found!",
             "schema": {
@@ -977,11 +896,8 @@
               "$ref": "#/definitions/GetCategoryById"
             }
           },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "No category found for user",
@@ -1045,12 +961,6 @@
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
-          },
           "404": {
             "description": "Recipe Not Found!",
             "schema": {
@@ -1089,12 +999,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
           },
           "404": {
             "description": "Recipe Not Found!",
@@ -1141,12 +1045,6 @@
           },
           "401": {
             "description": "Invalid FavoriteId Input"
-          },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
           },
           "404": {
             "description": "Recipe Not Found!",
@@ -1201,13 +1099,7 @@
             }
           },
           "401": {
-            "description": "Invalid RecipeId Input"
-          },
-          "403": {
-            "description": "No token provided!",
-            "schema": {
-              "$ref": "#/definitions/NoTokenProvided"
-            }
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Recipe Not Found!",

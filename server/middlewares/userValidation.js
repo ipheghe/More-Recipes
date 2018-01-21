@@ -1,4 +1,4 @@
-import db from '../models/index';
+import db from '../models';
 
 const { User } = db;
 
@@ -61,10 +61,10 @@ const validateUserFields = (req, res, next) => {
       userData: req.body
     });
   }
-  // check if firstName field contains more than 3 characters
-  if (req.body.fullName.length > 50) {
+  // check if fullName field contains more than 3 characters
+  if (req.body.fullName.length < 4) {
     return res.status(400).send({
-      message: 'fullName must have less than 51 characters',
+      message: 'fullName must have more than 3 characters',
       userData: req.body
     });
   }

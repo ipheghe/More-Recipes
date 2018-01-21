@@ -1,9 +1,9 @@
-import db from '../models/index';
+import db from '../models';
 
 // Reference database models
 const { Recipe, Vote } = db;
 
-const votesController = {
+export default {
 
   /**
    * @module upvoteRecipe
@@ -17,7 +17,8 @@ const votesController = {
   upvoteRecipe(req, res, next) {
     // check if user selected downvotes
     if (req.query.sort === 'downvotes') return next();
-    // find if user have voted, if user have note voted, create a vote record for user
+    // find if user have voted, if user have note voted,
+    // create a vote record for user
     Vote.findOrCreate({
       where: {
         userId: req.decoded.user.id,
@@ -53,7 +54,7 @@ const votesController = {
                   recipe.reload();
                 }).then(() => res.status(200).send({
                   status: 'success',
-                  message: 'Your vote has been recorded',
+                  message: 'Your vote has been updated',
                   upvote: recipe.upvotes,
                   downvote: recipe.downvotes,
                   recipe
@@ -92,7 +93,8 @@ const votesController = {
   downvoteRecipe(req, res) {
     // if user selected downvote action
     if (req.query.sort === 'downvotes') {
-      // find if user have voted, if user have note voted, create a vote record for user
+      // find if user have voted, if user have note voted,
+      // create a vote record for user
       Vote.findOrCreate({
         where: {
           userId: req.decoded.user.id,
@@ -128,7 +130,7 @@ const votesController = {
                     recipe.reload();
                   }).then(() => res.status(200).send({
                     status: 'success',
-                    message: 'Your vote has been recorded',
+                    message: 'Your vote has been updated',
                     upvote: recipe.upvotes,
                     downvote: recipe.downvotes,
                     recipe
@@ -156,4 +158,4 @@ const votesController = {
     }
   }
 };
-export default votesController;
+
