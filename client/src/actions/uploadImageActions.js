@@ -1,13 +1,10 @@
 import sha1 from 'sha1';
 import superagent from 'superagent';
-import dotenv from 'dotenv';
 import {
   IMAGE_FILE_FAILURE,
   IMAGE_FILE_REQUEST,
   IMAGE_FILE_SUCCESSFUL
 } from './types';
-
-dotenv.load();
 
 /**
  * @description upload image request action
@@ -72,14 +69,14 @@ export const uploadImageFailed = error => ({
 export const uploadImage = imageFile =>
   (dispatch) => {
     dispatch(uploadImageRequest(imageFile));
-    const url = process.env.CLOUD_PRESET;
+    const url = 'https://api.cloudinary.com/v1_1/dd3lv0o93/image/upload';
     const timestamp = Date.now() / 1000;
-    const uploadPreset = process.env.UPLOAD_PRESET;
+    const uploadPreset = 'tsoddiyz';
     const paramsStr = `timestamp=${timestamp}&upload_preset=` +
     `${uploadPreset}EEHPrMjK3zGh6V34E2zeDl_IXVk`;
     const signature = sha1(paramsStr);
     const params = {
-      api_key: process.env.API_KEY,
+      api_key: '866441834971784',
       timestamp,
       upload_preset: uploadPreset,
       signature

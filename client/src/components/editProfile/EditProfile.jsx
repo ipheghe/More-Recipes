@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Loader from 'react-loaders';
 import { ProfileHeader, UserSection } from '../../commonViews';
 import { updateUserRecord } from '../../actions/userActions';
+import { fetchUsername } from '../../actions/authActions';
 import EditProfileForm from './EditProfileForm.jsx';
 import renderErrorAlert from '../../utils/renderErrorAlert';
 import editProfileValidator from '../../utils/validator/editProfileValidator';
@@ -17,13 +19,8 @@ import editProfileValidator from '../../utils/validator/editProfileValidator';
 class EditProfile extends React.Component {
     static propTypes = {
       updateUserRecord: PropTypes.func.isRequired,
-      errorMessage: PropTypes.string.isRequired,
-      userData: PropTypes.shape({
-        username: PropTypes.string,
-        fullName: PropTypes.string,
-        mobileNumber: PropTypes.number,
-        email: PropTypes.string,
-      }).isRequired
+      fetchUsername: PropTypes.func.isRequired,
+      errorMessage: PropTypes.string.isRequired
     };
 
   /**
@@ -34,17 +31,26 @@ class EditProfile extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        username: props.userData.username,
-        fullName: props.userData.fullName,
-        mobileNumber: props.userData.mobileNumber.toString(),
-        email: props.userData.email,
+        username: '',
+        fullName: '',
+        mobileNumber: '',
+        email: '',
         hasErrored: false,
-        errorMessage: ''
+        errorMessage: '',
+        isLoading: true,
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleUpdate = this.handleUpdate.bind(this);
       this.toggleModalState = this.toggleModalState.bind(this);
       this.toggleModalStateOff = this.toggleModalStateOff.bind(this);
+    }
+
+    /**
+   * @memberOf UserNavHeader
+   * @returns {*} void
+   */
+    componentDidMount() {
+      this.props.fetchUsername();
     }
 
   /**
@@ -60,7 +66,8 @@ class EditProfile extends React.Component {
           username: nextprops.userData.username,
           fullName: nextprops.userData.fullName,
           mobileNumber: nextprops.userData.mobileNumber,
-          email: nextprops.userData.email
+          email: nextprops.userData.email,
+          isLoading: false
         });
       }
     }
@@ -156,6 +163,11 @@ class EditProfile extends React.Component {
    * @return {ReactElement} markup
    */
     render() {
+      if (this.state.isLoading) {
+        return (
+          <Loader type="ball-scale-ripple-multiple" active />
+        );
+      }
       return (
         <div>
           <div className="banner-background">
@@ -212,4 +224,10 @@ const mapStateToProps = state => ({
 });
 
 export { EditProfile as PureEditProfile };
-export default connect(mapStateToProps, { updateUserRecord })(EditProfile);
+export default connect(
+  mapStateToProps,
+  {
+    updateUserRecord,
+    fetchUsername
+  }
+)(EditProfile);

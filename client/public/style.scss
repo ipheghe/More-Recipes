@@ -629,6 +629,10 @@ li.page-item.page-link a:hover {
   text-decoration: none;
 }
 
+li.page-item.page-link a:focus {
+  text-decoration: none;
+}
+
 @media (max-width: 767px) {
   .landing {
     text-align: center;

@@ -36,6 +36,9 @@
       "lcov",
       "text"
     ],
+    "exclude": [
+      "server/tests/**.js"
+    ],
     "sourceMap": false,
     "instrument": false
   },

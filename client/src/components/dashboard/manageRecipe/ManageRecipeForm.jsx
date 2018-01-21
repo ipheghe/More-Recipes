@@ -39,6 +39,7 @@ const ManageRecipeForm = ({
               loadRecipe(recipeId.value);
             }}
           >
+            <option value="">== Select Recipe ==</option>
             {
               (recipes && recipes.length > 0) ?
                 userRecipes.map(userRecipe =>

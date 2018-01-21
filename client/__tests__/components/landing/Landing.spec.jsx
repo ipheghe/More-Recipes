@@ -49,9 +49,8 @@ const props = {
  */
 const setup = (isAuthenticated) => {
   props.isAuthenticated = isAuthenticated;
-  const mountedWrapper = mount(<Router>
-      <ConnectedLandingPage {...props} store={store} />
-    </Router>);
+  const mountedWrapper =
+  mount(<Router><ConnectedLandingPage {...props} store={store} /></Router>);
   const shallowWrapper = shallow(<PureLanding {...props} />);
   return {
     mountedWrapper,
