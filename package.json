@@ -12,7 +12,7 @@
     "start": "babel-node app.js",
     "start:dev": "cross-env NODE_ENV=development && nodemon --watch server --exec babel-node app.js",
     "coverage": "cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls",
-    "test:client": "jest .client/__tests__/* --watch --coverage",
+    "test:client": "jest .client/__tests__/* --coverage",
     "test:watch": "npm test:client -- --watch",
     "test:e2e": "cross-env NODE_ENV=development sequelize db:migrate:undo:all && sequelize db:migrate && nightwatch",
     "e2e-setup": "selenium-standalone install",
