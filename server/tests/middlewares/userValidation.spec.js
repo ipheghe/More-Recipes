@@ -1,6 +1,5 @@
 import supertest from 'supertest';
 import app from '../../../app';
-import userSeeder from '../../seeders/userSeeder';
 import { tokens } from '../seeders/seeds';
 
 require('chai').should();
@@ -19,7 +18,13 @@ describe('<<< UserValidation Middleware: ', () => {
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .type('form')
-        .send(userSeeder.testInvalidUsers[0])
+        .send({
+          username: '',
+          password: 'abcde',
+          fullName: 'Emeka Amadi',
+          mobileNumber: 2348023451234,
+          email: 'iphegheovie@yahoo.com',
+        })
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.message.should.equal('username field cannot be empty');
@@ -36,7 +41,13 @@ describe('<<< UserValidation Middleware: ', () => {
           .set('Accept', 'application/json')
           .set('Content-Type', 'application/json')
           .type('form')
-          .send(userSeeder.testInvalidUsers[1])
+          .send({
+            username: 'test1',
+            password: '',
+            fullName: 'Akpan Etim',
+            mobileNumber: 2348032121234,
+            email: 'liiov2004@yahoo.com',
+          })
           .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('password field cannot be empty');
@@ -52,7 +63,13 @@ describe('<<< UserValidation Middleware: ', () => {
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .type('form')
-        .send(userSeeder.testInvalidUsers[2])
+        .send({
+          username: 'test1',
+          password: 'abcde',
+          fullName: '',
+          mobileNumber: 2348032121234,
+          email: 'okonyahoo.com',
+        })
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.message.should.equal('fullName field cannot be empty');
@@ -69,7 +86,13 @@ describe('<<< UserValidation Middleware: ', () => {
           .set('Accept', 'application/json')
           .set('Content-Type', 'application/json')
           .type('form')
-          .send(userSeeder.testInvalidUsers[3])
+          .send({
+            username: 'test1',
+            password: 'abcde',
+            fullName: 'Emeka Nwabuzorr',
+            mobileNumber: '',
+            email: 'amadi@yahoo.com',
+          })
           .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('mobile field cannot be empty');
@@ -85,7 +108,13 @@ describe('<<< UserValidation Middleware: ', () => {
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .type('form')
-        .send(userSeeder.testInvalidUsers[4])
+        .send({
+          username: 'test1',
+          password: 'bear',
+          fullName: 'Vicky Emmanuel',
+          mobileNumber: 2348032125434,
+          email: '',
+        })
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.message.should.equal('email field cannot be empty');
@@ -101,7 +130,13 @@ describe('<<< UserValidation Middleware: ', () => {
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .type('form')
-        .send(userSeeder.testInvalidUsers[5])
+        .send({
+          username: 'te',
+          password: 'bear',
+          fullName: 'Mandy Bear',
+          mobileNumber: 2348032125434,
+          email: 'mandy@yahoo.com',
+        })
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.message.should
@@ -118,7 +153,13 @@ describe('<<< UserValidation Middleware: ', () => {
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .type('form')
-        .send(userSeeder.testInvalidUsers[6])
+        .send({
+          username: 'test1',
+          password: 'ok',
+          fullName: 'Mandy Bear',
+          mobileNumber: 2348032125434,
+          email: 'mandy@yahoo.com',
+        })
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.message.should
@@ -136,7 +177,13 @@ describe('<<< UserValidation Middleware: ', () => {
           .set('Accept', 'application/json')
           .set('Content-Type', 'application/json')
           .type('form')
-          .send(userSeeder.testInvalidUsers[7])
+          .send({
+            username: 'test1',
+            password: 'abcde',
+            fullName: 'Ma',
+            mobileNumber: 2348032125434,
+            email: 'mandy@yahoo.com',
+          })
           .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should
@@ -155,7 +202,10 @@ describe('<<< UserValidation Middleware: ', () => {
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .type('form')
-        .send(userSeeder.invalidUsers[1])
+        .send({
+          username: '',
+          password: 'abcde',
+        })
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.message.should.equal('username field cannot be empty');
@@ -172,7 +222,10 @@ describe('<<< UserValidation Middleware: ', () => {
           .set('Accept', 'application/json')
           .set('Content-Type', 'application/json')
           .type('form')
-          .send(userSeeder.incorrectPassword[1])
+          .send({
+            username: 'okon',
+            password: '',
+          })
           .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('password field cannot be empty');
@@ -212,7 +265,13 @@ describe('<<< UserValidation Middleware: ', () => {
           .set('Content-Type', 'application/json')
           .set('x-access-token', stringToken)
           .type('form')
-          .send(userSeeder.testValidUsers[0])
+          .send({
+            username: 'pnator',
+            password: 'abcde',
+            fullName: 'Emeka Amadi',
+            mobileNumber: 2348023451234,
+            email: 'iphegheovie@yahoo.com',
+          })
           .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('Id is Invalid!');
@@ -230,7 +289,13 @@ describe('<<< UserValidation Middleware: ', () => {
           .set('Content-Type', 'application/json')
           .set('x-access-token', unauthToken)
           .type('form')
-          .send(userSeeder.testValidUsers[0])
+          .send({
+            username: 'pnator',
+            password: 'abcde',
+            fullName: 'Emeka Amadi',
+            mobileNumber: 2348023451234,
+            email: 'iphegheovie@yahoo.com',
+          })
           .end((err, res) => {
             res.status.should.equal(404);
             res.body.message.should.equal('user account not available!');

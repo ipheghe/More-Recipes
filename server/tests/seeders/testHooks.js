@@ -2,8 +2,6 @@
 import db from '../../models';
 import { seedUsers, seedRecipes, seedCategories, seedFavorites }
   from './seeds';
-
-process.env.NODE_ENV = 'test';
 const { User, Recipe, Category, Favorite, Vote } = db;
 
 export const populateUsers = () => {
