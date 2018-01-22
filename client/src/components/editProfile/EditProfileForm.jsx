@@ -18,7 +18,7 @@ const EditProfileForm = ({
   onChange
 }) => (
   <div>
-    <form className="reg-form">
+    <form id="profile-form" className="reg-form">
       {
         error && <div>{ error }  </div>
       }
@@ -29,6 +29,7 @@ const EditProfileForm = ({
             <i className="fa fa-user" />
           </span>
           <input
+            id="username"
             name="username"
             type="text"
             className="form-control"
@@ -92,6 +93,7 @@ const EditProfileForm = ({
       </div>
       <div className="edit-profile-button">
         <button
+          id="edit-profile"
           className="btn btn-success"
           onClick={updateProfile}
         >Update

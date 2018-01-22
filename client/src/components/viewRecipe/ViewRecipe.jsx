@@ -311,10 +311,10 @@ class ViewRecipe extends React.Component {
                   <br />
                   <div>
                     <p>{this.state.recipe.views}<span><b>Views |</b></span></p>
-                    <p>{this.checkUpvoteStatus()}
+                    <p id="upvote-count">{this.checkUpvoteStatus()}
                       <span><b>Upvotes |</b></span>
                     </p>
-                    <p>{this.checkDownvoteStatus()}
+                    <p id="downvote-count">{this.checkDownvoteStatus()}
                       <span><b>Downvotes |</b></span>
                     </p>
                   </div>
