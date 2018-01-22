@@ -71,7 +71,7 @@
             }
           },
           "400": {
-            "description": "Invalid field inputs"
+            "description": "Invalid field input"
           },
           "409": {
             "description": "Conflict issues"
@@ -110,16 +110,10 @@
             }
           },
           "400": {
-            "description": "Invalid field inputs"
+            "description": "Invalid field input"
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "404": {
-            "description": "User not found",
-            "schema": {
-              "$ref": "#/definitions/UserNotFound"
-            }
           }
         }
       }
@@ -256,6 +250,9 @@
             "schema": {
               "$ref": "#/definitions/ChangeUserPassword"
             }
+          },
+          "400": {
+            "description": "Invalid field inputs"
           },
           "401": {
             "description": "Unauthorized"
@@ -540,7 +537,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "limit and offset field",
+            "description": "offset input",
             "required": false,
             "schema": {
               "$ref": "#/definitions/PaginationFields"
@@ -556,12 +553,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "404": {
-            "description": "No recipe found for user",
-            "schema": {
-              "$ref": "#/definitions/UserRecipeNotFound"
-            }
           }
         }
       }
@@ -658,7 +649,7 @@
       }
     },
     "/reviews/{recipeId}": {
-      "get": {
+      "post": {
         "tags": [
           "Review"
         ],
@@ -686,7 +677,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "limit and offset field",
+            "description": "offset input",
             "required": false,
             "schema": {
               "$ref": "#/definitions/PaginationFields"
@@ -940,15 +931,6 @@
             "description": "category for favorte recipe",
             "required": true,
             "type": "integer"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Created favorite object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Favorite"
-            }
           }
         ],
         "responses": {
@@ -970,7 +952,7 @@
         }
       }
     },
-    "/users/favorites": {
+    "/favorites": {
       "get": {
         "tags": [
           "Favorite"
@@ -999,12 +981,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Recipe Not Found!",
-            "schema": {
-              "$ref": "#/definitions/RecipeNotFound"
-            }
           }
         }
       }
@@ -1044,13 +1020,7 @@
             }
           },
           "401": {
-            "description": "Invalid FavoriteId Input"
-          },
-          "404": {
-            "description": "Recipe Not Found!",
-            "schema": {
-              "$ref": "#/definitions/RecipeNotFound"
-            }
+            "description": "Unauthorized"
           }
         }
       }
@@ -1167,10 +1137,6 @@
     "PaginationFields": {
       "type": "object",
       "properties": {
-        "limit": {
-          "type": "integer",
-          "example": 6
-        },
         "offset": {
           "type": "integer",
           "example": 0
@@ -1228,15 +1194,6 @@
       "properties": {
         "name": {
           "type": "string"
-        }
-      }
-    },
-    "Favorite": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
         }
       }
     },
@@ -1401,42 +1358,6 @@
           "type": "string",
           "example": "Success"
         },
-        "message": {
-          "type": "string",
-          "example": "User Password Changed SuccessFullly!"
-        }
-      }
-    },
-    "GetUserRecord": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "User Record retrieved successfully"
-        }
-      }
-    },
-    "UpdateUserRecord": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "User Record Updated SuccessFullly!"
-        }
-      }
-    },
-    "ChangeUserPassword": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
         "message": {
           "type": "string",
           "example": "User Password Changed SuccessFullly!"
@@ -1651,18 +1572,6 @@
         }
       }
     },
-    "UserRecipeNotFound": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "No recipe found for user"
-        }
-      }
-    },
     "RecipeData": {
       "type": "object",
       "properties": {
@@ -1671,19 +1580,24 @@
           "example": 1
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "example": "Banga Soup"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "example": "Popular soup in nigeria"
         },
         "ingredients": {
-          "type": "string"
+          "type": "string",
+          "example": "palmkernel, palm oil"
         },
         "directions": {
-          "type": "string"
+          "type": "string",
+          "example": "cook soup"
         },
         "imageUrl": {
-          "type": "string"
+          "type": "string",
+          "example": "/assets/images/banga.jpg"
         },
         "views": {
           "type": "integer"
@@ -1696,6 +1610,112 @@
         },
         "notification": {
           "type": "integer"
+        }
+      }
+    },
+    "ReviewData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "message": {
+          "type": "string",
+          "example": "nice meal"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2018-01-22T08:53:41.803Z"
+        },
+        "Recipe": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "Banga Soup"
+            }
+          }
+        },
+        "User": {
+          "type": "object",
+          "properties": {
+            "fullName": {
+              "type": "string",
+              "example": "John James"
+            }
+          }
+        }
+      }
+    },
+    "FavoriteData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "Recipe": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "Banga Soup"
+            },
+            "description": {
+              "type": "string",
+              "example": "Popular soup in nigeria"
+            },
+            "ingredients": {
+              "type": "string",
+              "example": "palmkernel, palm oil"
+            },
+            "directions": {
+              "type": "string",
+              "example": "cook soup"
+            },
+            "imageUrl": {
+              "type": "string",
+              "example": "/assets/images/banga.jpg"
+            },
+            "views": {
+              "type": "integer"
+            },
+            "upvotes": {
+              "type": "integer"
+            },
+            "downvotes": {
+              "type": "integer"
+            },
+            "notification": {
+              "type": "integer"
+            },
+            "createdAt": {
+              "type": "string",
+              "example": "2018-01-22T08:53:41.803Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "example": "2018-01-22T08:53:41.803Z"
+            }
+          }
+        },
+        "UserId": {
+          "type": "integer",
+          "example": 1
+        },
+        "User": {
+          "type": "object",
+          "properties": {
+            "fullName": {
+              "type": "string",
+              "example": "John James"
+            }
+          }
         }
       }
     },
@@ -1767,48 +1787,126 @@
     "RetrieveRecipeReviews": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "reviews"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "All Reviews Retrieved SuccessFullly!"
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReviewData"
+          }
         }
       }
     },
     "RetrieveReviewsByRecipe": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "reviews"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "Recipe reviews Retrieved SuccessFullly!"
+        },
+        "reviews": {
+          "properties": {
+            "count": {
+              "type": "integer",
+              "example": 1
+            },
+            "rows": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ReviewData"
+              }
+            }
+          }
+        },
+        "pages": {
+          "type": "integer",
+          "example": 1
         }
       }
     },
     "CreateUserCategory": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "category"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "Category created Successfully"
+        },
+        "category": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "cakes"
+            },
+            "userId": {
+              "type": "integer",
+              "example": 1
+            },
+            "createdAt": {
+              "type": "string",
+              "example": "2018-01-22T09:33:37.866Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "example": "2018-01-22T09:33:37.866Z"
+            }
+          }
         }
       }
     },
     "UpdateCategory": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "category"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "category name changed SuccessFullly!"
+        },
+        "category": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "wine"
+            },
+            "userId": {
+              "type": "integer",
+              "example": 1
+            },
+            "createdAt": {
+              "type": "string",
+              "example": "2018-01-22T09:33:37.866Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "example": "2018-01-22T09:43:37.866Z"
+            }
+          }
         }
       }
     },
@@ -1827,12 +1925,26 @@
     "GetCategoryById": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "userCategory"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "User Category Retrieved SuccessFullly!"
+        },
+        "userCategory": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "wine"
+            }
+          }
         }
       }
     },
@@ -1856,12 +1968,42 @@
     "FavoriteRecipe": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "favorite"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "Recipe added to favorites Successfully"
+        },
+        "favorite": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "recipeId": {
+              "type": "integer",
+              "example": 1
+            },
+            "categoryId": {
+              "type": "integer",
+              "example": 1
+            },
+            "userId": {
+              "type": "integer",
+              "example": 1
+            },
+            "createdAt": {
+              "type": "string",
+              "example": "2018-01-22T09:33:37.866Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "example": "2018-01-22T09:43:37.866Z"
+            }
+          }
         }
       }
     },
@@ -1880,36 +2022,111 @@
     "RetrieveFavoriteRecipe": {
       "type": "object",
       "required": [
-        "message"
+        "message",
+        "userFavorites"
       ],
       "properties": {
         "message": {
           "type": "string",
           "example": "User Favorite recipes retrieved Successfully"
+        },
+        "userFavorites": {
+          "properties": {
+            "count": {
+              "type": "integer",
+              "example": 1
+            },
+            "rows": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FavoriteData"
+              }
+            }
+          }
+        },
+        "pages": {
+          "type": "integer",
+          "example": 1
         }
       }
     },
     "VoteRecipe": {
       "type": "object",
       "required": [
-        "message"
+        "status",
+        "message",
+        "upvote",
+        "downvote",
+        "recipe"
       ],
       "properties": {
+        "status": {
+          "type": "string",
+          "example": "success"
+        },
         "message": {
           "type": "string",
           "example": "Your vote has been recorded"
-        }
-      }
-    },
-    "NoTokenProvided": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "No token provided!"
+        },
+        "upvote": {
+          "type": "integer",
+          "example": 1
+        },
+        "downvotes": {
+          "type": "integer",
+          "example": 0
+        },
+        "recipe": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "Banga Soup"
+            },
+            "description": {
+              "type": "string",
+              "example": "Popular soup in nigeria"
+            },
+            "ingredients": {
+              "type": "string",
+              "example": "palmkernel, palm oil"
+            },
+            "directions": {
+              "type": "string",
+              "example": "cook soup"
+            },
+            "imageUrl": {
+              "type": "string",
+              "example": "/assets/images/banga.jpg"
+            },
+            "views": {
+              "type": "integer",
+              "example": 1
+            },
+            "upvotes": {
+              "type": "integer",
+              "example": 1
+            },
+            "downvotes": {
+              "type": "integer",
+              "example": 0
+            },
+            "notification": {
+              "type": "integer"
+            },
+            "createdAt": {
+              "type": "string",
+              "example": "2018-01-22T08:53:41.803Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "example": "2018-01-22T08:53:41.803Z"
+            }
+          }
         }
       }
     }

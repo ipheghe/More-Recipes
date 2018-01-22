@@ -60,7 +60,7 @@ const RecipeCard = ({ recipe }) => (
         <Link
           to={`/recipes/${recipe.id}`}
           href={`#recipes/${recipe.id}`}
-          className="btn btn-secondary btn-sm"
+          className="btn btn-secondary btn-sm btn-more"
         >More
         </Link>
       </small>
