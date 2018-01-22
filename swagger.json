@@ -1062,7 +1062,7 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "Your vote has been recorded",
             "schema": {
               "$ref": "#/definitions/VoteRecipe"
