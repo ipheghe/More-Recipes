@@ -301,18 +301,20 @@ class ViewRecipe extends React.Component {
             <div className="container">
               <div className="row recipe-top">
                 <section className="col-md-6 title-area">
-                  <h3>{this.state.recipe.name}</h3>
+                  <h3 id="recipeName">{this.state.recipe.name}</h3>
                   <br />
                   <div>
-                    <p>{this.state.recipe.description}</p>
+                    <p id="recipeDescription">
+                      {this.state.recipe.description}
+                    </p>
                   </div>
                   <br />
                   <div>
                     <p>{this.state.recipe.views}<span><b>Views |</b></span></p>
-                    <p>{this.checkUpvoteStatus()}
+                    <p id="upvote-count">{this.checkUpvoteStatus()}
                       <span><b>Upvotes |</b></span>
                     </p>
-                    <p>{this.checkDownvoteStatus()}
+                    <p id="downvote-count">{this.checkDownvoteStatus()}
                       <span><b>Downvotes |</b></span>
                     </p>
                   </div>
@@ -422,7 +424,7 @@ class ViewRecipe extends React.Component {
                   <div>
                     <button
                       type="button"
-                      className="btn btn-success"
+                      className="btn btn-success review"
                       onClick={this.handlePostReview}
                     >Add Review
                     </button>

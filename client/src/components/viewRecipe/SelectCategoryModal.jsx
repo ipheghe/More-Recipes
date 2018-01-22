@@ -39,6 +39,7 @@ const SelectCategoryModal = ({
       <div className="form-group">
         <label htmlFor="category-list">Select Category</label>
         <select
+          id="categoryName"
           type="text"
           className="form-control"
           name="categoryName"
@@ -58,6 +59,7 @@ const SelectCategoryModal = ({
     </div>
     <div className="modal-footer">
       <button
+        id="favorite-recipe"
         type="button"
         className="btn btn-success"
         onClick={favoriteRecipe}

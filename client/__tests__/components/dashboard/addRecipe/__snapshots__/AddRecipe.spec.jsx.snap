@@ -12,7 +12,9 @@ exports[`<AddRecipe should match component snapshot 1`] = `
     </h3>
     <br />
     <div>
-      <form>
+      <form
+        id="add-recipe"
+      >
         <div
           className="form-group"
         >
@@ -113,8 +115,8 @@ exports[`<AddRecipe should match component snapshot 1`] = `
         >
           <button
             className="btn btn-success"
+            id="click-add-recipe"
             onClick={[Function]}
-            type="submit"
           >
             Add Recipe
           </button>

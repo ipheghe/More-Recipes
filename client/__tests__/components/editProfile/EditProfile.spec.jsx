@@ -1,6 +1,6 @@
 import expect from 'expect';
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import { Provider } from 'react-redux';
 import render from 'react-test-renderer';
@@ -108,7 +108,7 @@ describe('<PureEditProfile', () => {
     const tree = render
       .create(<Provider store={store}>
         <Router><ConnectedEditProfile {...props} /></Router>
-      </Provider>);
+              </Provider>);
     expect(tree).toMatchSnapshot();
   });
 

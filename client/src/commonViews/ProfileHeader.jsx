@@ -105,6 +105,7 @@ class ProfileHeader extends React.Component {
               formNoValidate
             />
             <button
+              id="search-recipe"
               className="btn btn-outline-success my-2 my-sm-0"
               onClick={this.handleSearch}
             >Search

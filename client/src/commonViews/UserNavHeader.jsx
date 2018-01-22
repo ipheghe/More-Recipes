@@ -132,6 +132,7 @@ class UserNavHeader extends React.Component {
                 </li>
                 <li className="nav-item">
                   <button
+                    id="logout"
                     className="nav-link invisible-button"
                     onClick={this.handleLogout}
                   >

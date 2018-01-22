@@ -24,13 +24,14 @@ const ManageRecipeForm = ({
   let recipeId;
   return (
     <div>
-      <form>
+      <form id="manage-recipe">
         {
           error && <div>{ error }  </div>
         }
         <div className="form-group">
           <label htmlFor="recipe-name-list">Select recipe</label>
           <select
+            id="recipe-drop-down"
             type="text"
             className="form-control click"
             name="recipeId"
@@ -45,6 +46,7 @@ const ManageRecipeForm = ({
                 userRecipes.map(userRecipe =>
                   (
                     <option
+                      id="recipe-drop-down"
                       name="recipeId"
                       value={userRecipe.id}
                       key={userRecipe.id}
@@ -82,7 +84,7 @@ const ManageRecipeForm = ({
           <label htmlFor="directions">Directions</label>
           <textarea
             className="form-control"
-            id="directions"
+            name="directions"
             rows="10"
             placeholder="Enter recipe directions separated by a comma"
             value={directions}
@@ -107,11 +109,13 @@ const ManageRecipeForm = ({
         </div>
         <div className="edit-profile-button">
           <button
+            id="update-recipe"
             className="btn btn-success"
             onClick={updateRecipe}
           >Update Recipe
           </button>
           <button
+            id="delete-recipe"
             className="btn btn-danger"
             onClick={deleteRecipe}
           >Delete Recipe

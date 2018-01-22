@@ -1,6 +1,3 @@
-env:
-  global:
-    - CC_TEST_REPORTER_ID: 48324b7ea4eae0b62d711db31093f793ddfa5d4e4a424bc17a66d94fb771b35f
 language: node_js
 node_js:
   - "stable"
@@ -11,12 +8,11 @@ script: npm test
 before_script:
   - npm install
   - psql -c "create database test" -U postgres
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
+  - npm install -g codecov
 after_script:
   - psql -c "drop database test" -U postgres
 services:
   - postgresql
 after_success: 
-  - CODECLIMATE_REPO_TOKEN=48324b7ea4eae0b62d711db31093f793ddfa5d4e4a424bc17a66d94fb771b35f codeclimate-test-reporter < coverage/lcov.info
+  - codecov
   - npm run coverage

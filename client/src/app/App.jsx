@@ -1,5 +1,10 @@
 import React from 'react';
-import { Switch, HashRouter as Router, hashHistory, Route } from 'react-router-dom';
+import {
+  Switch,
+  HashRouter as Router,
+  hashHistory,
+  Route
+} from 'react-router-dom';
 import {
   Landing,
   Login,
@@ -22,9 +27,21 @@ const App = () =>
           <Route exact name="app" path="/" component={Landing} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/reset-password/:token" component={ResetPassword} />
-          <Route exact path="/recipes/:id" component={RequireAuth(ViewRecipe)} />
-          <Route exact path="/edit-profile" component={RequireAuth(EditProfile)} />
+          <Route
+            exact
+            path="/reset-password/:token"
+            component={ResetPassword}
+          />
+          <Route
+            exact
+            path="/recipes/:id"
+            component={RequireAuth(ViewRecipe)}
+          />
+          <Route
+            exact
+            path="/edit-profile"
+            component={RequireAuth(EditProfile)}
+          />
           <Route path="/dashboard" component={Dashboard} />
           <Route exact path="*" component={NotFound} />
         </Switch>

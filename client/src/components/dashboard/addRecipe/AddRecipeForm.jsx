@@ -19,7 +19,7 @@ const AddRecipeForm = ({
   onImageChange
 }) => (
   <div>
-    <form>
+    <form id="add-recipe">
       {
         error && <div>{ error }  </div>
       }
@@ -89,7 +89,7 @@ const AddRecipeForm = ({
       </div>
       <div className="edit-profile-button">
         <button
-          type="submit"
+          id="click-add-recipe"
           className="btn btn-success"
           onClick={addRecipe}
         >Add Recipe
