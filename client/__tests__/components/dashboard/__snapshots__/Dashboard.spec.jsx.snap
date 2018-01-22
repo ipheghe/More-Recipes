@@ -66,6 +66,7 @@ exports[`<Dashboard should match component snapshot 1`] = `
               />
               <button
                 className="btn btn-outline-success my-2 my-sm-0"
+                id="search-recipe"
                 onClick={[Function]}
               >
                 Search

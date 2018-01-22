@@ -88,7 +88,8 @@ jest.useFakeTimers();
  * @return { * } null
  */
 const setup = () => {
-  const mountedWrapper = mount(<Router><ConnectedManageRecipe {...props} store={store} /></Router>);
+  const mountedWrapper
+  = mount(<Router><ConnectedManageRecipe {...props} store={store} /></Router>);
   const shallowWrapper = shallow(<PureManageRecipe {...props} />);
   return {
     mountedWrapper,
