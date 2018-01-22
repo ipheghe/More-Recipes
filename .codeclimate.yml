@@ -42,3 +42,4 @@ exclude_patterns:
   - "template/*"
   - "server/migrations"
   - "server/models"
+  - "swagger.json"
