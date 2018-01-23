@@ -1,5 +1,5 @@
 import expect from 'expect';
-import reducer from '../../src/reducers/auth_reducer';
+import reducer from '../../src/reducers/authReducer';
 import {
   AUTH_USER,
   UNAUTH_USER,
