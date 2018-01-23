@@ -7,12 +7,12 @@ import {
   UserSection,
   UserNavMenu,
 } from '../../commonViews';
-import Favorite from './favorite/Favorite.jsx';
-import AddRecipe from './addRecipe/AddRecipe.jsx';
-import TopRecipes from './TopRecipes.jsx';
-import MyRecipes from './MyRecipes.jsx';
-import ManageRecipe from './manageRecipe/ManageRecipe.jsx';
-import Search from './Search.jsx';
+import Favorite from './Favorite';
+import AddRecipe from './AddRecipe';
+import TopRecipes from './TopRecipes';
+import MyRecipes from './MyRecipes';
+import ManageRecipe from './ManageRecipe';
+import Search from './Search';
 
 
 /**

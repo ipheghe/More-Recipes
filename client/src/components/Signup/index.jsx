@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { registerUser } from '../../actions/authActions';
-import SignupForm from './SignupForm.jsx';
+import SignupForm from './SignupForm';
 import renderErrorAlert from '../../utils/renderErrorAlert';
 import signupValidator from '../../utils/validator/signupValidator';
 

@@ -5,7 +5,7 @@ import Loader from 'react-loaders';
 import { ProfileHeader, UserSection } from '../../commonViews';
 import { updateUserRecord } from '../../actions/userActions';
 import { fetchUsername } from '../../actions/authActions';
-import EditProfileForm from './EditProfileForm.jsx';
+import EditProfileForm from './EditProfileForm';
 import renderErrorAlert from '../../utils/renderErrorAlert';
 import editProfileValidator from '../../utils/validator/editProfileValidator';
 

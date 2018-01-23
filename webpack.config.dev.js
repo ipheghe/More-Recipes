@@ -33,6 +33,10 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: '/dist/'
   },
+  resolve: {
+    // you can now require("file") instead of require("file.coffee")
+    extensions: ['.js', '.json', '.jsx']
+  },
   plugins: [
     new webpack.ProvidePlugin({
       $: 'jquery',

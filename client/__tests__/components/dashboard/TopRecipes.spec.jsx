@@ -7,7 +7,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedTopRecipes, { PureTopRecipes }
-  from '../../../src/components/dashboard/TopRecipes.jsx';
+  from '../../../src/components/Dashboard/TopRecipes';
 import mockItems from '../../__mocks__/mockItems';
 import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 
@@ -50,7 +50,7 @@ const props = {
 const setup = () => {
   const mountedWrapper = mount(<Router>
     <ConnectedTopRecipes {...props} store={store} />
-                               </Router>);
+  </Router>);
   const shallowWrapper = shallow(<PureTopRecipes {...props} />);
   return {
     mountedWrapper,

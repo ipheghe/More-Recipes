@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FavoriteRecipeCard from './FavoriteRecipeCard.jsx';
+import FavoriteRecipeCard from './FavoriteRecipeCard';
 
 /**
  * FavoriteRecipeList component

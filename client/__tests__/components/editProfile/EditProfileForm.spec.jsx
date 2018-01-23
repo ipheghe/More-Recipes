@@ -2,7 +2,7 @@ import expect from 'expect';
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import EditProfileForm
-  from '../../../src/components/editProfile/EditProfileForm.jsx';
+  from '../../../src/components/EditProfile/EditProfileForm';
 
 const props = {
   username: 'okon',

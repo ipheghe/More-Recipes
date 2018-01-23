@@ -2,7 +2,7 @@ import expect from 'expect';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import ManageRecipeForm
-  from '../../../../src/components/dashboard/manageRecipe/ManageRecipeForm.jsx';
+  from '../../../../src/components/dashboard/ManageRecipe/ManageRecipeForm';
 import mockItems from '../../../__mocks__/mockItems';
 
 const props = {
@@ -12,11 +12,11 @@ const props = {
   error: null,
   recipes: [],
   userRecipes: [mockItems.recipe],
-  onChange: jest.fn(() => Promise.resolve()),
-  onImageChange: jest.fn(() => Promise.resolve()),
-  updateRecipe: jest.fn(() => Promise.resolve()),
-  deleteRecipe: jest.fn(() => Promise.resolve()),
-  loadRecipe: jest.fn(() => Promise.resolve()),
+  onChange: jest.fn(),
+  onImageChange: jest.fn(),
+  updateRecipe: jest.fn(),
+  deleteRecipe: jest.fn(),
+  loadRecipe: jest.fn(),
 };
 
 /**

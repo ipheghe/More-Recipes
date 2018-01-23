@@ -6,7 +6,7 @@ import {
   Pagination
 } from '../../../commonViews';
 import { getFavoriteRecipes } from '../../../actions/favoriteActions';
-import FavoriteRecipeList from './FavoriteRecipeList.jsx';
+import FavoriteRecipeList from './FavoriteRecipeList';
 
 /**
  * Favorite component

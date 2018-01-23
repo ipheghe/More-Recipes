@@ -10,12 +10,17 @@ module.exports = {
     'client/__tests__/setupTest.js',
     './node_modules/'],
   collectCoverageFrom: [
-    'client/__tests__/**/*.{js,jsx}',
     '!client/src/app/index.jsx',
     '!client/src/store/**',
     '!client/src/js/**',
     '!client/public/**',
-    '!client/static/**',
+    '!client/static/**'
+  ],
+  testMatch: [
+    '<rootDir>/client/__tests__/**/*.spec.js?(x)'
+  ],
+  roots: [
+    './client'
   ],
   moduleFileExtensions: ['js', 'jsx'],
   moduleNameMapper: {
@@ -23,4 +28,7 @@ module.exports = {
       '<rootDir>/client/__tests__/__mocks__/fileMock.js',
     '\\.(css|scss)$': '<rootDir>/client/__tests__/__mocks__/styleMock.js'
   },
+  exclude: [
+    'client/__tests__/**'
+  ],
 };

@@ -2,7 +2,7 @@ import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
 import ManageCategoryModal
-  from '../../../../src/commonViews/userSection/ManageCategoryModal.jsx';
+  from '../../../../src/commonViews/UserSection/ManageCategoryModal';
 
 const props = {
   isOpen: jest.fn(),

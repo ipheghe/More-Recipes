@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ManageCategoryModal, ChangePasswordModal } from '../index';
 import {
   addCategory,
   updateCategory,
@@ -13,6 +12,8 @@ import renderErrorAlert from '../../utils/renderErrorAlert';
 import changePasswordValidator
   from '../../utils/validator/changePasswordValidator';
 import { logoutUser } from '../../actions/authActions';
+import ManageCategoryModal from './ManageCategoryModal';
+import ChangePasswordModal from './ChangePasswordModal';
 
 /**
  * UserSection component

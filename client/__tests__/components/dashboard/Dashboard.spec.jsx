@@ -8,7 +8,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedDashboard, { PureDashboard }
-  from '../../../src/components/dashboard/Dashboard.jsx';
+  from '../../../src/components/Dashboard';
 import mockItems from '../../__mocks__/mockItems';
 import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 

@@ -18,6 +18,10 @@ module.exports = {
     publicPath: '/dist/'
   },
   devtool: 'inline-source-map',
+  resolve: {
+    // you can now require("file") instead of require("file.coffee")
+    extensions: ['.js', '.json', '.jsx']
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')

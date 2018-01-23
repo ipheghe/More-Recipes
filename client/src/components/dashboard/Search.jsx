@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Loader from 'react-loaders';
 import { Pagination } from '../../commonViews';
-import RecipeList from '../../commonViews/RecipeList.jsx';
+import RecipeList from '../../commonViews/RecipeList';
 import { getRecipesBySearch } from '../../actions/recipeActions';
 
 const URLSearchParams = require('url-search-params');

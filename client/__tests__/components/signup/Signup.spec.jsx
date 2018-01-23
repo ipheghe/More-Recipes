@@ -7,7 +7,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedSignupPage, { PureSignup }
-  from '../../../src/components/signup/Signup.jsx';
+  from '../../../src/components/Signup';
 
 
 const middleware = [thunk];
@@ -66,7 +66,7 @@ const setup = (isAuthenticated) => {
   props.isAuthenticated = isAuthenticated;
   const mountedWrapper = mount(<Router>
     <ConnectedSignupPage {...props} store={store} />
-                               </Router>);
+  </Router>);
   const shallowWrapper = shallow(<PureSignup {...props} />);
   return {
     mountedWrapper,

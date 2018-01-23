@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { verifyTokenPassword } from '../../actions/userActions';
-import ResetPasswordForm from './ResetPasswordForm.jsx';
+import ResetPasswordForm from './ResetPasswordForm';
 import renderErrorAlert from '../../utils/renderErrorAlert';
 import resetPasswordValidator
   from '../../utils/validator/resetPasswordValidator';

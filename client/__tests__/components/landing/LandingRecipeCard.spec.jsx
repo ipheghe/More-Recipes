@@ -2,7 +2,7 @@ import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
 import LandingRecipeCard
-  from '../../../src/components/landing/LandingRecipeCard.jsx';
+  from '../../../src/components/Landing/LandingRecipeCard';
 
 const recipe =
 {

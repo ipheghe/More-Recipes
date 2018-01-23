@@ -7,7 +7,7 @@ import render from 'react-test-renderer';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedViewRecipe, { PureViewRecipe }
-  from '../../../src/components/viewRecipe/ViewRecipe.jsx';
+  from '../../../src/components/ViewRecipe';
 import mockItems from '../../__mocks__/mockItems';
 import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 

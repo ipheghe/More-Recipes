@@ -2,7 +2,7 @@ import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
 import LandingRecipeList from
-  '../../../src/components/landing/LandingRecipeList.jsx';
+  '../../../src/components/Landing/LandingRecipeList';
 
 /**
  *@description  setup function to mount component

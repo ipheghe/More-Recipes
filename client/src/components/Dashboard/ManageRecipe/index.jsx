@@ -9,7 +9,7 @@ import {
   getRecipe
 } from '../../../actions/recipeActions';
 import { uploadImage } from '../../../actions/uploadImageActions';
-import ManageRecipeForm from './ManageRecipeForm.jsx';
+import ManageRecipeForm from './ManageRecipeForm';
 import renderErrorAlert from '../../../utils/renderErrorAlert';
 import updateRecipeValidator
   from '../../../utils/validator/updateRecipeValidator';

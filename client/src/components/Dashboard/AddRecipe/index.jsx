@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addRecipe } from '../../../actions/recipeActions';
 import { uploadImage } from '../../../actions/uploadImageActions';
-import AddRecipeForm from './AddRecipeForm.jsx';
+import AddRecipeForm from './AddRecipeForm';
 import addRecipeValidator from '../../../utils/validator/addRecipeValidator';
 import renderErrorAlert from '../../../utils/renderErrorAlert';
 

@@ -7,7 +7,7 @@ import render from 'react-test-renderer';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedResetPassword, { PureResetPassword }
-  from '../../../src/components/resetPassword/ResetPassword.jsx';
+  from '../../../src/components/ResetPassword';
 import mockItems from '../../__mocks__/mockItems';
 
 
@@ -71,7 +71,7 @@ const setup = (isAuthenticated) => {
   props.isAuthenticated = isAuthenticated;
   const mountedWrapper = mount(<Provider store={store} >
     <ConnectedResetPassword {...props} store={store} />
-                               </Provider>);
+  </Provider>);
   const shallowWrapper = shallow(<PureResetPassword {...props} />);
   return {
     mountedWrapper,

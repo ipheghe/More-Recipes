@@ -11,7 +11,7 @@ import {
   unfavoriteRecipe,
   getFavoriteRecipe
 } from '../../actions/favoriteActions';
-import SelectCategoryModal from './SelectCategoryModal.jsx';
+import SelectCategoryModal from './SelectCategoryModal';
 
 /**
  * ViewRecipe component
@@ -460,7 +460,7 @@ class ViewRecipe extends React.Component {
           isOpen={this.state.modalIsOpen}
           onClose={this.closeModal}
           categories={this.props.categories}
-          categoryInput={node => this.categoryInput = node}
+          categoryInput={(node) => { this.categoryInput = node; }}
           favoriteRecipe={this.handleFavoriteRecipe}
         />
       </div>

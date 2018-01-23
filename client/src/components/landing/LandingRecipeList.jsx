@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LandingRecipeCard from './LandingRecipeCard.jsx';
+import LandingRecipeCard from './LandingRecipeCard';
 
 /**
  * LandingRecipeList component

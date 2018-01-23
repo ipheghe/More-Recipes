@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import LandingRecipeList from './LandingRecipeList.jsx';
+import LandingRecipeList from './LandingRecipeList';
 import { getTopRecipesLanding } from '../../actions/recipeActions';
 
 /**

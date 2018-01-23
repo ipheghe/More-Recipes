@@ -2,7 +2,7 @@ import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
 import ChangePasswordModal
-  from '../../../../src/commonViews/userSection/ChangePasswordModal.jsx';
+  from '../../../../src/commonViews/UserSection/ChangePasswordModal';
 
 const props = {
   isOpen: true,

@@ -1,7 +1,7 @@
 import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
-import MainHeader from '../../../src/commonViews/MainHeader.jsx';
+import { MainHeader } from '../../../src/commonViews';
 
 /**
  *@description  setup function to mount component

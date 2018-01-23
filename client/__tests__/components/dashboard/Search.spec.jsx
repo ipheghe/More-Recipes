@@ -7,7 +7,7 @@ import render from 'react-test-renderer';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedSearch, { PureSearch }
-  from '../../../src/components/dashboard/Search.jsx';
+  from '../../../src/components/Dashboard/Search';
 import mockItems from '../../__mocks__/mockItems';
 
 
@@ -51,7 +51,7 @@ const props = {
 const setup = () => {
   const mountedWrapper = mount(<Provider store={store}>
     <ConnectedSearch {...props} />
-                               </Provider>);
+  </Provider>);
   const shallowWrapper = shallow(<PureSearch {...props} />);
   return {
     mountedWrapper,

@@ -7,7 +7,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedManageRecipe, { PureManageRecipe }
-  from '../../../../src/components/dashboard/manageRecipe/ManageRecipe.jsx';
+  from '../../../../src/components/Dashboard/ManageRecipe';
 import mockItems from '../../../__mocks__/mockItems';
 import mockAuthCheck from '../../../__mocks__/mockAuthCheck';
 

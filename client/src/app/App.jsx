@@ -16,7 +16,7 @@ import {
   NotFound
 } from '../components';
 import { NavHeader, Footer } from '../commonViews';
-import RequireAuth from '../auth/RequireAuth.jsx';
+import RequireAuth from '../auth/RequireAuth';
 
 const App = () =>
   (

@@ -4,8 +4,8 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/authActions';
 import { resetPassword } from '../../actions/userActions';
-import LoginForm from './LoginForm.jsx';
-import RecoverPasswordModal from './RecoverPasswordModal.jsx';
+import LoginForm from './LoginForm';
+import RecoverPasswordModal from './RecoverPasswordModal';
 import renderErrorAlert from '../../utils/renderErrorAlert';
 
 /**
@@ -37,6 +37,7 @@ class Login extends React.Component {
       email: '',
       hasErrored: false,
       errorMessage: '',
+      modalErrorMessage: '',
       modalIsOpen: false,
       status: '',
     };
@@ -229,7 +230,7 @@ class Login extends React.Component {
                   renderErrorAlert(
                     this.state.hasErrored,
                     this.props.modalErrorMessage,
-                    this.state.errorMessage, 'white'
+                    this.state.modalErrorMessage, 'white'
                   )
                 }
                 isOpen={this.state.modalIsOpen}

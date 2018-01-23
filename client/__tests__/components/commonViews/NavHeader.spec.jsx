@@ -7,7 +7,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedNavHeader, { PureNavHeader }
-  from '../../../src/commonViews/NavHeader.jsx';
+  from '../../../src/commonViews/NavHeader';
 import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 
 
@@ -37,8 +37,8 @@ const props = {
 const setup = (isAuthenticated) => {
   props.authenticated = isAuthenticated;
   const mountedWrapper = mount(<Provider store={store} >
-      <ConnectedNavHeader {...props} />
-    </Provider>);
+    <ConnectedNavHeader {...props} />
+  </Provider>);
   const shallowWrapper = shallow(<PureNavHeader {...props} />);
   return {
     mountedWrapper,

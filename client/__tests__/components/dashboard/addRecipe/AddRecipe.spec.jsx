@@ -7,7 +7,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedAddRecipe, { PureAddRecipe }
-  from '../../../../src/components/dashboard/addRecipe/AddRecipe.jsx';
+  from '../../../../src/components/Dashboard/AddRecipe';
 
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
@@ -78,7 +78,7 @@ jest.useFakeTimers();
 const setup = () => {
   const mountedWrapper = mount(<Router>
     <ConnectedAddRecipe {...props} store={store} />
-  </Router>);
+                               </Router>);
   const shallowWrapper = shallow(<PureAddRecipe {...props} />);
   return {
     mountedWrapper,

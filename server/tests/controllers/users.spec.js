@@ -285,31 +285,6 @@ describe('<<< Users Controller: ', () => {
             done();
           });
       });
-
-    // it('responds with status 500 for server failure', (done) => {
-    //   User.prototype.create = () => Promise.reject(error);
-    //   server
-    //     .post('/api/v1/user/signup')
-    //     .set('Connection', 'keep alive')
-    //     .set('Accept', 'application/json')
-    //     .set('Content-Type', 'application/json')
-    //     .set('x-access-token', authToken)
-    //     .type('form')
-    //     .send({
-    //       username: 'u s e r 2',
-    //       password: 'abcde',
-    //       fullName: 'User Test',
-    //       mobileNumber: 2348023451212,
-    //       email: 'usertest3@yahoo.com',
-    //     })
-    //     .end((err, res) => {
-    //       res.status.should.equal(500);
-    //       res.body.error.should
-    //         .equal('Internal Server Error');
-    //       if (err) return done(err);
-    //       done();
-    //     });
-    // });
   });
 
   describe('Change Password: ', () => {
