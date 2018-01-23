@@ -2,7 +2,7 @@ import expect from 'expect';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import ManageRecipeForm
-  from '../../../../src/components/dashboard/ManageRecipe/ManageRecipeForm';
+  from '../../../../src/components/Dashboard/ManageRecipe/ManageRecipeForm';
 import mockItems from '../../../__mocks__/mockItems';
 
 const props = {

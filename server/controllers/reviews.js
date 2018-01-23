@@ -1,7 +1,5 @@
-import db from '../models';
+import { User, Recipe, Review } from '../models';
 
-// Assign variable to the database model
-const { User, Recipe, Review } = db;
 const keys = ['id', 'message', 'createdAt'];
 let pageNumber;
 

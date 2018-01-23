@@ -36,9 +36,8 @@
       "lcov",
       "text"
     ],
-    "excludes": [
-      "server/tests/**.js",
-      "client/__tests__/actions/**.spec.js"
+    "exclude": [
+      "server/tests/**.js"
     ],
     "sourceMap": false,
     "instrument": false

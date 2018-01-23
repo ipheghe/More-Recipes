@@ -7,7 +7,7 @@ import {
 import {
   reducer as formReducer
 } from 'redux-form';
-import authReducer from './auth_reducer';
+import authReducer from './authReducer';
 import recipeReducer from './recipeReducer';
 import reviewReducer from './reviewReducer';
 import voteReducer from './voteReducer';

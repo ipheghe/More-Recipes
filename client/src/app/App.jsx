@@ -18,6 +18,11 @@ import {
 import { NavHeader, Footer } from '../commonViews';
 import RequireAuth from '../auth/RequireAuth';
 
+/**
+ * @description main app node
+ *
+ * @return {ReactElement} markup
+ */
 const App = () =>
   (
     <Router history={hashHistory} >

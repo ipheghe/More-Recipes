@@ -1,7 +1,4 @@
-import db from '../models';
-
-// Assign variable to the database model
-const { Favorite } = db;
+import { Favorite } from '../models';
 
 /**
  * @module favoriteExists
@@ -29,8 +26,7 @@ const favoriteExists = (req, res, next) => {
         });
       }
       next();
-    })
-    .catch(error => res.status(401).send(error));
+    });
 };
 
 export default favoriteExists;

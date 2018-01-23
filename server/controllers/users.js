@@ -1,12 +1,11 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import db from '../models';
+import { User, Category } from '../models';
 import mailTransporter from '../helpers/mailTransporter';
 import emailTemplate from '../helpers/emailTemplate';
 
 dotenv.load();
-const { User, Category } = db;
 const salt = bcrypt.genSaltSync(10);
 const crypto = require('crypto');
 
@@ -261,10 +260,6 @@ export default {
               .then(() => res.status(200).send({
                 status: 'Success',
                 message: 'User Password Changed SuccessFullly!'
-              }))
-              .catch(error => res.status(401).send({
-                status: 'Fail',
-                error: error.message
               }));
           }
         }

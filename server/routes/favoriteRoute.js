@@ -7,10 +7,10 @@ import { categoryExists } from '../middlewares/categoryValidation';
 import favoriteExists from '../middlewares/favoriteValidation';
 
 const favoritesController = favorites;
-const router = express.Router();
+const favoriteRoute = express.Router();
 
 // API route for registered users to favorite recipes
-router.post(
+favoriteRoute.post(
   '/api/v1/recipe/:id/:categoryId/favorite',
   authorize.verifyUser,
   validUser,
@@ -21,7 +21,7 @@ router.post(
 );
 
 // API route for users to unfavorite recipes
-router.delete(
+favoriteRoute.delete(
   '/api/v1/favorite/:id',
   authorize.verifyUser,
   validUser,
@@ -30,7 +30,7 @@ router.delete(
 );
 
 // API route for users to retrieve favorite recipe
-router.get(
+favoriteRoute.get(
   '/api/v1/favorite/:id',
   authorize.verifyUser,
   validUser,
@@ -38,11 +38,11 @@ router.get(
 );
 
 // API route for users to retrieve favorite recipes
-router.post(
+favoriteRoute.post(
   '/api/v1/favorites',
   authorize.verifyUser,
   validUser,
   favoritesController.retrieveFavorites
 );
 
-export default router;
+export default favoriteRoute;

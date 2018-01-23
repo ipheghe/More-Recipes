@@ -6,10 +6,10 @@ import { validateRecipeFields, recipeExists, userRecipeExists }
 import { validUser } from '../middlewares/userValidation';
 
 const recipesController = recipes;
-const router = express.Router();
+const recipeRoute = express.Router();
 
 // API route for users to add recipe
-router.post(
+recipeRoute.post(
   '/api/v1/recipe/',
   authorize.verifyUser,
   validUser,
@@ -18,7 +18,7 @@ router.post(
 );
 
 // API route for users to update recipe
-router.put(
+recipeRoute.put(
   '/api/v1/recipe/:id',
   authorize.verifyUser,
   validUser,
@@ -28,7 +28,7 @@ router.put(
 );
 
 // API route for users to delete recipe
-router.delete(
+recipeRoute.delete(
   '/api/v1/recipe/:id',
   authorize.verifyUser,
   validUser, recipeExists,
@@ -37,7 +37,7 @@ router.delete(
 );
 
 // API route for users to retrieve all recipes
-router.post(
+recipeRoute.post(
   '/api/v1/recipes',
   authorize.verifyUser,
   recipesController.getRecipes,
@@ -47,7 +47,7 @@ router.post(
 );
 
 // API route for users to retrieve only personal recipes
-router.post(
+recipeRoute.post(
   '/api/v1/recipes/users',
   authorize.verifyUser,
   validUser,
@@ -56,7 +56,7 @@ router.post(
 
 // API route to retrieve recipes by recipeId and
 // it increments the views column each time recipe is viewed
-router.get(
+recipeRoute.get(
   '/api/v1/view-recipe/:id',
   authorize.verifyUser,
   validUser,
@@ -65,7 +65,7 @@ router.get(
 );
 
 // API route to retrieve recipe by recipe
-router.get(
+recipeRoute.get(
   '/api/v1/recipe/:id',
   authorize.verifyUser,
   validUser,
@@ -74,9 +74,9 @@ router.get(
 );
 
 // API route for users to retrieve all recipes
-router.get(
+recipeRoute.get(
   '/api/v1/topRecipes',
   recipesController.getTopRecipes
 );
 
-export default router;
+export default recipeRoute;

@@ -10,6 +10,8 @@ module.exports = {
     'client/__tests__/setupTest.js',
     './node_modules/'],
   collectCoverageFrom: [
+    '!client/__tests__/**/*.{js,jsx}',
+    '!client/__tests__/setupTest.js',
     '!client/src/app/index.jsx',
     '!client/src/store/**',
     '!client/src/js/**',
@@ -28,7 +30,4 @@ module.exports = {
       '<rootDir>/client/__tests__/__mocks__/fileMock.js',
     '\\.(css|scss)$': '<rootDir>/client/__tests__/__mocks__/styleMock.js'
   },
-  exclude: [
-    'client/__tests__/**'
-  ],
 };

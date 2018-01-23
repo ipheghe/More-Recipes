@@ -7,10 +7,10 @@ import reviewValidation from '../middlewares/reviewValidation';
 import reviewNotification from '../middlewares/reviewNotification';
 
 const reviewsController = reviews;
-const router = express.Router();
+const reviewRoute = express.Router();
 
 // API route for users to post review for a recipe
-router.post(
+reviewRoute.post(
   '/api/v1/recipe/:id/review',
   authorize.verifyUser,
   validUser,
@@ -21,7 +21,7 @@ router.post(
 );
 
 // API route for users to retrieve all reviews
-router.get(
+reviewRoute.get(
   '/api/v1/reviews',
   authorize.verifyUser,
   validUser,
@@ -29,11 +29,11 @@ router.get(
 );
 
 // API route for users to retrieve all reviews for a particular recipe
-router.post(
+reviewRoute.post(
   '/api/v1/reviews/:id',
   authorize.verifyUser,
   validUser,
   reviewsController.getRecipeReviews
 );
 
-export default router;
+export default reviewRoute;

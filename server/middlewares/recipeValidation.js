@@ -1,7 +1,4 @@
-import db from '../models';
-
-const { Recipe } = db;
-
+import { Recipe } from '../models';
 
 /**
  * @module validateRecipeFields

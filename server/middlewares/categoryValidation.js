@@ -1,7 +1,4 @@
-import db from '../models';
-
-// Assign variable to the database model
-const { Category } = db;
+import { Category } from '../models';
 
 /**
  * @module validateCategoryField

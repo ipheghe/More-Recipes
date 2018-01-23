@@ -9,7 +9,7 @@ const authorize = {
     || req.headers.authorization
     || req.params.token;
     if (!token) {
-      return res.status(401).send({
+      return res.status(400).send({
         message: 'No token provided!'
       });
     } else if (token) {

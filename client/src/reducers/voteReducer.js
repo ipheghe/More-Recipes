@@ -4,6 +4,14 @@ const INITIAL_STATE = {
   message: '', error: '', upvote: 0, downvote: 0
 };
 
+/**
+ * @description this Reducer implements the action for the vote reducer
+ *
+ * @param {Object}  state - initial state
+ * @param {Object} action - redux action
+ *
+ * @returns {Object} - current state
+ */
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UPVOTE_RECIPE:

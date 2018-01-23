@@ -5,6 +5,14 @@ const INITIAL_STATE = {
   message: '', error: '', count: 1, reviewList: []
 };
 
+/**
+ * @description this Reducer implements the action for the review reducer
+ *
+ * @param {Object}  state - initial state
+ * @param {Object} action - redux action
+ *
+ * @returns {Object} - current state
+ */
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case REVIEW_RECIPE:

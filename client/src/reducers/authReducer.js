@@ -13,6 +13,15 @@ const INITIAL_STATE = {
   categories: []
 };
 
+
+/**
+ * @description this Reducer implements the action for the auth reducer
+ *
+ * @param {Object}  state - initial state
+ * @param {Object} action - redux action
+ *
+ * @returns {Object} - current state
+ */
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case AUTH_USER:

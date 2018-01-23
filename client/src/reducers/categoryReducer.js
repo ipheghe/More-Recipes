@@ -14,6 +14,14 @@ const INITIAL_STATE = {
   userCategoryList: []
 };
 
+/**
+ * @description this Reducer implements the action for the category reducer
+ *
+ * @param {Object}  state - initial state
+ * @param {Object} action - redux action
+ *
+ * @returns {Object} - current state
+ */
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_CATEGORY:

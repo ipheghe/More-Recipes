@@ -6,10 +6,10 @@ import { validateCategoryField, categoryExists, userCategoryExists }
   from '../middlewares/categoryValidation';
 
 const categoriesController = categories;
-const router = express.Router();
+const categoryRoute = express.Router();
 
 // API route for users to create categories
-router.post(
+categoryRoute.post(
   '/api/v1/user/category',
   authorize.verifyUser,
   validUser,
@@ -18,13 +18,13 @@ router.post(
 );
 
 // API route for users to create categories
-router.post(
+categoryRoute.post(
   '/api/v1/user/unCategorized',
   categoriesController.addUncategorized,
 );
 
 // API route for users to modify category name
-router.put(
+categoryRoute.put(
   '/api/v1/user/category/:id',
   authorize.verifyUser,
   validUser,
@@ -33,7 +33,7 @@ router.put(
 );
 
 // API route for users to create categories
-router.delete(
+categoryRoute.delete(
   '/api/v1/user/category/:id',
   authorize.verifyUser,
   validUser,
@@ -42,7 +42,7 @@ router.delete(
 );
 
 // API route for users to retrieve only personal categories
-router.get(
+categoryRoute.get(
   '/api/v1/categories/users',
   authorize.verifyUser,
   validUser,
@@ -50,7 +50,7 @@ router.get(
 );
 
 // API route for user to retrieve personal category
-router.get(
+categoryRoute.get(
   '/api/v1/category/user/:id',
   authorize.verifyUser,
   validUser,
@@ -58,4 +58,4 @@ router.get(
   categoriesController.getUserCategory
 );
 
-export default router;
+export default categoryRoute;
