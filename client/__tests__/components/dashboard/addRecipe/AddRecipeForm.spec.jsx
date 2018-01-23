@@ -2,17 +2,17 @@ import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
 import AddRecipeForm
-  from '../../../../src/components/dashboard/addRecipe/AddRecipeForm.jsx';
+  from '../../../../src/components/Dashboard/AddRecipe/AddRecipeForm';
 
 const props = {
   recipeName: '',
   recipeDetail: '',
   ingredients: '',
-  directions: jest.fn(() => Promise.resolve()),
+  directions: jest.fn(),
   error: null,
-  onChange: jest.fn(() => Promise.resolve()),
-  onImageChange: jest.fn(() => Promise.resolve()),
-  addRecipe: jest.fn(() => Promise.resolve()),
+  onChange: jest.fn(),
+  onImageChange: jest.fn(),
+  addRecipe: jest.fn(),
 };
 
 /**

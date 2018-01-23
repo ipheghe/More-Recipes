@@ -7,7 +7,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedUserProfileHeader, { PureProfileHeader }
-  from '../../../src/commonViews/ProfileHeader.jsx';
+  from '../../../src/commonViews/ProfileHeader';
 
 
 const middleware = [thunk];

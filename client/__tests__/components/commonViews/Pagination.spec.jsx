@@ -1,7 +1,7 @@
 import expect from 'expect';
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import Pagination from '../../../src/commonViews/Pagination.jsx';
+import { shallow } from 'enzyme';
+import { Pagination } from '../../../src/commonViews';
 
 const props = {
   pageNumber: 3,

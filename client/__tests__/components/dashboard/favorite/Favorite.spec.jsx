@@ -7,7 +7,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedFavorite, { PureFavorite }
-  from '../../../../src/components/dashboard/favorite/Favorite.jsx';
+  from '../../../../src/components/Dashboard/Favorite';
 import mockAuthCheck from '../../../__mocks__/mockAuthCheck';
 import mockItems from '../../../__mocks__/mockItems';
 
@@ -48,7 +48,7 @@ const props = {
 const setup = () => {
   const mountedWrapper = mount(<Router>
     <ConnectedFavorite {...props} store={store} />
-  </Router>);
+                               </Router>);
   const shallowWrapper = shallow(<PureFavorite {...props} />);
   return {
     mountedWrapper,

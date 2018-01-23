@@ -7,7 +7,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedManageRecipe, { PureManageRecipe }
-  from '../../../../src/components/dashboard/manageRecipe/ManageRecipe.jsx';
+  from '../../../../src/components/Dashboard/ManageRecipe';
 import mockItems from '../../../__mocks__/mockItems';
 import mockAuthCheck from '../../../__mocks__/mockAuthCheck';
 
@@ -42,6 +42,7 @@ const store = mockStore(initialState);
 
 const state = {
   recipes: mockItems.recipeArray,
+  recipeId: null,
   recipeDetail: 'Sweet and Delicious',
   ingredients: 'rice, maggi, tomato',
   directions: 'boil rice, fry stew',
@@ -167,8 +168,6 @@ describe('<ManageRecipe', () => {
   it('displays error message if user enters a null ingredients field', () => {
     const { shallowWrapper } = setup();
     state.ingredients = '';
-    const recipeId = { value: 1 };
-    shallowWrapper.instance().recipeId = recipeId;
     shallowWrapper.setState(state);
     shallowWrapper.instance().validateFormField();
     expect(shallowWrapper.state().hasErrored).toEqual(true);
@@ -212,46 +211,35 @@ describe('<ManageRecipe', () => {
      after validatiing form fields successfully`, () => {
       sinon.spy(PureManageRecipe.prototype, 'handleUpdateRecipe');
       const { shallowWrapper } = setup();
-      const recipeId = { value: 1 };
-      shallowWrapper.instance().recipeId = recipeId;
       state.directions = 'hjknjk';
+      state.recipeId = '1';
       shallowWrapper.setState(state);
       shallowWrapper.instance().handleUpdateRecipe(event);
       expect(PureManageRecipe.prototype.handleUpdateRecipe.calledOnce)
         .toEqual(true);
     });
 
-  it(`dispatches handleDeleteRecipe action
-      after validatiing form fields successfully`, () => {
+  it(`displays error when dispatching handleDeleteRecipe
+    action with a null recipeId value`, () => {
       sinon.spy(PureManageRecipe.prototype, 'handleDeleteRecipe');
       const { shallowWrapper } = setup();
+      state.recipeId = null;
+      shallowWrapper.setState(state);
+      shallowWrapper.instance().handleDeleteRecipe(event);
+      jest.runAllTimers();
+      expect(PureManageRecipe.prototype.handleDeleteRecipe.calledOnce)
+        .toEqual(true);
+    });
+
+  it(`dispatches handleDeleteRecipe action
+      after validatiing form fields successfully`, () => {
+      const { shallowWrapper } = setup();
+      state.recipeId = '1';
       shallowWrapper.setState(state);
       const recipeId = { value: 1 };
       shallowWrapper.instance().recipeId = recipeId;
       shallowWrapper.instance().handleDeleteRecipe(event);
       expect(PureManageRecipe.prototype.handleDeleteRecipe.calledOnce)
-        .toEqual(true);
-    });
-
-  it(`displays error when dispatching handleDeleteRecipe
-      action with a null recipeId value`, () => {
-      const { shallowWrapper } = setup();
-      shallowWrapper.setState(state);
-      const recipeId = { value: null };
-      shallowWrapper.instance().recipeId = recipeId;
-      shallowWrapper.instance().handleDeleteRecipe(event);
-      jest.runAllTimers();
-      expect(PureManageRecipe.prototype.handleDeleteRecipe.calledOnce)
         .toEqual(false);
     });
-
-  it('dispatches handleDeleteRecipe action after validatiing fields', () => {
-    const { shallowWrapper } = setup();
-    state.recipes = [];
-    shallowWrapper.setState(state);
-    const recipeId = { value: 1 };
-    shallowWrapper.instance().recipeId = recipeId;
-    expect(PureManageRecipe.prototype.handleDeleteRecipe.calledOnce)
-      .toEqual(false);
-  });
 });

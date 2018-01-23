@@ -1,6 +1,4 @@
-import db from '../models';
-
-const { User } = db;
+import { User } from '../models';
 
 /**
  * @module validateUserFields

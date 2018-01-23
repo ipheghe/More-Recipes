@@ -1,9 +1,9 @@
-import userRoute from './user';
-import recipeRoute from './recipe';
-import reviewRoute from './review';
-import categoryRoute from './category';
-import favoriteRoute from './favorite';
-import voteRoute from './vote';
+import userRoute from './userRoute';
+import recipeRoute from './recipeRoute';
+import reviewRoute from './reviewRoute';
+import categoryRoute from './categoryRoute';
+import favoriteRoute from './favoriteRoute';
+import voteRoute from './voteRoute';
 
 export {
   userRoute,

@@ -1,7 +1,5 @@
-import db from '../models';
+import { User, Recipe, Review } from '../models';
 
-// Reference database models
-const { User, Recipe, Review } = db;
 const keys = [
   'id', 'name', 'description', 'ingredients',
   'directions', 'imageUrl', 'views', 'upvotes', 'downvotes', 'notification'

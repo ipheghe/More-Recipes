@@ -1,7 +1,8 @@
 import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
-import ResetPasswordForm from '../../../src/components/resetPassword/ResetPasswordForm.jsx';
+import ResetPasswordForm
+  from '../../../src/components/ResetPassword/ResetPasswordForm';
 
 const props = {
   newPassword: 'abcdef',

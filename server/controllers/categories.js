@@ -1,7 +1,5 @@
-import db from '../models';
+import { Category } from '../models';
 
-// Assign variable to the database model
-const { Category } = db;
 const keys = ['id', 'name'];
 
 export default {

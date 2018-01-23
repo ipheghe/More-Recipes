@@ -12,6 +12,14 @@ const initialState = [{
   isloaded: false,
 }];
 
+/**
+ * @description this Reducer implements the action for the image upload reducer
+ *
+ * @param {Object}  state - initial state
+ * @param {Object} action - redux action
+ *
+ * @returns {Object} - current state
+ */
 export default (state = initialState, action) => {
   switch (action.type) {
     case IMAGE_FILE_REQUEST:

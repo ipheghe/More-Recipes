@@ -7,7 +7,7 @@ import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
 import render from 'react-test-renderer';
 import ConnectedLandingPage, { PureLanding }
-  from '../../../src/components/landing/Landing.jsx';
+  from '../../../src/components/Landing';
 import mockItems from '../../__mocks__/mockItems';
 import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 

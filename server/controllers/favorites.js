@@ -1,7 +1,5 @@
-import db from '../models';
+import { User, Recipe, Favorite } from '../models';
 
-// Assign variable to the database model
-const { User, Recipe, Favorite } = db;
 const keys = ['id'];
 let pageNumber;
 

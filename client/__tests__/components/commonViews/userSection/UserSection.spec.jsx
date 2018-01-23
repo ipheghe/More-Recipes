@@ -7,7 +7,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedUserSection, { PureUserSection }
-  from '../../../../src/commonViews/userSection/UserSection.jsx';
+  from '../../../../src/commonViews/UserSection';
 import mockItems from '../../../__mocks__/mockItems';
 
 
@@ -92,7 +92,7 @@ jest.useFakeTimers();
 const setup = () => {
   const mountedWrapper = mount(<Router>
     <ConnectedUserSection {...props} store={store} />
-                               </Router>);
+  </Router>);
   const shallowWrapper = shallow(<PureUserSection {...props} />);
   return {
     mountedWrapper,
@@ -112,7 +112,7 @@ describe('<UserSection', () => {
   it('should match component snapshot', () => {
     const tree = render.create(<Router >
       <PureUserSection {...props} />
-    </Router>);
+                               </Router>);
     expect(tree).toMatchSnapshot();
   });
 

@@ -15,6 +15,14 @@ const INITIAL_STATE = {
   userFavorite: [],
 };
 
+/**
+ * @description this Reducer implements the action for the favorite reducer
+ *
+ * @param {Object}  state - initial state
+ * @param {Object} action - redux action
+ *
+ * @returns {Object} - current state
+ */
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case FAVORITE_RECIPE:

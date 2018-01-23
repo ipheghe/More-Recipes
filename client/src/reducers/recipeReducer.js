@@ -19,6 +19,14 @@ const INITIAL_STATE = {
   searchResult: []
 };
 
+/**
+ * @description this Reducer implements the action for the recipe reducer
+ *
+ * @param {Object}  state - initial state
+ * @param {Object} action - redux action
+ *
+ * @returns {Object} - current state
+ */
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_RECIPE:

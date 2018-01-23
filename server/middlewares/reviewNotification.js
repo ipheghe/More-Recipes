@@ -1,10 +1,9 @@
 import dotenv from 'dotenv';
-import db from '../models';
+import { User, Recipe } from '../models';
 import mailTransporter from '../helpers/mailTransporter';
 import emailTemplate from '../helpers/emailTemplate';
 
 dotenv.load();
-const { User, Recipe } = db;
 
 /**
  * @module reviewNotification

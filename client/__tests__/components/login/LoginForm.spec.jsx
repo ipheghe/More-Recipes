@@ -1,7 +1,7 @@
 import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
-import LoginForm from '../../../src/components/login/LoginForm.jsx';
+import LoginForm from '../../../src/components/Login/LoginForm';
 
 /**
  *@description setup function to mount component

@@ -8,7 +8,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedEditProfile, { PureEditProfile }
-  from '../../../src/components/editProfile/EditProfile.jsx';
+  from '../../../src/components/EditProfile';
 import mockItems from '../../__mocks__/mockItems';
 import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 
@@ -108,7 +108,7 @@ describe('<PureEditProfile', () => {
     const tree = render
       .create(<Provider store={store}>
         <Router><ConnectedEditProfile {...props} /></Router>
-              </Provider>);
+      </Provider>);
     expect(tree).toMatchSnapshot();
   });
 

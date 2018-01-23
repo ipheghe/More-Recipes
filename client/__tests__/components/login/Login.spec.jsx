@@ -7,7 +7,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedLogin, { PureLogin }
-  from '../../../src/components/login/Login.jsx';
+  from '../../../src/components/Login';
 import mockItems from '../../__mocks__/mockItems';
 
 
@@ -75,7 +75,7 @@ const setup = (isAuthenticated) => {
   props.isAuthenticated = isAuthenticated;
   const mountedWrapper = mount(<Router>
     <ConnectedLogin {...props} store={store} />
-  </Router>);
+                               </Router>);
   const shallowWrapper = shallow(<PureLogin {...props} />);
   return {
     mountedWrapper,

@@ -1,7 +1,7 @@
 import expect from 'expect';
 import React from 'react';
 import { mount } from 'enzyme';
-import SignupForm from '../../../src/components/signup/SignupForm.jsx';
+import SignupForm from '../../../src/components/Signup/SignupForm';
 
 /**
  *

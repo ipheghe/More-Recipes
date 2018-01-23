@@ -9,7 +9,7 @@ const server = supertest.agent(app);
 describe('<<< RequireAuth Middleware: ', () => {
   describe('Authenticate Routes: ', () => {
     it(`should deny route access to unauthenticated
-        users no toke is provided`, (done) => {
+        users if no token is provided`, (done) => {
         server
           .post('/api/v1/recipe')
           .set('Connection', 'keep alive')
@@ -24,7 +24,7 @@ describe('<<< RequireAuth Middleware: ', () => {
             imageUrl: 'dist/image3'
           })
           .end((err, res) => {
-            res.status.should.equal(401);
+            res.status.should.equal(400);
             res.body.message.should.equal('No token provided!');
             if (err) return done(err);
             done();

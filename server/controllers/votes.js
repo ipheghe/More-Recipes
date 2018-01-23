@@ -1,7 +1,4 @@
-import db from '../models';
-
-// Reference database models
-const { Recipe, Vote } = db;
+import { Recipe, Vote } from '../models';
 
 export default {
 

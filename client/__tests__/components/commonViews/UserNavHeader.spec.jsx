@@ -8,7 +8,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import ConnectedUserNavHeader, { PureUserNavHeader }
-  from '../../../src/commonViews/UserNavHeader.jsx';
+  from '../../../src/commonViews/UserNavHeader';
 import mockAuthCheck from '../../__mocks__/mockAuthCheck';
 import mockItems from '../../__mocks__/mockItems';
 

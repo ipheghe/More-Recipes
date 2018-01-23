@@ -1,7 +1,7 @@
 import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
-import ReviewBox from '../../../src/commonViews/ReviewBox.jsx';
+import { ReviewBox } from '../../../src/commonViews';
 
 const props = {
   fullName: 'Okon Jack',
